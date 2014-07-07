@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using CTPMdApi;
+using CTPTradeApi;
 
 namespace autotrade
 {
@@ -15,6 +16,7 @@ namespace autotrade
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         MdApi mdApi = new MdApi("gengke", "123");
+        TradeApi tradeApi = new TradeApi("gengke", "123");
 
         readonly string[] ppInstrumentID = { "IF1407" };	// 行情订阅列表
         public Form1()
@@ -64,6 +66,18 @@ namespace autotrade
             Console.WriteLine("connected");
 
             mdApi.UserLogin();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            tradeApi.Connect();
+
+            tradeApi.OnFrontConnect += tradeApi_OnFrontConnect;
+        }
+
+        void tradeApi_OnFrontConnect()
+        {
+            tradeApi.UserLogin();
         }
     }
 }
