@@ -11,13 +11,18 @@ using autotrade.strategy;
 using CTPMdApi;
 using CTPTradeApi;
 using MongoDB.Driver.Linq;
+using CThostFtdcContractBankField = CTPTradeApi.CThostFtdcContractBankField;
+using CThostFtdcInputOrderField = CTPTradeApi.CThostFtdcInputOrderField;
+using CThostFtdcOrderField = CTPTradeApi.CThostFtdcOrderField;
 using CThostFtdcReqQueryAccountField = CTPTradeApi.CThostFtdcReqQueryAccountField;
 using CThostFtdcRspInfoField = CTPTradeApi.CThostFtdcRspInfoField;
 using CThostFtdcTradingAccountField = CTPTradeApi.CThostFtdcTradingAccountField;
+using EnumDirectionType = CTPTradeApi.EnumDirectionType;
+using EnumOffsetFlagType = CTPTradeApi.EnumOffsetFlagType;
 
 namespace autotrade
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
         private readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         MdApi mdApi = new MdApi("50001693", "05221058", "8888", "tcp://210.51.25.90:32111");
@@ -25,7 +30,7 @@ namespace autotrade
         private MAReverseStrategy maReverseStrategy;
 
         readonly string[] ppInstrumentID = { "IF1407" };	// 行情订阅列表
-        public Form1()
+        public MainForm()
         {
             InitializeComponent();
         }
@@ -85,7 +90,27 @@ namespace autotrade
             tradeApi.OnRspUserLogin += tradeApi_OnRspUserLogin;
             tradeApi.OnRspQryTradingAccount += tradeApi_OnRspQryTradingAccount;
             tradeApi.OnRspQryInvestorPosition += tradeApi_OnRspQryInvestorPosition;
+            tradeApi.OnRspQryContractBank += tradeApi_OnRspQryContractBank;
+            tradeApi.OnRspQryOrder += tradeApi_OnRspQryOrder;
+            tradeApi.OnErrRtnOrderInsert += tradeApi_OnOnErrRtnOrderInsert;
+        }
 
+        private void tradeApi_OnOnErrRtnOrderInsert(ref CThostFtdcInputOrderField pInputOrder, ref CThostFtdcRspInfoField pRspInfo)
+        {
+            log.Info(pRspInfo);
+            log.Info(pInputOrder);
+        }
+
+        private void tradeApi_OnRspQryOrder(ref CThostFtdcOrderField porder, ref CThostFtdcRspInfoField prspinfo, int nrequestid, bool bislast)
+        {
+            log.Info(prspinfo);
+            log.Info(porder);
+        }
+
+        private void tradeApi_OnRspQryContractBank(ref CThostFtdcContractBankField pcontractbank, ref CThostFtdcRspInfoField prspinfo, int nrequestid, bool bislast)
+        {
+            log.Info(prspinfo);
+            log.Info(pcontractbank);
         }
 
         void tradeApi_OnRspQryInvestorPosition(ref CTPTradeApi.CThostFtdcInvestorPositionField pInvestorPosition, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
@@ -96,7 +121,7 @@ namespace autotrade
 
         void tradeApi_OnRspQryTradingAccount(ref CThostFtdcTradingAccountField pTradingAccount, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
         {
-            log.Info(pRspInfo.ErrorMsg);
+            log.Info(pRspInfo);
             log.Info(pTradingAccount);
         }
 
@@ -119,6 +144,17 @@ namespace autotrade
         private void button3_Click(object sender, EventArgs e)
         {
             tradeApi.QryInvestorPosition();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            tradeApi.OrderInsert("IF1407", EnumOffsetFlagType.Close, EnumDirectionType.Buy, 100, 1);
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            LoginForm loginForm = new LoginForm();
+            loginForm.ShowDialog();
         }
     }
 }

@@ -1,7 +1,27 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)">
-  <Profiles>
-    <Profile Name="(Default)" />
-  </Profiles>
-  <Settings />
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="autotrade.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="InvestorID" Type="System.String" Scope="User">
+      <Value Profile="(Default)">50001693</Value>
+    </Setting>
+    <Setting Name="Passwd" Type="System.String" Scope="User">
+      <Value Profile="(Default)">05221058</Value>
+    </Setting>
+    <Setting Name="ServerLine" Type="System.String" Scope="User">
+      <Value Profile="(Default)">大陆期货一联通线路</Value>
+    </Setting>
+    <Setting Name="dlqh_dianxinIP1" Type="System.String" Scope="User">
+      <Value Profile="(Default)">61.172.206.73</Value>
+    </Setting>
+    <Setting Name="dlqh_dianxinPort1" Type="System.String" Scope="User">
+      <Value Profile="(Default)">41205</Value>
+    </Setting>
+    <Setting Name="dlqh_dianxinIP2" Type="System.String" Scope="User">
+      <Value Profile="(Default)">61.172.206.78</Value>
+    </Setting>
+    <Setting Name="dlqh_dianxinPort2" Type="System.String" Scope="User">
+      <Value Profile="(Default)">41205</Value>
+    </Setting>
+  </Settings>
 </SettingsFile>

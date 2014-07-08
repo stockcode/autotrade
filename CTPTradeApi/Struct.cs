@@ -6198,6 +6198,12 @@ namespace CTPTradeApi
 		/// </summary>
 		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 101)]
 		public string BankName;
+
+        public override string ToString()
+        {
+            return String.Format("CThostFtdcContractBankField(经纪公司代码={0},银行代码={1},银行分中心代码={2},BankName={3})"
+                , BrokerID, BankID, BankBrchID, BankName);
+        }
 	}
 
 	/// <summary>
