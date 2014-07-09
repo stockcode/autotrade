@@ -117,4 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <metadata name="c1CommandHolder1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <data name="c1FlexGrid1.ColumnInfo" xml:space="preserve">
+    <value>18,1,0,0,0,120,Columns:1{Caption:"合约";}	2{Caption:"买量";}	3{Caption:"买价";}	4{Caption:"卖量";}	5{Caption:"卖价";}	6{Caption:"最新量";}	7{Caption:"最新价";}	8{Caption:"持仓量";}	9{Caption:"当日均价";}	10{Caption:"开盘价";}	11{Caption:"最高价";}	12{Caption:"最低价";}	13{Caption:"昨收盘";}	14{Caption:"昨结算";}	15{Caption:"涨幅(%)";}	16{Caption:"时间";}	17{Caption:"毫秒";}	</value>
+  </data>
 </root>

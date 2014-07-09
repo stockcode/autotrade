@@ -22,7 +22,7 @@ namespace autotrade
         {
             tbInvestorID.Text = Properties.Settings.Default.InvestorID;
             tbPasswd.Text = Properties.Settings.Default.Passwd;
-            cbServer.Text = Properties.Settings.Default.ServerLine;
+            cbServer.Text = Properties.Settings.Default.ServerLines;
         }
 
         private void btnLogin_Click(object sender, EventArgs e)

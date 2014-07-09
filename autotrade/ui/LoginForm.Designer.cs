@@ -97,6 +97,7 @@
             "大陆期货一电信线路",
             "大陆期货一联通线路",
             "大陆期货一模拟线路",
+            "安信证券一模拟线路",
             "自定义"});
             this.cbServer.Location = new System.Drawing.Point(108, 172);
             this.cbServer.Name = "cbServer";

@@ -7,11 +7,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using C1.Win.C1FlexGrid;
 
 namespace autotrade.ui
 {
     public partial class ServerLineForm : Form
     {
+        public string serverLine { get; set; }
+
         public ServerLineForm()
         {
             InitializeComponent();
@@ -21,13 +24,30 @@ namespace autotrade.ui
         {
             Properties.Settings settings = Properties.Settings.Default;
 
-            ListViewItem item = new ListViewItem(settings.dlqh_dianxinIP1);
-            item.SubItems.Add(settings.dlqh_dianxinPort1);
-            lvTradeAddr.Items.Add(item);
+            fgTrade[1,1] = settings.dlqh_dianxinIP1;
+            fgTrade[1,2] = settings.dlqh_dianxinPort1;
 
-            item = new ListViewItem(settings.dlqh_dianxinIP2);
-            item.SubItems.Add(settings.dlqh_dianxinPort2);
-            lvTradeAddr.Items.Add(item);
+            fgTrade[2,1] = settings.dlqh_dianxinIP2;
+            fgTrade[2,2] = settings.dlqh_dianxinPort2;
+
+            Row row = fgTrade.Rows[1];
+            label3.Text = "tcp://" + row[1] + ":" + row[2];
+        }
+
+        private void fgTrade_RowColChange(object sender, EventArgs e)
+        {
+            Row row = fgTrade.Rows.Selected[0];
+            label3.Text = "tcp://" + row[1] + ":" + row[2];
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

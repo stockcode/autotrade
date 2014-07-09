@@ -49,19 +49,26 @@ namespace autotrade.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("大陆期货一联通线路")]
-        public string ServerLine {
+        [global::System.Configuration.DefaultSettingValueAttribute(@"<?xml version=""1.0"" encoding=""utf-16""?>
+<ArrayOfString xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
+  <string>大陆期货一电信线路</string>
+  <string>大陆期货一联通线路</string>
+  <string>大陆期货一模拟线路</string>
+  <string>自定义</string>
+  <string>安信期货一模拟线路</string>
+</ArrayOfString>")]
+        public global::System.Collections.Specialized.StringCollection ServerLines {
             get {
-                return ((string)(this["ServerLine"]));
+                return ((global::System.Collections.Specialized.StringCollection)(this["ServerLines"]));
             }
             set {
-                this["ServerLine"] = value;
+                this["ServerLines"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("61.172.206.73")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string dlqh_dianxinIP1 {
             get {
                 return ((string)(this["dlqh_dianxinIP1"]));

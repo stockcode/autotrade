@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using autotrade.business;
+using autotrade.model;
 using autotrade.strategy;
 using CTPMdApi;
 using CTPTradeApi;
@@ -25,9 +27,10 @@ namespace autotrade
     public partial class MainForm : Form
     {
         private readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        MdApi mdApi = new MdApi("50001693", "05221058", "8888", "tcp://210.51.25.90:32111");
-        TradeApi tradeApi = new TradeApi("50001693", "05221058", "8888", "tcp://210.51.25.90:41205");
+        MdApi mdApi = new MdApi("00000081", "123456", "1061", "tcp://219.143.242.155:21213");
+        TradeApi tradeApi = new TradeApi("00000081", "123456", "1061", "tcp://219.143.242.155:21205");
         private MAReverseStrategy maReverseStrategy;
+        private OrderManager orderManager;
 
         readonly string[] ppInstrumentID = { "IF1407" };	// 行情订阅列表
         public MainForm()
@@ -91,21 +94,23 @@ namespace autotrade
             tradeApi.OnRspQryTradingAccount += tradeApi_OnRspQryTradingAccount;
             tradeApi.OnRspQryInvestorPosition += tradeApi_OnRspQryInvestorPosition;
             tradeApi.OnRspQryContractBank += tradeApi_OnRspQryContractBank;
-            tradeApi.OnRspQryOrder += tradeApi_OnRspQryOrder;
-            tradeApi.OnErrRtnOrderInsert += tradeApi_OnOnErrRtnOrderInsert;
+            tradeApi.OnRspQryInvestorPositionDetail += tradeApi_OnRspQryInvestorPositionDetail;
+            tradeApi.OnRspQryInvestorPositionCombineDetail += tradeApi_OnRspQryInvestorPositionCombineDetail;
         }
 
-        private void tradeApi_OnOnErrRtnOrderInsert(ref CThostFtdcInputOrderField pInputOrder, ref CThostFtdcRspInfoField pRspInfo)
+        void tradeApi_OnRspQryInvestorPositionCombineDetail(ref CTPTradeApi.CThostFtdcInvestorPositionCombineDetailField pInvestorPositionCombineDetail, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
         {
             log.Info(pRspInfo);
-            log.Info(pInputOrder);
+            log.Info(pInvestorPositionCombineDetail);
         }
 
-        private void tradeApi_OnRspQryOrder(ref CThostFtdcOrderField porder, ref CThostFtdcRspInfoField prspinfo, int nrequestid, bool bislast)
+        void tradeApi_OnRspQryInvestorPositionDetail(ref CTPTradeApi.CThostFtdcInvestorPositionDetailField pInvestorPositionDetail, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
         {
-            log.Info(prspinfo);
-            log.Info(porder);
+            log.Info(pRspInfo);
+            log.Info(pInvestorPositionDetail);
         }
+
+        
 
         private void tradeApi_OnRspQryContractBank(ref CThostFtdcContractBankField pcontractbank, ref CThostFtdcRspInfoField prspinfo, int nrequestid, bool bislast)
         {
@@ -143,18 +148,34 @@ namespace autotrade
 
         private void button3_Click(object sender, EventArgs e)
         {
-            tradeApi.QryInvestorPosition();
+            //tradeApi.QryInvestorPosition();
+            //tradeApi.QryInvestorPositionDetail();
+            tradeApi.QryInvestorPositionCombinaDetail();
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
-            tradeApi.OrderInsert("IF1407", EnumOffsetFlagType.Close, EnumDirectionType.Buy, 100, 1);
+            Order order = new Order();
+            order.InstrumentId = "IF1407";
+            order.OffsetFlag = EnumOffsetFlagType.Open;
+            order.Direction = EnumDirectionType.Buy;
+            order.Price = 2000;
+            order.Volume = 1;
+
+            orderManager.OrderInsert(order);
         }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            orderManager = new OrderManager(tradeApi);
+
             LoginForm loginForm = new LoginForm();
             loginForm.ShowDialog();
+        }
+
+        private void c1SplitterPanel1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

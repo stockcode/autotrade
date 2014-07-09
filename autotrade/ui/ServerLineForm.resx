@@ -117,4 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="fgTrade.ColumnInfo" xml:space="preserve">
+    <value>3,1,0,0,0,120,Columns:0{Visible:False;}	1{Width:198;Caption:"地址";Style:"TextAlign:LeftCenter;";StyleFixed:"TextAlign:LeftCenter;";}	2{Width:87;Caption:"端口";AllowEditing:False;Style:"TextAlign:LeftCenter;";StyleFixed:"TextAlign:LeftCenter;";}	</value>
+  </data>
+  <data name="fgMarket.ColumnInfo" xml:space="preserve">
+    <value>3,1,0,0,0,120,Columns:0{Visible:False;}	1{Width:198;Caption:"地址";Style:"TextAlign:LeftCenter;";StyleFixed:"TextAlign:LeftCenter;";}	2{Width:87;Caption:"端口";AllowEditing:False;Style:"TextAlign:LeftCenter;";StyleFixed:"TextAlign:LeftCenter;";}	</value>
+  </data>
 </root>

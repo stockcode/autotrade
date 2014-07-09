@@ -2312,43 +2312,43 @@ namespace CTPTradeApi
 		/// </summary>
 		public EnumDirectionType Direction;
 		/// <summary>
-		/// 组合开平标志
+		/// 组合开平标志0
 		/// </summary>
 		public EnumOffsetFlagType CombOffsetFlag_0;
 		/// <summary>
-		/// 组合开平标志
+		/// 组合开平标志1
 		/// </summary>
 		public EnumOffsetFlagType CombOffsetFlag_1;
 		/// <summary>
-		/// 组合开平标志
+		/// 组合开平标志2
 		/// </summary>
 		public EnumOffsetFlagType CombOffsetFlag_2;
 		/// <summary>
-		/// 组合开平标志
+		/// 组合开平标志3
 		/// </summary>
 		public EnumOffsetFlagType CombOffsetFlag_3;
 		/// <summary>
-		/// 组合开平标志
+		/// 组合开平标志4
 		/// </summary>
 		public EnumOffsetFlagType CombOffsetFlag_4;
 		/// <summary>
-		/// 组合投机套保标志
+		/// 组合投机套保标志0
 		/// </summary>
 		public EnumHedgeFlagType CombHedgeFlag_0;
 		/// <summary>
-		/// 组合投机套保标志
+		/// 组合投机套保标志1
 		/// </summary>
 		public EnumHedgeFlagType CombHedgeFlag_1;
 		/// <summary>
-		/// 组合投机套保标志
+		/// 组合投机套保标志2
 		/// </summary>
 		public EnumHedgeFlagType CombHedgeFlag_2;
 		/// <summary>
-		/// 组合投机套保标志
+		/// 组合投机套保标志3
 		/// </summary>
 		public EnumHedgeFlagType CombHedgeFlag_3;
 		/// <summary>
-		/// 组合投机套保标志
+		/// 组合投机套保标志4
 		/// </summary>
 		public EnumHedgeFlagType CombHedgeFlag_4;
 		/// <summary>
@@ -2405,6 +2405,16 @@ namespace CTPTradeApi
 		/// 用户强评标志
 		/// </summary>
 		public int UserForceClose;
+
+        public override string ToString()
+        {
+            return String.Format("CThostFtdcInputOrderField(经纪公司代码={0},投资者代码={1},合约代码={2},报单引用={3},用户代码={4},报单价格条件={5},买卖方向={6}" +
+                                 ",组合开平标志0={7},组合开平标志1={8},组合开平标志2={9},组合开平标志3={10},组合开平标志4={11},组合投机套保标志0={12},组合投机套保标志1={13},组合投机套保标志2={14},组合投机套保标志3={15}" +
+                                 ",组合投机套保标志4={16},价格={17},数量={18},有效期类型={19},GTD日期={20},成交量类型={21},最小成交量={22},触发条件={23},止损价={24}" +
+                                 ",强平原因={25},自动挂起标志={26},业务单元={27},请求编号={28},用户强评标志={29})"
+                , BrokerID, InvestorID, InstrumentID, OrderRef, UserID, OrderPriceType, Direction, CombOffsetFlag_0, CombOffsetFlag_1, CombOffsetFlag_2, CombOffsetFlag_3, CombOffsetFlag_4, CombHedgeFlag_0, CombHedgeFlag_1
+                , CombHedgeFlag_2, CombHedgeFlag_3, CombHedgeFlag_4, LimitPrice, VolumeTotalOriginal, TimeCondition, GTDDate, VolumeCondition, MinVolume, ContingentCondition, StopPrice, ForceCloseReason, IsAutoSuspend, BusinessUnit, RequestID, UserForceClose);
+        }
 	}
 
 	/// <summary>
@@ -2447,43 +2457,43 @@ namespace CTPTradeApi
 		/// </summary>
 		public EnumDirectionType Direction;
 		/// <summary>
-		/// 组合开平标志
+		/// 组合开平标志0
 		/// </summary>
 		public EnumOffsetFlagType CombOffsetFlag_0;
 		/// <summary>
-		/// 组合开平标志
+		/// 组合开平标志1
 		/// </summary>
 		public EnumOffsetFlagType CombOffsetFlag_1;
 		/// <summary>
-		/// 组合开平标志
+		/// 组合开平标志2
 		/// </summary>
 		public EnumOffsetFlagType CombOffsetFlag_2;
 		/// <summary>
-		/// 组合开平标志
+		/// 组合开平标志3
 		/// </summary>
 		public EnumOffsetFlagType CombOffsetFlag_3;
 		/// <summary>
-		/// 组合开平标志
+		/// 组合开平标志4
 		/// </summary>
 		public EnumOffsetFlagType CombOffsetFlag_4;
 		/// <summary>
-		/// 组合投机套保标志
+		/// 组合投机套保标志0
 		/// </summary>
 		public EnumHedgeFlagType CombHedgeFlag_0;
 		/// <summary>
-		/// 组合投机套保标志
+		/// 组合投机套保标志1
 		/// </summary>
 		public EnumHedgeFlagType CombHedgeFlag_1;
 		/// <summary>
-		/// 组合投机套保标志
+		/// 组合投机套保标志2
 		/// </summary>
 		public EnumHedgeFlagType CombHedgeFlag_2;
 		/// <summary>
-		/// 组合投机套保标志
+		/// 组合投机套保标志3
 		/// </summary>
 		public EnumHedgeFlagType CombHedgeFlag_3;
 		/// <summary>
-		/// 组合投机套保标志
+		/// 组合投机套保标志4
 		/// </summary>
 		public EnumHedgeFlagType CombHedgeFlag_4;
 		/// <summary>
@@ -2692,6 +2702,21 @@ namespace CTPTradeApi
 		/// </summary>
 		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 21)]
 		public string RelativeOrderSysID;
+
+        public override string ToString()
+        {
+            return String.Format("CThostFtdcOrderField(经纪公司代码={0},投资者代码={1},合约代码={2},用户代码={3},报单价格条件={4},买卖方向={5},组合开平标志0={6}" +
+                                 ",组合开平标志1={7},组合开平标志2={8},组合开平标志3={9},组合开平标志4={10},组合投机套保标志0={11},组合投机套保标志1={12},组合投机套保标志2={13},组合投机套保标志3={14},组合投机套保标志4={15}" +
+                                 ",价格={16},数量={17},有效期类型={18},GTD日期={19},成交量类型={20},最小成交量={21},触发条件={22},止损价={23},强平原因={24}" +
+                                 ",自动挂起标志={25},业务单元={26},请求编号={27},本地报单编号={28},交易所代码={29},会员代码={30},客户代码={31},合约在交易所的代码={32},交易所交易员代码{33}" +
+                                 ",安装编号={34},报单提交状态={35},报单提示序号={36},交易日={37},结算编号={38},报单编号={39},报单来源={40},报单状态={41},报单类型={42},今成交数量={43},剩余数量={44},报单日期={45}" +
+                                 ",委托时间={46},激活时间={47},挂起时间={48},最后修改时间={49},撤销时间={50},最后修改交易所交易员代码={51},结算会员编号={52},序号={53},前置编号={54},会话编号={55}" +
+                                 ",用户端产品信息={56},状态信息={57},用户强评标志={58},操作用户代码={59},经纪公司报单编号={60},相关报单={61},报单引用={62})"
+                , BrokerID, InvestorID, InstrumentID, UserID, OrderPriceType, Direction, CombOffsetFlag_0, CombOffsetFlag_1, CombOffsetFlag_2, CombOffsetFlag_3, CombOffsetFlag_4, CombHedgeFlag_0, CombHedgeFlag_1
+                , CombHedgeFlag_2, CombHedgeFlag_3, CombHedgeFlag_4, LimitPrice, VolumeTotalOriginal, TimeCondition, GTDDate, VolumeCondition, MinVolume, ContingentCondition, StopPrice, ForceCloseReason, IsAutoSuspend, BusinessUnit, RequestID, OrderLocalID
+                , ExchangeID, ParticipantID, ClientID, ExchangeInstID, TraderID, InstallID, OrderSubmitStatus, NotifySequence, TradingDay, SettlementID, OrderSysID, OrderSource, OrderStatus, OrderType, VolumeTraded, VolumeTotal, InsertDate, InsertTime
+                , ActiveTime, SuspendTime, UpdateTime, CancelTime, ActiveTraderID, ClearingPartID, SequenceNo, FrontID, SessionID, UserProductInfo, StatusMsg, UserForceClose, ActiveUserID, BrokerOrderSeq, RelativeOrderSysID, OrderRef);
+        }
 	}
 
 	/// <summary>
@@ -5592,6 +5617,15 @@ namespace CTPTradeApi
 		/// 平仓金额
 		/// </summary>
 		public double CloseAmount;
+
+        public override string ToString()
+        {
+            return String.Format("CThostFtdcInvestorPositionDetailField(合约代码={0},经纪公司代码={1},投资者代码={2},投机套保标志={3},买卖={4},开仓日期={5},成交编号={6}" +
+                                 ",数量={7},开仓价={8},交易日={9},结算编号={10},成交类型={11},组合合约代码={12},交易所代码={13},逐日盯市平仓盈亏={14},逐笔对冲平仓盈亏={15}" +
+                                 ",逐日盯市持仓盈亏={16},逐笔对冲持仓盈亏={17},投资者保证金={18},交易所保证金={19},保证金率={20},保证金率(按手数)={21},昨结算价={22},结算价={23},平仓量={24},平仓金额={25})"
+                , InstrumentID, BrokerID, InvestorID, HedgeFlag, Direction, OpenDate, TradeID, Volume, OpenPrice, TradingDay, SettlementID, TradeType, CombInstrumentID, ExchangeID
+                , CloseProfitByDate, CloseProfitByTrade, PositionProfitByDate, PositionProfitByTrade, Margin, ExchMargin, MarginRateByMoney, MarginRateByVolume, LastSettlementPrice, SettlementPrice, CloseVolume, CloseAmount);
+        }
 	}
 
 	/// <summary>
@@ -6297,6 +6331,14 @@ namespace CTPTradeApi
 		/// </summary>
 		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 31)]
 		public string CombInstrumentID;
+
+        public override string ToString()
+        {
+            return String.Format("CThostFtdcInvestorPositionCombineDetailField(交易日={0},开仓日期={1},交易所代码={2},结算编号={3},经纪公司代码={4},投资者代码={5},组合编号={6}" +
+                                 ",撮合编号={7},合约代码={8},投机套保标志={9},买卖={10},持仓量={11},投资者保证金={12},交易所保证金={13},保证金率={14},保证金率(按手数)={15},单腿编号={16},单腿乘数={17},组合持仓合约编码={18})"
+                , TradingDay, OpenDate, ExchangeID, SettlementID, BrokerID, InvestorID, ComTradeID, TradeID, InstrumentID, HedgeFlag, Direction, TotalAmt, Margin, ExchMargin
+                , MarginRateByMoney, MarginRateByVolume, LegID, LegMultiple, CombInstrumentID);
+        }
 	}
 
 	/// <summary>

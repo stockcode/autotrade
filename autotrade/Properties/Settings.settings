@@ -8,11 +8,18 @@
     <Setting Name="Passwd" Type="System.String" Scope="User">
       <Value Profile="(Default)">05221058</Value>
     </Setting>
-    <Setting Name="ServerLine" Type="System.String" Scope="User">
-      <Value Profile="(Default)">大陆期货一联通线路</Value>
+    <Setting Name="ServerLines" Type="System.Collections.Specialized.StringCollection" Scope="User">
+      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;string&gt;大陆期货一电信线路&lt;/string&gt;
+  &lt;string&gt;大陆期货一联通线路&lt;/string&gt;
+  &lt;string&gt;大陆期货一模拟线路&lt;/string&gt;
+  &lt;string&gt;自定义&lt;/string&gt;
+  &lt;string&gt;安信期货一模拟线路&lt;/string&gt;
+&lt;/ArrayOfString&gt;</Value>
     </Setting>
     <Setting Name="dlqh_dianxinIP1" Type="System.String" Scope="User">
-      <Value Profile="(Default)">61.172.206.73</Value>
+      <Value Profile="(Default)" />
     </Setting>
     <Setting Name="dlqh_dianxinPort1" Type="System.String" Scope="User">
       <Value Profile="(Default)">41205</Value>
