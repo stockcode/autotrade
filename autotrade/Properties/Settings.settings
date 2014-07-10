@@ -18,17 +18,65 @@
   &lt;string&gt;安信期货一模拟线路&lt;/string&gt;
 &lt;/ArrayOfString&gt;</Value>
     </Setting>
-    <Setting Name="dlqh_dianxinIP1" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+    <Setting Name="大陆期货一电信线路Trade1" Type="System.String" Scope="User">
+      <Value Profile="(Default)">61.172.206.73:41205</Value>
     </Setting>
-    <Setting Name="dlqh_dianxinPort1" Type="System.String" Scope="User">
-      <Value Profile="(Default)">41205</Value>
+    <Setting Name="大陆期货一电信线路Trade2" Type="System.String" Scope="User">
+      <Value Profile="(Default)">61.172.206.78:41205</Value>
     </Setting>
-    <Setting Name="dlqh_dianxinIP2" Type="System.String" Scope="User">
-      <Value Profile="(Default)">61.172.206.78</Value>
+    <Setting Name="SelectedServerLine" Type="System.String" Scope="User">
+      <Value Profile="(Default)">大陆期货一联通线路</Value>
     </Setting>
-    <Setting Name="dlqh_dianxinPort2" Type="System.String" Scope="User">
-      <Value Profile="(Default)">41205</Value>
+    <Setting Name="大陆期货一电信线路BrokerID" Type="System.String" Scope="User">
+      <Value Profile="(Default)">8888</Value>
+    </Setting>
+    <Setting Name="大陆期货一电信线路Market1" Type="System.String" Scope="User">
+      <Value Profile="(Default)">61.172.206.73:32111</Value>
+    </Setting>
+    <Setting Name="大陆期货一电信线路Market2" Type="System.String" Scope="User">
+      <Value Profile="(Default)">61.172.206.78:32111</Value>
+    </Setting>
+    <Setting Name="Selected大陆期货一电信线路Trade" Type="System.String" Scope="User">
+      <Value Profile="(Default)">61.172.206.73:41205</Value>
+    </Setting>
+    <Setting Name="Selected大陆期货一电信线路Market" Type="System.String" Scope="User">
+      <Value Profile="(Default)">61.172.206.73:32111</Value>
+    </Setting>
+    <Setting Name="大陆期货一联通线路Trade1" Type="System.String" Scope="User">
+      <Value Profile="(Default)">210.51.25.90:41205</Value>
+    </Setting>
+    <Setting Name="大陆期货一联通线路Trade2" Type="System.String" Scope="User">
+      <Value Profile="(Default)">210.51.25.86:41205</Value>
+    </Setting>
+    <Setting Name="大陆期货一联通线路Market1" Type="System.String" Scope="User">
+      <Value Profile="(Default)">210.51.25.90:32111</Value>
+    </Setting>
+    <Setting Name="大陆期货一联通线路Market2" Type="System.String" Scope="User">
+      <Value Profile="(Default)">210.51.25.86:32111</Value>
+    </Setting>
+    <Setting Name="Selected大陆期货一联通线路Trade" Type="System.String" Scope="User">
+      <Value Profile="(Default)">210.51.25.90:41205</Value>
+    </Setting>
+    <Setting Name="Selected大陆期货一联通线路Market" Type="System.String" Scope="User">
+      <Value Profile="(Default)">210.51.25.90:32111</Value>
+    </Setting>
+    <Setting Name="大陆期货一联通线路BrokerID" Type="System.String" Scope="User">
+      <Value Profile="(Default)">8888</Value>
+    </Setting>
+    <Setting Name="安信期货一模拟线路BrokerID" Type="System.String" Scope="User">
+      <Value Profile="(Default)">1061</Value>
+    </Setting>
+    <Setting Name="安信期货一模拟线路Trade1" Type="System.String" Scope="User">
+      <Value Profile="(Default)">219.143.242.155:21205</Value>
+    </Setting>
+    <Setting Name="安信期货一模拟线路Market1" Type="System.String" Scope="User">
+      <Value Profile="(Default)">219.143.242.155:21213</Value>
+    </Setting>
+    <Setting Name="Selected安信期货一模拟线路Trade" Type="System.String" Scope="User">
+      <Value Profile="(Default)">219.143.242.155:21205</Value>
+    </Setting>
+    <Setting Name="Selected安信期货一模拟线路Market" Type="System.String" Scope="User">
+      <Value Profile="(Default)">219.143.242.155:21213</Value>
     </Setting>
   </Settings>
 </SettingsFile>
