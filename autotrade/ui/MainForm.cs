@@ -33,8 +33,10 @@ namespace autotrade
         public TradeApi tradeApi { get; set; }
 
         private MAReverseStrategy maReverseStrategy;
+
         private OrderManager orderManager;
         private AccountManager accountManager;
+        private MarketManager marketManager;
 
         readonly string[] ppInstrumentID = { "IF1407" };	// 行情订阅列表
         public MainForm()
@@ -87,11 +89,6 @@ namespace autotrade
             log.Info("connected");
 
             mdApi.UserLogin();
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            
         }
 
         void tradeApi_OnRspQryInvestorPositionCombineDetail(ref CTPTradeApi.CThostFtdcInvestorPositionCombineDetailField pInvestorPositionCombineDetail, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
@@ -161,6 +158,7 @@ namespace autotrade
 
             orderManager = new OrderManager(tradeApi);
             accountManager = new AccountManager(tradeApi);
+            marketManager = new MarketManager(mdApi);
 
 
             tradeApi.OnFrontConnect += tradeApi_OnFrontConnect;
@@ -170,14 +168,32 @@ namespace autotrade
 
             accountManager.QryTradingAccount();
 
+            marketManager.OnRtnMarketData += marketManager_OnRtnMarketData;
+
             tradeApi.OnRspQryInvestorPosition += tradeApi_OnRspQryInvestorPosition;
             tradeApi.OnRspQryContractBank += tradeApi_OnRspQryContractBank;
             tradeApi.OnRspQryInvestorPositionDetail += tradeApi_OnRspQryInvestorPositionDetail;
             tradeApi.OnRspQryInvestorPositionCombineDetail += tradeApi_OnRspQryInvestorPositionCombineDetail;
         }
 
+        private delegate void myDelegate(MarketData marketData);
+        void marketManager_OnRtnMarketData(object sender, MarketDataEventArgs e)
+        {
+            if (this.InvokeRequired) {
+                myDelegate d = new myDelegate(ShowMessage);
+                object arg = e.marketData;
+                this.Invoke(d,arg);//这里参数不对。 
+            }
+        }
+
+        private void ShowMessage(MarketData marketData)
+        {
+            marketDataBindingSource.Clear();
+            marketDataBindingSource.Add(marketData);
+        }
         void accountManager_OnQryTradingAccount(object sender, AccountEventArgs e)
         {
+            
             accountBindingSource.Add(e.account);
         }
 
@@ -191,6 +207,11 @@ namespace autotrade
             order.Volume = 1;
 
             orderManager.OrderInsert(order);
+        }
+
+        private void c1Command3_Click(object sender, C1.Win.C1Command.ClickEventArgs e)
+        {
+            marketManager.SubMarketData("ag1412");
         }
 
     }

@@ -98,10 +98,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="business\AccountManager.cs" />
+    <Compile Include="business\MarketManager.cs" />
     <Compile Include="business\OrderManager.cs" />
     <Compile Include="model\Account.cs" />
     <Compile Include="model\D1BarRecord.cs" />
     <Compile Include="model\EnumOrderStatus.cs" />
+    <Compile Include="model\MarketData.cs" />
     <Compile Include="model\Order.cs" />
     <Compile Include="model\ServerLine.cs" />
     <Compile Include="ui\LoginForm.cs">
@@ -147,6 +149,7 @@
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\DataSources\autotrade.model.Account.datasource" />
+    <None Include="Properties\DataSources\autotrade.model.MarketData.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
