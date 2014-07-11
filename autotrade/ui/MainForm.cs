@@ -22,6 +22,7 @@ using CThostFtdcRspInfoField = CTPTradeApi.CThostFtdcRspInfoField;
 using CThostFtdcTradingAccountField = CTPTradeApi.CThostFtdcTradingAccountField;
 using EnumDirectionType = CTPTradeApi.EnumDirectionType;
 using EnumOffsetFlagType = CTPTradeApi.EnumOffsetFlagType;
+using System.Threading;
 
 namespace autotrade
 {
@@ -96,13 +97,6 @@ namespace autotrade
             log.Info(pRspInfo);
             log.Info(pInvestorPositionCombineDetail);
         }
-
-        void tradeApi_OnRspQryInvestorPositionDetail(ref CTPTradeApi.CThostFtdcInvestorPositionDetailField pInvestorPositionDetail, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
-        {
-            log.Info(pRspInfo);
-            log.Info(pInvestorPositionDetail);
-        }
-
         
 
         private void tradeApi_OnRspQryContractBank(ref CThostFtdcContractBankField pcontractbank, ref CThostFtdcRspInfoField prspinfo, int nrequestid, bool bislast)
@@ -166,27 +160,76 @@ namespace autotrade
 
             accountManager.OnQryTradingAccount += accountManager_OnQryTradingAccount;
 
-            accountManager.QryTradingAccount();
-
             marketManager.OnRtnMarketData += marketManager_OnRtnMarketData;
+
+            orderManager.OnRtnTreadeRecord += orderManager_OnRtnTreadeRecord;
+            orderManager.OnRspQryPositionDetail += orderManager_OnRspQryPositionDetail;
+
+
+            Task.Factory.StartNew(() => {
+                accountManager.QryTradingAccount();
+                Thread.Sleep(1000);
+                orderManager.QryTrade();
+
+                Thread.Sleep(1000);
+
+                tradeApi.QryInvestorPosition();
+
+                Thread.Sleep(1000);
+
+                orderManager.QryInvestorPositionDetail();
+            });
+
 
             tradeApi.OnRspQryInvestorPosition += tradeApi_OnRspQryInvestorPosition;
             tradeApi.OnRspQryContractBank += tradeApi_OnRspQryContractBank;
-            tradeApi.OnRspQryInvestorPositionDetail += tradeApi_OnRspQryInvestorPositionDetail;
             tradeApi.OnRspQryInvestorPositionCombineDetail += tradeApi_OnRspQryInvestorPositionCombineDetail;
         }
 
-        private delegate void myDelegate(MarketData marketData);
-        void marketManager_OnRtnMarketData(object sender, MarketDataEventArgs e)
+        private delegate void PositionDetailDelegate(PositionDetail positionDetail);
+        private void ShowPositionDetail(PositionDetail positionDetail)
         {
-            if (this.InvokeRequired) {
-                myDelegate d = new myDelegate(ShowMessage);
-                object arg = e.marketData;
-                this.Invoke(d,arg);//这里参数不对。 
+            positionDetailBindingSource.Add(positionDetail);
+        }
+        void orderManager_OnRspQryPositionDetail(object sender, PositionDetailEventArgs e)
+        {
+            if (this.InvokeRequired)
+            {
+                PositionDetailDelegate d = new PositionDetailDelegate(ShowPositionDetail);
+                object arg = e.positionDetail;
+                this.Invoke(d, arg);
             }
         }
 
-        private void ShowMessage(MarketData marketData)
+        private delegate void TradeRecordDelegate(TradeRecord tradeRecord);
+
+
+        private void ShowTradeRecord(TradeRecord tradeRecord)
+        {
+            tradeRecordBindingSource.Add(tradeRecord);
+        }
+
+        void orderManager_OnRtnTreadeRecord(object sender, TradeRecordEventArgs e)
+        {
+            if (this.InvokeRequired)
+            {
+                TradeRecordDelegate d = new TradeRecordDelegate(ShowTradeRecord);
+                object arg = e.treadeRecord;
+                this.Invoke(d, arg);
+            }
+        }
+
+        private delegate void MarketDataDelegate(MarketData marketData);
+        void marketManager_OnRtnMarketData(object sender, MarketDataEventArgs e)
+        {
+            if (this.InvokeRequired) {
+                MarketDataDelegate d = new MarketDataDelegate(ShowMarketData);
+                object arg = e.marketData;
+                this.Invoke(d,arg); 
+            }
+        }
+
+        private void ShowMarketData(MarketData marketData)
         {
             marketDataBindingSource.Clear();
             marketDataBindingSource.Add(marketData);
@@ -195,6 +238,7 @@ namespace autotrade
         {
             
             accountBindingSource.Add(e.account);
+            
         }
 
         private void c1Command2_Click(object sender, C1.Win.C1Command.ClickEventArgs e)
@@ -203,7 +247,7 @@ namespace autotrade
             order.InstrumentId = "IF1407";
             order.OffsetFlag = EnumOffsetFlagType.Open;
             order.Direction = EnumDirectionType.Buy;
-            order.Price = 2000;
+            order.Price = 10;
             order.Volume = 1;
 
             orderManager.OrderInsert(order);
@@ -211,7 +255,27 @@ namespace autotrade
 
         private void c1Command3_Click(object sender, C1.Win.C1Command.ClickEventArgs e)
         {
-            marketManager.SubMarketData("ag1412");
+            marketManager.SubMarketData("IF1407");
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            tradeApi.UserLogout();
+        }
+
+        private void c1Command4_Click(object sender, C1.Win.C1Command.ClickEventArgs e)
+        {
+            accountManager.QryTradingAccount();
+        }
+
+        private void c1Command5_Click(object sender, C1.Win.C1Command.ClickEventArgs e)
+        {
+            orderManager.QryTrade();
+        }
+
+        private void c1FlexGrid2_BeforeSort(object sender, C1.Win.C1FlexGrid.SortColEventArgs e)
+        {
+            positionDetailBindingSource.Sort = c1FlexGrid2.Cols[e.Col].Name;
         }
 
     }

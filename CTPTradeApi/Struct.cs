@@ -3524,6 +3524,16 @@ namespace CTPTradeApi
 		/// 经纪公司报单编号
 		/// </summary>
 		public int BrokerOrderSeq;
+
+        public override string ToString()
+        {
+            return String.Format("CThostFtdcTradeField(经纪公司代码={0},投资者代码={1},合约代码={2},报单引用={3},用户代码={4},交易所代码={5},成交编号={6}" +
+                                 ",买卖方向={7},报单编号={8},会员代码={9},客户代码={10},交易角色={11},合约在交易所的代码={12},开平标志={13},投机套保标志={14},价格={15}" +
+                                 ",数量={16},成交时期={17},成交时间={18},成交类型={19},成交价来源={20},交易所交易员代码={21},本地报单编号={22},结算会员编号={23},业务单元={24}" +
+                                 ",序号={25},交易日={26},结算编号={27},经纪公司报单编号={28})"
+                , BrokerID, InvestorID, InstrumentID, OrderRef, UserID, ExchangeID, TradeID, Direction, OrderSysID, ParticipantID, ClientID, TradingRole, ExchangeInstID, OffsetFlag
+                , HedgeFlag, Price, Volume, TradeDate, TradeTime, TradeType, PriceSource, TraderID, OrderLocalID, ClearingPartID, BusinessUnit, SequenceNo, TradingDay, SettlementID, BrokerOrderSeq);
+        }
 	}
 
 	/// <summary>

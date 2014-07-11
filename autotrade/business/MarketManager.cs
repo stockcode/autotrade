@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using autotrade.model;
 using CTPMdApi;
+using autotrade.util;
 
 namespace autotrade.business
 {
@@ -27,17 +28,9 @@ namespace autotrade.business
         void mdApi_OnRtnDepthMarketData(ref CThostFtdcDepthMarketDataField pDepthMarketData)
         {
             MarketData marketData = new MarketData();
-            Type type1 = marketData.GetType();
-            Type type2 = pDepthMarketData.GetType();
-            foreach (var mi in type1.GetProperties())
-            {
-                var des = type2.GetField(mi.Name);
-                    if (des != null)
-                    {
-                        
-                        mi.SetValue(marketData, des.GetValue(pDepthMarketData));
-                    }
-            }
+
+            ObjectUtils.Copy(pDepthMarketData, marketData);
+
             log.Info(marketData);
             OnRtnMarketData(this, new MarketDataEventArgs(marketData));
         }

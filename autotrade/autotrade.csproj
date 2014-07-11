@@ -63,12 +63,14 @@
     </StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="C1.C1Pdf.4, Version=4.1.20141.262, Culture=neutral, PublicKeyToken=79882d576c6336da, processorArchitecture=MSIL" />
     <Reference Include="C1.Win.C1Command.4, Version=4.0.20141.19619, Culture=neutral, PublicKeyToken=e808566f358766d8, processorArchitecture=MSIL" />
     <Reference Include="C1.Win.C1Editor.4, Version=4.0.20141.211, Culture=neutral, PublicKeyToken=79882d576c6336da, processorArchitecture=MSIL" />
     <Reference Include="C1.Win.C1FlexGrid.4, Version=4.6.20141.828, Culture=neutral, PublicKeyToken=79882d576c6336da, processorArchitecture=MSIL" />
     <Reference Include="C1.Win.C1Input.4, Version=4.0.20141.33356, Culture=neutral, PublicKeyToken=7e7ff60f0c214f9a, processorArchitecture=MSIL" />
     <Reference Include="C1.Win.C1List.4, Version=4.1.20141.251, Culture=neutral, PublicKeyToken=6b24f8f981dbd7bc, processorArchitecture=MSIL" />
     <Reference Include="C1.Win.C1Ribbon.4, Version=4.0.20141.570, Culture=neutral, PublicKeyToken=79882d576c6336da, processorArchitecture=MSIL" />
+    <Reference Include="C1.Win.C1Sizer.4, Version=4.1.20141.81, Culture=neutral, PublicKeyToken=79882d576c6336da, processorArchitecture=MSIL" />
     <Reference Include="C1.Win.C1SplitContainer.4, Version=4.0.20141.55, Culture=neutral, PublicKeyToken=79882d576c6336da, processorArchitecture=MSIL" />
     <Reference Include="C1.Win.C1SuperTooltip.4, Version=4.0.20141.137, Culture=neutral, PublicKeyToken=79882d576c6336da, processorArchitecture=MSIL" />
     <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
@@ -87,6 +89,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Design" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -105,7 +108,9 @@
     <Compile Include="model\EnumOrderStatus.cs" />
     <Compile Include="model\MarketData.cs" />
     <Compile Include="model\Order.cs" />
+    <Compile Include="model\PositionDetail.cs" />
     <Compile Include="model\ServerLine.cs" />
+    <Compile Include="model\TradeRecord.cs" />
     <Compile Include="ui\LoginForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -128,6 +133,7 @@
     <Compile Include="ui\ServerLineForm.Designer.cs">
       <DependentUpon>ServerLineForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="util\ObjectUtils.cs" />
     <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="ui\LoginForm.resx">
       <DependentUpon>LoginForm.cs</DependentUpon>
@@ -150,6 +156,8 @@
     <None Include="packages.config" />
     <None Include="Properties\DataSources\autotrade.model.Account.datasource" />
     <None Include="Properties\DataSources\autotrade.model.MarketData.datasource" />
+    <None Include="Properties\DataSources\autotrade.model.PositionDetail.datasource" />
+    <None Include="Properties\DataSources\autotrade.model.TradeRecord.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

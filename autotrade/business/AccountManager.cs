@@ -1,4 +1,5 @@
 ﻿using autotrade.model;
+using autotrade.util;
 using CTPTradeApi;
 using System;
 using System.Collections.Generic;
@@ -28,11 +29,8 @@ namespace autotrade.business
             if (pRspInfo.ErrorID == 0)
             {
                 Account account = new Account();
-                account.AccountID = pTradingAccount.AccountID;
-                account.CloseProfit = pTradingAccount.CloseProfit;
-                account.PositionProfit = pTradingAccount.PositionProfit;
-                account.Available = pTradingAccount.Available;
-                account.FrozenCash = pTradingAccount.FrozenCash;
+
+                ObjectUtils.Copy(pTradingAccount, account);
 
                 OnQryTradingAccount(this, new AccountEventArgs(account));
             }
