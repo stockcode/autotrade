@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,12 +15,22 @@ namespace autotrade.business
     {
         private readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private TradeApi tradeApi;
+        private List<PositionDetail> positionDetails = new List<PositionDetail>();
+        private List<TradeRecord> tradeRecords = new List<TradeRecord>();
+        private List<PositionRecord> positionRecords = new List<PositionRecord>();
+        private List<OrderRecord> orderRecords = new List<OrderRecord>(); 
 
         public delegate void TradeRecordHandler(object sender, TradeRecordEventArgs e);
-        public event TradeRecordHandler OnRtnTreadeRecord;
+        public event TradeRecordHandler OnRtnTradeRecord;
 
         public delegate void PositionDetailHandler(object sender, PositionDetailEventArgs e);
         public event PositionDetailHandler OnRspQryPositionDetail;
+
+        public delegate void PositionRecordHandler(object sender, PositionRecordEventArgs e);
+        public event PositionRecordHandler OnRspQryPositionRecord;
+
+        public delegate void OrderRecordHandler(object sender, OrderRecordEventArgs e);
+        public event OrderRecordHandler OnRspQryOrderRecord;
 
         public OrderManager(TradeApi tradeApi)
         {
@@ -29,10 +40,23 @@ namespace autotrade.business
             this.tradeApi.OnErrRtnOrderAction += tradeApi_OnErrRtnOrderAction;
             this.tradeApi.OnRspQryTrade += tradeApi_OnRspQryTrade;
             this.tradeApi.OnRspOrderInsert += tradeApi_OnRspOrderInsert;
+            this.tradeApi.OnRspQryInvestorPosition += tradeApi_OnRspQryInvestorPosition;
             this.tradeApi.OnRspQryInvestorPositionDetail += tradeApi_OnRspQryInvestorPositionDetail;
+
 
             this.tradeApi.OnRtnOrder += tradeApi_OnRtnOrder;
             this.tradeApi.OnRtnTrade += tradeApi_OnRtnTrade;            
+        }
+
+        void tradeApi_OnRspQryInvestorPosition(ref CThostFtdcInvestorPositionField pInvestorPosition, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
+        {
+            PositionRecord  positionRecord = new PositionRecord();
+
+            ObjectUtils.Copy(pInvestorPosition, positionRecord);
+
+            positionRecords.Add(positionRecord);
+
+            if (bIsLast) OnRspQryPositionRecord(this, new PositionRecordEventArgs(positionRecords));
         }
 
         void tradeApi_OnRspQryInvestorPositionDetail(ref CThostFtdcInvestorPositionDetailField pInvestorPositionDetail, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
@@ -41,7 +65,15 @@ namespace autotrade.business
 
             ObjectUtils.Copy(pInvestorPositionDetail, positionDetail);
 
-            OnRspQryPositionDetail(this, new PositionDetailEventArgs(positionDetail));
+            positionDetails.Add(positionDetail);
+
+            if (bIsLast) OnRspQryPositionDetail(this, new PositionDetailEventArgs(positionDetails));
+                
+        }
+
+        public int QryOrder()
+        {
+            return tradeApi.QryOrder();
         }
 
         public int QryTrade()
@@ -49,10 +81,17 @@ namespace autotrade.business
             return this.tradeApi.QryTrade();
         }
 
+        public int QryInvestorPosition()
+        {
+            return this.tradeApi.QryInvestorPosition();
+        }
+
         public int QryInvestorPositionDetail()
         {
             return this.tradeApi.QryInvestorPositionDetail();
         }
+
+        
 
         void tradeApi_OnRtnTrade(ref CThostFtdcTradeField pTrade)
         {
@@ -60,7 +99,7 @@ namespace autotrade.business
 
             ObjectUtils.Copy(pTrade, tradeRecord);
 
-            OnRtnTreadeRecord(this, new TradeRecordEventArgs(tradeRecord));
+            //OnRtnTreadeRecord(this, new TradeRecordEventArgs(tradeRecord));
 
             log.Info(pTrade);
         }
@@ -81,8 +120,10 @@ namespace autotrade.business
             TradeRecord tradeRecord = new TradeRecord();
 
             ObjectUtils.Copy(pTrade, tradeRecord);
+            
+            tradeRecords.Add(tradeRecord);
 
-            OnRtnTreadeRecord(this, new TradeRecordEventArgs(tradeRecord));
+            if (bIsLast) OnRtnTradeRecord(this, new TradeRecordEventArgs(tradeRecords));
 
             log.Info(pRspInfo);
             log.Info(pTrade);
@@ -115,8 +156,13 @@ namespace autotrade.business
 
         private void tradeApi_OnRspQryOrder(ref CThostFtdcOrderField porder, ref CThostFtdcRspInfoField prspinfo, int nrequestid, bool bislast)
         {
-            log.Info(prspinfo);
-            log.Info(porder);
+            OrderRecord orderRecord = new OrderRecord();
+
+            ObjectUtils.Copy(porder, orderRecord);
+
+            orderRecords.Add(orderRecord);
+
+            if (bislast) OnRspQryOrderRecord(this, new OrderRecordEventArgs(orderRecords));
         }
 
         
@@ -124,21 +170,41 @@ namespace autotrade.business
 
     internal class TradeRecordEventArgs : EventArgs
     {
-        public TradeRecord treadeRecord { get; set; }
-        public TradeRecordEventArgs(TradeRecord treadeRecord)
+        public List<TradeRecord> tradeRecords { get; set; }
+        public TradeRecordEventArgs(List<TradeRecord> tradeRecords)
             : base()
         {
-            this.treadeRecord = treadeRecord;
+            this.tradeRecords = tradeRecords;
         }
     }
 
     internal class PositionDetailEventArgs : EventArgs
     {
-        public PositionDetail positionDetail { get; set; }
-        public PositionDetailEventArgs(PositionDetail positionDetail)
+        public List<PositionDetail> PositionDetails { get; set; }
+        public PositionDetailEventArgs(List<PositionDetail> positionDetails)
             : base()
         {
-            this.positionDetail = positionDetail;
+            this.PositionDetails = positionDetails;
+        }
+    }
+
+    internal class PositionRecordEventArgs : EventArgs
+    {
+        public List<PositionRecord> PositionRecords { get; set; }
+        public PositionRecordEventArgs(List<PositionRecord> positionRecords)
+            : base()
+        {
+            this.PositionRecords = positionRecords;
+        }
+    }
+
+    internal class OrderRecordEventArgs : EventArgs
+    {
+        public List<OrderRecord> OrderRecords { get; set; }
+        public OrderRecordEventArgs(List<OrderRecord> orderRecords)
+            : base()
+        {
+            this.OrderRecords = orderRecords;
         }
     }
     

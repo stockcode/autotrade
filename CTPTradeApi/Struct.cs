@@ -1210,7 +1210,7 @@ namespace CTPTradeApi
 		/// </summary>
 		public int YdPosition;
 		/// <summary>
-		/// 今日持仓
+		/// 总持仓
 		/// </summary>
 		public int Position;
 		/// <summary>

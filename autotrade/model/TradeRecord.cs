@@ -1,4 +1,6 @@
-﻿using CTPTradeApi;
+﻿using System.ComponentModel;
+using autotrade.converter;
+using CTPTradeApi;
 using System;
 using System.Collections.Generic;
 using System.Linq;

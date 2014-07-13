@@ -101,6 +101,11 @@ namespace autotrade.model
         /// </summary>
         public double AveragePrice { get; set; }
 
+        /// <summary>
+        /// 交易所代码
+        /// </summary>
+        public string ExchangeID { get; set; }
+
         public override string ToString()
         {
             return String.Format("MarketData(交易日={0},合约代码={1},最新价={2},上次结算价={3},昨收盘={4},昨持仓量={5},今开盘={6}" +

@@ -7,58 +7,52 @@ using System.Threading.Tasks;
 
 namespace autotrade.model
 {
-    class PositionDetail
+    class PositionRecord
     {
-        /// <summary>
-        /// 成交编号
-        /// </summary>        
-        public string TradeID { get; set; }
-
         /// <summary>
         /// 合约代码
         /// </summary>
         public string InstrumentID { get; set; }
 
         /// <summary>
-        /// 买卖
+        /// 持仓多空方向
         /// </summary>
-        public EnumDirectionType Direction { get; set; }
+        public EnumPosiDirectionType PosiDirection { get; set; }
 
         /// <summary>
-        /// 数量
+        /// 总持仓
         /// </summary>
-        public int Volume { get; set; }
-        
+        public int Position { get; set; }
+
         /// <summary>
-        /// 开仓价
+        /// 上日持仓
         /// </summary>
-        public double OpenPrice { get; set; }
+        public int YdPosition { get; set; }
+
+        /// <summary>
+        /// 今日持仓
+        /// </summary>
+        public int TodayPosition { get; set; }
+
+        /// <summary>
+        /// 持仓成本
+        /// </summary>
+        public double PositionCost { get; set; }
+
+        /// <summary>
+        /// 持仓盈亏
+        /// </summary>
+        public double PositionProfit;
+
+        /// <summary>
+        /// 占用的保证金
+        /// </summary>
+        public double UseMargin { get; set; }
 
         /// <summary>
         /// 投机套保标志
         /// </summary>
         public EnumHedgeFlagType HedgeFlag { get; set; }
-        
-        /// <summary>
-        /// 开仓日期
-        /// </summary>
-        public string OpenDate { get; set; }
-
-        /// <summary>
-        /// 投资者保证金
-        /// </summary>
-        public double Margin { get; set; }
-
-
-        /// <summary>
-        /// 成交类型
-        /// </summary>
-        public EnumTradeTypeType TradeType { get; set; }
-
-        /// <summary>
-        /// 逐笔对冲持仓盈亏
-        /// </summary>
-        public double PositionProfitByTrade { get; set; }
 
         /// <summary>
         /// 交易所代码

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
@@ -8,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using autotrade.business;
+using autotrade.converter;
 using autotrade.model;
 using autotrade.strategy;
 using CTPMdApi;
@@ -35,9 +37,9 @@ namespace autotrade
 
         private MAReverseStrategy maReverseStrategy;
 
-        private OrderManager orderManager;
-        private AccountManager accountManager;
-        private MarketManager marketManager;
+        private OrderManager _orderManager;
+        private AccountManager _accountManager;
+        private MarketManager _marketManager;
 
         readonly string[] ppInstrumentID = { "IF1407" };	// 行情订阅列表
         public MainForm()
@@ -51,10 +53,6 @@ namespace autotrade
 
             log.Info("start login");
 
-            mdApi.Connect();
-
-            mdApi.OnFrontConnected += mdApi_OnFrontConnected;
-            mdApi.OnRspUserLogin += mdApi_OnRspUserLogin;
             mdApi.OnRspError += mdApi_OnRspError;
             mdApi.OnRspSubMarketData += mdApi_OnRspSubMarketData;
             mdApi.OnRtnDepthMarketData += mdApi_OnRtnDepthMarketData;
@@ -73,24 +71,13 @@ namespace autotrade
             log.Info(pSpecificInstrument.InstrumentID);
         }
 
-        void mdApi_OnRspUserLogin(ref CTPMdApi.CThostFtdcRspUserLoginField pRspUserLogin, ref CTPMdApi.CThostFtdcRspInfoField pRspInfo, int nRequestId, bool bIsLast)
-        {
-            log.Info(pRspInfo);
-            log.Info(pRspUserLogin);
-            mdApi.SubMarketData(ppInstrumentID);
-        }
-
+        
         void mdApi_OnRspError(ref CTPMdApi.CThostFtdcRspInfoField pRspInfo, int nRequestId, bool bIsLast)
         {
             log.Info(pRspInfo.ErrorMsg);
         }
 
-        void mdApi_OnFrontConnected()
-        {
-            log.Info("connected");
-
-            mdApi.UserLogin();
-        }
+        
 
         void tradeApi_OnRspQryInvestorPositionCombineDetail(ref CTPTradeApi.CThostFtdcInvestorPositionCombineDetailField pInvestorPositionCombineDetail, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
         {
@@ -105,29 +92,6 @@ namespace autotrade
             log.Info(pcontractbank);
         }
 
-        void tradeApi_OnRspQryInvestorPosition(ref CTPTradeApi.CThostFtdcInvestorPositionField pInvestorPosition, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
-        {
-            log.Info(pRspInfo);
-            log.Info(pInvestorPosition);
-        }
-
-
-        void tradeApi_OnRspUserLogin(ref CTPTradeApi.CThostFtdcRspUserLoginField pRspUserLogin, ref CTPTradeApi.CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
-        {
-            log.Info(pRspInfo);
-            log.Info(pRspUserLogin);
-
-
-            tradeApi.QryTradingAccount();
-        }
-
-        void tradeApi_OnFrontConnect()
-        {
-            log.Info("connected");
-
-            tradeApi.UserLogin();
-        }
-
         private void button3_Click(object sender, EventArgs e)
         {
             //tradeApi.QryInvestorPosition();
@@ -135,13 +99,11 @@ namespace autotrade
             tradeApi.QryInvestorPositionCombinaDetail();
         }
 
-        private void button4_Click(object sender, EventArgs e)
-        {
-            
-        }
-
+ 
         private void MainForm_Load(object sender, EventArgs e)
-        {            
+        {
+            radGridView4.Columns["Direction"].DataTypeConverter = new DirectionConverter();
+
             LoginForm loginForm = new LoginForm();
             
             if (loginForm.ShowDialog() != DialogResult.OK) Close();
@@ -150,26 +112,25 @@ namespace autotrade
             tradeApi = loginForm.tradeApi;
 
 
-            orderManager = new OrderManager(tradeApi);
-            accountManager = new AccountManager(tradeApi);
-            marketManager = new MarketManager(mdApi);
+            _orderManager = new OrderManager(tradeApi);
 
+            _accountManager = new AccountManager(tradeApi);
+            _marketManager = new MarketManager(mdApi);
 
-            tradeApi.OnFrontConnect += tradeApi_OnFrontConnect;
-            tradeApi.OnRspUserLogin += tradeApi_OnRspUserLogin;
+            _accountManager.OnQryTradingAccount += accountManager_OnQryTradingAccount;
 
-            accountManager.OnQryTradingAccount += accountManager_OnQryTradingAccount;
+            _marketManager.OnRtnMarketData += marketManager_OnRtnMarketData;
 
-            marketManager.OnRtnMarketData += marketManager_OnRtnMarketData;
-
-            orderManager.OnRtnTreadeRecord += orderManager_OnRtnTreadeRecord;
-            orderManager.OnRspQryPositionDetail += orderManager_OnRspQryPositionDetail;
+            _orderManager.OnRtnTradeRecord += orderManager_OnRtnTradeRecord;
+            _orderManager.OnRspQryPositionDetail += orderManager_OnRspQryPositionDetail;
+            _orderManager.OnRspQryPositionRecord += _orderManager_OnRspQryPositionRecord;
+            _orderManager.OnRspQryOrderRecord += _orderManager_OnRspQryOrderRecord;
 
 
             Task.Factory.StartNew(() => {
-                accountManager.QryTradingAccount();
+                _accountManager.QryTradingAccount();
                 Thread.Sleep(1000);
-                orderManager.QryTrade();
+                _orderManager.QryTrade();
 
                 Thread.Sleep(1000);
 
@@ -177,44 +138,83 @@ namespace autotrade
 
                 Thread.Sleep(1000);
 
-                orderManager.QryInvestorPositionDetail();
+                _orderManager.QryInvestorPositionDetail();
+
+                Thread.Sleep(1000);
+
+                _orderManager.QryInvestorPosition();
+
+                Thread.Sleep(1000);
+
+                _orderManager.QryOrder();
             });
 
-
-            tradeApi.OnRspQryInvestorPosition += tradeApi_OnRspQryInvestorPosition;
-            tradeApi.OnRspQryContractBank += tradeApi_OnRspQryContractBank;
-            tradeApi.OnRspQryInvestorPositionCombineDetail += tradeApi_OnRspQryInvestorPositionCombineDetail;
         }
 
-        private delegate void PositionDetailDelegate(PositionDetail positionDetail);
-        private void ShowPositionDetail(PositionDetail positionDetail)
+        private delegate void RecordRecordDelegate(List<OrderRecord> orderRecords);
+        private void ShowOrderRecord(List<OrderRecord> orderRecords)
         {
-            positionDetailBindingSource.Add(positionDetail);
+            radGridView6.DataSource = orderRecords;
+        }
+
+        void _orderManager_OnRspQryOrderRecord(object sender, OrderRecordEventArgs e)
+        {
+            if (this.InvokeRequired)
+            {
+                RecordRecordDelegate d = new RecordRecordDelegate(ShowOrderRecord);
+                object arg = e.OrderRecords;
+                this.Invoke(d, arg);
+            }
+        }
+
+        private delegate void PositionRecordDelegate(List<PositionRecord> positionRecords);
+        private void ShowPositionRecord(List<PositionRecord> positionRecords)
+        {
+            radGridView5.DataSource = positionRecords;
+        }
+
+        void _orderManager_OnRspQryPositionRecord(object sender, PositionRecordEventArgs e)
+        {
+            if (this.InvokeRequired)
+            {
+                PositionRecordDelegate d = new PositionRecordDelegate(ShowPositionRecord);
+                object arg = e.PositionRecords;
+                this.Invoke(d, arg);
+            }
+        }
+
+        private delegate void PositionDetailDelegate(List<PositionDetail> positionDetails);
+        private void ShowPositionDetail(List<PositionDetail> positionDetails)
+        {
+            foreach (var positionDetail in positionDetails)
+            {
+                positionDetailBindingSource.Add(positionDetail);
+            }
         }
         void orderManager_OnRspQryPositionDetail(object sender, PositionDetailEventArgs e)
         {
             if (this.InvokeRequired)
             {
                 PositionDetailDelegate d = new PositionDetailDelegate(ShowPositionDetail);
-                object arg = e.positionDetail;
+                object arg = e.PositionDetails;
                 this.Invoke(d, arg);
             }
         }
 
-        private delegate void TradeRecordDelegate(TradeRecord tradeRecord);
+        private delegate void TradeRecordDelegate(List<TradeRecord> tradeRecords);
 
 
-        private void ShowTradeRecord(TradeRecord tradeRecord)
+        private void ShowTradeRecord(List<TradeRecord> tradeRecords)
         {
-            tradeRecordBindingSource.Add(tradeRecord);
+            radGridView4.DataSource = tradeRecords;            
         }
 
-        void orderManager_OnRtnTreadeRecord(object sender, TradeRecordEventArgs e)
+        void orderManager_OnRtnTradeRecord(object sender, TradeRecordEventArgs e)
         {
             if (this.InvokeRequired)
             {
                 TradeRecordDelegate d = new TradeRecordDelegate(ShowTradeRecord);
-                object arg = e.treadeRecord;
+                object arg = e.tradeRecords;
                 this.Invoke(d, arg);
             }
         }
@@ -250,12 +250,12 @@ namespace autotrade
             order.Price = 10;
             order.Volume = 1;
 
-            orderManager.OrderInsert(order);
+            _orderManager.OrderInsert(order);
         }
 
         private void c1Command3_Click(object sender, C1.Win.C1Command.ClickEventArgs e)
         {
-            marketManager.SubMarketData("IF1407");
+            _marketManager.SubMarketData("IF1407");
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -265,18 +265,27 @@ namespace autotrade
 
         private void c1Command4_Click(object sender, C1.Win.C1Command.ClickEventArgs e)
         {
-            accountManager.QryTradingAccount();
+            _accountManager.QryTradingAccount();
         }
 
         private void c1Command5_Click(object sender, C1.Win.C1Command.ClickEventArgs e)
         {
-            orderManager.QryTrade();
+            _orderManager.QryTrade();
         }
 
-        private void c1FlexGrid2_BeforeSort(object sender, C1.Win.C1FlexGrid.SortColEventArgs e)
+        private void radRibbonBar1_Click(object sender, EventArgs e)
         {
-            positionDetailBindingSource.Sort = c1FlexGrid2.Cols[e.Col].Name;
+
         }
 
+        private void radMenuItem2_Click(object sender, EventArgs e)
+        {
+            tradeApi.QryOrder();
+        }
+
+        private void radMenuItem3_Click(object sender, EventArgs e)
+        {
+            _marketManager.SubMarketData("IF1407");
+        }
     }
 }

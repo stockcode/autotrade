@@ -29,508 +29,1391 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            this.c1CommandHolder1 = new C1.Win.C1Command.C1CommandHolder();
-            this.c1Command1 = new C1.Win.C1Command.C1Command();
-            this.c1CommandMenu1 = new C1.Win.C1Command.C1CommandMenu();
-            this.c1CommandLink2 = new C1.Win.C1Command.C1CommandLink();
-            this.c1Command2 = new C1.Win.C1Command.C1Command();
-            this.c1CommandMenu2 = new C1.Win.C1Command.C1CommandMenu();
-            this.c1CommandLink6 = new C1.Win.C1Command.C1CommandLink();
-            this.c1Command5 = new C1.Win.C1Command.C1Command();
-            this.c1CommandLink5 = new C1.Win.C1Command.C1CommandLink();
-            this.c1Command4 = new C1.Win.C1Command.C1Command();
-            this.c1CommandLink4 = new C1.Win.C1Command.C1CommandLink();
-            this.c1Command3 = new C1.Win.C1Command.C1Command();
+            Telerik.WinControls.UI.GridViewComboBoxColumn gridViewComboBoxColumn1 = new Telerik.WinControls.UI.GridViewComboBoxColumn();
+            Telerik.WinControls.UI.GridViewComboBoxColumn gridViewComboBoxColumn2 = new Telerik.WinControls.UI.GridViewComboBoxColumn();
+            Telerik.WinControls.UI.GridViewComboBoxColumn gridViewComboBoxColumn3 = new Telerik.WinControls.UI.GridViewComboBoxColumn();
+            Telerik.WinControls.UI.GridViewComboBoxColumn gridViewComboBoxColumn4 = new Telerik.WinControls.UI.GridViewComboBoxColumn();
+            Telerik.WinControls.UI.GridViewComboBoxColumn gridViewComboBoxColumn5 = new Telerik.WinControls.UI.GridViewComboBoxColumn();
+            Telerik.WinControls.UI.GridViewComboBoxColumn gridViewComboBoxColumn6 = new Telerik.WinControls.UI.GridViewComboBoxColumn();
+            Telerik.WinControls.UI.GridViewComboBoxColumn gridViewComboBoxColumn7 = new Telerik.WinControls.UI.GridViewComboBoxColumn();
+            Telerik.WinControls.UI.GridViewComboBoxColumn gridViewComboBoxColumn8 = new Telerik.WinControls.UI.GridViewComboBoxColumn();
+            Telerik.WinControls.UI.GridViewComboBoxColumn gridViewComboBoxColumn9 = new Telerik.WinControls.UI.GridViewComboBoxColumn();
+            Telerik.WinControls.UI.GridViewComboBoxColumn gridViewComboBoxColumn10 = new Telerik.WinControls.UI.GridViewComboBoxColumn();
+            Telerik.WinControls.UI.GridViewComboBoxColumn gridViewComboBoxColumn11 = new Telerik.WinControls.UI.GridViewComboBoxColumn();
+            Telerik.WinControls.UI.GridViewComboBoxColumn gridViewComboBoxColumn12 = new Telerik.WinControls.UI.GridViewComboBoxColumn();
+            Telerik.WinControls.UI.GridViewComboBoxColumn gridViewComboBoxColumn13 = new Telerik.WinControls.UI.GridViewComboBoxColumn();
+            Telerik.WinControls.UI.GridViewComboBoxColumn gridViewComboBoxColumn14 = new Telerik.WinControls.UI.GridViewComboBoxColumn();
+            Telerik.WinControls.UI.GridViewComboBoxColumn gridViewComboBoxColumn15 = new Telerik.WinControls.UI.GridViewComboBoxColumn();
+            Telerik.WinControls.UI.GridViewComboBoxColumn gridViewComboBoxColumn16 = new Telerik.WinControls.UI.GridViewComboBoxColumn();
+            Telerik.WinControls.UI.GridViewComboBoxColumn gridViewComboBoxColumn17 = new Telerik.WinControls.UI.GridViewComboBoxColumn();
+            Telerik.WinControls.UI.GridViewComboBoxColumn gridViewComboBoxColumn18 = new Telerik.WinControls.UI.GridViewComboBoxColumn();
+            Telerik.WinControls.UI.GridViewComboBoxColumn gridViewComboBoxColumn19 = new Telerik.WinControls.UI.GridViewComboBoxColumn();
+            Telerik.WinControls.UI.GridViewComboBoxColumn gridViewComboBoxColumn20 = new Telerik.WinControls.UI.GridViewComboBoxColumn();
+            Telerik.WinControls.UI.GridViewComboBoxColumn gridViewComboBoxColumn21 = new Telerik.WinControls.UI.GridViewComboBoxColumn();
+            Telerik.WinControls.UI.GridViewComboBoxColumn gridViewComboBoxColumn22 = new Telerik.WinControls.UI.GridViewComboBoxColumn();
+            Telerik.WinControls.UI.GridViewComboBoxColumn gridViewComboBoxColumn23 = new Telerik.WinControls.UI.GridViewComboBoxColumn();
+            Telerik.WinControls.UI.GridViewComboBoxColumn gridViewComboBoxColumn24 = new Telerik.WinControls.UI.GridViewComboBoxColumn();
+            Telerik.WinControls.UI.GridViewComboBoxColumn gridViewComboBoxColumn25 = new Telerik.WinControls.UI.GridViewComboBoxColumn();
+            Telerik.WinControls.UI.GridViewComboBoxColumn gridViewComboBoxColumn26 = new Telerik.WinControls.UI.GridViewComboBoxColumn();
+            Telerik.WinControls.UI.GridViewTextBoxColumn gridViewTextBoxColumn1 = new Telerik.WinControls.UI.GridViewTextBoxColumn();
+            Telerik.WinControls.UI.GridViewDecimalColumn gridViewDecimalColumn1 = new Telerik.WinControls.UI.GridViewDecimalColumn();
+            Telerik.WinControls.UI.GridViewDecimalColumn gridViewDecimalColumn2 = new Telerik.WinControls.UI.GridViewDecimalColumn();
+            Telerik.WinControls.UI.GridViewDecimalColumn gridViewDecimalColumn3 = new Telerik.WinControls.UI.GridViewDecimalColumn();
+            Telerik.WinControls.UI.GridViewDecimalColumn gridViewDecimalColumn4 = new Telerik.WinControls.UI.GridViewDecimalColumn();
+            Telerik.WinControls.UI.GridViewTextBoxColumn gridViewTextBoxColumn2 = new Telerik.WinControls.UI.GridViewTextBoxColumn();
+            Telerik.WinControls.UI.GridViewDecimalColumn gridViewDecimalColumn5 = new Telerik.WinControls.UI.GridViewDecimalColumn();
+            Telerik.WinControls.UI.GridViewDecimalColumn gridViewDecimalColumn6 = new Telerik.WinControls.UI.GridViewDecimalColumn();
+            Telerik.WinControls.UI.ConditionalFormattingObject conditionalFormattingObject1 = new Telerik.WinControls.UI.ConditionalFormattingObject();
+            Telerik.WinControls.UI.ConditionalFormattingObject conditionalFormattingObject2 = new Telerik.WinControls.UI.ConditionalFormattingObject();
+            Telerik.WinControls.UI.GridViewDecimalColumn gridViewDecimalColumn7 = new Telerik.WinControls.UI.GridViewDecimalColumn();
+            Telerik.WinControls.UI.GridViewDecimalColumn gridViewDecimalColumn8 = new Telerik.WinControls.UI.GridViewDecimalColumn();
+            Telerik.WinControls.UI.GridViewDecimalColumn gridViewDecimalColumn9 = new Telerik.WinControls.UI.GridViewDecimalColumn();
+            Telerik.WinControls.UI.GridViewDecimalColumn gridViewDecimalColumn10 = new Telerik.WinControls.UI.GridViewDecimalColumn();
+            Telerik.WinControls.UI.GridViewDecimalColumn gridViewDecimalColumn11 = new Telerik.WinControls.UI.GridViewDecimalColumn();
+            Telerik.WinControls.UI.GridViewDecimalColumn gridViewDecimalColumn12 = new Telerik.WinControls.UI.GridViewDecimalColumn();
+            Telerik.WinControls.UI.GridViewDecimalColumn gridViewDecimalColumn13 = new Telerik.WinControls.UI.GridViewDecimalColumn();
+            Telerik.WinControls.UI.GridViewDecimalColumn gridViewDecimalColumn14 = new Telerik.WinControls.UI.GridViewDecimalColumn();
+            Telerik.WinControls.UI.GridViewDecimalColumn gridViewDecimalColumn15 = new Telerik.WinControls.UI.GridViewDecimalColumn();
+            Telerik.WinControls.UI.GridViewDecimalColumn gridViewDecimalColumn16 = new Telerik.WinControls.UI.GridViewDecimalColumn();
+            Telerik.WinControls.UI.GridViewDecimalColumn gridViewDecimalColumn17 = new Telerik.WinControls.UI.GridViewDecimalColumn();
+            Telerik.WinControls.UI.GridViewDecimalColumn gridViewDecimalColumn18 = new Telerik.WinControls.UI.GridViewDecimalColumn();
+            Telerik.WinControls.UI.GridViewDecimalColumn gridViewDecimalColumn19 = new Telerik.WinControls.UI.GridViewDecimalColumn();
+            Telerik.WinControls.UI.GridViewDecimalColumn gridViewDecimalColumn20 = new Telerik.WinControls.UI.GridViewDecimalColumn();
+            Telerik.WinControls.UI.GridViewDecimalColumn gridViewDecimalColumn21 = new Telerik.WinControls.UI.GridViewDecimalColumn();
+            Telerik.WinControls.UI.GridViewTextBoxColumn gridViewTextBoxColumn3 = new Telerik.WinControls.UI.GridViewTextBoxColumn();
+            Telerik.WinControls.UI.GridViewTextBoxColumn gridViewTextBoxColumn4 = new Telerik.WinControls.UI.GridViewTextBoxColumn();
+            Telerik.WinControls.UI.GridViewTextBoxColumn gridViewTextBoxColumn5 = new Telerik.WinControls.UI.GridViewTextBoxColumn();
+            Telerik.WinControls.UI.GridViewDecimalColumn gridViewDecimalColumn22 = new Telerik.WinControls.UI.GridViewDecimalColumn();
+            Telerik.WinControls.UI.GridViewTextBoxColumn gridViewTextBoxColumn6 = new Telerik.WinControls.UI.GridViewTextBoxColumn();
+            Telerik.WinControls.UI.GridViewTextBoxColumn gridViewTextBoxColumn7 = new Telerik.WinControls.UI.GridViewTextBoxColumn();
+            Telerik.WinControls.UI.GridViewDecimalColumn gridViewDecimalColumn23 = new Telerik.WinControls.UI.GridViewDecimalColumn();
+            Telerik.WinControls.UI.GridViewDecimalColumn gridViewDecimalColumn24 = new Telerik.WinControls.UI.GridViewDecimalColumn();
+            Telerik.WinControls.UI.GridViewDecimalColumn gridViewDecimalColumn25 = new Telerik.WinControls.UI.GridViewDecimalColumn();
+            Telerik.WinControls.UI.GridViewDecimalColumn gridViewDecimalColumn26 = new Telerik.WinControls.UI.GridViewDecimalColumn();
+            Telerik.WinControls.UI.GridViewTextBoxColumn gridViewTextBoxColumn8 = new Telerik.WinControls.UI.GridViewTextBoxColumn();
+            Telerik.WinControls.UI.GridViewTextBoxColumn gridViewTextBoxColumn9 = new Telerik.WinControls.UI.GridViewTextBoxColumn();
+            Telerik.WinControls.UI.GridViewTextBoxColumn gridViewTextBoxColumn10 = new Telerik.WinControls.UI.GridViewTextBoxColumn();
+            Telerik.WinControls.UI.GridViewTextBoxColumn gridViewTextBoxColumn11 = new Telerik.WinControls.UI.GridViewTextBoxColumn();
+            Telerik.WinControls.UI.GridViewTextBoxColumn gridViewTextBoxColumn12 = new Telerik.WinControls.UI.GridViewTextBoxColumn();
+            Telerik.WinControls.UI.GridViewDecimalColumn gridViewDecimalColumn27 = new Telerik.WinControls.UI.GridViewDecimalColumn();
+            Telerik.WinControls.UI.GridViewDecimalColumn gridViewDecimalColumn28 = new Telerik.WinControls.UI.GridViewDecimalColumn();
+            Telerik.WinControls.UI.GridViewDecimalColumn gridViewDecimalColumn29 = new Telerik.WinControls.UI.GridViewDecimalColumn();
+            Telerik.WinControls.UI.GridViewDecimalColumn gridViewDecimalColumn30 = new Telerik.WinControls.UI.GridViewDecimalColumn();
+            Telerik.WinControls.UI.GridViewDecimalColumn gridViewDecimalColumn31 = new Telerik.WinControls.UI.GridViewDecimalColumn();
+            Telerik.WinControls.UI.GridViewTextBoxColumn gridViewTextBoxColumn13 = new Telerik.WinControls.UI.GridViewTextBoxColumn();
+            Telerik.WinControls.UI.GridViewTextBoxColumn gridViewTextBoxColumn14 = new Telerik.WinControls.UI.GridViewTextBoxColumn();
+            Telerik.WinControls.UI.GridViewTextBoxColumn gridViewTextBoxColumn15 = new Telerik.WinControls.UI.GridViewTextBoxColumn();
+            Telerik.WinControls.UI.GridViewTextBoxColumn gridViewTextBoxColumn16 = new Telerik.WinControls.UI.GridViewTextBoxColumn();
+            Telerik.WinControls.UI.GridViewDecimalColumn gridViewDecimalColumn32 = new Telerik.WinControls.UI.GridViewDecimalColumn();
+            Telerik.WinControls.UI.GridViewDecimalColumn gridViewDecimalColumn33 = new Telerik.WinControls.UI.GridViewDecimalColumn();
+            Telerik.WinControls.UI.GridViewTextBoxColumn gridViewTextBoxColumn17 = new Telerik.WinControls.UI.GridViewTextBoxColumn();
+            Telerik.WinControls.UI.GridViewTextBoxColumn gridViewTextBoxColumn18 = new Telerik.WinControls.UI.GridViewTextBoxColumn();
+            Telerik.WinControls.UI.GridViewTextBoxColumn gridViewTextBoxColumn19 = new Telerik.WinControls.UI.GridViewTextBoxColumn();
+            this.enumBinder1 = new Telerik.WinControls.UI.Data.EnumBinder();
+            this.enumBinder2 = new Telerik.WinControls.UI.Data.EnumBinder();
+            this.enumBinder3 = new Telerik.WinControls.UI.Data.EnumBinder();
+            this.enumBinder4 = new Telerik.WinControls.UI.Data.EnumBinder();
+            this.enumBinder5 = new Telerik.WinControls.UI.Data.EnumBinder();
+            this.enumBinder6 = new Telerik.WinControls.UI.Data.EnumBinder();
+            this.enumBinder7 = new Telerik.WinControls.UI.Data.EnumBinder();
+            this.enumBinder8 = new Telerik.WinControls.UI.Data.EnumBinder();
+            this.enumBinder9 = new Telerik.WinControls.UI.Data.EnumBinder();
+            this.enumBinder10 = new Telerik.WinControls.UI.Data.EnumBinder();
+            this.enumBinder11 = new Telerik.WinControls.UI.Data.EnumBinder();
+            this.enumBinder12 = new Telerik.WinControls.UI.Data.EnumBinder();
+            this.enumBinder13 = new Telerik.WinControls.UI.Data.EnumBinder();
+            this.enumBinder14 = new Telerik.WinControls.UI.Data.EnumBinder();
+            this.enumBinder15 = new Telerik.WinControls.UI.Data.EnumBinder();
+            this.enumBinder16 = new Telerik.WinControls.UI.Data.EnumBinder();
+            this.enumBinder17 = new Telerik.WinControls.UI.Data.EnumBinder();
+            this.enumBinder18 = new Telerik.WinControls.UI.Data.EnumBinder();
+            this.enumBinder19 = new Telerik.WinControls.UI.Data.EnumBinder();
+            this.enumBinder20 = new Telerik.WinControls.UI.Data.EnumBinder();
+            this.enumBinder21 = new Telerik.WinControls.UI.Data.EnumBinder();
+            this.enumBinder22 = new Telerik.WinControls.UI.Data.EnumBinder();
+            this.enumBinder23 = new Telerik.WinControls.UI.Data.EnumBinder();
+            this.enumBinder24 = new Telerik.WinControls.UI.Data.EnumBinder();
+            this.enumBinder25 = new Telerik.WinControls.UI.Data.EnumBinder();
+            this.enumBinder26 = new Telerik.WinControls.UI.Data.EnumBinder();
             this.accountBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.c1MainMenu1 = new C1.Win.C1Command.C1MainMenu();
-            this.c1CommandLink1 = new C1.Win.C1Command.C1CommandLink();
-            this.c1CommandLink3 = new C1.Win.C1Command.C1CommandLink();
-            this.c1StatusBar1 = new C1.Win.C1Ribbon.C1StatusBar();
             this.marketDataBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.c1SplitContainer1 = new C1.Win.C1SplitContainer.C1SplitContainer();
-            this.c1SplitterPanel1 = new C1.Win.C1SplitContainer.C1SplitterPanel();
-            this.c1List1 = new C1.Win.C1List.C1List();
-            this.c1SplitterPanel2 = new C1.Win.C1SplitContainer.C1SplitterPanel();
-            this.c1DockingTab3 = new C1.Win.C1Command.C1DockingTab();
-            this.c1DockingTabPage3 = new C1.Win.C1Command.C1DockingTabPage();
-            this.c1List2 = new C1.Win.C1List.C1List();
-            this.c1SplitterPanel3 = new C1.Win.C1SplitContainer.C1SplitterPanel();
-            this.c1SplitterPanel4 = new C1.Win.C1SplitContainer.C1SplitterPanel();
-            this.c1SplitContainer2 = new C1.Win.C1SplitContainer.C1SplitContainer();
-            this.c1SplitterPanel5 = new C1.Win.C1SplitContainer.C1SplitterPanel();
-            this.c1DockingTab2 = new C1.Win.C1Command.C1DockingTab();
-            this.c1DockingTabPage2 = new C1.Win.C1Command.C1DockingTabPage();
-            this.c1FlexGrid1 = new C1.Win.C1FlexGrid.C1FlexGrid();
-            this.c1DockingTabPage4 = new C1.Win.C1Command.C1DockingTabPage();
-            this.c1FlexGrid2 = new C1.Win.C1FlexGrid.C1FlexGrid();
             this.positionDetailBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.c1SplitterPanel6 = new C1.Win.C1SplitContainer.C1SplitterPanel();
-            this.c1DockingTab1 = new C1.Win.C1Command.C1DockingTab();
-            this.c1DockingTabPage1 = new C1.Win.C1Command.C1DockingTabPage();
-            this.c1List3 = new C1.Win.C1List.C1List();
+            this.radStatusStrip1 = new Telerik.WinControls.UI.RadStatusStrip();
+            this.radSplitContainer1 = new Telerik.WinControls.UI.RadSplitContainer();
+            this.splitPanel1 = new Telerik.WinControls.UI.SplitPanel();
+            this.radGridView1 = new Telerik.WinControls.UI.RadGridView();
+            this.radMenu1 = new Telerik.WinControls.UI.RadMenu();
+            this.splitPanel2 = new Telerik.WinControls.UI.SplitPanel();
+            this.radGridView2 = new Telerik.WinControls.UI.RadGridView();
+            this.splitPanel3 = new Telerik.WinControls.UI.SplitPanel();
+            this.radSplitContainer3 = new Telerik.WinControls.UI.RadSplitContainer();
+            this.splitPanel7 = new Telerik.WinControls.UI.SplitPanel();
+            this.splitPanel8 = new Telerik.WinControls.UI.SplitPanel();
+            this.radPageView3 = new Telerik.WinControls.UI.RadPageView();
+            this.radPageViewPage4 = new Telerik.WinControls.UI.RadPageViewPage();
+            this.radPageViewPage5 = new Telerik.WinControls.UI.RadPageViewPage();
+            this.radGridView6 = new Telerik.WinControls.UI.RadGridView();
+            this.orderRecordBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.radPageViewPage6 = new Telerik.WinControls.UI.RadPageViewPage();
+            this.splitPanel4 = new Telerik.WinControls.UI.SplitPanel();
+            this.radSplitContainer2 = new Telerik.WinControls.UI.RadSplitContainer();
+            this.splitPanel5 = new Telerik.WinControls.UI.SplitPanel();
+            this.radPageView1 = new Telerik.WinControls.UI.RadPageView();
+            this.radPageViewPage1 = new Telerik.WinControls.UI.RadPageViewPage();
+            this.radGridView5 = new Telerik.WinControls.UI.RadGridView();
+            this.positionRecordBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.radPageViewPage2 = new Telerik.WinControls.UI.RadPageViewPage();
+            this.radGridView3 = new Telerik.WinControls.UI.RadGridView();
+            this.splitPanel6 = new Telerik.WinControls.UI.SplitPanel();
+            this.radPageView2 = new Telerik.WinControls.UI.RadPageView();
+            this.radPageViewPage3 = new Telerik.WinControls.UI.RadPageViewPage();
+            this.radGridView4 = new Telerik.WinControls.UI.RadGridView();
             this.tradeRecordBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.c1PdfDocument1 = new C1.C1Pdf.C1PdfDocument();
-            ((System.ComponentModel.ISupportInitialize)(this.c1CommandHolder1)).BeginInit();
+            this.radMenuItem1 = new Telerik.WinControls.UI.RadMenuItem();
+            this.radMenuItem2 = new Telerik.WinControls.UI.RadMenuItem();
+            this.radMenuItem3 = new Telerik.WinControls.UI.RadMenuItem();
+            this.windows7Theme1 = new Telerik.WinControls.Themes.Windows7Theme();
+            this.telerikMetroTheme1 = new Telerik.WinControls.Themes.TelerikMetroTheme();
             ((System.ComponentModel.ISupportInitialize)(this.accountBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.c1StatusBar1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.marketDataBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.c1SplitContainer1)).BeginInit();
-            this.c1SplitContainer1.SuspendLayout();
-            this.c1SplitterPanel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.c1List1)).BeginInit();
-            this.c1SplitterPanel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.c1DockingTab3)).BeginInit();
-            this.c1DockingTab3.SuspendLayout();
-            this.c1DockingTabPage3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.c1List2)).BeginInit();
-            this.c1SplitterPanel4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.c1SplitContainer2)).BeginInit();
-            this.c1SplitContainer2.SuspendLayout();
-            this.c1SplitterPanel5.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.c1DockingTab2)).BeginInit();
-            this.c1DockingTab2.SuspendLayout();
-            this.c1DockingTabPage2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.c1FlexGrid1)).BeginInit();
-            this.c1DockingTabPage4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.c1FlexGrid2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.positionDetailBindingSource)).BeginInit();
-            this.c1SplitterPanel6.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.c1DockingTab1)).BeginInit();
-            this.c1DockingTab1.SuspendLayout();
-            this.c1DockingTabPage1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.c1List3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.radStatusStrip1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.radSplitContainer1)).BeginInit();
+            this.radSplitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitPanel1)).BeginInit();
+            this.splitPanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.radGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.radGridView1.MasterTemplate)).BeginInit();
+            this.radGridView1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.radMenu1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.splitPanel2)).BeginInit();
+            this.splitPanel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.radGridView2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.radGridView2.MasterTemplate)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.splitPanel3)).BeginInit();
+            this.splitPanel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.radSplitContainer3)).BeginInit();
+            this.radSplitContainer3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitPanel7)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.splitPanel8)).BeginInit();
+            this.splitPanel8.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.radPageView3)).BeginInit();
+            this.radPageView3.SuspendLayout();
+            this.radPageViewPage5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.radGridView6)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.radGridView6.MasterTemplate)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.orderRecordBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.splitPanel4)).BeginInit();
+            this.splitPanel4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.radSplitContainer2)).BeginInit();
+            this.radSplitContainer2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitPanel5)).BeginInit();
+            this.splitPanel5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.radPageView1)).BeginInit();
+            this.radPageView1.SuspendLayout();
+            this.radPageViewPage1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.radGridView5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.radGridView5.MasterTemplate)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.positionRecordBindingSource)).BeginInit();
+            this.radPageViewPage2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.radGridView3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.radGridView3.MasterTemplate)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.splitPanel6)).BeginInit();
+            this.splitPanel6.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.radPageView2)).BeginInit();
+            this.radPageView2.SuspendLayout();
+            this.radPageViewPage3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.radGridView4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.radGridView4.MasterTemplate)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tradeRecordBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
-            // c1CommandHolder1
+            // enumBinder1
             // 
-            this.c1CommandHolder1.Commands.Add(this.c1Command1);
-            this.c1CommandHolder1.Commands.Add(this.c1CommandMenu1);
-            this.c1CommandHolder1.Commands.Add(this.c1Command2);
-            this.c1CommandHolder1.Commands.Add(this.c1CommandMenu2);
-            this.c1CommandHolder1.Commands.Add(this.c1Command3);
-            this.c1CommandHolder1.Commands.Add(this.c1Command4);
-            this.c1CommandHolder1.Commands.Add(this.c1Command5);
-            this.c1CommandHolder1.Owner = this;
+            this.enumBinder1.Source = typeof(CTPTradeApi.EnumDirectionType);
+            gridViewComboBoxColumn1.DataSource = this.enumBinder1;
+            gridViewComboBoxColumn1.DataType = typeof(object);
+            gridViewComboBoxColumn1.DisplayMember = "Description";
+            gridViewComboBoxColumn1.FieldName = "Direction";
+            gridViewComboBoxColumn1.HeaderText = "Direction";
+            gridViewComboBoxColumn1.IsAutoGenerated = true;
+            gridViewComboBoxColumn1.Name = "Direction";
+            gridViewComboBoxColumn1.ValueMember = "Value";
+            gridViewComboBoxColumn1.Width = 66;
+            this.enumBinder1.Target = gridViewComboBoxColumn1;
             // 
-            // c1Command1
+            // enumBinder2
             // 
-            this.c1Command1.Image = ((System.Drawing.Image)(resources.GetObject("c1Command1.Image")));
-            this.c1Command1.Name = "c1Command1";
-            this.c1Command1.ShortcutText = "";
-            this.c1Command1.Text = "打开（&O）";
+            this.enumBinder2.Source = typeof(CTPTradeApi.EnumHedgeFlagType);
+            gridViewComboBoxColumn2.DataSource = this.enumBinder2;
+            gridViewComboBoxColumn2.DataType = typeof(object);
+            gridViewComboBoxColumn2.DisplayMember = "Description";
+            gridViewComboBoxColumn2.FieldName = "HedgeFlag";
+            gridViewComboBoxColumn2.HeaderText = "HedgeFlag";
+            gridViewComboBoxColumn2.IsAutoGenerated = true;
+            gridViewComboBoxColumn2.Name = "HedgeFlag";
+            gridViewComboBoxColumn2.ValueMember = "Value";
+            gridViewComboBoxColumn2.Width = 77;
+            this.enumBinder2.Target = gridViewComboBoxColumn2;
             // 
-            // c1CommandMenu1
+            // enumBinder3
             // 
-            this.c1CommandMenu1.CommandLinks.AddRange(new C1.Win.C1Command.C1CommandLink[] {
-            this.c1CommandLink2});
-            this.c1CommandMenu1.HideNonRecentLinks = false;
-            this.c1CommandMenu1.Name = "c1CommandMenu1";
-            this.c1CommandMenu1.ShortcutText = "";
-            this.c1CommandMenu1.Text = "open";
+            this.enumBinder3.Source = typeof(CTPTradeApi.EnumTradeTypeType);
+            gridViewComboBoxColumn3.DataSource = this.enumBinder3;
+            gridViewComboBoxColumn3.DataType = typeof(object);
+            gridViewComboBoxColumn3.DisplayMember = "Description";
+            gridViewComboBoxColumn3.FieldName = "TradeType";
+            gridViewComboBoxColumn3.HeaderText = "TradeType";
+            gridViewComboBoxColumn3.IsAutoGenerated = true;
+            gridViewComboBoxColumn3.Name = "TradeType";
+            gridViewComboBoxColumn3.ValueMember = "Value";
+            gridViewComboBoxColumn3.Width = 74;
+            this.enumBinder3.Target = gridViewComboBoxColumn3;
             // 
-            // c1CommandLink2
+            // enumBinder4
             // 
-            this.c1CommandLink2.Command = this.c1Command2;
+            this.enumBinder4.Source = typeof(CTPTradeApi.EnumDirectionType);
+            gridViewComboBoxColumn4.DataSource = this.enumBinder4;
+            gridViewComboBoxColumn4.DataType = typeof(object);
+            gridViewComboBoxColumn4.DisplayMember = "Description";
+            gridViewComboBoxColumn4.FieldName = "Direction";
+            gridViewComboBoxColumn4.HeaderText = "Direction";
+            gridViewComboBoxColumn4.IsAutoGenerated = true;
+            gridViewComboBoxColumn4.Name = "Direction";
+            gridViewComboBoxColumn4.ValueMember = "Value";
+            gridViewComboBoxColumn4.Width = 66;
+            this.enumBinder4.Target = gridViewComboBoxColumn4;
             // 
-            // c1Command2
+            // enumBinder5
             // 
-            this.c1Command2.Name = "c1Command2";
-            this.c1Command2.ShortcutText = "";
-            this.c1Command2.Text = "close";
-            this.c1Command2.Click += new C1.Win.C1Command.ClickEventHandler(this.c1Command2_Click);
+            this.enumBinder5.Source = typeof(CTPTradeApi.EnumOffsetFlagType);
+            gridViewComboBoxColumn5.DataSource = this.enumBinder5;
+            gridViewComboBoxColumn5.DataType = typeof(object);
+            gridViewComboBoxColumn5.DisplayMember = "Description";
+            gridViewComboBoxColumn5.FieldName = "OffsetFlag";
+            gridViewComboBoxColumn5.HeaderText = "OffsetFlag";
+            gridViewComboBoxColumn5.IsAutoGenerated = true;
+            gridViewComboBoxColumn5.Name = "OffsetFlag";
+            gridViewComboBoxColumn5.ValueMember = "Value";
+            gridViewComboBoxColumn5.Width = 73;
+            this.enumBinder5.Target = gridViewComboBoxColumn5;
             // 
-            // c1CommandMenu2
+            // enumBinder6
             // 
-            this.c1CommandMenu2.CommandLinks.AddRange(new C1.Win.C1Command.C1CommandLink[] {
-            this.c1CommandLink6,
-            this.c1CommandLink5,
-            this.c1CommandLink4});
-            this.c1CommandMenu2.HideNonRecentLinks = false;
-            this.c1CommandMenu2.Name = "c1CommandMenu2";
-            this.c1CommandMenu2.ShortcutText = "";
-            this.c1CommandMenu2.Text = "market";
+            this.enumBinder6.Source = typeof(CTPTradeApi.EnumTradeTypeType);
+            gridViewComboBoxColumn6.DataSource = this.enumBinder6;
+            gridViewComboBoxColumn6.DataType = typeof(object);
+            gridViewComboBoxColumn6.DisplayMember = "Description";
+            gridViewComboBoxColumn6.FieldName = "TradeType";
+            gridViewComboBoxColumn6.HeaderText = "TradeType";
+            gridViewComboBoxColumn6.IsAutoGenerated = true;
+            gridViewComboBoxColumn6.Name = "TradeType";
+            gridViewComboBoxColumn6.ValueMember = "Value";
+            gridViewComboBoxColumn6.Width = 74;
+            this.enumBinder6.Target = gridViewComboBoxColumn6;
             // 
-            // c1CommandLink6
+            // enumBinder7
             // 
-            this.c1CommandLink6.Command = this.c1Command5;
+            this.enumBinder7.Source = typeof(CTPTradeApi.EnumHedgeFlagType);
+            gridViewComboBoxColumn7.DataSource = this.enumBinder7;
+            gridViewComboBoxColumn7.DataType = typeof(object);
+            gridViewComboBoxColumn7.DisplayMember = "Description";
+            gridViewComboBoxColumn7.FieldName = "HedgeFlag";
+            gridViewComboBoxColumn7.HeaderText = "HedgeFlag";
+            gridViewComboBoxColumn7.IsAutoGenerated = true;
+            gridViewComboBoxColumn7.Name = "HedgeFlag";
+            gridViewComboBoxColumn7.ValueMember = "Value";
+            gridViewComboBoxColumn7.Width = 77;
+            this.enumBinder7.Target = gridViewComboBoxColumn7;
             // 
-            // c1Command5
+            // enumBinder8
             // 
-            this.c1Command5.Name = "c1Command5";
-            this.c1Command5.ShortcutText = "";
-            this.c1Command5.Text = "tradedata";
-            this.c1Command5.Click += new C1.Win.C1Command.ClickEventHandler(this.c1Command5_Click);
+            this.enumBinder8.Source = typeof(CTPTradeApi.EnumDirectionType);
+            gridViewComboBoxColumn8.DataSource = this.enumBinder8;
+            gridViewComboBoxColumn8.DataType = typeof(object);
+            gridViewComboBoxColumn8.DisplayMember = "Description";
+            gridViewComboBoxColumn8.FieldName = "Direction";
+            gridViewComboBoxColumn8.HeaderText = "买卖";
+            gridViewComboBoxColumn8.IsAutoGenerated = true;
+            gridViewComboBoxColumn8.Name = "Direction";
+            gridViewComboBoxColumn8.ValueMember = "Value";
+            gridViewComboBoxColumn8.Width = 48;
+            this.enumBinder8.Target = gridViewComboBoxColumn8;
             // 
-            // c1CommandLink5
+            // enumBinder9
             // 
-            this.c1CommandLink5.Command = this.c1Command4;
-            this.c1CommandLink5.SortOrder = 1;
+            this.enumBinder9.Source = typeof(CTPTradeApi.EnumHedgeFlagType);
+            gridViewComboBoxColumn9.DataSource = this.enumBinder9;
+            gridViewComboBoxColumn9.DataType = typeof(object);
+            gridViewComboBoxColumn9.DisplayMember = "Description";
+            gridViewComboBoxColumn9.FieldName = "HedgeFlag";
+            gridViewComboBoxColumn9.HeaderText = "投保";
+            gridViewComboBoxColumn9.IsAutoGenerated = true;
+            gridViewComboBoxColumn9.Name = "HedgeFlag";
+            gridViewComboBoxColumn9.ValueMember = "Value";
+            gridViewComboBoxColumn9.Width = 48;
+            this.enumBinder9.Target = gridViewComboBoxColumn9;
             // 
-            // c1Command4
+            // enumBinder10
             // 
-            this.c1Command4.Name = "c1Command4";
-            this.c1Command4.ShortcutText = "";
-            this.c1Command4.Text = "account";
-            this.c1Command4.Click += new C1.Win.C1Command.ClickEventHandler(this.c1Command4_Click);
+            this.enumBinder10.Source = typeof(CTPTradeApi.EnumTradeTypeType);
+            gridViewComboBoxColumn10.DataSource = this.enumBinder10;
+            gridViewComboBoxColumn10.DataType = typeof(object);
+            gridViewComboBoxColumn10.DisplayMember = "Description";
+            gridViewComboBoxColumn10.FieldName = "TradeType";
+            gridViewComboBoxColumn10.HeaderText = "持仓类型";
+            gridViewComboBoxColumn10.IsAutoGenerated = true;
+            gridViewComboBoxColumn10.Name = "TradeType";
+            gridViewComboBoxColumn10.ValueMember = "Value";
+            gridViewComboBoxColumn10.Width = 86;
+            this.enumBinder10.Target = gridViewComboBoxColumn10;
             // 
-            // c1CommandLink4
+            // enumBinder11
             // 
-            this.c1CommandLink4.Command = this.c1Command3;
-            this.c1CommandLink4.SortOrder = 2;
+            this.enumBinder11.Source = typeof(CTPTradeApi.EnumDirectionType);
+            gridViewComboBoxColumn11.DataSource = this.enumBinder11;
+            gridViewComboBoxColumn11.DataType = typeof(object);
+            gridViewComboBoxColumn11.DisplayMember = "Description";
+            gridViewComboBoxColumn11.FieldName = "Direction";
+            gridViewComboBoxColumn11.HeaderText = "Direction";
+            gridViewComboBoxColumn11.IsAutoGenerated = true;
+            gridViewComboBoxColumn11.Name = "Direction";
+            gridViewComboBoxColumn11.ValueMember = "Value";
+            gridViewComboBoxColumn11.Width = 66;
+            this.enumBinder11.Target = gridViewComboBoxColumn11;
             // 
-            // c1Command3
+            // enumBinder12
             // 
-            this.c1Command3.Name = "c1Command3";
-            this.c1Command3.ShortcutText = "";
-            this.c1Command3.Text = "sub";
-            this.c1Command3.Click += new C1.Win.C1Command.ClickEventHandler(this.c1Command3_Click);
+            this.enumBinder12.Source = typeof(CTPTradeApi.EnumOffsetFlagType);
+            gridViewComboBoxColumn12.DataSource = this.enumBinder12;
+            gridViewComboBoxColumn12.DataType = typeof(object);
+            gridViewComboBoxColumn12.DisplayMember = "Description";
+            gridViewComboBoxColumn12.FieldName = "OffsetFlag";
+            gridViewComboBoxColumn12.HeaderText = "OffsetFlag";
+            gridViewComboBoxColumn12.IsAutoGenerated = true;
+            gridViewComboBoxColumn12.Name = "OffsetFlag";
+            gridViewComboBoxColumn12.ValueMember = "Value";
+            gridViewComboBoxColumn12.Width = 73;
+            this.enumBinder12.Target = gridViewComboBoxColumn12;
+            // 
+            // enumBinder13
+            // 
+            this.enumBinder13.Source = typeof(CTPTradeApi.EnumTradeTypeType);
+            gridViewComboBoxColumn13.DataSource = this.enumBinder13;
+            gridViewComboBoxColumn13.DataType = typeof(object);
+            gridViewComboBoxColumn13.DisplayMember = "Description";
+            gridViewComboBoxColumn13.FieldName = "TradeType";
+            gridViewComboBoxColumn13.HeaderText = "TradeType";
+            gridViewComboBoxColumn13.IsAutoGenerated = true;
+            gridViewComboBoxColumn13.Name = "TradeType";
+            gridViewComboBoxColumn13.ValueMember = "Value";
+            gridViewComboBoxColumn13.Width = 74;
+            this.enumBinder13.Target = gridViewComboBoxColumn13;
+            // 
+            // enumBinder14
+            // 
+            this.enumBinder14.Source = typeof(CTPTradeApi.EnumHedgeFlagType);
+            gridViewComboBoxColumn14.DataSource = this.enumBinder14;
+            gridViewComboBoxColumn14.DataType = typeof(object);
+            gridViewComboBoxColumn14.DisplayMember = "Description";
+            gridViewComboBoxColumn14.FieldName = "HedgeFlag";
+            gridViewComboBoxColumn14.HeaderText = "HedgeFlag";
+            gridViewComboBoxColumn14.IsAutoGenerated = true;
+            gridViewComboBoxColumn14.Name = "HedgeFlag";
+            gridViewComboBoxColumn14.ValueMember = "Value";
+            gridViewComboBoxColumn14.Width = 77;
+            this.enumBinder14.Target = gridViewComboBoxColumn14;
+            // 
+            // enumBinder15
+            // 
+            this.enumBinder15.Source = typeof(CTPTradeApi.EnumOffsetFlagType);
+            gridViewComboBoxColumn15.DataSource = this.enumBinder15;
+            gridViewComboBoxColumn15.DataType = typeof(object);
+            gridViewComboBoxColumn15.DisplayMember = "Description";
+            gridViewComboBoxColumn15.FieldName = "OffsetFlag";
+            gridViewComboBoxColumn15.HeaderText = "OffsetFlag";
+            gridViewComboBoxColumn15.IsAutoGenerated = true;
+            gridViewComboBoxColumn15.Name = "OffsetFlag";
+            gridViewComboBoxColumn15.ValueMember = "Value";
+            this.enumBinder15.Target = gridViewComboBoxColumn15;
+            // 
+            // enumBinder16
+            // 
+            this.enumBinder16.Source = typeof(CTPTradeApi.EnumTradeTypeType);
+            gridViewComboBoxColumn16.DataSource = this.enumBinder16;
+            gridViewComboBoxColumn16.DataType = typeof(object);
+            gridViewComboBoxColumn16.DisplayMember = "Description";
+            gridViewComboBoxColumn16.FieldName = "TradeType";
+            gridViewComboBoxColumn16.HeaderText = "TradeType";
+            gridViewComboBoxColumn16.IsAutoGenerated = true;
+            gridViewComboBoxColumn16.Name = "TradeType";
+            gridViewComboBoxColumn16.ValueMember = "Value";
+            this.enumBinder16.Target = gridViewComboBoxColumn16;
+            // 
+            // enumBinder17
+            // 
+            this.enumBinder17.Source = typeof(CTPTradeApi.EnumHedgeFlagType);
+            gridViewComboBoxColumn17.DataSource = this.enumBinder17;
+            gridViewComboBoxColumn17.DataType = typeof(object);
+            gridViewComboBoxColumn17.DisplayMember = "Description";
+            gridViewComboBoxColumn17.FieldName = "HedgeFlag";
+            gridViewComboBoxColumn17.HeaderText = "HedgeFlag";
+            gridViewComboBoxColumn17.IsAutoGenerated = true;
+            gridViewComboBoxColumn17.Name = "HedgeFlag";
+            gridViewComboBoxColumn17.ValueMember = "Value";
+            this.enumBinder17.Target = gridViewComboBoxColumn17;
+            // 
+            // enumBinder18
+            // 
+            this.enumBinder18.Source = typeof(CTPTradeApi.EnumDirectionType);
+            gridViewComboBoxColumn18.DataSource = this.enumBinder18;
+            gridViewComboBoxColumn18.DisplayMember = "Description";
+            gridViewComboBoxColumn18.ValueMember = "Value";
+            this.enumBinder18.Target = gridViewComboBoxColumn18;
+            // 
+            // enumBinder19
+            // 
+            this.enumBinder19.Source = typeof(CTPTradeApi.EnumOffsetFlagType);
+            gridViewComboBoxColumn19.DataSource = this.enumBinder19;
+            gridViewComboBoxColumn19.DataType = typeof(object);
+            gridViewComboBoxColumn19.DisplayMember = "Description";
+            gridViewComboBoxColumn19.FieldName = "OffsetFlag";
+            gridViewComboBoxColumn19.HeaderText = "开平";
+            gridViewComboBoxColumn19.IsAutoGenerated = true;
+            gridViewComboBoxColumn19.Name = "OffsetFlag";
+            gridViewComboBoxColumn19.ValueMember = "Value";
+            gridViewComboBoxColumn19.Width = 48;
+            this.enumBinder19.Target = gridViewComboBoxColumn19;
+            // 
+            // enumBinder20
+            // 
+            this.enumBinder20.Source = typeof(CTPTradeApi.EnumTradeTypeType);
+            gridViewComboBoxColumn20.DataSource = this.enumBinder20;
+            gridViewComboBoxColumn20.DataType = typeof(object);
+            gridViewComboBoxColumn20.DisplayMember = "Description";
+            gridViewComboBoxColumn20.FieldName = "TradeType";
+            gridViewComboBoxColumn20.HeaderText = "成交类型";
+            gridViewComboBoxColumn20.IsAutoGenerated = true;
+            gridViewComboBoxColumn20.Name = "TradeType";
+            gridViewComboBoxColumn20.ValueMember = "Value";
+            gridViewComboBoxColumn20.Width = 86;
+            this.enumBinder20.Target = gridViewComboBoxColumn20;
+            // 
+            // enumBinder21
+            // 
+            this.enumBinder21.Source = typeof(CTPTradeApi.EnumHedgeFlagType);
+            gridViewComboBoxColumn21.DataSource = this.enumBinder21;
+            gridViewComboBoxColumn21.DataType = typeof(object);
+            gridViewComboBoxColumn21.DisplayMember = "Description";
+            gridViewComboBoxColumn21.FieldName = "HedgeFlag";
+            gridViewComboBoxColumn21.HeaderText = "投保";
+            gridViewComboBoxColumn21.IsAutoGenerated = true;
+            gridViewComboBoxColumn21.Name = "HedgeFlag";
+            gridViewComboBoxColumn21.ValueMember = "Value";
+            gridViewComboBoxColumn21.Width = 48;
+            this.enumBinder21.Target = gridViewComboBoxColumn21;
+            // 
+            // enumBinder22
+            // 
+            this.enumBinder22.Source = typeof(CTPTradeApi.EnumPosiDirectionType);
+            gridViewComboBoxColumn22.DataSource = this.enumBinder22;
+            gridViewComboBoxColumn22.DataType = typeof(object);
+            gridViewComboBoxColumn22.DisplayMember = "Description";
+            gridViewComboBoxColumn22.FieldName = "PosiDirection";
+            gridViewComboBoxColumn22.HeaderText = "买卖";
+            gridViewComboBoxColumn22.IsAutoGenerated = true;
+            gridViewComboBoxColumn22.Name = "PosiDirection";
+            gridViewComboBoxColumn22.ValueMember = "Value";
+            gridViewComboBoxColumn22.Width = 48;
+            this.enumBinder22.Target = gridViewComboBoxColumn22;
+            // 
+            // enumBinder23
+            // 
+            this.enumBinder23.Source = typeof(CTPTradeApi.EnumHedgeFlagType);
+            gridViewComboBoxColumn23.DataSource = this.enumBinder23;
+            gridViewComboBoxColumn23.DataType = typeof(object);
+            gridViewComboBoxColumn23.DisplayMember = "Description";
+            gridViewComboBoxColumn23.FieldName = "HedgeFlag";
+            gridViewComboBoxColumn23.HeaderText = "占用保证金";
+            gridViewComboBoxColumn23.IsAutoGenerated = true;
+            gridViewComboBoxColumn23.Name = "HedgeFlag";
+            gridViewComboBoxColumn23.ValueMember = "Value";
+            gridViewComboBoxColumn23.Width = 105;
+            this.enumBinder23.Target = gridViewComboBoxColumn23;
+            // 
+            // enumBinder24
+            // 
+            this.enumBinder24.Source = typeof(CTPTradeApi.EnumDirectionType);
+            gridViewComboBoxColumn24.DataSource = this.enumBinder24;
+            gridViewComboBoxColumn24.DataType = typeof(CTPTradeApi.EnumDirectionType);
+            gridViewComboBoxColumn24.DisplayMember = "Description";
+            gridViewComboBoxColumn24.FieldName = "Direction";
+            gridViewComboBoxColumn24.HeaderText = "买卖";
+            gridViewComboBoxColumn24.IsAutoGenerated = true;
+            gridViewComboBoxColumn24.Name = "Direction";
+            gridViewComboBoxColumn24.ValueMember = "Value";
+            gridViewComboBoxColumn24.Width = 48;
+            this.enumBinder24.Target = gridViewComboBoxColumn24;
+            // 
+            // enumBinder25
+            // 
+            this.enumBinder25.Source = typeof(CTPTradeApi.EnumOrderStatusType);
+            gridViewComboBoxColumn25.DataSource = this.enumBinder25;
+            gridViewComboBoxColumn25.DataType = typeof(CTPTradeApi.EnumOrderStatusType);
+            gridViewComboBoxColumn25.DisplayMember = "Description";
+            gridViewComboBoxColumn25.FieldName = "OrderStatus";
+            gridViewComboBoxColumn25.HeaderText = "挂单状态";
+            gridViewComboBoxColumn25.IsAutoGenerated = true;
+            gridViewComboBoxColumn25.Name = "OrderStatus";
+            gridViewComboBoxColumn25.ValueMember = "Value";
+            gridViewComboBoxColumn25.Width = 86;
+            this.enumBinder25.Target = gridViewComboBoxColumn25;
+            // 
+            // enumBinder26
+            // 
+            this.enumBinder26.Source = typeof(CTPTradeApi.EnumOrderTypeType);
+            gridViewComboBoxColumn26.DataSource = this.enumBinder26;
+            gridViewComboBoxColumn26.DataType = typeof(CTPTradeApi.EnumOrderTypeType);
+            gridViewComboBoxColumn26.DisplayMember = "Description";
+            gridViewComboBoxColumn26.FieldName = "OrderType";
+            gridViewComboBoxColumn26.HeaderText = "OrderType";
+            gridViewComboBoxColumn26.IsAutoGenerated = true;
+            gridViewComboBoxColumn26.Name = "OrderType";
+            gridViewComboBoxColumn26.ValueMember = "Value";
+            gridViewComboBoxColumn26.Width = 95;
+            this.enumBinder26.Target = gridViewComboBoxColumn26;
             // 
             // accountBindingSource
             // 
             this.accountBindingSource.DataSource = typeof(autotrade.model.Account);
             // 
-            // c1MainMenu1
-            // 
-            this.c1MainMenu1.AccessibleName = "Menu Bar";
-            this.c1MainMenu1.CommandHolder = this.c1CommandHolder1;
-            this.c1MainMenu1.CommandLinks.AddRange(new C1.Win.C1Command.C1CommandLink[] {
-            this.c1CommandLink1,
-            this.c1CommandLink3});
-            this.c1MainMenu1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.c1MainMenu1.Location = new System.Drawing.Point(0, 0);
-            this.c1MainMenu1.Margin = new System.Windows.Forms.Padding(4);
-            this.c1MainMenu1.Name = "c1MainMenu1";
-            this.c1MainMenu1.Size = new System.Drawing.Size(1624, 21);
-            // 
-            // c1CommandLink1
-            // 
-            this.c1CommandLink1.Command = this.c1CommandMenu1;
-            // 
-            // c1CommandLink3
-            // 
-            this.c1CommandLink3.Command = this.c1CommandMenu2;
-            this.c1CommandLink3.SortOrder = 1;
-            // 
-            // c1StatusBar1
-            // 
-            this.c1StatusBar1.Location = new System.Drawing.Point(0, 861);
-            this.c1StatusBar1.Name = "c1StatusBar1";
-            this.c1StatusBar1.Size = new System.Drawing.Size(1624, 22);
-            // 
             // marketDataBindingSource
             // 
             this.marketDataBindingSource.DataSource = typeof(autotrade.model.MarketData);
-            // 
-            // c1SplitContainer1
-            // 
-            this.c1SplitContainer1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
-            this.c1SplitContainer1.CollapsingCueColor = System.Drawing.Color.FromArgb(((int)(((byte)(133)))), ((int)(((byte)(133)))), ((int)(((byte)(150)))));
-            this.c1SplitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.c1SplitContainer1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.c1SplitContainer1.HeaderHeight = 0;
-            this.c1SplitContainer1.Location = new System.Drawing.Point(0, 21);
-            this.c1SplitContainer1.Margin = new System.Windows.Forms.Padding(4);
-            this.c1SplitContainer1.Name = "c1SplitContainer1";
-            this.c1SplitContainer1.Panels.Add(this.c1SplitterPanel1);
-            this.c1SplitContainer1.Panels.Add(this.c1SplitterPanel2);
-            this.c1SplitContainer1.Panels.Add(this.c1SplitterPanel3);
-            this.c1SplitContainer1.Panels.Add(this.c1SplitterPanel4);
-            this.c1SplitContainer1.Size = new System.Drawing.Size(1624, 840);
-            this.c1SplitContainer1.TabIndex = 26;
-            // 
-            // c1SplitterPanel1
-            // 
-            this.c1SplitterPanel1.Controls.Add(this.c1List1);
-            this.c1SplitterPanel1.Height = 68;
-            this.c1SplitterPanel1.Location = new System.Drawing.Point(0, 0);
-            this.c1SplitterPanel1.Name = "c1SplitterPanel1";
-            this.c1SplitterPanel1.Resizable = false;
-            this.c1SplitterPanel1.Size = new System.Drawing.Size(1624, 68);
-            this.c1SplitterPanel1.SizeRatio = 8.091D;
-            this.c1SplitterPanel1.TabIndex = 0;
-            this.c1SplitterPanel1.Text = "面板 1";
-            // 
-            // c1List1
-            // 
-            this.c1List1.AddItemSeparator = ';';
-            this.c1List1.Caption = "账户情况";
-            this.c1List1.CaptionHeight = 0;
-            this.c1List1.ColumnCaptionHeight = 18;
-            this.c1List1.ColumnFooterHeight = 18;
-            this.c1List1.ColumnWidth = 100;
-            this.c1List1.DataSource = this.accountBindingSource;
-            this.c1List1.DeadAreaBackColor = System.Drawing.SystemColors.ControlDark;
-            this.c1List1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.c1List1.Images.Add(((System.Drawing.Image)(resources.GetObject("c1List1.Images"))));
-            this.c1List1.ItemHeight = 16;
-            this.c1List1.Location = new System.Drawing.Point(0, 0);
-            this.c1List1.Margin = new System.Windows.Forms.Padding(4);
-            this.c1List1.MatchEntryTimeout = ((long)(2000));
-            this.c1List1.Name = "c1List1";
-            this.c1List1.PreviewInfo.Location = new System.Drawing.Point(0, 0);
-            this.c1List1.PreviewInfo.Size = new System.Drawing.Size(0, 0);
-            this.c1List1.PreviewInfo.ZoomFactor = 75D;
-            this.c1List1.PrintInfo.PageSettings = ((System.Drawing.Printing.PageSettings)(resources.GetObject("c1List1.PrintInfo.PageSettings")));
-            this.c1List1.RowDivider.Style = C1.Win.C1List.LineStyleEnum.None;
-            this.c1List1.RowSubDividerColor = System.Drawing.Color.DarkGray;
-            this.c1List1.ShowHeaderCheckBox = false;
-            this.c1List1.Size = new System.Drawing.Size(1624, 68);
-            this.c1List1.TabIndex = 25;
-            this.c1List1.Text = "c1List1";
-            this.c1List1.PropBag = resources.GetString("c1List1.PropBag");
-            // 
-            // c1SplitterPanel2
-            // 
-            this.c1SplitterPanel2.Controls.Add(this.c1DockingTab3);
-            this.c1SplitterPanel2.Height = 260;
-            this.c1SplitterPanel2.Location = new System.Drawing.Point(0, 69);
-            this.c1SplitterPanel2.Name = "c1SplitterPanel2";
-            this.c1SplitterPanel2.Size = new System.Drawing.Size(1624, 260);
-            this.c1SplitterPanel2.SizeRatio = 33.952D;
-            this.c1SplitterPanel2.TabIndex = 1;
-            this.c1SplitterPanel2.Text = "面板 2";
-            // 
-            // c1DockingTab3
-            // 
-            this.c1DockingTab3.Controls.Add(this.c1DockingTabPage3);
-            this.c1DockingTab3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.c1DockingTab3.Location = new System.Drawing.Point(0, 0);
-            this.c1DockingTab3.Name = "c1DockingTab3";
-            this.c1DockingTab3.Size = new System.Drawing.Size(1624, 260);
-            this.c1DockingTab3.TabIndex = 27;
-            this.c1DockingTab3.TabStyle = C1.Win.C1Command.TabStyleEnum.WindowsXP;
-            this.c1DockingTab3.VisualStyle = C1.Win.C1Command.VisualStyle.Custom;
-            this.c1DockingTab3.VisualStyleBase = C1.Win.C1Command.VisualStyle.WindowsXP;
-            // 
-            // c1DockingTabPage3
-            // 
-            this.c1DockingTabPage3.Controls.Add(this.c1List2);
-            this.c1DockingTabPage3.Location = new System.Drawing.Point(2, 31);
-            this.c1DockingTabPage3.Name = "c1DockingTabPage3";
-            this.c1DockingTabPage3.Size = new System.Drawing.Size(1618, 225);
-            this.c1DockingTabPage3.TabIndex = 0;
-            this.c1DockingTabPage3.Text = "第3页";
-            // 
-            // c1List2
-            // 
-            this.c1List2.AddItemSeparator = ';';
-            this.c1List2.AlternatingRows = true;
-            this.c1List2.Caption = "合约";
-            this.c1List2.CaptionHeight = 18;
-            this.c1List2.ColumnCaptionHeight = 18;
-            this.c1List2.ColumnFooterHeight = 18;
-            this.c1List2.ColumnWidth = 100;
-            this.c1List2.DataSource = this.marketDataBindingSource;
-            this.c1List2.DeadAreaBackColor = System.Drawing.SystemColors.ControlDark;
-            this.c1List2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.c1List2.Images.Add(((System.Drawing.Image)(resources.GetObject("c1List2.Images"))));
-            this.c1List2.ItemHeight = 16;
-            this.c1List2.Location = new System.Drawing.Point(0, 0);
-            this.c1List2.MatchEntryTimeout = ((long)(2000));
-            this.c1List2.Name = "c1List2";
-            this.c1List2.PreviewInfo.Location = new System.Drawing.Point(0, 0);
-            this.c1List2.PreviewInfo.Size = new System.Drawing.Size(0, 0);
-            this.c1List2.PreviewInfo.ZoomFactor = 75D;
-            this.c1List2.PrintInfo.PageSettings = ((System.Drawing.Printing.PageSettings)(resources.GetObject("c1List2.PrintInfo.PageSettings")));
-            this.c1List2.RowDivider.Style = C1.Win.C1List.LineStyleEnum.None;
-            this.c1List2.RowSubDividerColor = System.Drawing.Color.DarkGray;
-            this.c1List2.ShowHeaderCheckBox = false;
-            this.c1List2.Size = new System.Drawing.Size(1618, 225);
-            this.c1List2.TabIndex = 0;
-            this.c1List2.Text = "c1List2";
-            this.c1List2.PropBag = resources.GetString("c1List2.PropBag");
-            // 
-            // c1SplitterPanel3
-            // 
-            this.c1SplitterPanel3.Height = 181;
-            this.c1SplitterPanel3.Location = new System.Drawing.Point(0, 333);
-            this.c1SplitterPanel3.Name = "c1SplitterPanel3";
-            this.c1SplitterPanel3.Size = new System.Drawing.Size(1624, 181);
-            this.c1SplitterPanel3.SizeRatio = 36.043D;
-            this.c1SplitterPanel3.TabIndex = 2;
-            this.c1SplitterPanel3.Text = "面板 3";
-            // 
-            // c1SplitterPanel4
-            // 
-            this.c1SplitterPanel4.Controls.Add(this.c1SplitContainer2);
-            this.c1SplitterPanel4.Dock = C1.Win.C1SplitContainer.PanelDockStyle.Bottom;
-            this.c1SplitterPanel4.Height = 322;
-            this.c1SplitterPanel4.Location = new System.Drawing.Point(0, 518);
-            this.c1SplitterPanel4.Name = "c1SplitterPanel4";
-            this.c1SplitterPanel4.Size = new System.Drawing.Size(1624, 322);
-            this.c1SplitterPanel4.TabIndex = 3;
-            this.c1SplitterPanel4.Text = "面板 4";
-            // 
-            // c1SplitContainer2
-            // 
-            this.c1SplitContainer2.CollapsingCueColor = System.Drawing.Color.FromArgb(((int)(((byte)(133)))), ((int)(((byte)(133)))), ((int)(((byte)(150)))));
-            this.c1SplitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.c1SplitContainer2.HeaderHeight = 0;
-            this.c1SplitContainer2.Location = new System.Drawing.Point(0, 0);
-            this.c1SplitContainer2.Margin = new System.Windows.Forms.Padding(4);
-            this.c1SplitContainer2.Name = "c1SplitContainer2";
-            this.c1SplitContainer2.Panels.Add(this.c1SplitterPanel5);
-            this.c1SplitContainer2.Panels.Add(this.c1SplitterPanel6);
-            this.c1SplitContainer2.Size = new System.Drawing.Size(1624, 322);
-            this.c1SplitContainer2.TabIndex = 0;
-            // 
-            // c1SplitterPanel5
-            // 
-            this.c1SplitterPanel5.Controls.Add(this.c1DockingTab2);
-            this.c1SplitterPanel5.Dock = C1.Win.C1SplitContainer.PanelDockStyle.Left;
-            this.c1SplitterPanel5.Location = new System.Drawing.Point(0, 0);
-            this.c1SplitterPanel5.Name = "c1SplitterPanel5";
-            this.c1SplitterPanel5.Size = new System.Drawing.Size(810, 322);
-            this.c1SplitterPanel5.TabIndex = 0;
-            this.c1SplitterPanel5.Text = "面板 1";
-            this.c1SplitterPanel5.Width = 810;
-            // 
-            // c1DockingTab2
-            // 
-            this.c1DockingTab2.Controls.Add(this.c1DockingTabPage2);
-            this.c1DockingTab2.Controls.Add(this.c1DockingTabPage4);
-            this.c1DockingTab2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.c1DockingTab2.Location = new System.Drawing.Point(0, 0);
-            this.c1DockingTab2.Margin = new System.Windows.Forms.Padding(4);
-            this.c1DockingTab2.Name = "c1DockingTab2";
-            this.c1DockingTab2.SelectedIndex = 1;
-            this.c1DockingTab2.Size = new System.Drawing.Size(810, 322);
-            this.c1DockingTab2.TabIndex = 0;
-            this.c1DockingTab2.TabStyle = C1.Win.C1Command.TabStyleEnum.WindowsXP;
-            this.c1DockingTab2.VisualStyle = C1.Win.C1Command.VisualStyle.Custom;
-            this.c1DockingTab2.VisualStyleBase = C1.Win.C1Command.VisualStyle.WindowsXP;
-            // 
-            // c1DockingTabPage2
-            // 
-            this.c1DockingTabPage2.Controls.Add(this.c1FlexGrid1);
-            this.c1DockingTabPage2.Location = new System.Drawing.Point(2, 31);
-            this.c1DockingTabPage2.Name = "c1DockingTabPage2";
-            this.c1DockingTabPage2.Size = new System.Drawing.Size(804, 287);
-            this.c1DockingTabPage2.TabIndex = 0;
-            this.c1DockingTabPage2.Text = "持仓";
-            // 
-            // c1FlexGrid1
-            // 
-            this.c1FlexGrid1.AllowEditing = false;
-            this.c1FlexGrid1.ColumnInfo = "10,1,0,0,0,125,Columns:0{Visible:False;}\t";
-            this.c1FlexGrid1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.c1FlexGrid1.Font = new System.Drawing.Font("宋体", 12F);
-            this.c1FlexGrid1.Location = new System.Drawing.Point(0, 0);
-            this.c1FlexGrid1.Name = "c1FlexGrid1";
-            this.c1FlexGrid1.Rows.DefaultSize = 25;
-            this.c1FlexGrid1.Size = new System.Drawing.Size(804, 287);
-            this.c1FlexGrid1.StyleInfo = resources.GetString("c1FlexGrid1.StyleInfo");
-            this.c1FlexGrid1.TabIndex = 0;
-            // 
-            // c1DockingTabPage4
-            // 
-            this.c1DockingTabPage4.CaptionText = "持仓明细";
-            this.c1DockingTabPage4.Controls.Add(this.c1FlexGrid2);
-            this.c1DockingTabPage4.Location = new System.Drawing.Point(2, 31);
-            this.c1DockingTabPage4.Name = "c1DockingTabPage4";
-            this.c1DockingTabPage4.Size = new System.Drawing.Size(804, 287);
-            this.c1DockingTabPage4.TabIndex = 1;
-            this.c1DockingTabPage4.Text = "第4页";
-            // 
-            // c1FlexGrid2
-            // 
-            this.c1FlexGrid2.ColumnInfo = resources.GetString("c1FlexGrid2.ColumnInfo");
-            this.c1FlexGrid2.DataSource = this.positionDetailBindingSource;
-            this.c1FlexGrid2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.c1FlexGrid2.Font = new System.Drawing.Font("宋体", 12F);
-            this.c1FlexGrid2.Location = new System.Drawing.Point(0, 0);
-            this.c1FlexGrid2.Name = "c1FlexGrid2";
-            this.c1FlexGrid2.Rows.Count = 1;
-            this.c1FlexGrid2.Rows.DefaultSize = 25;
-            this.c1FlexGrid2.Size = new System.Drawing.Size(804, 287);
-            this.c1FlexGrid2.StyleInfo = resources.GetString("c1FlexGrid2.StyleInfo");
-            this.c1FlexGrid2.TabIndex = 0;
-            this.c1FlexGrid2.VisualStyle = C1.Win.C1FlexGrid.VisualStyle.Office2007Blue;
-            this.c1FlexGrid2.BeforeSort += new C1.Win.C1FlexGrid.SortColEventHandler(this.c1FlexGrid2_BeforeSort);
             // 
             // positionDetailBindingSource
             // 
             this.positionDetailBindingSource.DataSource = typeof(autotrade.model.PositionDetail);
             this.positionDetailBindingSource.Sort = "TradeID";
             // 
-            // c1SplitterPanel6
+            // radStatusStrip1
             // 
-            this.c1SplitterPanel6.Controls.Add(this.c1DockingTab1);
-            this.c1SplitterPanel6.Height = 322;
-            this.c1SplitterPanel6.Location = new System.Drawing.Point(814, 0);
-            this.c1SplitterPanel6.Name = "c1SplitterPanel6";
-            this.c1SplitterPanel6.Size = new System.Drawing.Size(810, 322);
-            this.c1SplitterPanel6.TabIndex = 1;
-            this.c1SplitterPanel6.Text = "面板 2";
+            this.radStatusStrip1.Location = new System.Drawing.Point(0, 855);
+            this.radStatusStrip1.Name = "radStatusStrip1";
+            this.radStatusStrip1.Size = new System.Drawing.Size(1624, 28);
+            this.radStatusStrip1.TabIndex = 0;
+            this.radStatusStrip1.Text = "radStatusStrip1";
             // 
-            // c1DockingTab1
+            // radSplitContainer1
             // 
-            this.c1DockingTab1.Controls.Add(this.c1DockingTabPage1);
-            this.c1DockingTab1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.c1DockingTab1.Location = new System.Drawing.Point(0, 0);
-            this.c1DockingTab1.Margin = new System.Windows.Forms.Padding(4);
-            this.c1DockingTab1.Name = "c1DockingTab1";
-            this.c1DockingTab1.Size = new System.Drawing.Size(810, 322);
-            this.c1DockingTab1.TabIndex = 0;
-            this.c1DockingTab1.TabStyle = C1.Win.C1Command.TabStyleEnum.WindowsXP;
-            this.c1DockingTab1.VisualStyle = C1.Win.C1Command.VisualStyle.Custom;
-            this.c1DockingTab1.VisualStyleBase = C1.Win.C1Command.VisualStyle.WindowsXP;
+            this.radSplitContainer1.Controls.Add(this.splitPanel1);
+            this.radSplitContainer1.Controls.Add(this.splitPanel2);
+            this.radSplitContainer1.Controls.Add(this.splitPanel3);
+            this.radSplitContainer1.Controls.Add(this.splitPanel4);
+            this.radSplitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.radSplitContainer1.Location = new System.Drawing.Point(0, 0);
+            this.radSplitContainer1.Name = "radSplitContainer1";
+            this.radSplitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            this.radSplitContainer1.Size = new System.Drawing.Size(1624, 855);
+            this.radSplitContainer1.TabIndex = 2;
+            this.radSplitContainer1.TabStop = false;
+            this.radSplitContainer1.Text = "radSplitContainer1";
             // 
-            // c1DockingTabPage1
+            // splitPanel1
             // 
-            this.c1DockingTabPage1.CaptionText = "成交编号";
-            this.c1DockingTabPage1.Controls.Add(this.c1List3);
-            this.c1DockingTabPage1.Location = new System.Drawing.Point(2, 31);
-            this.c1DockingTabPage1.Name = "c1DockingTabPage1";
-            this.c1DockingTabPage1.Size = new System.Drawing.Size(804, 287);
-            this.c1DockingTabPage1.TabIndex = 0;
-            this.c1DockingTabPage1.Text = "成交记录";
+            this.splitPanel1.Controls.Add(this.radGridView1);
+            this.splitPanel1.Location = new System.Drawing.Point(0, 0);
+            this.splitPanel1.Name = "splitPanel1";
+            this.splitPanel1.Size = new System.Drawing.Size(1624, 84);
+            this.splitPanel1.SizeInfo.AutoSizeScale = new System.Drawing.SizeF(0F, -0.1503559F);
+            this.splitPanel1.SizeInfo.SplitterCorrection = new System.Drawing.Size(0, -105);
+            this.splitPanel1.TabIndex = 0;
+            this.splitPanel1.TabStop = false;
+            this.splitPanel1.Text = "splitPanel1";
             // 
-            // c1List3
+            // radGridView1
             // 
-            this.c1List3.AddItemSeparator = ';';
-            this.c1List3.AlternatingRows = true;
-            this.c1List3.CaptionHeight = 0;
-            this.c1List3.ColumnCaptionHeight = 18;
-            this.c1List3.ColumnFooterHeight = 18;
-            this.c1List3.DataSource = this.tradeRecordBindingSource;
-            this.c1List3.DeadAreaBackColor = System.Drawing.SystemColors.ControlDark;
-            this.c1List3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.c1List3.Images.Add(((System.Drawing.Image)(resources.GetObject("c1List3.Images"))));
-            this.c1List3.ItemHeight = 16;
-            this.c1List3.Location = new System.Drawing.Point(0, 0);
-            this.c1List3.MatchEntryTimeout = ((long)(2000));
-            this.c1List3.Name = "c1List3";
-            this.c1List3.PreviewInfo.Location = new System.Drawing.Point(0, 0);
-            this.c1List3.PreviewInfo.Size = new System.Drawing.Size(0, 0);
-            this.c1List3.PreviewInfo.ZoomFactor = 75D;
-            this.c1List3.PrintInfo.PageSettings = ((System.Drawing.Printing.PageSettings)(resources.GetObject("c1List3.PrintInfo.PageSettings")));
-            this.c1List3.RowDivider.Style = C1.Win.C1List.LineStyleEnum.None;
-            this.c1List3.RowSubDividerColor = System.Drawing.Color.DarkGray;
-            this.c1List3.ShowHeaderCheckBox = false;
-            this.c1List3.Size = new System.Drawing.Size(804, 287);
-            this.c1List3.TabIndex = 0;
-            this.c1List3.PropBag = resources.GetString("c1List3.PropBag");
+            this.radGridView1.Controls.Add(this.radMenu1);
+            this.radGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.radGridView1.Location = new System.Drawing.Point(0, 0);
+            // 
+            // radGridView1
+            // 
+            this.radGridView1.MasterTemplate.AllowAddNewRow = false;
+            this.radGridView1.MasterTemplate.AllowDeleteRow = false;
+            this.radGridView1.MasterTemplate.AllowEditRow = false;
+            gridViewTextBoxColumn1.FieldName = "AccountID";
+            gridViewTextBoxColumn1.HeaderText = "AccountID";
+            gridViewTextBoxColumn1.IsAutoGenerated = true;
+            gridViewTextBoxColumn1.Name = "AccountID";
+            gridViewTextBoxColumn1.Width = 74;
+            gridViewDecimalColumn1.DataType = typeof(double);
+            gridViewDecimalColumn1.FieldName = "CloseProfit";
+            gridViewDecimalColumn1.HeaderText = "CloseProfit";
+            gridViewDecimalColumn1.IsAutoGenerated = true;
+            gridViewDecimalColumn1.Name = "CloseProfit";
+            gridViewDecimalColumn1.Width = 77;
+            gridViewDecimalColumn2.DataType = typeof(double);
+            gridViewDecimalColumn2.FieldName = "PositionProfit";
+            gridViewDecimalColumn2.HeaderText = "PositionProfit";
+            gridViewDecimalColumn2.IsAutoGenerated = true;
+            gridViewDecimalColumn2.Name = "PositionProfit";
+            gridViewDecimalColumn2.Width = 93;
+            gridViewDecimalColumn3.DataType = typeof(double);
+            gridViewDecimalColumn3.FieldName = "Available";
+            gridViewDecimalColumn3.HeaderText = "Available";
+            gridViewDecimalColumn3.IsAutoGenerated = true;
+            gridViewDecimalColumn3.Name = "Available";
+            gridViewDecimalColumn3.Width = 65;
+            gridViewDecimalColumn4.DataType = typeof(double);
+            gridViewDecimalColumn4.FieldName = "FrozenCash";
+            gridViewDecimalColumn4.HeaderText = "FrozenCash";
+            gridViewDecimalColumn4.IsAutoGenerated = true;
+            gridViewDecimalColumn4.Name = "FrozenCash";
+            gridViewDecimalColumn4.Width = 81;
+            this.radGridView1.MasterTemplate.Columns.AddRange(new Telerik.WinControls.UI.GridViewDataColumn[] {
+            gridViewTextBoxColumn1,
+            gridViewDecimalColumn1,
+            gridViewDecimalColumn2,
+            gridViewDecimalColumn3,
+            gridViewDecimalColumn4});
+            this.radGridView1.MasterTemplate.DataSource = this.accountBindingSource;
+            this.radGridView1.Name = "radGridView1";
+            this.radGridView1.Size = new System.Drawing.Size(1624, 84);
+            this.radGridView1.TabIndex = 0;
+            this.radGridView1.Text = "radGridView1";
+            // 
+            // radMenu1
+            // 
+            this.radMenu1.Location = new System.Drawing.Point(0, 0);
+            this.radMenu1.Name = "radMenu1";
+            this.radMenu1.Size = new System.Drawing.Size(1624, 24);
+            this.radMenu1.TabIndex = 1;
+            this.radMenu1.Text = "radMenu1";
+            // 
+            // splitPanel2
+            // 
+            this.splitPanel2.Controls.Add(this.radGridView2);
+            this.splitPanel2.Location = new System.Drawing.Point(0, 88);
+            this.splitPanel2.Name = "splitPanel2";
+            this.splitPanel2.Size = new System.Drawing.Size(1624, 131);
+            this.splitPanel2.SizeInfo.AutoSizeScale = new System.Drawing.SizeF(0F, -0.09460261F);
+            this.splitPanel2.SizeInfo.SplitterCorrection = new System.Drawing.Size(0, -84);
+            this.splitPanel2.TabIndex = 1;
+            this.splitPanel2.TabStop = false;
+            this.splitPanel2.Text = "splitPanel2";
+            // 
+            // radGridView2
+            // 
+            this.radGridView2.BackColor = System.Drawing.SystemColors.Control;
+            this.radGridView2.Cursor = System.Windows.Forms.Cursors.Default;
+            this.radGridView2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.radGridView2.Font = new System.Drawing.Font("Segoe UI", 8.25F);
+            this.radGridView2.ForeColor = System.Drawing.Color.Black;
+            this.radGridView2.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.radGridView2.Location = new System.Drawing.Point(0, 0);
+            // 
+            // radGridView2
+            // 
+            this.radGridView2.MasterTemplate.AllowAddNewRow = false;
+            this.radGridView2.MasterTemplate.AllowDeleteRow = false;
+            this.radGridView2.MasterTemplate.AllowEditRow = false;
+            gridViewTextBoxColumn2.EnableExpressionEditor = false;
+            gridViewTextBoxColumn2.FieldName = "InstrumentID";
+            gridViewTextBoxColumn2.HeaderText = "合约";
+            gridViewTextBoxColumn2.IsAutoGenerated = true;
+            gridViewTextBoxColumn2.Name = "InstrumentID";
+            gridViewTextBoxColumn2.Width = 70;
+            gridViewDecimalColumn5.DataType = typeof(double);
+            gridViewDecimalColumn5.DecimalPlaces = 1;
+            gridViewDecimalColumn5.EnableExpressionEditor = false;
+            gridViewDecimalColumn5.FieldName = "LastPrice";
+            gridViewDecimalColumn5.FormatString = "{0:F1}";
+            gridViewDecimalColumn5.HeaderText = "最新价";
+            gridViewDecimalColumn5.IsAutoGenerated = true;
+            gridViewDecimalColumn5.Name = "LastPrice";
+            gridViewDecimalColumn5.Width = 67;
+            conditionalFormattingObject1.ApplyToRow = true;
+            conditionalFormattingObject1.CellBackColor = System.Drawing.Color.Empty;
+            conditionalFormattingObject1.CellFont = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            conditionalFormattingObject1.CellForeColor = System.Drawing.Color.Red;
+            conditionalFormattingObject1.ConditionType = Telerik.WinControls.UI.ConditionTypes.Greater;
+            conditionalFormattingObject1.Name = "NewCondition";
+            conditionalFormattingObject1.RowBackColor = System.Drawing.Color.White;
+            conditionalFormattingObject1.RowForeColor = System.Drawing.Color.Empty;
+            conditionalFormattingObject1.TValue1 = "0";
+            conditionalFormattingObject2.ApplyToRow = true;
+            conditionalFormattingObject2.CellBackColor = System.Drawing.Color.Empty;
+            conditionalFormattingObject2.CellFont = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            conditionalFormattingObject2.CellForeColor = System.Drawing.Color.Green;
+            conditionalFormattingObject2.ConditionType = Telerik.WinControls.UI.ConditionTypes.Less;
+            conditionalFormattingObject2.Name = "NewCondition";
+            conditionalFormattingObject2.RowBackColor = System.Drawing.Color.Empty;
+            conditionalFormattingObject2.RowForeColor = System.Drawing.Color.Empty;
+            conditionalFormattingObject2.TValue1 = "0";
+            gridViewDecimalColumn6.ConditionalFormattingObjectList.Add(conditionalFormattingObject1);
+            gridViewDecimalColumn6.ConditionalFormattingObjectList.Add(conditionalFormattingObject2);
+            gridViewDecimalColumn6.DecimalPlaces = 1;
+            gridViewDecimalColumn6.EnableExpressionEditor = false;
+            gridViewDecimalColumn6.Expression = "LastPrice - PreSettlementPrice ";
+            gridViewDecimalColumn6.FormatString = "{0:F1}";
+            gridViewDecimalColumn6.HeaderText = "涨跌";
+            gridViewDecimalColumn6.Name = "Change";
+            gridViewDecimalColumn6.ReadOnly = true;
+            gridViewDecimalColumn7.DataType = typeof(double);
+            gridViewDecimalColumn7.DecimalPlaces = 1;
+            gridViewDecimalColumn7.EnableExpressionEditor = false;
+            gridViewDecimalColumn7.FieldName = "BidPrice1";
+            gridViewDecimalColumn7.FormatString = "{0:F1}";
+            gridViewDecimalColumn7.HeaderText = "买价";
+            gridViewDecimalColumn7.IsAutoGenerated = true;
+            gridViewDecimalColumn7.Name = "BidPrice1";
+            gridViewDecimalColumn7.Width = 75;
+            gridViewDecimalColumn8.DataType = typeof(int);
+            gridViewDecimalColumn8.DecimalPlaces = 1;
+            gridViewDecimalColumn8.EnableExpressionEditor = false;
+            gridViewDecimalColumn8.FieldName = "BidVolume1";
+            gridViewDecimalColumn8.HeaderText = "买量";
+            gridViewDecimalColumn8.IsAutoGenerated = true;
+            gridViewDecimalColumn8.Name = "BidVolume1";
+            gridViewDecimalColumn8.Width = 48;
+            gridViewDecimalColumn9.DataType = typeof(double);
+            gridViewDecimalColumn9.DecimalPlaces = 1;
+            gridViewDecimalColumn9.EnableExpressionEditor = false;
+            gridViewDecimalColumn9.FieldName = "AskPrice1";
+            gridViewDecimalColumn9.FormatString = "{0:F1}";
+            gridViewDecimalColumn9.HeaderText = "卖价";
+            gridViewDecimalColumn9.IsAutoGenerated = true;
+            gridViewDecimalColumn9.Name = "AskPrice1";
+            gridViewDecimalColumn9.Width = 78;
+            gridViewDecimalColumn10.DataType = typeof(int);
+            gridViewDecimalColumn10.DecimalPlaces = 1;
+            gridViewDecimalColumn10.EnableExpressionEditor = false;
+            gridViewDecimalColumn10.FieldName = "AskVolume1";
+            gridViewDecimalColumn10.HeaderText = "卖量";
+            gridViewDecimalColumn10.IsAutoGenerated = true;
+            gridViewDecimalColumn10.Name = "AskVolume1";
+            gridViewDecimalColumn10.Width = 48;
+            gridViewDecimalColumn11.DataType = typeof(int);
+            gridViewDecimalColumn11.EnableExpressionEditor = false;
+            gridViewDecimalColumn11.FieldName = "Volume";
+            gridViewDecimalColumn11.HeaderText = "成交量";
+            gridViewDecimalColumn11.IsAutoGenerated = true;
+            gridViewDecimalColumn11.Name = "Volume";
+            gridViewDecimalColumn11.Width = 88;
+            gridViewDecimalColumn12.DataType = typeof(double);
+            gridViewDecimalColumn12.EnableExpressionEditor = false;
+            gridViewDecimalColumn12.FieldName = "OpenInterest";
+            gridViewDecimalColumn12.HeaderText = "持仓量";
+            gridViewDecimalColumn12.IsAutoGenerated = true;
+            gridViewDecimalColumn12.Name = "OpenInterest";
+            gridViewDecimalColumn12.Width = 89;
+            gridViewDecimalColumn13.DataType = typeof(double);
+            gridViewDecimalColumn13.DecimalPlaces = 1;
+            gridViewDecimalColumn13.EnableExpressionEditor = false;
+            gridViewDecimalColumn13.FieldName = "UpperLimitPrice";
+            gridViewDecimalColumn13.FormatString = "{0:F1}";
+            gridViewDecimalColumn13.HeaderText = "涨停价";
+            gridViewDecimalColumn13.IsAutoGenerated = true;
+            gridViewDecimalColumn13.Name = "UpperLimitPrice";
+            gridViewDecimalColumn13.Width = 67;
+            gridViewDecimalColumn14.DataType = typeof(double);
+            gridViewDecimalColumn14.DecimalPlaces = 1;
+            gridViewDecimalColumn14.EnableExpressionEditor = false;
+            gridViewDecimalColumn14.FieldName = "LowerLimitPrice";
+            gridViewDecimalColumn14.FormatString = "{0:F1}";
+            gridViewDecimalColumn14.HeaderText = "跌停价";
+            gridViewDecimalColumn14.IsAutoGenerated = true;
+            gridViewDecimalColumn14.Name = "LowerLimitPrice";
+            gridViewDecimalColumn14.Width = 67;
+            gridViewDecimalColumn15.DataType = typeof(double);
+            gridViewDecimalColumn15.DecimalPlaces = 1;
+            gridViewDecimalColumn15.EnableExpressionEditor = false;
+            gridViewDecimalColumn15.FieldName = "OpenPrice";
+            gridViewDecimalColumn15.FormatString = "{0:F1}";
+            gridViewDecimalColumn15.HeaderText = "今开盘";
+            gridViewDecimalColumn15.IsAutoGenerated = true;
+            gridViewDecimalColumn15.Name = "OpenPrice";
+            gridViewDecimalColumn15.Width = 67;
+            gridViewDecimalColumn16.DataType = typeof(double);
+            gridViewDecimalColumn16.DecimalPlaces = 1;
+            gridViewDecimalColumn16.EnableExpressionEditor = false;
+            gridViewDecimalColumn16.FieldName = "PreSettlementPrice";
+            gridViewDecimalColumn16.FormatString = "{0:F1}";
+            gridViewDecimalColumn16.HeaderText = "昨结算";
+            gridViewDecimalColumn16.IsAutoGenerated = true;
+            gridViewDecimalColumn16.Name = "PreSettlementPrice";
+            gridViewDecimalColumn16.Width = 67;
+            gridViewDecimalColumn17.DataType = typeof(double);
+            gridViewDecimalColumn17.DecimalPlaces = 1;
+            gridViewDecimalColumn17.EnableExpressionEditor = false;
+            gridViewDecimalColumn17.FieldName = "HighestPrice";
+            gridViewDecimalColumn17.FormatString = "{0:F1}";
+            gridViewDecimalColumn17.HeaderText = "最高价";
+            gridViewDecimalColumn17.IsAutoGenerated = true;
+            gridViewDecimalColumn17.Name = "HighestPrice";
+            gridViewDecimalColumn17.Width = 67;
+            gridViewDecimalColumn18.DataType = typeof(double);
+            gridViewDecimalColumn18.DecimalPlaces = 1;
+            gridViewDecimalColumn18.EnableExpressionEditor = false;
+            gridViewDecimalColumn18.FieldName = "LowestPrice";
+            gridViewDecimalColumn18.FormatString = "{0:F1}";
+            gridViewDecimalColumn18.HeaderText = "最低价";
+            gridViewDecimalColumn18.IsAutoGenerated = true;
+            gridViewDecimalColumn18.Name = "LowestPrice";
+            gridViewDecimalColumn18.Width = 67;
+            gridViewDecimalColumn19.EnableExpressionEditor = false;
+            gridViewDecimalColumn19.Expression = "Change / PreSettlementPrice ";
+            gridViewDecimalColumn19.FormatString = "{0:P2}";
+            gridViewDecimalColumn19.HeaderText = "涨跌幅";
+            gridViewDecimalColumn19.Name = "column2";
+            gridViewDecimalColumn19.ReadOnly = true;
+            gridViewDecimalColumn19.Width = 77;
+            gridViewDecimalColumn20.DataType = typeof(double);
+            gridViewDecimalColumn20.DecimalPlaces = 1;
+            gridViewDecimalColumn20.EnableExpressionEditor = false;
+            gridViewDecimalColumn20.FieldName = "PreClosePrice";
+            gridViewDecimalColumn20.FormatString = "{0:F1}";
+            gridViewDecimalColumn20.HeaderText = "昨收盘";
+            gridViewDecimalColumn20.IsAutoGenerated = true;
+            gridViewDecimalColumn20.Name = "PreClosePrice";
+            gridViewDecimalColumn20.Width = 67;
+            gridViewDecimalColumn21.DataType = typeof(double);
+            gridViewDecimalColumn21.EnableExpressionEditor = false;
+            gridViewDecimalColumn21.FieldName = "Turnover";
+            gridViewDecimalColumn21.FormatString = "{0:N0}";
+            gridViewDecimalColumn21.HeaderText = "成交额";
+            gridViewDecimalColumn21.IsAutoGenerated = true;
+            gridViewDecimalColumn21.Name = "Turnover";
+            gridViewDecimalColumn21.Width = 116;
+            gridViewTextBoxColumn3.EnableExpressionEditor = false;
+            gridViewTextBoxColumn3.FieldName = "ExchangeID";
+            gridViewTextBoxColumn3.HeaderText = "交易所";
+            gridViewTextBoxColumn3.Name = "ExchangeID";
+            gridViewTextBoxColumn3.Width = 78;
+            gridViewTextBoxColumn4.EnableExpressionEditor = false;
+            gridViewTextBoxColumn4.FieldName = "UpdateTime";
+            gridViewTextBoxColumn4.HeaderText = "行情更新时间";
+            gridViewTextBoxColumn4.IsAutoGenerated = true;
+            gridViewTextBoxColumn4.Name = "UpdateTime";
+            gridViewTextBoxColumn4.Width = 124;
+            gridViewTextBoxColumn5.EnableExpressionEditor = false;
+            gridViewTextBoxColumn5.FieldName = "TradingDay";
+            gridViewTextBoxColumn5.HeaderText = "交易日";
+            gridViewTextBoxColumn5.IsAutoGenerated = true;
+            gridViewTextBoxColumn5.Name = "TradingDay";
+            gridViewTextBoxColumn5.Width = 98;
+            gridViewDecimalColumn22.DataType = typeof(double);
+            gridViewDecimalColumn22.DecimalPlaces = 1;
+            gridViewDecimalColumn22.EnableExpressionEditor = false;
+            gridViewDecimalColumn22.FieldName = "AveragePrice";
+            gridViewDecimalColumn22.FormatString = "{0:F1}";
+            gridViewDecimalColumn22.HeaderText = "均价";
+            gridViewDecimalColumn22.IsAutoGenerated = true;
+            gridViewDecimalColumn22.Name = "AveragePrice";
+            gridViewDecimalColumn22.Width = 114;
+            this.radGridView2.MasterTemplate.Columns.AddRange(new Telerik.WinControls.UI.GridViewDataColumn[] {
+            gridViewTextBoxColumn2,
+            gridViewDecimalColumn5,
+            gridViewDecimalColumn6,
+            gridViewDecimalColumn7,
+            gridViewDecimalColumn8,
+            gridViewDecimalColumn9,
+            gridViewDecimalColumn10,
+            gridViewDecimalColumn11,
+            gridViewDecimalColumn12,
+            gridViewDecimalColumn13,
+            gridViewDecimalColumn14,
+            gridViewDecimalColumn15,
+            gridViewDecimalColumn16,
+            gridViewDecimalColumn17,
+            gridViewDecimalColumn18,
+            gridViewDecimalColumn19,
+            gridViewDecimalColumn20,
+            gridViewDecimalColumn21,
+            gridViewTextBoxColumn3,
+            gridViewTextBoxColumn4,
+            gridViewTextBoxColumn5,
+            gridViewDecimalColumn22});
+            this.radGridView2.MasterTemplate.DataSource = this.marketDataBindingSource;
+            this.radGridView2.Name = "radGridView2";
+            this.radGridView2.Padding = new System.Windows.Forms.Padding(0, 0, 0, 1);
+            this.radGridView2.ReadOnly = true;
+            this.radGridView2.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.radGridView2.Size = new System.Drawing.Size(1624, 131);
+            this.radGridView2.TabIndex = 0;
+            this.radGridView2.Text = "radGridView2";
+            this.radGridView2.ThemeName = "TelerikMetro";
+            // 
+            // splitPanel3
+            // 
+            this.splitPanel3.Controls.Add(this.radSplitContainer3);
+            this.splitPanel3.Location = new System.Drawing.Point(0, 223);
+            this.splitPanel3.Name = "splitPanel3";
+            this.splitPanel3.Size = new System.Drawing.Size(1624, 300);
+            this.splitPanel3.SizeInfo.AutoSizeScale = new System.Drawing.SizeF(0F, 0.1058719F);
+            this.splitPanel3.SizeInfo.SplitterCorrection = new System.Drawing.Size(0, 70);
+            this.splitPanel3.TabIndex = 2;
+            this.splitPanel3.TabStop = false;
+            this.splitPanel3.Text = "splitPanel3";
+            // 
+            // radSplitContainer3
+            // 
+            this.radSplitContainer3.Controls.Add(this.splitPanel7);
+            this.radSplitContainer3.Controls.Add(this.splitPanel8);
+            this.radSplitContainer3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.radSplitContainer3.Location = new System.Drawing.Point(0, 0);
+            this.radSplitContainer3.Name = "radSplitContainer3";
+            this.radSplitContainer3.Size = new System.Drawing.Size(1624, 300);
+            this.radSplitContainer3.TabIndex = 0;
+            this.radSplitContainer3.TabStop = false;
+            this.radSplitContainer3.Text = "radSplitContainer3";
+            // 
+            // splitPanel7
+            // 
+            this.splitPanel7.Location = new System.Drawing.Point(0, 0);
+            this.splitPanel7.Name = "splitPanel7";
+            this.splitPanel7.Size = new System.Drawing.Size(450, 300);
+            this.splitPanel7.SizeInfo.AutoSizeScale = new System.Drawing.SizeF(-0.2222222F, 0F);
+            this.splitPanel7.SizeInfo.SplitterCorrection = new System.Drawing.Size(-360, 0);
+            this.splitPanel7.TabIndex = 0;
+            this.splitPanel7.TabStop = false;
+            this.splitPanel7.Text = "splitPanel7";
+            // 
+            // splitPanel8
+            // 
+            this.splitPanel8.Controls.Add(this.radPageView3);
+            this.splitPanel8.Location = new System.Drawing.Point(454, 0);
+            this.splitPanel8.Name = "splitPanel8";
+            this.splitPanel8.Size = new System.Drawing.Size(1170, 300);
+            this.splitPanel8.SizeInfo.AutoSizeScale = new System.Drawing.SizeF(0.2222222F, 0F);
+            this.splitPanel8.SizeInfo.SplitterCorrection = new System.Drawing.Size(360, 0);
+            this.splitPanel8.TabIndex = 1;
+            this.splitPanel8.TabStop = false;
+            this.splitPanel8.Text = "splitPanel8";
+            // 
+            // radPageView3
+            // 
+            this.radPageView3.Controls.Add(this.radPageViewPage4);
+            this.radPageView3.Controls.Add(this.radPageViewPage5);
+            this.radPageView3.Controls.Add(this.radPageViewPage6);
+            this.radPageView3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.radPageView3.Location = new System.Drawing.Point(0, 0);
+            this.radPageView3.Name = "radPageView3";
+            this.radPageView3.SelectedPage = this.radPageViewPage5;
+            this.radPageView3.Size = new System.Drawing.Size(1170, 300);
+            this.radPageView3.TabIndex = 0;
+            this.radPageView3.ThemeName = "TelerikMetro";
+            // 
+            // radPageViewPage4
+            // 
+            this.radPageViewPage4.ItemSize = new System.Drawing.SizeF(78F, 30F);
+            this.radPageViewPage4.Location = new System.Drawing.Point(5, 36);
+            this.radPageViewPage4.Name = "radPageViewPage4";
+            this.radPageViewPage4.Size = new System.Drawing.Size(800, 259);
+            this.radPageViewPage4.Text = "未成交单";
+            // 
+            // radPageViewPage5
+            // 
+            this.radPageViewPage5.Controls.Add(this.radGridView6);
+            this.radPageViewPage5.ItemSize = new System.Drawing.SizeF(94F, 30F);
+            this.radPageViewPage5.Location = new System.Drawing.Point(5, 36);
+            this.radPageViewPage5.Name = "radPageViewPage5";
+            this.radPageViewPage5.Size = new System.Drawing.Size(1160, 259);
+            this.radPageViewPage5.Text = "所有委托单";
+            // 
+            // radGridView6
+            // 
+            this.radGridView6.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.radGridView6.Location = new System.Drawing.Point(0, 0);
+            // 
+            // radGridView6
+            // 
+            this.radGridView6.MasterTemplate.AllowAddNewRow = false;
+            this.radGridView6.MasterTemplate.AllowDeleteRow = false;
+            this.radGridView6.MasterTemplate.AllowEditRow = false;
+            gridViewTextBoxColumn6.FieldName = "OrderSysID";
+            gridViewTextBoxColumn6.HeaderText = "报单编号";
+            gridViewTextBoxColumn6.IsAutoGenerated = true;
+            gridViewTextBoxColumn6.Name = "OrderSysID";
+            gridViewTextBoxColumn6.Width = 86;
+            gridViewTextBoxColumn7.FieldName = "InstrumentID";
+            gridViewTextBoxColumn7.HeaderText = "合约";
+            gridViewTextBoxColumn7.IsAutoGenerated = true;
+            gridViewTextBoxColumn7.Name = "InstrumentID";
+            gridViewTextBoxColumn7.Width = 48;
+            gridViewDecimalColumn23.DataType = typeof(double);
+            gridViewDecimalColumn23.FieldName = "LimitPrice";
+            gridViewDecimalColumn23.HeaderText = "报单价格";
+            gridViewDecimalColumn23.IsAutoGenerated = true;
+            gridViewDecimalColumn23.Name = "LimitPrice";
+            gridViewDecimalColumn23.Width = 86;
+            gridViewDecimalColumn24.DataType = typeof(int);
+            gridViewDecimalColumn24.FieldName = "VolumeTotalOriginal";
+            gridViewDecimalColumn24.HeaderText = "报单手数";
+            gridViewDecimalColumn24.IsAutoGenerated = true;
+            gridViewDecimalColumn24.Name = "VolumeTotalOriginal";
+            gridViewDecimalColumn24.Width = 86;
+            gridViewDecimalColumn25.DataType = typeof(int);
+            gridViewDecimalColumn25.FieldName = "VolumeTraded";
+            gridViewDecimalColumn25.HeaderText = "成交手数";
+            gridViewDecimalColumn25.IsAutoGenerated = true;
+            gridViewDecimalColumn25.Name = "VolumeTraded";
+            gridViewDecimalColumn25.Width = 86;
+            gridViewDecimalColumn26.DataType = typeof(int);
+            gridViewDecimalColumn26.FieldName = "VolumeTotal";
+            gridViewDecimalColumn26.HeaderText = "未成交手数";
+            gridViewDecimalColumn26.IsAutoGenerated = true;
+            gridViewDecimalColumn26.Name = "VolumeTotal";
+            gridViewDecimalColumn26.Width = 105;
+            gridViewTextBoxColumn8.FieldName = "InsertTime";
+            gridViewTextBoxColumn8.HeaderText = "报单时间";
+            gridViewTextBoxColumn8.IsAutoGenerated = true;
+            gridViewTextBoxColumn8.Name = "InsertTime";
+            gridViewTextBoxColumn8.Width = 86;
+            gridViewTextBoxColumn9.FieldName = "ActiveTime";
+            gridViewTextBoxColumn9.HeaderText = "最后成交时间";
+            gridViewTextBoxColumn9.IsAutoGenerated = true;
+            gridViewTextBoxColumn9.Name = "ActiveTime";
+            gridViewTextBoxColumn9.Width = 124;
+            gridViewTextBoxColumn10.FieldName = "StatusMsg";
+            gridViewTextBoxColumn10.HeaderText = "详细状态";
+            gridViewTextBoxColumn10.IsAutoGenerated = true;
+            gridViewTextBoxColumn10.Name = "StatusMsg";
+            gridViewTextBoxColumn10.Width = 86;
+            gridViewTextBoxColumn11.FieldName = "ExchangeID";
+            gridViewTextBoxColumn11.HeaderText = "交易所";
+            gridViewTextBoxColumn11.IsAutoGenerated = true;
+            gridViewTextBoxColumn11.Name = "ExchangeID";
+            gridViewTextBoxColumn11.Width = 67;
+            this.radGridView6.MasterTemplate.Columns.AddRange(new Telerik.WinControls.UI.GridViewDataColumn[] {
+            gridViewTextBoxColumn6,
+            gridViewTextBoxColumn7,
+            gridViewComboBoxColumn24,
+            gridViewComboBoxColumn25,
+            gridViewDecimalColumn23,
+            gridViewDecimalColumn24,
+            gridViewComboBoxColumn26,
+            gridViewDecimalColumn25,
+            gridViewDecimalColumn26,
+            gridViewTextBoxColumn8,
+            gridViewTextBoxColumn9,
+            gridViewTextBoxColumn10,
+            gridViewTextBoxColumn11});
+            this.radGridView6.MasterTemplate.DataSource = this.orderRecordBindingSource;
+            this.radGridView6.Name = "radGridView6";
+            this.radGridView6.ReadOnly = true;
+            this.radGridView6.Size = new System.Drawing.Size(1160, 259);
+            this.radGridView6.TabIndex = 0;
+            this.radGridView6.Text = "radGridView6";
+            this.radGridView6.ThemeName = "TelerikMetro";
+            // 
+            // orderRecordBindingSource
+            // 
+            this.orderRecordBindingSource.DataSource = typeof(autotrade.model.OrderRecord);
+            // 
+            // radPageViewPage6
+            // 
+            this.radPageViewPage6.ItemSize = new System.Drawing.SizeF(111F, 30F);
+            this.radPageViewPage6.Location = new System.Drawing.Point(5, 36);
+            this.radPageViewPage6.Name = "radPageViewPage6";
+            this.radPageViewPage6.Size = new System.Drawing.Size(800, 259);
+            this.radPageViewPage6.Text = "预埋单条件单";
+            // 
+            // splitPanel4
+            // 
+            this.splitPanel4.Controls.Add(this.radSplitContainer2);
+            this.splitPanel4.Location = new System.Drawing.Point(0, 527);
+            this.splitPanel4.Name = "splitPanel4";
+            this.splitPanel4.Size = new System.Drawing.Size(1624, 328);
+            this.splitPanel4.SizeInfo.AutoSizeScale = new System.Drawing.SizeF(0F, 0.1390866F);
+            this.splitPanel4.SizeInfo.SplitterCorrection = new System.Drawing.Size(0, 119);
+            this.splitPanel4.TabIndex = 3;
+            this.splitPanel4.TabStop = false;
+            this.splitPanel4.Text = "splitPanel4";
+            // 
+            // radSplitContainer2
+            // 
+            this.radSplitContainer2.Controls.Add(this.splitPanel5);
+            this.radSplitContainer2.Controls.Add(this.splitPanel6);
+            this.radSplitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.radSplitContainer2.Location = new System.Drawing.Point(0, 0);
+            this.radSplitContainer2.Name = "radSplitContainer2";
+            this.radSplitContainer2.Size = new System.Drawing.Size(1624, 328);
+            this.radSplitContainer2.TabIndex = 0;
+            this.radSplitContainer2.TabStop = false;
+            this.radSplitContainer2.Text = "radSplitContainer2";
+            // 
+            // splitPanel5
+            // 
+            this.splitPanel5.Controls.Add(this.radPageView1);
+            this.splitPanel5.Location = new System.Drawing.Point(0, 0);
+            this.splitPanel5.Name = "splitPanel5";
+            this.splitPanel5.Size = new System.Drawing.Size(810, 328);
+            this.splitPanel5.TabIndex = 0;
+            this.splitPanel5.TabStop = false;
+            this.splitPanel5.Text = "splitPanel5";
+            // 
+            // radPageView1
+            // 
+            this.radPageView1.Controls.Add(this.radPageViewPage1);
+            this.radPageView1.Controls.Add(this.radPageViewPage2);
+            this.radPageView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.radPageView1.Location = new System.Drawing.Point(0, 0);
+            this.radPageView1.Name = "radPageView1";
+            this.radPageView1.SelectedPage = this.radPageViewPage1;
+            this.radPageView1.Size = new System.Drawing.Size(810, 328);
+            this.radPageView1.TabIndex = 0;
+            this.radPageView1.Text = "持仓";
+            this.radPageView1.ThemeName = "TelerikMetro";
+            ((Telerik.WinControls.UI.RadPageViewStripElement)(this.radPageView1.GetChildAt(0))).StripButtons = Telerik.WinControls.UI.StripViewButtons.None;
+            ((Telerik.WinControls.UI.RadPageViewStripElement)(this.radPageView1.GetChildAt(0))).ItemFitMode = Telerik.WinControls.UI.StripViewItemFitMode.Shrink;
+            // 
+            // radPageViewPage1
+            // 
+            this.radPageViewPage1.Controls.Add(this.radGridView5);
+            this.radPageViewPage1.ItemSize = new System.Drawing.SizeF(46F, 30F);
+            this.radPageViewPage1.Location = new System.Drawing.Point(5, 36);
+            this.radPageViewPage1.Name = "radPageViewPage1";
+            this.radPageViewPage1.Size = new System.Drawing.Size(800, 287);
+            this.radPageViewPage1.Text = "持仓";
+            // 
+            // radGridView5
+            // 
+            this.radGridView5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.radGridView5.Location = new System.Drawing.Point(0, 0);
+            // 
+            // radGridView5
+            // 
+            this.radGridView5.MasterTemplate.AllowAddNewRow = false;
+            this.radGridView5.MasterTemplate.AllowDeleteRow = false;
+            this.radGridView5.MasterTemplate.AllowEditRow = false;
+            gridViewTextBoxColumn12.FieldName = "InstrumentID";
+            gridViewTextBoxColumn12.HeaderText = "合约";
+            gridViewTextBoxColumn12.IsAutoGenerated = true;
+            gridViewTextBoxColumn12.Name = "InstrumentID";
+            gridViewTextBoxColumn12.Width = 48;
+            gridViewDecimalColumn27.DataType = typeof(int);
+            gridViewDecimalColumn27.FieldName = "Position";
+            gridViewDecimalColumn27.HeaderText = "总持仓";
+            gridViewDecimalColumn27.IsAutoGenerated = true;
+            gridViewDecimalColumn27.Name = "Position";
+            gridViewDecimalColumn27.Width = 67;
+            gridViewDecimalColumn28.DataType = typeof(int);
+            gridViewDecimalColumn28.FieldName = "YdPosition";
+            gridViewDecimalColumn28.HeaderText = "昨仓";
+            gridViewDecimalColumn28.IsAutoGenerated = true;
+            gridViewDecimalColumn28.Name = "YdPosition";
+            gridViewDecimalColumn28.Width = 48;
+            gridViewDecimalColumn29.DataType = typeof(int);
+            gridViewDecimalColumn29.FieldName = "TodayPosition";
+            gridViewDecimalColumn29.HeaderText = "今仓";
+            gridViewDecimalColumn29.IsAutoGenerated = true;
+            gridViewDecimalColumn29.Name = "TodayPosition";
+            gridViewDecimalColumn29.Width = 48;
+            gridViewDecimalColumn30.DataType = typeof(double);
+            gridViewDecimalColumn30.FieldName = "PositionCost";
+            gridViewDecimalColumn30.HeaderText = "持仓均价";
+            gridViewDecimalColumn30.IsAutoGenerated = true;
+            gridViewDecimalColumn30.Name = "PositionCost";
+            gridViewDecimalColumn30.Width = 86;
+            gridViewDecimalColumn31.DataType = typeof(double);
+            gridViewDecimalColumn31.FieldName = "UseMargin";
+            gridViewDecimalColumn31.HeaderText = "持仓盈亏";
+            gridViewDecimalColumn31.IsAutoGenerated = true;
+            gridViewDecimalColumn31.Name = "UseMargin";
+            gridViewDecimalColumn31.Width = 86;
+            gridViewTextBoxColumn13.FieldName = "ExchangeID";
+            gridViewTextBoxColumn13.HeaderText = "交易所";
+            gridViewTextBoxColumn13.IsAutoGenerated = true;
+            gridViewTextBoxColumn13.Name = "ExchangeID";
+            gridViewTextBoxColumn13.Width = 67;
+            this.radGridView5.MasterTemplate.Columns.AddRange(new Telerik.WinControls.UI.GridViewDataColumn[] {
+            gridViewTextBoxColumn12,
+            gridViewComboBoxColumn22,
+            gridViewDecimalColumn27,
+            gridViewDecimalColumn28,
+            gridViewDecimalColumn29,
+            gridViewDecimalColumn30,
+            gridViewDecimalColumn31,
+            gridViewComboBoxColumn23,
+            gridViewTextBoxColumn13});
+            this.radGridView5.MasterTemplate.DataSource = this.positionRecordBindingSource;
+            this.radGridView5.Name = "radGridView5";
+            this.radGridView5.Size = new System.Drawing.Size(800, 287);
+            this.radGridView5.TabIndex = 0;
+            this.radGridView5.Text = "radGridView5";
+            this.radGridView5.ThemeName = "TelerikMetro";
+            // 
+            // positionRecordBindingSource
+            // 
+            this.positionRecordBindingSource.DataSource = typeof(autotrade.model.PositionRecord);
+            // 
+            // radPageViewPage2
+            // 
+            this.radPageViewPage2.Controls.Add(this.radGridView3);
+            this.radPageViewPage2.ItemSize = new System.Drawing.SizeF(78F, 30F);
+            this.radPageViewPage2.Location = new System.Drawing.Point(5, 36);
+            this.radPageViewPage2.Name = "radPageViewPage2";
+            this.radPageViewPage2.Size = new System.Drawing.Size(800, 287);
+            this.radPageViewPage2.Text = "持仓明细";
+            // 
+            // radGridView3
+            // 
+            this.radGridView3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.radGridView3.Location = new System.Drawing.Point(0, 0);
+            this.radGridView3.Name = "radGridView3";
+            this.radGridView3.Size = new System.Drawing.Size(800, 287);
+            this.radGridView3.TabIndex = 0;
+            this.radGridView3.Text = "radGridView3";
+            this.radGridView3.ThemeName = "TelerikMetro";
+            // 
+            // splitPanel6
+            // 
+            this.splitPanel6.Controls.Add(this.radPageView2);
+            this.splitPanel6.Location = new System.Drawing.Point(814, 0);
+            this.splitPanel6.Name = "splitPanel6";
+            this.splitPanel6.Size = new System.Drawing.Size(810, 328);
+            this.splitPanel6.TabIndex = 1;
+            this.splitPanel6.TabStop = false;
+            this.splitPanel6.Text = "splitPanel6";
+            // 
+            // radPageView2
+            // 
+            this.radPageView2.Controls.Add(this.radPageViewPage3);
+            this.radPageView2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.radPageView2.Location = new System.Drawing.Point(0, 0);
+            this.radPageView2.Name = "radPageView2";
+            this.radPageView2.SelectedPage = this.radPageViewPage3;
+            this.radPageView2.Size = new System.Drawing.Size(810, 328);
+            this.radPageView2.TabIndex = 0;
+            this.radPageView2.Text = "radPageView2";
+            this.radPageView2.ThemeName = "TelerikMetro";
+            // 
+            // radPageViewPage3
+            // 
+            this.radPageViewPage3.Controls.Add(this.radGridView4);
+            this.radPageViewPage3.ItemSize = new System.Drawing.SizeF(78F, 30F);
+            this.radPageViewPage3.Location = new System.Drawing.Point(5, 36);
+            this.radPageViewPage3.Name = "radPageViewPage3";
+            this.radPageViewPage3.Size = new System.Drawing.Size(800, 287);
+            this.radPageViewPage3.Text = "成交记录";
+            // 
+            // radGridView4
+            // 
+            this.radGridView4.BackColor = System.Drawing.Color.White;
+            this.radGridView4.Cursor = System.Windows.Forms.Cursors.Default;
+            this.radGridView4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.radGridView4.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.radGridView4.ForeColor = System.Drawing.Color.Black;
+            this.radGridView4.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.radGridView4.Location = new System.Drawing.Point(0, 0);
+            // 
+            // radGridView4
+            // 
+            this.radGridView4.MasterTemplate.AllowAddNewRow = false;
+            this.radGridView4.MasterTemplate.AllowDeleteRow = false;
+            this.radGridView4.MasterTemplate.AllowEditRow = false;
+            gridViewTextBoxColumn14.FieldName = "TradeID";
+            gridViewTextBoxColumn14.HeaderText = "成交编号";
+            gridViewTextBoxColumn14.IsAutoGenerated = true;
+            gridViewTextBoxColumn14.Name = "TradeID";
+            gridViewTextBoxColumn14.Width = 86;
+            gridViewTextBoxColumn15.FieldName = "InstrumentID";
+            gridViewTextBoxColumn15.HeaderText = "合约";
+            gridViewTextBoxColumn15.IsAutoGenerated = true;
+            gridViewTextBoxColumn15.Name = "InstrumentID";
+            gridViewTextBoxColumn15.Width = 48;
+            gridViewTextBoxColumn16.DataType = typeof(CTPTradeApi.EnumDirectionType);
+            gridViewTextBoxColumn16.FieldName = "Direction";
+            gridViewTextBoxColumn16.HeaderText = "买卖";
+            gridViewTextBoxColumn16.Name = "Direction";
+            gridViewTextBoxColumn16.Width = 48;
+            gridViewDecimalColumn32.DataType = typeof(double);
+            gridViewDecimalColumn32.FieldName = "Price";
+            gridViewDecimalColumn32.HeaderText = "成交价格";
+            gridViewDecimalColumn32.IsAutoGenerated = true;
+            gridViewDecimalColumn32.Name = "Price";
+            gridViewDecimalColumn32.Width = 86;
+            gridViewDecimalColumn33.DataType = typeof(int);
+            gridViewDecimalColumn33.FieldName = "Volume";
+            gridViewDecimalColumn33.HeaderText = "成交手数";
+            gridViewDecimalColumn33.IsAutoGenerated = true;
+            gridViewDecimalColumn33.Name = "Volume";
+            gridViewDecimalColumn33.Width = 86;
+            gridViewTextBoxColumn17.FieldName = "TradeTime";
+            gridViewTextBoxColumn17.HeaderText = "成交时间";
+            gridViewTextBoxColumn17.IsAutoGenerated = true;
+            gridViewTextBoxColumn17.Name = "TradeTime";
+            gridViewTextBoxColumn17.Width = 86;
+            gridViewTextBoxColumn18.FieldName = "OrderSysID";
+            gridViewTextBoxColumn18.HeaderText = "报单编号";
+            gridViewTextBoxColumn18.IsAutoGenerated = true;
+            gridViewTextBoxColumn18.Name = "OrderSysID";
+            gridViewTextBoxColumn18.Width = 86;
+            gridViewTextBoxColumn19.FieldName = "ExchangeID";
+            gridViewTextBoxColumn19.HeaderText = "交易所";
+            gridViewTextBoxColumn19.IsAutoGenerated = true;
+            gridViewTextBoxColumn19.Name = "ExchangeID";
+            gridViewTextBoxColumn19.Width = 67;
+            this.radGridView4.MasterTemplate.Columns.AddRange(new Telerik.WinControls.UI.GridViewDataColumn[] {
+            gridViewTextBoxColumn14,
+            gridViewTextBoxColumn15,
+            gridViewTextBoxColumn16,
+            gridViewComboBoxColumn19,
+            gridViewDecimalColumn32,
+            gridViewDecimalColumn33,
+            gridViewTextBoxColumn17,
+            gridViewTextBoxColumn18,
+            gridViewComboBoxColumn20,
+            gridViewComboBoxColumn21,
+            gridViewTextBoxColumn19});
+            this.radGridView4.MasterTemplate.DataSource = this.tradeRecordBindingSource;
+            this.radGridView4.Name = "radGridView4";
+            this.radGridView4.ReadOnly = true;
+            this.radGridView4.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.radGridView4.Size = new System.Drawing.Size(800, 287);
+            this.radGridView4.TabIndex = 1;
+            this.radGridView4.Text = "gvTradeRecord";
+            this.radGridView4.ThemeName = "TelerikMetro";
             // 
             // tradeRecordBindingSource
             // 
             this.tradeRecordBindingSource.DataSource = typeof(autotrade.model.TradeRecord);
             // 
-            // c1PdfDocument1
+            // radMenuItem1
             // 
-            this.c1PdfDocument1.RotateAngle = 0F;
-            this.c1PdfDocument1.UseFileCaching = false;
+            this.radMenuItem1.AccessibleDescription = "查询";
+            this.radMenuItem1.AccessibleName = "查询";
+            this.radMenuItem1.Name = "radMenuItem1";
+            this.radMenuItem1.Text = "查询";
+            this.radMenuItem1.Visibility = Telerik.WinControls.ElementVisibility.Visible;
+            // 
+            // radMenuItem2
+            // 
+            this.radMenuItem2.AccessibleDescription = "报单";
+            this.radMenuItem2.AccessibleName = "报单";
+            this.radMenuItem2.Name = "radMenuItem2";
+            this.radMenuItem2.Text = "报单";
+            this.radMenuItem2.Visibility = Telerik.WinControls.ElementVisibility.Visible;
+            this.radMenuItem2.Click += new System.EventHandler(this.radMenuItem2_Click);
+            // 
+            // radMenuItem3
+            // 
+            this.radMenuItem3.AccessibleDescription = "行情";
+            this.radMenuItem3.AccessibleName = "行情";
+            this.radMenuItem3.Name = "radMenuItem3";
+            this.radMenuItem3.Text = "行情";
+            this.radMenuItem3.Visibility = Telerik.WinControls.ElementVisibility.Visible;
+            this.radMenuItem3.Click += new System.EventHandler(this.radMenuItem3_Click);
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1624, 883);
-            this.Controls.Add(this.c1SplitContainer1);
-            this.Controls.Add(this.c1StatusBar1);
-            this.Controls.Add(this.c1MainMenu1);
+            this.Controls.Add(this.radSplitContainer1);
+            this.Controls.Add(this.radStatusStrip1);
             this.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "MainForm";
@@ -538,35 +1421,58 @@
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.c1CommandHolder1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.accountBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.c1StatusBar1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.marketDataBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.c1SplitContainer1)).EndInit();
-            this.c1SplitContainer1.ResumeLayout(false);
-            this.c1SplitterPanel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.c1List1)).EndInit();
-            this.c1SplitterPanel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.c1DockingTab3)).EndInit();
-            this.c1DockingTab3.ResumeLayout(false);
-            this.c1DockingTabPage3.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.c1List2)).EndInit();
-            this.c1SplitterPanel4.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.c1SplitContainer2)).EndInit();
-            this.c1SplitContainer2.ResumeLayout(false);
-            this.c1SplitterPanel5.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.c1DockingTab2)).EndInit();
-            this.c1DockingTab2.ResumeLayout(false);
-            this.c1DockingTabPage2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.c1FlexGrid1)).EndInit();
-            this.c1DockingTabPage4.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.c1FlexGrid2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.positionDetailBindingSource)).EndInit();
-            this.c1SplitterPanel6.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.c1DockingTab1)).EndInit();
-            this.c1DockingTab1.ResumeLayout(false);
-            this.c1DockingTabPage1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.c1List3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.radStatusStrip1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.radSplitContainer1)).EndInit();
+            this.radSplitContainer1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitPanel1)).EndInit();
+            this.splitPanel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.radGridView1.MasterTemplate)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.radGridView1)).EndInit();
+            this.radGridView1.ResumeLayout(false);
+            this.radGridView1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.radMenu1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.splitPanel2)).EndInit();
+            this.splitPanel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.radGridView2.MasterTemplate)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.radGridView2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.splitPanel3)).EndInit();
+            this.splitPanel3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.radSplitContainer3)).EndInit();
+            this.radSplitContainer3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitPanel7)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.splitPanel8)).EndInit();
+            this.splitPanel8.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.radPageView3)).EndInit();
+            this.radPageView3.ResumeLayout(false);
+            this.radPageViewPage5.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.radGridView6.MasterTemplate)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.radGridView6)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.orderRecordBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.splitPanel4)).EndInit();
+            this.splitPanel4.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.radSplitContainer2)).EndInit();
+            this.radSplitContainer2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitPanel5)).EndInit();
+            this.splitPanel5.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.radPageView1)).EndInit();
+            this.radPageView1.ResumeLayout(false);
+            this.radPageViewPage1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.radGridView5.MasterTemplate)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.radGridView5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.positionRecordBindingSource)).EndInit();
+            this.radPageViewPage2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.radGridView3.MasterTemplate)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.radGridView3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.splitPanel6)).EndInit();
+            this.splitPanel6.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.radPageView2)).EndInit();
+            this.radPageView2.ResumeLayout(false);
+            this.radPageViewPage3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.radGridView4.MasterTemplate)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.radGridView4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tradeRecordBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -575,47 +1481,71 @@
 
         #endregion
 
-        private C1.Win.C1Command.C1CommandHolder c1CommandHolder1;
         private System.Windows.Forms.BindingSource accountBindingSource;
-        private C1.Win.C1Command.C1Command c1Command1;
-        private C1.Win.C1Command.C1CommandMenu c1CommandMenu1;
-        private C1.Win.C1Command.C1CommandLink c1CommandLink2;
-        private C1.Win.C1Command.C1Command c1Command2;
-        private C1.Win.C1Command.C1MainMenu c1MainMenu1;
-        private C1.Win.C1Command.C1CommandLink c1CommandLink1;
-        private C1.Win.C1Ribbon.C1StatusBar c1StatusBar1;
         private System.Windows.Forms.BindingSource marketDataBindingSource;
-        private C1.Win.C1Command.C1CommandMenu c1CommandMenu2;
-        private C1.Win.C1Command.C1CommandLink c1CommandLink4;
-        private C1.Win.C1Command.C1Command c1Command3;
-        private C1.Win.C1Command.C1CommandLink c1CommandLink3;
-        private C1.Win.C1SplitContainer.C1SplitContainer c1SplitContainer1;
-        private C1.Win.C1SplitContainer.C1SplitterPanel c1SplitterPanel1;
-        private C1.Win.C1List.C1List c1List1;
-        private C1.Win.C1SplitContainer.C1SplitterPanel c1SplitterPanel2;
-        private C1.Win.C1SplitContainer.C1SplitterPanel c1SplitterPanel3;
-        private C1.Win.C1SplitContainer.C1SplitterPanel c1SplitterPanel4;
-        private C1.Win.C1Command.C1DockingTab c1DockingTab3;
-        private C1.Win.C1Command.C1DockingTabPage c1DockingTabPage3;
-        private C1.Win.C1List.C1List c1List2;
-        private C1.Win.C1SplitContainer.C1SplitContainer c1SplitContainer2;
-        private C1.Win.C1SplitContainer.C1SplitterPanel c1SplitterPanel5;
-        private C1.Win.C1Command.C1DockingTab c1DockingTab2;
-        private C1.Win.C1Command.C1DockingTabPage c1DockingTabPage2;
-        private C1.Win.C1SplitContainer.C1SplitterPanel c1SplitterPanel6;
-        private C1.Win.C1Command.C1DockingTab c1DockingTab1;
-        private C1.Win.C1Command.C1DockingTabPage c1DockingTabPage1;
-        private C1.Win.C1List.C1List c1List3;
-        private C1.C1Pdf.C1PdfDocument c1PdfDocument1;
-        private System.Windows.Forms.BindingSource tradeRecordBindingSource;
-        private C1.Win.C1Command.C1CommandLink c1CommandLink6;
-        private C1.Win.C1Command.C1Command c1Command5;
-        private C1.Win.C1Command.C1CommandLink c1CommandLink5;
-        private C1.Win.C1Command.C1Command c1Command4;
-        private C1.Win.C1FlexGrid.C1FlexGrid c1FlexGrid1;
-        private C1.Win.C1Command.C1DockingTabPage c1DockingTabPage4;
-        private C1.Win.C1FlexGrid.C1FlexGrid c1FlexGrid2;
         private System.Windows.Forms.BindingSource positionDetailBindingSource;
+        private Telerik.WinControls.UI.Data.EnumBinder enumBinder1;
+        private Telerik.WinControls.UI.Data.EnumBinder enumBinder2;
+        private Telerik.WinControls.UI.Data.EnumBinder enumBinder3;
+        private Telerik.WinControls.UI.Data.EnumBinder enumBinder4;
+        private Telerik.WinControls.UI.Data.EnumBinder enumBinder5;
+        private Telerik.WinControls.UI.Data.EnumBinder enumBinder6;
+        private Telerik.WinControls.UI.Data.EnumBinder enumBinder7;
+        private Telerik.WinControls.UI.RadStatusStrip radStatusStrip1;
+        private Telerik.WinControls.UI.RadSplitContainer radSplitContainer1;
+        private Telerik.WinControls.UI.SplitPanel splitPanel1;
+        private Telerik.WinControls.UI.SplitPanel splitPanel2;
+        private Telerik.WinControls.UI.RadGridView radGridView1;
+        private Telerik.WinControls.UI.SplitPanel splitPanel3;
+        private Telerik.WinControls.UI.RadGridView radGridView2;
+        private Telerik.WinControls.UI.SplitPanel splitPanel4;
+        private Telerik.WinControls.UI.RadSplitContainer radSplitContainer2;
+        private Telerik.WinControls.UI.SplitPanel splitPanel5;
+        private Telerik.WinControls.UI.RadPageView radPageView1;
+        private Telerik.WinControls.UI.RadPageViewPage radPageViewPage1;
+        private Telerik.WinControls.UI.RadPageViewPage radPageViewPage2;
+        private Telerik.WinControls.UI.SplitPanel splitPanel6;
+        private Telerik.WinControls.UI.RadGridView radGridView3;
+        private Telerik.WinControls.UI.Data.EnumBinder enumBinder8;
+        private Telerik.WinControls.UI.Data.EnumBinder enumBinder9;
+        private Telerik.WinControls.UI.Data.EnumBinder enumBinder10;
+        private Telerik.WinControls.UI.RadMenu radMenu1;
+        private Telerik.WinControls.Themes.Windows7Theme windows7Theme1;
+        private Telerik.WinControls.Themes.TelerikMetroTheme telerikMetroTheme1;
+        private Telerik.WinControls.UI.RadPageView radPageView2;
+        private Telerik.WinControls.UI.RadPageViewPage radPageViewPage3;
+        private Telerik.WinControls.UI.RadGridView radGridView4;
+        private Telerik.WinControls.UI.RadMenuItem radMenuItem1;
+        private Telerik.WinControls.UI.RadMenuItem radMenuItem2;
+        private Telerik.WinControls.UI.RadMenuItem radMenuItem3;
+        private System.Windows.Forms.BindingSource tradeRecordBindingSource;
+        private Telerik.WinControls.UI.Data.EnumBinder enumBinder11;
+        private Telerik.WinControls.UI.Data.EnumBinder enumBinder12;
+        private Telerik.WinControls.UI.Data.EnumBinder enumBinder13;
+        private Telerik.WinControls.UI.Data.EnumBinder enumBinder14;
+        private Telerik.WinControls.UI.Data.EnumBinder enumBinder15;
+        private Telerik.WinControls.UI.Data.EnumBinder enumBinder16;
+        private Telerik.WinControls.UI.Data.EnumBinder enumBinder17;
+        private Telerik.WinControls.UI.Data.EnumBinder enumBinder18;
+        private Telerik.WinControls.UI.Data.EnumBinder enumBinder19;
+        private Telerik.WinControls.UI.Data.EnumBinder enumBinder20;
+        private Telerik.WinControls.UI.Data.EnumBinder enumBinder21;
+        private Telerik.WinControls.UI.RadGridView radGridView5;
+        private System.Windows.Forms.BindingSource positionRecordBindingSource;
+        private Telerik.WinControls.UI.Data.EnumBinder enumBinder22;
+        private Telerik.WinControls.UI.Data.EnumBinder enumBinder23;
+        private Telerik.WinControls.UI.RadSplitContainer radSplitContainer3;
+        private Telerik.WinControls.UI.SplitPanel splitPanel7;
+        private Telerik.WinControls.UI.SplitPanel splitPanel8;
+        private Telerik.WinControls.UI.RadPageView radPageView3;
+        private Telerik.WinControls.UI.RadPageViewPage radPageViewPage4;
+        private Telerik.WinControls.UI.RadPageViewPage radPageViewPage5;
+        private Telerik.WinControls.UI.RadGridView radGridView6;
+        private Telerik.WinControls.UI.RadPageViewPage radPageViewPage6;
+        private System.Windows.Forms.BindingSource orderRecordBindingSource;
+        private Telerik.WinControls.UI.Data.EnumBinder enumBinder24;
+        private Telerik.WinControls.UI.Data.EnumBinder enumBinder25;
+        private Telerik.WinControls.UI.Data.EnumBinder enumBinder26;
     }
 }
 
