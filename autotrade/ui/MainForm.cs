@@ -147,14 +147,22 @@ namespace autotrade
                 Thread.Sleep(1000);
 
                 _orderManager.QryOrder();
+
+                
             });
 
+            timer1.Enabled = true;
         }
 
         private delegate void RecordRecordDelegate(List<OrderRecord> orderRecords);
         private void ShowOrderRecord(List<OrderRecord> orderRecords)
         {
-            radGridView6.DataSource = orderRecords;
+            orderRecordBindingSource.Clear();
+
+            foreach (var orderRecord in orderRecords)
+            {
+                orderRecordBindingSource.Add(orderRecord);
+            }            
         }
 
         void _orderManager_OnRspQryOrderRecord(object sender, OrderRecordEventArgs e)
@@ -236,7 +244,7 @@ namespace autotrade
         }
         void accountManager_OnQryTradingAccount(object sender, AccountEventArgs e)
         {
-            
+            accountBindingSource.Clear();
             accountBindingSource.Add(e.account);
             
         }
@@ -286,6 +294,11 @@ namespace autotrade
         private void radMenuItem3_Click(object sender, EventArgs e)
         {
             _marketManager.SubMarketData("IF1407");
+        }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            _accountManager.QryTradingAccount();
         }
     }
 }

@@ -24,6 +24,7 @@ namespace autotrade.model
         /// <summary>
         /// 买卖方向
         /// </summary>
+        [TypeConverterAttribute(typeof(DirectionConverter))]
         public EnumDirectionType Direction { get; set; }
 
         /// <summary>

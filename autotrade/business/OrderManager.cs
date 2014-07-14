@@ -106,7 +106,29 @@ namespace autotrade.business
 
         void tradeApi_OnRtnOrder(ref CThostFtdcOrderField pOrder)
         {
-            log.Info(pOrder);
+            OrderRecord orderRecord = new OrderRecord();
+
+            ObjectUtils.Copy(pOrder, orderRecord);
+
+            if (orderRecords.Contains(orderRecord))
+            {
+                orderRecords.Remove(orderRecord);                
+            }
+
+            orderRecords.Add(orderRecord);
+
+            OnRspQryOrderRecord(this, new OrderRecordEventArgs(orderRecords));
+        }
+
+        private void tradeApi_OnRspQryOrder(ref CThostFtdcOrderField porder, ref CThostFtdcRspInfoField prspinfo, int nrequestid, bool bislast)
+        {
+            OrderRecord orderRecord = new OrderRecord();
+
+            ObjectUtils.Copy(porder, orderRecord);
+
+            orderRecords.Add(orderRecord);
+
+            if (bislast) OnRspQryOrderRecord(this, new OrderRecordEventArgs(orderRecords));
         }
 
         void tradeApi_OnRspOrderInsert(ref CThostFtdcInputOrderField pInputOrder, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
@@ -154,16 +176,7 @@ namespace autotrade.business
             log.Info(pInputOrder);
         }
 
-        private void tradeApi_OnRspQryOrder(ref CThostFtdcOrderField porder, ref CThostFtdcRspInfoField prspinfo, int nrequestid, bool bislast)
-        {
-            OrderRecord orderRecord = new OrderRecord();
-
-            ObjectUtils.Copy(porder, orderRecord);
-
-            orderRecords.Add(orderRecord);
-
-            if (bislast) OnRspQryOrderRecord(this, new OrderRecordEventArgs(orderRecords));
-        }
+        
 
         
     }
