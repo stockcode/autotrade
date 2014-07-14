@@ -7,12 +7,16 @@ using CTPTradeApi;
 
 namespace autotrade.model
 {
-    class OrderRecord
+    class OrderRecord : IEquatable<OrderRecord>
     {
         /// <summary>
         /// 报单编号
         /// </summary>
         public string OrderSysID { get; set; }
+        /// <summary>
+        /// 请求编号
+        /// </summary>
+        public int RequestID { get; set; }
         /// <summary>
         /// 合约代码
         /// </summary>
@@ -64,5 +68,11 @@ namespace autotrade.model
         /// </summary>
         public string ExchangeID { get; set; }
 
+
+        public bool Equals(OrderRecord other)
+        {
+            return this.RequestID == other.RequestID;
+        }
+        
     }
 }

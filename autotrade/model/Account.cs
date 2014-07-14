@@ -30,14 +30,19 @@ namespace autotrade.model
         public double Available { get; set; }
 
         /// <summary>
-        /// 冻结的资金
+        /// 冻结的保证金
         /// </summary>
-        public double FrozenCash { get; set; }
+        public double FrozenMargin { get; set; }
+
+        /// <summary>
+        /// 当前保证金总额
+        /// </summary>
+        public double CurrMargin { get; set; }
 
         public override string ToString()
         {
-            return String.Format("投资者帐号={0}, 平仓盈亏={1}, 持仓盈亏={2}, 可用资金={3}, 冻结的资金={4}", AccountID, CloseProfit,
-                PositionProfit, Available, FrozenCash);
+            return String.Format("投资者帐号={0}, 平仓盈亏={1}, 持仓盈亏={2}, 可用资金={3}, 冻结的保证金={4}", AccountID, CloseProfit,
+                PositionProfit, Available, FrozenMargin);
         }
     }
 }
