@@ -1,4 +1,5 @@
-﻿using autotrade.model;
+﻿using System.Threading;
+using autotrade.model;
 using autotrade.util;
 using CTPTradeApi;
 using System;
@@ -33,12 +34,13 @@ namespace autotrade.business
                 ObjectUtils.Copy(pTradingAccount, account);
 
                 OnQryTradingAccount(this, new AccountEventArgs(account));
+                
             }
         }
 
-        public int QryTradingAccount()
+        public void QryTradingAccount()
         {
-            return tradeApi.QryTradingAccount();
+            tradeApi.QryTradingAccount();                                    
         }
     }
 
