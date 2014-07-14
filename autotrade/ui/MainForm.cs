@@ -128,18 +128,7 @@ namespace autotrade
 
 
             Task.Factory.StartNew(() => {
-                _accountManager.QryTradingAccount();
-                Thread.Sleep(1000);
                 _orderManager.QryTrade();
-
-                Thread.Sleep(1000);
-
-                tradeApi.QryInvestorPosition();
-
-                Thread.Sleep(1000);
-
-                _orderManager.QryInvestorPositionDetail();
-
                 Thread.Sleep(1000);
 
                 _orderManager.QryInvestorPosition();
@@ -147,11 +136,19 @@ namespace autotrade
                 Thread.Sleep(1000);
 
                 _orderManager.QryOrder();
-
                 
             });
 
-            timer1.Enabled = true;
+            Task.Factory.StartNew(() =>
+            {
+                while (true)
+                {
+                    Thread.Sleep(1000);
+                    _accountManager.QryTradingAccount();
+
+                }
+
+            });
         }
 
         private delegate void RecordRecordDelegate(List<OrderRecord> orderRecords);
@@ -242,10 +239,22 @@ namespace autotrade
             marketDataBindingSource.Clear();
             marketDataBindingSource.Add(marketData);
         }
-        void accountManager_OnQryTradingAccount(object sender, AccountEventArgs e)
+
+        private delegate void TradingAccountDelegate(Account account);
+
+        private void ShowTradingAccount(Account account)
         {
             accountBindingSource.Clear();
-            accountBindingSource.Add(e.account);
+            accountBindingSource.Add(account);
+        }
+        void accountManager_OnQryTradingAccount(object sender, AccountEventArgs e)
+        {
+            if (this.InvokeRequired)
+            {
+                TradingAccountDelegate d = new TradingAccountDelegate(ShowTradingAccount);
+                object arg = e.account;
+                this.Invoke(d, arg);
+            }
             
         }
 
@@ -294,11 +303,6 @@ namespace autotrade
         private void radMenuItem3_Click(object sender, EventArgs e)
         {
             _marketManager.SubMarketData("IF1407");
-        }
-
-        private void Timer_Tick(object sender, EventArgs e)
-        {
-            _accountManager.QryTradingAccount();
         }
     }
 }
