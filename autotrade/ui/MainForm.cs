@@ -92,12 +92,17 @@ namespace autotrade
             log.Info(pcontractbank);
         }
 
-        
+        private void button3_Click(object sender, EventArgs e)
+        {
+            //tradeApi.QryInvestorPosition();
+            //tradeApi.QryInvestorPositionDetail();
+            tradeApi.QryInvestorPositionCombinaDetail();
+        }
 
  
         private void MainForm_Load(object sender, EventArgs e)
         {
-            //radGridView4.Columns["Direction"].DataTypeConverter = new DirectionConverter();
+            radGridView4.Columns["Direction"].DataTypeConverter = new DirectionConverter();
 
             LoginForm loginForm = new LoginForm();
             
@@ -122,20 +127,28 @@ namespace autotrade
             _orderManager.OnRspQryOrderRecord += _orderManager_OnRspQryOrderRecord;
 
 
-            Task.Factory.StartNew(() =>
-            {
+            Task.Factory.StartNew(() => {
+                _accountManager.QryTradingAccount();
+                Thread.Sleep(1000);
                 _orderManager.QryTrade();
-                Thread.Sleep(1000);                
+
+                Thread.Sleep(1000);
+
+                tradeApi.QryInvestorPosition();
+
+                Thread.Sleep(1000);
+
+                _orderManager.QryInvestorPositionDetail();
+
+                Thread.Sleep(1000);
+
                 _orderManager.QryInvestorPosition();
-                Thread.Sleep(1000);                
+
+                Thread.Sleep(1000);
+
                 _orderManager.QryOrder();
             });
 
-            Task.Factory.StartNew(() =>
-            {
-                Thread.Sleep(1000);
-                _accountManager.QryTradingAccount();                
-            });
         }
 
         private delegate void RecordRecordDelegate(List<OrderRecord> orderRecords);
@@ -223,7 +236,7 @@ namespace autotrade
         }
         void accountManager_OnQryTradingAccount(object sender, AccountEventArgs e)
         {
-            accountBindingSource.Clear();
+            
             accountBindingSource.Add(e.account);
             
         }

@@ -172,6 +172,7 @@
             this.radMenuItem1 = new Telerik.WinControls.UI.RadMenuItem();
             this.radMenuItem2 = new Telerik.WinControls.UI.RadMenuItem();
             this.radMenuItem3 = new Telerik.WinControls.UI.RadMenuItem();
+            this.windows7Theme1 = new Telerik.WinControls.Themes.Windows7Theme();
             this.telerikMetroTheme1 = new Telerik.WinControls.Themes.TelerikMetroTheme();
             ((System.ComponentModel.ISupportInitialize)(this.accountBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.marketDataBindingSource)).BeginInit();
@@ -544,7 +545,7 @@
             // 
             this.enumBinder24.Source = typeof(CTPTradeApi.EnumDirectionType);
             gridViewComboBoxColumn24.DataSource = this.enumBinder24;
-            gridViewComboBoxColumn24.DataType = typeof(object);
+            gridViewComboBoxColumn24.DataType = typeof(CTPTradeApi.EnumDirectionType);
             gridViewComboBoxColumn24.DisplayMember = "Description";
             gridViewComboBoxColumn24.FieldName = "Direction";
             gridViewComboBoxColumn24.HeaderText = "买卖";
@@ -558,7 +559,7 @@
             // 
             this.enumBinder25.Source = typeof(CTPTradeApi.EnumOrderStatusType);
             gridViewComboBoxColumn25.DataSource = this.enumBinder25;
-            gridViewComboBoxColumn25.DataType = typeof(object);
+            gridViewComboBoxColumn25.DataType = typeof(CTPTradeApi.EnumOrderStatusType);
             gridViewComboBoxColumn25.DisplayMember = "Description";
             gridViewComboBoxColumn25.FieldName = "OrderStatus";
             gridViewComboBoxColumn25.HeaderText = "挂单状态";
@@ -572,7 +573,7 @@
             // 
             this.enumBinder26.Source = typeof(CTPTradeApi.EnumOrderTypeType);
             gridViewComboBoxColumn26.DataSource = this.enumBinder26;
-            gridViewComboBoxColumn26.DataType = typeof(object);
+            gridViewComboBoxColumn26.DataType = typeof(CTPTradeApi.EnumOrderTypeType);
             gridViewComboBoxColumn26.DisplayMember = "Description";
             gridViewComboBoxColumn26.FieldName = "OrderType";
             gridViewComboBoxColumn26.HeaderText = "OrderType";
@@ -681,7 +682,6 @@
             this.radGridView1.Size = new System.Drawing.Size(1624, 84);
             this.radGridView1.TabIndex = 0;
             this.radGridView1.Text = "radGridView1";
-            this.radGridView1.ThemeName = "TelerikMetro";
             // 
             // radMenu1
             // 
@@ -1510,6 +1510,7 @@
         private Telerik.WinControls.UI.Data.EnumBinder enumBinder9;
         private Telerik.WinControls.UI.Data.EnumBinder enumBinder10;
         private Telerik.WinControls.UI.RadMenu radMenu1;
+        private Telerik.WinControls.Themes.Windows7Theme windows7Theme1;
         private Telerik.WinControls.Themes.TelerikMetroTheme telerikMetroTheme1;
         private Telerik.WinControls.UI.RadPageView radPageView2;
         private Telerik.WinControls.UI.RadPageViewPage radPageViewPage3;
