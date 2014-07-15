@@ -142,6 +142,7 @@
     <Compile Include="ui\ServerLineForm.Designer.cs">
       <DependentUpon>ServerLineForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="util\BlockingQueue.cs" />
     <Compile Include="util\ObjectUtils.cs" />
     <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="ui\LoginForm.resx">

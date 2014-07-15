@@ -14,7 +14,8 @@ namespace autotrade.business
     {
         private readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private MdApi mdApi;
-
+        private BlockingQueue<MarketData> marketQueue = new BlockingQueue<MarketData>();
+        
         public delegate void MarketDataHandler(object sender, MarketDataEventArgs e);
 
         public event MarketDataHandler OnRtnMarketData;
@@ -23,6 +24,15 @@ namespace autotrade.business
         {
             this.mdApi = mdApi;
             this.mdApi.OnRtnDepthMarketData += mdApi_OnRtnDepthMarketData;
+
+            Task.Factory.StartNew(()=>{
+                while(true) {
+                    MarketData  marketData = marketQueue.Dequeue();
+
+                    OnRtnMarketData(this, new MarketDataEventArgs(marketData));
+                    log.Info(marketData);
+                }
+            });
         }
 
         void mdApi_OnRtnDepthMarketData(ref CThostFtdcDepthMarketDataField pDepthMarketData)
@@ -30,9 +40,8 @@ namespace autotrade.business
             MarketData marketData = new MarketData();
 
             ObjectUtils.Copy(pDepthMarketData, marketData);
-
-            log.Info(marketData);
-            OnRtnMarketData(this, new MarketDataEventArgs(marketData));
+            
+            marketQueue.Enqueue(marketData);
         }
 
         public void SubMarketData(params string[] instruments)

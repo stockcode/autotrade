@@ -149,6 +149,8 @@ namespace autotrade
                 }
 
             });
+
+            _marketManager.SubMarketData("IF1407");
         }
 
         private delegate void RecordRecordDelegate(List<OrderRecord> orderRecords);
@@ -302,7 +304,7 @@ namespace autotrade
 
         private void radMenuItem3_Click(object sender, EventArgs e)
         {
-            _marketManager.SubMarketData("IF1407");
+            
         }
     }
 }
