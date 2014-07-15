@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -14,8 +15,10 @@ namespace autotrade.business
     {
         private readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private MdApi mdApi;
-        private BlockingQueue<MarketData> marketQueue = new BlockingQueue<MarketData>();
+        private BlockingQueue<CThostFtdcDepthMarketDataField> marketQueue = new BlockingQueue<CThostFtdcDepthMarketDataField>();
         
+        public BindingList<MarketData> marketDatas = new BindingList<MarketData>();
+
         public delegate void MarketDataHandler(object sender, MarketDataEventArgs e);
 
         public event MarketDataHandler OnRtnMarketData;
@@ -27,21 +30,23 @@ namespace autotrade.business
 
             Task.Factory.StartNew(()=>{
                 while(true) {
-                    MarketData  marketData = marketQueue.Dequeue();
+                    CThostFtdcDepthMarketDataField pDepthMarketData = marketQueue.Dequeue();
 
-                    OnRtnMarketData(this, new MarketDataEventArgs(marketData));
+                    MarketData marketData = new MarketData(pDepthMarketData.InstrumentID);
+                    int index = marketDatas.IndexOf(marketData);
+                    if (index >= 0) marketData = marketDatas[index];
+                    else marketDatas.Add(marketData);
+                    
+                    ObjectUtils.Copy(pDepthMarketData, marketData);
+                    //OnRtnMarketData(this, new MarketDataEventArgs(marketData));
                     log.Info(marketData);
                 }
             });
         }
 
         void mdApi_OnRtnDepthMarketData(ref CThostFtdcDepthMarketDataField pDepthMarketData)
-        {
-            MarketData marketData = new MarketData();
-
-            ObjectUtils.Copy(pDepthMarketData, marketData);
-            
-            marketQueue.Enqueue(marketData);
+        {            
+            marketQueue.Enqueue(pDepthMarketData);
         }
 
         public void SubMarketData(params string[] instruments)

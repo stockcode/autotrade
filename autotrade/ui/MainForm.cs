@@ -31,6 +31,7 @@ namespace autotrade
     public partial class MainForm : Form
     {
         private readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        
 
         public MdApi mdApi { get; set; }
         public TradeApi tradeApi { get; set; }
@@ -41,7 +42,7 @@ namespace autotrade
         private AccountManager _accountManager;
         private MarketManager _marketManager;
 
-        readonly string[] ppInstrumentID = { "IF1407" };	// 行情订阅列表
+        readonly string[] ppInstrumentID = { "IF1407", "au1412", "ag1412" };	// 行情订阅列表
         public MainForm()
         {
             InitializeComponent();
@@ -119,13 +120,10 @@ namespace autotrade
 
             _accountManager.OnQryTradingAccount += accountManager_OnQryTradingAccount;
 
-            _marketManager.OnRtnMarketData += marketManager_OnRtnMarketData;
-
             _orderManager.OnRtnTradeRecord += orderManager_OnRtnTradeRecord;
             _orderManager.OnRspQryPositionDetail += orderManager_OnRspQryPositionDetail;
             _orderManager.OnRspQryPositionRecord += _orderManager_OnRspQryPositionRecord;
             _orderManager.OnRspQryOrderRecord += _orderManager_OnRspQryOrderRecord;
-
 
             Task.Factory.StartNew(() => {
                 _orderManager.QryTrade();
@@ -150,7 +148,11 @@ namespace autotrade
 
             });
 
-            _marketManager.SubMarketData("IF1407");
+
+            _marketManager.SubMarketData(ppInstrumentID);
+
+
+            radGridView2.DataSource = _marketManager.marketDatas;
         }
 
         private delegate void RecordRecordDelegate(List<OrderRecord> orderRecords);
@@ -224,22 +226,6 @@ namespace autotrade
                 object arg = e.tradeRecords;
                 this.Invoke(d, arg);
             }
-        }
-
-        private delegate void MarketDataDelegate(MarketData marketData);
-        void marketManager_OnRtnMarketData(object sender, MarketDataEventArgs e)
-        {
-            if (this.InvokeRequired) {
-                MarketDataDelegate d = new MarketDataDelegate(ShowMarketData);
-                object arg = e.marketData;
-                this.Invoke(d,arg); 
-            }
-        }
-
-        private void ShowMarketData(MarketData marketData)
-        {
-            marketDataBindingSource.Clear();
-            marketDataBindingSource.Add(marketData);
         }
 
         private delegate void TradingAccountDelegate(Account account);

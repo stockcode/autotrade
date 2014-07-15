@@ -35,7 +35,7 @@ namespace autotrade.business
                 OnQryTradingAccount(this, new AccountEventArgs(account));
             }
 
-            log.Info(pTradingAccount + ":" + bIsLast);
+            //log.Info(pTradingAccount + ":" + bIsLast);
         }
 
         public int QryTradingAccount()

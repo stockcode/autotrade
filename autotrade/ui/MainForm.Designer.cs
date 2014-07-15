@@ -85,31 +85,32 @@
             Telerik.WinControls.UI.GridViewDecimalColumn gridViewDecimalColumn21 = new Telerik.WinControls.UI.GridViewDecimalColumn();
             Telerik.WinControls.UI.GridViewTextBoxColumn gridViewTextBoxColumn6 = new Telerik.WinControls.UI.GridViewTextBoxColumn();
             Telerik.WinControls.UI.GridViewTextBoxColumn gridViewTextBoxColumn7 = new Telerik.WinControls.UI.GridViewTextBoxColumn();
+            Telerik.WinControls.UI.GridViewTextBoxColumn gridViewTextBoxColumn8 = new Telerik.WinControls.UI.GridViewTextBoxColumn();
             Telerik.WinControls.UI.GridViewDecimalColumn gridViewDecimalColumn22 = new Telerik.WinControls.UI.GridViewDecimalColumn();
             Telerik.WinControls.UI.GridViewDecimalColumn gridViewDecimalColumn23 = new Telerik.WinControls.UI.GridViewDecimalColumn();
             Telerik.WinControls.UI.GridViewDecimalColumn gridViewDecimalColumn24 = new Telerik.WinControls.UI.GridViewDecimalColumn();
             Telerik.WinControls.UI.GridViewDecimalColumn gridViewDecimalColumn25 = new Telerik.WinControls.UI.GridViewDecimalColumn();
-            Telerik.WinControls.UI.GridViewTextBoxColumn gridViewTextBoxColumn8 = new Telerik.WinControls.UI.GridViewTextBoxColumn();
             Telerik.WinControls.UI.GridViewTextBoxColumn gridViewTextBoxColumn9 = new Telerik.WinControls.UI.GridViewTextBoxColumn();
             Telerik.WinControls.UI.GridViewTextBoxColumn gridViewTextBoxColumn10 = new Telerik.WinControls.UI.GridViewTextBoxColumn();
             Telerik.WinControls.UI.GridViewTextBoxColumn gridViewTextBoxColumn11 = new Telerik.WinControls.UI.GridViewTextBoxColumn();
-            Telerik.WinControls.Data.SortDescriptor sortDescriptor1 = new Telerik.WinControls.Data.SortDescriptor();
             Telerik.WinControls.UI.GridViewTextBoxColumn gridViewTextBoxColumn12 = new Telerik.WinControls.UI.GridViewTextBoxColumn();
+            Telerik.WinControls.Data.SortDescriptor sortDescriptor1 = new Telerik.WinControls.Data.SortDescriptor();
+            Telerik.WinControls.UI.GridViewTextBoxColumn gridViewTextBoxColumn13 = new Telerik.WinControls.UI.GridViewTextBoxColumn();
             Telerik.WinControls.UI.GridViewDecimalColumn gridViewDecimalColumn26 = new Telerik.WinControls.UI.GridViewDecimalColumn();
             Telerik.WinControls.UI.GridViewDecimalColumn gridViewDecimalColumn27 = new Telerik.WinControls.UI.GridViewDecimalColumn();
             Telerik.WinControls.UI.GridViewDecimalColumn gridViewDecimalColumn28 = new Telerik.WinControls.UI.GridViewDecimalColumn();
             Telerik.WinControls.UI.GridViewDecimalColumn gridViewDecimalColumn29 = new Telerik.WinControls.UI.GridViewDecimalColumn();
             Telerik.WinControls.UI.GridViewDecimalColumn gridViewDecimalColumn30 = new Telerik.WinControls.UI.GridViewDecimalColumn();
-            Telerik.WinControls.UI.GridViewTextBoxColumn gridViewTextBoxColumn13 = new Telerik.WinControls.UI.GridViewTextBoxColumn();
-            Telerik.WinControls.UI.GridViewHyperlinkColumn gridViewHyperlinkColumn1 = new Telerik.WinControls.UI.GridViewHyperlinkColumn();
             Telerik.WinControls.UI.GridViewTextBoxColumn gridViewTextBoxColumn14 = new Telerik.WinControls.UI.GridViewTextBoxColumn();
+            Telerik.WinControls.UI.GridViewHyperlinkColumn gridViewHyperlinkColumn1 = new Telerik.WinControls.UI.GridViewHyperlinkColumn();
             Telerik.WinControls.UI.GridViewTextBoxColumn gridViewTextBoxColumn15 = new Telerik.WinControls.UI.GridViewTextBoxColumn();
             Telerik.WinControls.UI.GridViewTextBoxColumn gridViewTextBoxColumn16 = new Telerik.WinControls.UI.GridViewTextBoxColumn();
+            Telerik.WinControls.UI.GridViewTextBoxColumn gridViewTextBoxColumn17 = new Telerik.WinControls.UI.GridViewTextBoxColumn();
             Telerik.WinControls.UI.GridViewDecimalColumn gridViewDecimalColumn31 = new Telerik.WinControls.UI.GridViewDecimalColumn();
             Telerik.WinControls.UI.GridViewDecimalColumn gridViewDecimalColumn32 = new Telerik.WinControls.UI.GridViewDecimalColumn();
-            Telerik.WinControls.UI.GridViewTextBoxColumn gridViewTextBoxColumn17 = new Telerik.WinControls.UI.GridViewTextBoxColumn();
             Telerik.WinControls.UI.GridViewTextBoxColumn gridViewTextBoxColumn18 = new Telerik.WinControls.UI.GridViewTextBoxColumn();
             Telerik.WinControls.UI.GridViewTextBoxColumn gridViewTextBoxColumn19 = new Telerik.WinControls.UI.GridViewTextBoxColumn();
+            Telerik.WinControls.UI.GridViewTextBoxColumn gridViewTextBoxColumn20 = new Telerik.WinControls.UI.GridViewTextBoxColumn();
             this.enumBinder1 = new Telerik.WinControls.UI.Data.EnumBinder();
             this.enumBinder2 = new Telerik.WinControls.UI.Data.EnumBinder();
             this.enumBinder3 = new Telerik.WinControls.UI.Data.EnumBinder();
@@ -137,7 +138,6 @@
             this.enumBinder25 = new Telerik.WinControls.UI.Data.EnumBinder();
             this.enumBinder26 = new Telerik.WinControls.UI.Data.EnumBinder();
             this.accountBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.marketDataBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.positionDetailBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.radStatusStrip1 = new Telerik.WinControls.UI.RadStatusStrip();
             this.radSplitContainer1 = new Telerik.WinControls.UI.RadSplitContainer();
@@ -151,6 +151,7 @@
             this.splitPanel8 = new Telerik.WinControls.UI.SplitPanel();
             this.radPageView3 = new Telerik.WinControls.UI.RadPageView();
             this.radPageViewPage4 = new Telerik.WinControls.UI.RadPageViewPage();
+            this.radGridView8 = new Telerik.WinControls.UI.RadGridView();
             this.radPageViewPage5 = new Telerik.WinControls.UI.RadPageViewPage();
             this.radGridView6 = new Telerik.WinControls.UI.RadGridView();
             this.orderRecordBindingSource = new System.Windows.Forms.BindingSource(this.components);
@@ -175,7 +176,6 @@
             this.radMenuItem3 = new Telerik.WinControls.UI.RadMenuItem();
             this.telerikMetroTheme1 = new Telerik.WinControls.Themes.TelerikMetroTheme();
             ((System.ComponentModel.ISupportInitialize)(this.accountBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.marketDataBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.positionDetailBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.radStatusStrip1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.radSplitContainer1)).BeginInit();
@@ -197,6 +197,9 @@
             this.splitPanel8.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.radPageView3)).BeginInit();
             this.radPageView3.SuspendLayout();
+            this.radPageViewPage4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.radGridView8)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.radGridView8.MasterTemplate)).BeginInit();
             this.radPageViewPage5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.radGridView6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.radGridView6.MasterTemplate)).BeginInit();
@@ -586,10 +589,6 @@
             // 
             this.accountBindingSource.DataSource = typeof(autotrade.model.Account);
             // 
-            // marketDataBindingSource
-            // 
-            this.marketDataBindingSource.DataSource = typeof(autotrade.model.MarketData);
-            // 
             // positionDetailBindingSource
             // 
             this.positionDetailBindingSource.DataSource = typeof(autotrade.model.PositionDetail);
@@ -597,9 +596,9 @@
             // 
             // radStatusStrip1
             // 
-            this.radStatusStrip1.Location = new System.Drawing.Point(0, 859);
+            this.radStatusStrip1.Location = new System.Drawing.Point(0, 855);
             this.radStatusStrip1.Name = "radStatusStrip1";
-            this.radStatusStrip1.Size = new System.Drawing.Size(1624, 24);
+            this.radStatusStrip1.Size = new System.Drawing.Size(1624, 28);
             this.radStatusStrip1.TabIndex = 0;
             this.radStatusStrip1.Text = "radStatusStrip1";
             // 
@@ -613,7 +612,7 @@
             this.radSplitContainer1.Location = new System.Drawing.Point(0, 0);
             this.radSplitContainer1.Name = "radSplitContainer1";
             this.radSplitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            this.radSplitContainer1.Size = new System.Drawing.Size(1624, 859);
+            this.radSplitContainer1.Size = new System.Drawing.Size(1624, 855);
             this.radSplitContainer1.TabIndex = 2;
             this.radSplitContainer1.TabStop = false;
             this.radSplitContainer1.Text = "radSplitContainer1";
@@ -637,29 +636,30 @@
             // 
             // radGridView7
             // 
+            this.radGridView7.MasterTemplate.AllowAddNewRow = false;
             gridViewTextBoxColumn1.FieldName = "AccountID";
             gridViewTextBoxColumn1.HeaderText = "AccountID";
             gridViewTextBoxColumn1.IsAutoGenerated = true;
             gridViewTextBoxColumn1.Name = "AccountID";
-            gridViewTextBoxColumn1.Width = 75;
+            gridViewTextBoxColumn1.Width = 93;
             gridViewDecimalColumn1.DataType = typeof(double);
             gridViewDecimalColumn1.FieldName = "CloseProfit";
             gridViewDecimalColumn1.HeaderText = "CloseProfit";
             gridViewDecimalColumn1.IsAutoGenerated = true;
             gridViewDecimalColumn1.Name = "CloseProfit";
-            gridViewDecimalColumn1.Width = 78;
+            gridViewDecimalColumn1.Width = 97;
             gridViewDecimalColumn2.DataType = typeof(double);
             gridViewDecimalColumn2.FieldName = "PositionProfit";
             gridViewDecimalColumn2.HeaderText = "PositionProfit";
             gridViewDecimalColumn2.IsAutoGenerated = true;
             gridViewDecimalColumn2.Name = "PositionProfit";
-            gridViewDecimalColumn2.Width = 95;
+            gridViewDecimalColumn2.Width = 117;
             gridViewDecimalColumn3.DataType = typeof(double);
             gridViewDecimalColumn3.FieldName = "Available";
             gridViewDecimalColumn3.HeaderText = "Available";
             gridViewDecimalColumn3.IsAutoGenerated = true;
             gridViewDecimalColumn3.Name = "Available";
-            gridViewDecimalColumn3.Width = 67;
+            gridViewDecimalColumn3.Width = 82;
             this.radGridView7.MasterTemplate.Columns.AddRange(new Telerik.WinControls.UI.GridViewDataColumn[] {
             gridViewTextBoxColumn1,
             gridViewDecimalColumn1,
@@ -667,6 +667,7 @@
             gridViewDecimalColumn3});
             this.radGridView7.MasterTemplate.DataSource = this.accountBindingSource;
             this.radGridView7.Name = "radGridView7";
+            this.radGridView7.ReadOnly = true;
             this.radGridView7.Size = new System.Drawing.Size(1624, 84);
             this.radGridView7.TabIndex = 0;
             this.radGridView7.Text = "radGridView7";
@@ -677,7 +678,7 @@
             this.splitPanel2.Controls.Add(this.radGridView2);
             this.splitPanel2.Location = new System.Drawing.Point(0, 88);
             this.splitPanel2.Name = "splitPanel2";
-            this.splitPanel2.Size = new System.Drawing.Size(1624, 132);
+            this.splitPanel2.Size = new System.Drawing.Size(1624, 131);
             this.splitPanel2.SizeInfo.AutoSizeScale = new System.Drawing.SizeF(0F, -0.09460261F);
             this.splitPanel2.SizeInfo.SplitterCorrection = new System.Drawing.Size(0, -84);
             this.splitPanel2.TabIndex = 1;
@@ -700,10 +701,10 @@
             this.radGridView2.MasterTemplate.AllowDeleteRow = false;
             this.radGridView2.MasterTemplate.AllowEditRow = false;
             gridViewTextBoxColumn2.EnableExpressionEditor = false;
-            gridViewTextBoxColumn2.FieldName = "InstrumentID";
+            gridViewTextBoxColumn2.FieldName = "InstrumentId";
             gridViewTextBoxColumn2.HeaderText = "合约";
             gridViewTextBoxColumn2.IsAutoGenerated = true;
-            gridViewTextBoxColumn2.Name = "InstrumentID";
+            gridViewTextBoxColumn2.Name = "InstrumentId";
             gridViewTextBoxColumn2.Width = 70;
             gridViewDecimalColumn4.DataType = typeof(double);
             gridViewDecimalColumn4.DecimalPlaces = 1;
@@ -916,12 +917,11 @@
             gridViewTextBoxColumn4,
             gridViewTextBoxColumn5,
             gridViewDecimalColumn21});
-            this.radGridView2.MasterTemplate.DataSource = this.marketDataBindingSource;
             this.radGridView2.Name = "radGridView2";
             this.radGridView2.Padding = new System.Windows.Forms.Padding(0, 0, 0, 1);
             this.radGridView2.ReadOnly = true;
             this.radGridView2.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.radGridView2.Size = new System.Drawing.Size(1624, 132);
+            this.radGridView2.Size = new System.Drawing.Size(1624, 131);
             this.radGridView2.TabIndex = 0;
             this.radGridView2.Text = "radGridView2";
             this.radGridView2.ThemeName = "TelerikMetro";
@@ -929,9 +929,9 @@
             // splitPanel3
             // 
             this.splitPanel3.Controls.Add(this.radSplitContainer3);
-            this.splitPanel3.Location = new System.Drawing.Point(0, 224);
+            this.splitPanel3.Location = new System.Drawing.Point(0, 223);
             this.splitPanel3.Name = "splitPanel3";
-            this.splitPanel3.Size = new System.Drawing.Size(1624, 301);
+            this.splitPanel3.Size = new System.Drawing.Size(1624, 300);
             this.splitPanel3.SizeInfo.AutoSizeScale = new System.Drawing.SizeF(0F, 0.1058719F);
             this.splitPanel3.SizeInfo.SplitterCorrection = new System.Drawing.Size(0, 70);
             this.splitPanel3.TabIndex = 2;
@@ -945,7 +945,7 @@
             this.radSplitContainer3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.radSplitContainer3.Location = new System.Drawing.Point(0, 0);
             this.radSplitContainer3.Name = "radSplitContainer3";
-            this.radSplitContainer3.Size = new System.Drawing.Size(1624, 301);
+            this.radSplitContainer3.Size = new System.Drawing.Size(1624, 300);
             this.radSplitContainer3.TabIndex = 0;
             this.radSplitContainer3.TabStop = false;
             this.radSplitContainer3.Text = "radSplitContainer3";
@@ -954,7 +954,7 @@
             // 
             this.splitPanel7.Location = new System.Drawing.Point(0, 0);
             this.splitPanel7.Name = "splitPanel7";
-            this.splitPanel7.Size = new System.Drawing.Size(450, 301);
+            this.splitPanel7.Size = new System.Drawing.Size(450, 300);
             this.splitPanel7.SizeInfo.AutoSizeScale = new System.Drawing.SizeF(-0.2222222F, 0F);
             this.splitPanel7.SizeInfo.SplitterCorrection = new System.Drawing.Size(-360, 0);
             this.splitPanel7.TabIndex = 0;
@@ -966,7 +966,7 @@
             this.splitPanel8.Controls.Add(this.radPageView3);
             this.splitPanel8.Location = new System.Drawing.Point(454, 0);
             this.splitPanel8.Name = "splitPanel8";
-            this.splitPanel8.Size = new System.Drawing.Size(1170, 301);
+            this.splitPanel8.Size = new System.Drawing.Size(1170, 300);
             this.splitPanel8.SizeInfo.AutoSizeScale = new System.Drawing.SizeF(0.2222222F, 0F);
             this.splitPanel8.SizeInfo.SplitterCorrection = new System.Drawing.Size(360, 0);
             this.splitPanel8.TabIndex = 1;
@@ -981,26 +981,45 @@
             this.radPageView3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.radPageView3.Location = new System.Drawing.Point(0, 0);
             this.radPageView3.Name = "radPageView3";
-            this.radPageView3.SelectedPage = this.radPageViewPage5;
-            this.radPageView3.Size = new System.Drawing.Size(1170, 301);
+            this.radPageView3.SelectedPage = this.radPageViewPage4;
+            this.radPageView3.Size = new System.Drawing.Size(1170, 300);
             this.radPageView3.TabIndex = 0;
             this.radPageView3.ThemeName = "TelerikMetro";
             // 
             // radPageViewPage4
             // 
-            this.radPageViewPage4.ItemSize = new System.Drawing.SizeF(62F, 25F);
+            this.radPageViewPage4.Controls.Add(this.radGridView8);
+            this.radPageViewPage4.ItemSize = new System.Drawing.SizeF(78F, 30F);
             this.radPageViewPage4.Location = new System.Drawing.Point(5, 36);
             this.radPageViewPage4.Name = "radPageViewPage4";
-            this.radPageViewPage4.Size = new System.Drawing.Size(800, 259);
+            this.radPageViewPage4.Size = new System.Drawing.Size(1160, 259);
             this.radPageViewPage4.Text = "未成交单";
+            // 
+            // radGridView8
+            // 
+            this.radGridView8.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.radGridView8.Location = new System.Drawing.Point(0, 0);
+            // 
+            // radGridView8
+            // 
+            gridViewTextBoxColumn6.FieldName = "LastPrice";
+            gridViewTextBoxColumn6.HeaderText = "column1";
+            gridViewTextBoxColumn6.Name = "column1";
+            gridViewTextBoxColumn6.Width = 63;
+            this.radGridView8.MasterTemplate.Columns.AddRange(new Telerik.WinControls.UI.GridViewDataColumn[] {
+            gridViewTextBoxColumn6});
+            this.radGridView8.Name = "radGridView8";
+            this.radGridView8.Size = new System.Drawing.Size(1160, 259);
+            this.radGridView8.TabIndex = 0;
+            this.radGridView8.Text = "radGridView8";
             // 
             // radPageViewPage5
             // 
             this.radPageViewPage5.Controls.Add(this.radGridView6);
-            this.radPageViewPage5.ItemSize = new System.Drawing.SizeF(75F, 25F);
-            this.radPageViewPage5.Location = new System.Drawing.Point(5, 31);
+            this.radPageViewPage5.ItemSize = new System.Drawing.SizeF(94F, 30F);
+            this.radPageViewPage5.Location = new System.Drawing.Point(5, 36);
             this.radPageViewPage5.Name = "radPageViewPage5";
-            this.radPageViewPage5.Size = new System.Drawing.Size(1160, 265);
+            this.radPageViewPage5.Size = new System.Drawing.Size(1160, 259);
             this.radPageViewPage5.Text = "所有委托单";
             // 
             // radGridView6
@@ -1008,21 +1027,21 @@
             this.radGridView6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.radGridView6.Location = new System.Drawing.Point(0, 0);
             // 
-            // radGridView6
+            // 
             // 
             this.radGridView6.MasterTemplate.AllowAddNewRow = false;
             this.radGridView6.MasterTemplate.AllowDeleteRow = false;
             this.radGridView6.MasterTemplate.AllowEditRow = false;
-            gridViewTextBoxColumn6.FieldName = "OrderSysID";
-            gridViewTextBoxColumn6.HeaderText = "报单编号";
-            gridViewTextBoxColumn6.IsAutoGenerated = true;
-            gridViewTextBoxColumn6.Name = "OrderSysID";
-            gridViewTextBoxColumn6.Width = 86;
-            gridViewTextBoxColumn7.FieldName = "InstrumentID";
-            gridViewTextBoxColumn7.HeaderText = "合约";
+            gridViewTextBoxColumn7.FieldName = "OrderSysID";
+            gridViewTextBoxColumn7.HeaderText = "报单编号";
             gridViewTextBoxColumn7.IsAutoGenerated = true;
-            gridViewTextBoxColumn7.Name = "InstrumentID";
-            gridViewTextBoxColumn7.Width = 48;
+            gridViewTextBoxColumn7.Name = "OrderSysID";
+            gridViewTextBoxColumn7.Width = 86;
+            gridViewTextBoxColumn8.FieldName = "InstrumentID";
+            gridViewTextBoxColumn8.HeaderText = "合约";
+            gridViewTextBoxColumn8.IsAutoGenerated = true;
+            gridViewTextBoxColumn8.Name = "InstrumentID";
+            gridViewTextBoxColumn8.Width = 48;
             gridViewDecimalColumn22.DataType = typeof(double);
             gridViewDecimalColumn22.FieldName = "LimitPrice";
             gridViewDecimalColumn22.HeaderText = "报单价格";
@@ -1047,30 +1066,30 @@
             gridViewDecimalColumn25.IsAutoGenerated = true;
             gridViewDecimalColumn25.Name = "VolumeTotal";
             gridViewDecimalColumn25.Width = 105;
-            gridViewTextBoxColumn8.FieldName = "InsertTime";
-            gridViewTextBoxColumn8.HeaderText = "报单时间";
-            gridViewTextBoxColumn8.IsAutoGenerated = true;
-            gridViewTextBoxColumn8.Name = "InsertTime";
-            gridViewTextBoxColumn8.SortOrder = Telerik.WinControls.UI.RadSortOrder.Descending;
-            gridViewTextBoxColumn8.Width = 86;
-            gridViewTextBoxColumn9.FieldName = "ActiveTime";
-            gridViewTextBoxColumn9.HeaderText = "最后成交时间";
+            gridViewTextBoxColumn9.FieldName = "InsertTime";
+            gridViewTextBoxColumn9.HeaderText = "报单时间";
             gridViewTextBoxColumn9.IsAutoGenerated = true;
-            gridViewTextBoxColumn9.Name = "ActiveTime";
-            gridViewTextBoxColumn9.Width = 124;
-            gridViewTextBoxColumn10.FieldName = "StatusMsg";
-            gridViewTextBoxColumn10.HeaderText = "详细状态";
+            gridViewTextBoxColumn9.Name = "InsertTime";
+            gridViewTextBoxColumn9.SortOrder = Telerik.WinControls.UI.RadSortOrder.Descending;
+            gridViewTextBoxColumn9.Width = 86;
+            gridViewTextBoxColumn10.FieldName = "ActiveTime";
+            gridViewTextBoxColumn10.HeaderText = "最后成交时间";
             gridViewTextBoxColumn10.IsAutoGenerated = true;
-            gridViewTextBoxColumn10.Name = "StatusMsg";
-            gridViewTextBoxColumn10.Width = 86;
-            gridViewTextBoxColumn11.FieldName = "ExchangeID";
-            gridViewTextBoxColumn11.HeaderText = "交易所";
+            gridViewTextBoxColumn10.Name = "ActiveTime";
+            gridViewTextBoxColumn10.Width = 124;
+            gridViewTextBoxColumn11.FieldName = "StatusMsg";
+            gridViewTextBoxColumn11.HeaderText = "详细状态";
             gridViewTextBoxColumn11.IsAutoGenerated = true;
-            gridViewTextBoxColumn11.Name = "ExchangeID";
-            gridViewTextBoxColumn11.Width = 67;
+            gridViewTextBoxColumn11.Name = "StatusMsg";
+            gridViewTextBoxColumn11.Width = 86;
+            gridViewTextBoxColumn12.FieldName = "ExchangeID";
+            gridViewTextBoxColumn12.HeaderText = "交易所";
+            gridViewTextBoxColumn12.IsAutoGenerated = true;
+            gridViewTextBoxColumn12.Name = "ExchangeID";
+            gridViewTextBoxColumn12.Width = 67;
             this.radGridView6.MasterTemplate.Columns.AddRange(new Telerik.WinControls.UI.GridViewDataColumn[] {
-            gridViewTextBoxColumn6,
             gridViewTextBoxColumn7,
+            gridViewTextBoxColumn8,
             gridViewComboBoxColumn24,
             gridViewComboBoxColumn25,
             gridViewDecimalColumn22,
@@ -1078,10 +1097,10 @@
             gridViewComboBoxColumn26,
             gridViewDecimalColumn24,
             gridViewDecimalColumn25,
-            gridViewTextBoxColumn8,
             gridViewTextBoxColumn9,
             gridViewTextBoxColumn10,
-            gridViewTextBoxColumn11});
+            gridViewTextBoxColumn11,
+            gridViewTextBoxColumn12});
             this.radGridView6.MasterTemplate.DataSource = this.orderRecordBindingSource;
             sortDescriptor1.Direction = System.ComponentModel.ListSortDirection.Descending;
             sortDescriptor1.PropertyName = "InsertTime";
@@ -1089,7 +1108,7 @@
             sortDescriptor1});
             this.radGridView6.Name = "radGridView6";
             this.radGridView6.ReadOnly = true;
-            this.radGridView6.Size = new System.Drawing.Size(1160, 265);
+            this.radGridView6.Size = new System.Drawing.Size(1160, 259);
             this.radGridView6.TabIndex = 0;
             this.radGridView6.Text = "radGridView6";
             this.radGridView6.ThemeName = "TelerikMetro";
@@ -1100,7 +1119,7 @@
             // 
             // radPageViewPage6
             // 
-            this.radPageViewPage6.ItemSize = new System.Drawing.SizeF(87F, 25F);
+            this.radPageViewPage6.ItemSize = new System.Drawing.SizeF(111F, 30F);
             this.radPageViewPage6.Location = new System.Drawing.Point(5, 36);
             this.radPageViewPage6.Name = "radPageViewPage6";
             this.radPageViewPage6.Size = new System.Drawing.Size(800, 259);
@@ -1109,9 +1128,9 @@
             // splitPanel4
             // 
             this.splitPanel4.Controls.Add(this.radSplitContainer2);
-            this.splitPanel4.Location = new System.Drawing.Point(0, 529);
+            this.splitPanel4.Location = new System.Drawing.Point(0, 527);
             this.splitPanel4.Name = "splitPanel4";
-            this.splitPanel4.Size = new System.Drawing.Size(1624, 330);
+            this.splitPanel4.Size = new System.Drawing.Size(1624, 328);
             this.splitPanel4.SizeInfo.AutoSizeScale = new System.Drawing.SizeF(0F, 0.1390866F);
             this.splitPanel4.SizeInfo.SplitterCorrection = new System.Drawing.Size(0, 119);
             this.splitPanel4.TabIndex = 3;
@@ -1125,7 +1144,7 @@
             this.radSplitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.radSplitContainer2.Location = new System.Drawing.Point(0, 0);
             this.radSplitContainer2.Name = "radSplitContainer2";
-            this.radSplitContainer2.Size = new System.Drawing.Size(1624, 330);
+            this.radSplitContainer2.Size = new System.Drawing.Size(1624, 328);
             this.radSplitContainer2.TabIndex = 0;
             this.radSplitContainer2.TabStop = false;
             this.radSplitContainer2.Text = "radSplitContainer2";
@@ -1135,7 +1154,7 @@
             this.splitPanel5.Controls.Add(this.radPageView1);
             this.splitPanel5.Location = new System.Drawing.Point(0, 0);
             this.splitPanel5.Name = "splitPanel5";
-            this.splitPanel5.Size = new System.Drawing.Size(810, 330);
+            this.splitPanel5.Size = new System.Drawing.Size(810, 328);
             this.splitPanel5.TabIndex = 0;
             this.splitPanel5.TabStop = false;
             this.splitPanel5.Text = "splitPanel5";
@@ -1148,7 +1167,7 @@
             this.radPageView1.Location = new System.Drawing.Point(0, 0);
             this.radPageView1.Name = "radPageView1";
             this.radPageView1.SelectedPage = this.radPageViewPage1;
-            this.radPageView1.Size = new System.Drawing.Size(810, 330);
+            this.radPageView1.Size = new System.Drawing.Size(810, 328);
             this.radPageView1.TabIndex = 0;
             this.radPageView1.Text = "持仓";
             this.radPageView1.ThemeName = "TelerikMetro";
@@ -1158,10 +1177,10 @@
             // radPageViewPage1
             // 
             this.radPageViewPage1.Controls.Add(this.radGridView5);
-            this.radPageViewPage1.ItemSize = new System.Drawing.SizeF(37F, 25F);
-            this.radPageViewPage1.Location = new System.Drawing.Point(5, 31);
+            this.radPageViewPage1.ItemSize = new System.Drawing.SizeF(46F, 30F);
+            this.radPageViewPage1.Location = new System.Drawing.Point(5, 36);
             this.radPageViewPage1.Name = "radPageViewPage1";
-            this.radPageViewPage1.Size = new System.Drawing.Size(800, 294);
+            this.radPageViewPage1.Size = new System.Drawing.Size(800, 287);
             this.radPageViewPage1.Text = "持仓";
             // 
             // radGridView5
@@ -1174,11 +1193,11 @@
             this.radGridView5.MasterTemplate.AllowAddNewRow = false;
             this.radGridView5.MasterTemplate.AllowDeleteRow = false;
             this.radGridView5.MasterTemplate.AllowEditRow = false;
-            gridViewTextBoxColumn12.FieldName = "InstrumentID";
-            gridViewTextBoxColumn12.HeaderText = "合约";
-            gridViewTextBoxColumn12.IsAutoGenerated = true;
-            gridViewTextBoxColumn12.Name = "InstrumentID";
-            gridViewTextBoxColumn12.Width = 48;
+            gridViewTextBoxColumn13.FieldName = "InstrumentID";
+            gridViewTextBoxColumn13.HeaderText = "合约";
+            gridViewTextBoxColumn13.IsAutoGenerated = true;
+            gridViewTextBoxColumn13.Name = "InstrumentID";
+            gridViewTextBoxColumn13.Width = 48;
             gridViewDecimalColumn26.DataType = typeof(int);
             gridViewDecimalColumn26.FieldName = "Position";
             gridViewDecimalColumn26.HeaderText = "总持仓";
@@ -1209,17 +1228,17 @@
             gridViewDecimalColumn30.IsAutoGenerated = true;
             gridViewDecimalColumn30.Name = "UseMargin";
             gridViewDecimalColumn30.Width = 86;
-            gridViewTextBoxColumn13.FieldName = "ExchangeID";
-            gridViewTextBoxColumn13.HeaderText = "交易所";
-            gridViewTextBoxColumn13.IsAutoGenerated = true;
-            gridViewTextBoxColumn13.Name = "ExchangeID";
-            gridViewTextBoxColumn13.Width = 67;
+            gridViewTextBoxColumn14.FieldName = "ExchangeID";
+            gridViewTextBoxColumn14.HeaderText = "交易所";
+            gridViewTextBoxColumn14.IsAutoGenerated = true;
+            gridViewTextBoxColumn14.Name = "ExchangeID";
+            gridViewTextBoxColumn14.Width = 67;
             gridViewHyperlinkColumn1.DataType = typeof(CTPTradeApi.EnumPosiDirectionType);
             gridViewHyperlinkColumn1.FieldName = "PosiDirection";
             gridViewHyperlinkColumn1.HeaderText = "column1";
             gridViewHyperlinkColumn1.Name = "column1";
             this.radGridView5.MasterTemplate.Columns.AddRange(new Telerik.WinControls.UI.GridViewDataColumn[] {
-            gridViewTextBoxColumn12,
+            gridViewTextBoxColumn13,
             gridViewComboBoxColumn22,
             gridViewDecimalColumn26,
             gridViewDecimalColumn27,
@@ -1227,11 +1246,11 @@
             gridViewDecimalColumn29,
             gridViewDecimalColumn30,
             gridViewComboBoxColumn23,
-            gridViewTextBoxColumn13,
+            gridViewTextBoxColumn14,
             gridViewHyperlinkColumn1});
             this.radGridView5.MasterTemplate.DataSource = this.positionRecordBindingSource;
             this.radGridView5.Name = "radGridView5";
-            this.radGridView5.Size = new System.Drawing.Size(800, 294);
+            this.radGridView5.Size = new System.Drawing.Size(800, 287);
             this.radGridView5.TabIndex = 0;
             this.radGridView5.Text = "radGridView5";
             this.radGridView5.ThemeName = "TelerikMetro";
@@ -1243,7 +1262,7 @@
             // radPageViewPage2
             // 
             this.radPageViewPage2.Controls.Add(this.radGridView3);
-            this.radPageViewPage2.ItemSize = new System.Drawing.SizeF(62F, 25F);
+            this.radPageViewPage2.ItemSize = new System.Drawing.SizeF(78F, 30F);
             this.radPageViewPage2.Location = new System.Drawing.Point(5, 36);
             this.radPageViewPage2.Name = "radPageViewPage2";
             this.radPageViewPage2.Size = new System.Drawing.Size(800, 287);
@@ -1264,7 +1283,7 @@
             this.splitPanel6.Controls.Add(this.radPageView2);
             this.splitPanel6.Location = new System.Drawing.Point(814, 0);
             this.splitPanel6.Name = "splitPanel6";
-            this.splitPanel6.Size = new System.Drawing.Size(810, 330);
+            this.splitPanel6.Size = new System.Drawing.Size(810, 328);
             this.splitPanel6.TabIndex = 1;
             this.splitPanel6.TabStop = false;
             this.splitPanel6.Text = "splitPanel6";
@@ -1276,7 +1295,7 @@
             this.radPageView2.Location = new System.Drawing.Point(0, 0);
             this.radPageView2.Name = "radPageView2";
             this.radPageView2.SelectedPage = this.radPageViewPage3;
-            this.radPageView2.Size = new System.Drawing.Size(810, 330);
+            this.radPageView2.Size = new System.Drawing.Size(810, 328);
             this.radPageView2.TabIndex = 0;
             this.radPageView2.Text = "radPageView2";
             this.radPageView2.ThemeName = "TelerikMetro";
@@ -1284,10 +1303,10 @@
             // radPageViewPage3
             // 
             this.radPageViewPage3.Controls.Add(this.radGridView4);
-            this.radPageViewPage3.ItemSize = new System.Drawing.SizeF(62F, 25F);
-            this.radPageViewPage3.Location = new System.Drawing.Point(5, 31);
+            this.radPageViewPage3.ItemSize = new System.Drawing.SizeF(78F, 30F);
+            this.radPageViewPage3.Location = new System.Drawing.Point(5, 36);
             this.radPageViewPage3.Name = "radPageViewPage3";
-            this.radPageViewPage3.Size = new System.Drawing.Size(800, 294);
+            this.radPageViewPage3.Size = new System.Drawing.Size(800, 287);
             this.radPageViewPage3.Text = "成交记录";
             // 
             // radGridView4
@@ -1305,21 +1324,21 @@
             this.radGridView4.MasterTemplate.AllowAddNewRow = false;
             this.radGridView4.MasterTemplate.AllowDeleteRow = false;
             this.radGridView4.MasterTemplate.AllowEditRow = false;
-            gridViewTextBoxColumn14.FieldName = "TradeID";
-            gridViewTextBoxColumn14.HeaderText = "成交编号";
-            gridViewTextBoxColumn14.IsAutoGenerated = true;
-            gridViewTextBoxColumn14.Name = "TradeID";
-            gridViewTextBoxColumn14.Width = 86;
-            gridViewTextBoxColumn15.FieldName = "InstrumentID";
-            gridViewTextBoxColumn15.HeaderText = "合约";
+            gridViewTextBoxColumn15.FieldName = "TradeID";
+            gridViewTextBoxColumn15.HeaderText = "成交编号";
             gridViewTextBoxColumn15.IsAutoGenerated = true;
-            gridViewTextBoxColumn15.Name = "InstrumentID";
-            gridViewTextBoxColumn15.Width = 48;
-            gridViewTextBoxColumn16.DataType = typeof(CTPTradeApi.EnumDirectionType);
-            gridViewTextBoxColumn16.FieldName = "Direction";
-            gridViewTextBoxColumn16.HeaderText = "买卖";
-            gridViewTextBoxColumn16.Name = "Direction";
+            gridViewTextBoxColumn15.Name = "TradeID";
+            gridViewTextBoxColumn15.Width = 86;
+            gridViewTextBoxColumn16.FieldName = "InstrumentID";
+            gridViewTextBoxColumn16.HeaderText = "合约";
+            gridViewTextBoxColumn16.IsAutoGenerated = true;
+            gridViewTextBoxColumn16.Name = "InstrumentID";
             gridViewTextBoxColumn16.Width = 48;
+            gridViewTextBoxColumn17.DataType = typeof(CTPTradeApi.EnumDirectionType);
+            gridViewTextBoxColumn17.FieldName = "Direction";
+            gridViewTextBoxColumn17.HeaderText = "买卖";
+            gridViewTextBoxColumn17.Name = "Direction";
+            gridViewTextBoxColumn17.Width = 48;
             gridViewDecimalColumn31.DataType = typeof(double);
             gridViewDecimalColumn31.FieldName = "Price";
             gridViewDecimalColumn31.HeaderText = "成交价格";
@@ -1332,38 +1351,38 @@
             gridViewDecimalColumn32.IsAutoGenerated = true;
             gridViewDecimalColumn32.Name = "Volume";
             gridViewDecimalColumn32.Width = 86;
-            gridViewTextBoxColumn17.FieldName = "TradeTime";
-            gridViewTextBoxColumn17.HeaderText = "成交时间";
-            gridViewTextBoxColumn17.IsAutoGenerated = true;
-            gridViewTextBoxColumn17.Name = "TradeTime";
-            gridViewTextBoxColumn17.Width = 86;
-            gridViewTextBoxColumn18.FieldName = "OrderSysID";
-            gridViewTextBoxColumn18.HeaderText = "报单编号";
+            gridViewTextBoxColumn18.FieldName = "TradeTime";
+            gridViewTextBoxColumn18.HeaderText = "成交时间";
             gridViewTextBoxColumn18.IsAutoGenerated = true;
-            gridViewTextBoxColumn18.Name = "OrderSysID";
+            gridViewTextBoxColumn18.Name = "TradeTime";
             gridViewTextBoxColumn18.Width = 86;
-            gridViewTextBoxColumn19.FieldName = "ExchangeID";
-            gridViewTextBoxColumn19.HeaderText = "交易所";
+            gridViewTextBoxColumn19.FieldName = "OrderSysID";
+            gridViewTextBoxColumn19.HeaderText = "报单编号";
             gridViewTextBoxColumn19.IsAutoGenerated = true;
-            gridViewTextBoxColumn19.Name = "ExchangeID";
-            gridViewTextBoxColumn19.Width = 67;
+            gridViewTextBoxColumn19.Name = "OrderSysID";
+            gridViewTextBoxColumn19.Width = 86;
+            gridViewTextBoxColumn20.FieldName = "ExchangeID";
+            gridViewTextBoxColumn20.HeaderText = "交易所";
+            gridViewTextBoxColumn20.IsAutoGenerated = true;
+            gridViewTextBoxColumn20.Name = "ExchangeID";
+            gridViewTextBoxColumn20.Width = 67;
             this.radGridView4.MasterTemplate.Columns.AddRange(new Telerik.WinControls.UI.GridViewDataColumn[] {
-            gridViewTextBoxColumn14,
             gridViewTextBoxColumn15,
             gridViewTextBoxColumn16,
+            gridViewTextBoxColumn17,
             gridViewComboBoxColumn19,
             gridViewDecimalColumn31,
             gridViewDecimalColumn32,
-            gridViewTextBoxColumn17,
             gridViewTextBoxColumn18,
+            gridViewTextBoxColumn19,
             gridViewComboBoxColumn20,
             gridViewComboBoxColumn21,
-            gridViewTextBoxColumn19});
+            gridViewTextBoxColumn20});
             this.radGridView4.MasterTemplate.DataSource = this.tradeRecordBindingSource;
             this.radGridView4.Name = "radGridView4";
             this.radGridView4.ReadOnly = true;
             this.radGridView4.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.radGridView4.Size = new System.Drawing.Size(800, 294);
+            this.radGridView4.Size = new System.Drawing.Size(800, 287);
             this.radGridView4.TabIndex = 1;
             this.radGridView4.Text = "gvTradeRecord";
             this.radGridView4.ThemeName = "TelerikMetro";
@@ -1408,7 +1427,7 @@
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1624, 883);
             this.Controls.Add(this.radSplitContainer1);
@@ -1421,7 +1440,6 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.accountBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.marketDataBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.positionDetailBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.radStatusStrip1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.radSplitContainer1)).EndInit();
@@ -1443,6 +1461,9 @@
             this.splitPanel8.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.radPageView3)).EndInit();
             this.radPageView3.ResumeLayout(false);
+            this.radPageViewPage4.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.radGridView8.MasterTemplate)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.radGridView8)).EndInit();
             this.radPageViewPage5.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.radGridView6.MasterTemplate)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.radGridView6)).EndInit();
@@ -1479,7 +1500,6 @@
         #endregion
 
         private System.Windows.Forms.BindingSource accountBindingSource;
-        private System.Windows.Forms.BindingSource marketDataBindingSource;
         private System.Windows.Forms.BindingSource positionDetailBindingSource;
         private Telerik.WinControls.UI.Data.EnumBinder enumBinder1;
         private Telerik.WinControls.UI.Data.EnumBinder enumBinder2;
@@ -1543,6 +1563,7 @@
         private Telerik.WinControls.UI.Data.EnumBinder enumBinder25;
         private Telerik.WinControls.UI.Data.EnumBinder enumBinder26;
         private Telerik.WinControls.UI.RadGridView radGridView7;
+        private Telerik.WinControls.UI.RadGridView radGridView8;
     }
 }
 
