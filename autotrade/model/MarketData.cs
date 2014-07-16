@@ -35,11 +35,11 @@ namespace autotrade.model
             this.ClosePrice = pDepthMarketData.ClosePrice;
             this.SettlementPrice = pDepthMarketData.SettlementPrice;
             this.UpperLimitPrice = pDepthMarketData.UpperLimitPrice;
-            this.LowerLimitPrice = pDepthMarketData.LowerLimitPrice;
-            this.UpdateTime = pDepthMarketData.UpdateTime;
+            this.LowerLimitPrice = pDepthMarketData.LowerLimitPrice;            
             this.UpdateMillisec = pDepthMarketData.UpdateMillisec;
             this.AveragePrice = pDepthMarketData.AveragePrice;
             this.ExchangeID = pDepthMarketData.ExchangeID;
+            this.UpdateTime = pDepthMarketData.UpdateTime;
         }
 
         public MarketData()

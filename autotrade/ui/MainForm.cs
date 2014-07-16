@@ -149,14 +149,7 @@ namespace autotrade
 
             //});
 
-            if (radGridView2.InvokeRequired)
-            {
-                radGridView2.Invoke(new MethodInvoker(() => { radGridView2.DataSource = _marketManager.marketDatas; }));//or change here something in the underlay datasource
-            }
-            else
-            {
-                radGridView2.DataSource = _marketManager.marketDatas;
-            }
+
 
             string[] ppInstrumentID = new string[Properties.Settings.Default.INID.Count];
 
@@ -164,10 +157,27 @@ namespace autotrade
 
             for (int i = 1; i < ppInstrumentID.Count(); i++)
             {
-                ppInstrumentID[i] = Properties.Settings.Default.INID[i].ToLower();
+                ppInstrumentID[i] = Properties.Settings.Default.INID[i].ToLower();                
             }
 
-                _marketManager.SubMarketData(ppInstrumentID);
+            foreach (string id in ppInstrumentID)
+            {
+                MarketData    marketData = new MarketData(id);
+                _marketManager.marketDatas.Add(marketData);
+                _marketManager.instrumentDictionary.Add(id, marketData);
+                
+            }
+
+
+            this.radGridView2.MasterTemplate.Columns.Clear();
+            this.radGridView2.GroupDescriptors.Clear();
+            this.radGridView2.SortDescriptors.Clear();
+            this.radGridView2.MasterTemplate.AutoGenerateColumns = true;            
+            radGridView2.DataSource = _marketManager.marketDatas;
+
+            radGridView2.Columns["LastPrice"].HeaderText = "当前价"; 
+
+            _marketManager.SubMarketData(ppInstrumentID);
 
 
                 

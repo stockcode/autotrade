@@ -19,7 +19,7 @@ namespace autotrade.business
         private Queue<CThostFtdcDepthMarketDataField> marketQueue = new  Queue<CThostFtdcDepthMarketDataField>();
         
         public BindingList<MarketData> marketDatas = new BindingList<MarketData>();
-        private Dictionary<String, MarketData> instrumentDictionary = new Dictionary<string, MarketData>();
+        public Dictionary<String, MarketData> instrumentDictionary = new Dictionary<string, MarketData>();
 
         public delegate void MarketDataHandler(object sender, MarketDataEventArgs e);
 
