@@ -137,6 +137,7 @@
             this.positionDetailBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.radStatusStrip1 = new Telerik.WinControls.UI.RadStatusStrip();
             this.radSplitContainer1 = new Telerik.WinControls.UI.RadSplitContainer();
+            this.splitPanel1 = new Telerik.WinControls.UI.SplitPanel();
             this.splitPanel2 = new Telerik.WinControls.UI.SplitPanel();
             this.radGridView2 = new Telerik.WinControls.UI.RadGridView();
             this.splitPanel3 = new Telerik.WinControls.UI.SplitPanel();
@@ -169,12 +170,12 @@
             this.radMenuItem2 = new Telerik.WinControls.UI.RadMenuItem();
             this.radMenuItem3 = new Telerik.WinControls.UI.RadMenuItem();
             this.telerikMetroTheme1 = new Telerik.WinControls.Themes.TelerikMetroTheme();
-            this.splitPanel1 = new Telerik.WinControls.UI.SplitPanel();
             ((System.ComponentModel.ISupportInitialize)(this.accountBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.positionDetailBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.radStatusStrip1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.radSplitContainer1)).BeginInit();
             this.radSplitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitPanel1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitPanel2)).BeginInit();
             this.splitPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.radGridView2)).BeginInit();
@@ -219,7 +220,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.radGridView4.MasterTemplate)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tradeRecordBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.radMenu1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.splitPanel1)).BeginInit();
             this.SuspendLayout();
             // 
             // enumBinder1
@@ -609,6 +609,21 @@
             this.radSplitContainer1.TabStop = false;
             this.radSplitContainer1.Text = "radSplitContainer1";
             // 
+            // splitPanel1
+            // 
+            this.splitPanel1.Location = new System.Drawing.Point(0, 0);
+            this.splitPanel1.Name = "splitPanel1";
+            // 
+            // 
+            // 
+            this.splitPanel1.RootElement.MinSize = new System.Drawing.Size(0, 0);
+            this.splitPanel1.Size = new System.Drawing.Size(1624, 84);
+            this.splitPanel1.SizeInfo.AutoSizeScale = new System.Drawing.SizeF(0F, -0.1503559F);
+            this.splitPanel1.SizeInfo.SplitterCorrection = new System.Drawing.Size(0, -105);
+            this.splitPanel1.TabIndex = 0;
+            this.splitPanel1.TabStop = false;
+            this.splitPanel1.Text = "splitPanel1";
+            // 
             // splitPanel2
             // 
             this.splitPanel2.Controls.Add(this.radGridView2);
@@ -626,6 +641,8 @@
             this.radGridView2.BackColor = System.Drawing.SystemColors.Control;
             this.radGridView2.Cursor = System.Windows.Forms.Cursors.Default;
             this.radGridView2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.radGridView2.EnableGestures = false;
+            this.radGridView2.EnableHotTracking = false;
             this.radGridView2.Font = new System.Drawing.Font("Segoe UI", 8.25F);
             this.radGridView2.ForeColor = System.Drawing.Color.Black;
             this.radGridView2.ImeMode = System.Windows.Forms.ImeMode.NoControl;
@@ -853,6 +870,7 @@
             gridViewTextBoxColumn3,
             gridViewTextBoxColumn4,
             gridViewDecimalColumn18});
+            this.radGridView2.MasterTemplate.EnableAlternatingRowColor = true;
             this.radGridView2.Name = "radGridView2";
             this.radGridView2.Padding = new System.Windows.Forms.Padding(0, 0, 0, 1);
             this.radGridView2.ReadOnly = true;
@@ -1361,21 +1379,6 @@
             this.radMenuItem3.Visibility = Telerik.WinControls.ElementVisibility.Visible;
             this.radMenuItem3.Click += new System.EventHandler(this.radMenuItem3_Click);
             // 
-            // splitPanel1
-            // 
-            this.splitPanel1.Location = new System.Drawing.Point(0, 0);
-            this.splitPanel1.Name = "splitPanel1";
-            // 
-            // 
-            // 
-            this.splitPanel1.RootElement.MinSize = new System.Drawing.Size(25, 25);
-            this.splitPanel1.Size = new System.Drawing.Size(1624, 84);
-            this.splitPanel1.SizeInfo.AutoSizeScale = new System.Drawing.SizeF(0F, -0.1503559F);
-            this.splitPanel1.SizeInfo.SplitterCorrection = new System.Drawing.Size(0, -105);
-            this.splitPanel1.TabIndex = 0;
-            this.splitPanel1.TabStop = false;
-            this.splitPanel1.Text = "splitPanel1";
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -1395,6 +1398,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.radStatusStrip1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.radSplitContainer1)).EndInit();
             this.radSplitContainer1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitPanel1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitPanel2)).EndInit();
             this.splitPanel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.radGridView2.MasterTemplate)).EndInit();
@@ -1439,7 +1443,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.radGridView4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tradeRecordBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.radMenu1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.splitPanel1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

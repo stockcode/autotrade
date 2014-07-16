@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using autotrade.model;
 using CTPMdApi;
@@ -15,7 +16,7 @@ namespace autotrade.business
     {
         private readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private MdApi mdApi;
-        private BlockingQueue<CThostFtdcDepthMarketDataField> marketQueue = new BlockingQueue<CThostFtdcDepthMarketDataField>();
+        private Queue<CThostFtdcDepthMarketDataField> marketQueue = new  Queue<CThostFtdcDepthMarketDataField>();
         
         public BindingList<MarketData> marketDatas = new BindingList<MarketData>();
         private Dictionary<String, MarketData> instrumentDictionary = new Dictionary<string, MarketData>();
@@ -33,6 +34,12 @@ namespace autotrade.business
 
             Task.Factory.StartNew(()=>{
                 while(true) {
+                    if (marketQueue.Count() == 0)
+                    {
+                        Thread.Sleep(100);
+                        continue;
+                    }
+
                     CThostFtdcDepthMarketDataField pDepthMarketData = marketQueue.Dequeue();                    
                     MarketData marketData;
 
@@ -47,7 +54,7 @@ namespace autotrade.business
                         marketDatas.Add(marketData);
                         instrumentDictionary.Add(pDepthMarketData.InstrumentID, marketData);
                     }
-                    
+                    //log.Info(marketQueue.Count());
                     //ObjectUtils.Copy(pDepthMarketData, marketData);
                     //OnRtnMarketData(this, new MarketDataEventArgs(marketData));
                     //log.Info(marketData);

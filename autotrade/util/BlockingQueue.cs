@@ -37,6 +37,15 @@ namespace autotrade.util
             }
         }
 
+        public int Count()
+        {
+            lock (queue)
+            {
+                return queue.Count();
+            }
+        }
+
+
         /// <summary>
         /// Remove all objects from the Queue, resume all dequeue threads.
         /// </summary>
