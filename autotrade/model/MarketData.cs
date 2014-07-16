@@ -37,6 +37,9 @@ namespace autotrade.model
             this.UpperLimitPrice = pDepthMarketData.UpperLimitPrice;
             this.LowerLimitPrice = pDepthMarketData.LowerLimitPrice;
             this.UpdateTime = pDepthMarketData.UpdateTime;
+            this.UpdateMillisec = pDepthMarketData.UpdateMillisec;
+            this.AveragePrice = pDepthMarketData.AveragePrice;
+            this.ExchangeID = pDepthMarketData.ExchangeID;
         }
 
         public MarketData()
@@ -186,12 +189,6 @@ namespace autotrade.model
             {
                 handler(this, new PropertyChangedEventArgs(propertyName));
             }
-        }
-
-        public override bool Equals(object obj)
-        {
-            MarketData dst = (MarketData) obj;
-            return this.InstrumentId == dst.InstrumentId;
         }
     }
 }

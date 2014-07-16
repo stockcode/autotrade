@@ -73,6 +73,7 @@ namespace autotrade
                 isTradeConnected = true;
                 startMainForm();
             }
+            log.Info(pRspInfo);
             log.Info(pRspUserLogin);
         }
 
@@ -89,6 +90,7 @@ namespace autotrade
                 isMarketConnected = true;
                 startMainForm();
             }
+            log.Info(pRspInfo);
             log.Info(pRspUserLogin);
         }
 

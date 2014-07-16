@@ -149,6 +149,14 @@ namespace autotrade
 
             //});
 
+            if (radGridView2.InvokeRequired)
+            {
+                radGridView2.Invoke(new MethodInvoker(() => { radGridView2.DataSource = _marketManager.marketDatas; }));//or change here something in the underlay datasource
+            }
+            else
+            {
+                radGridView2.DataSource = _marketManager.marketDatas;
+            }
 
             string[] ppInstrumentID = new string[Properties.Settings.Default.INID.Count];
 
@@ -162,14 +170,7 @@ namespace autotrade
                 _marketManager.SubMarketData(ppInstrumentID);
 
 
-                if (radGridView2.InvokeRequired)
-                {
-                    radGridView2.Invoke(new MethodInvoker(() => { radGridView2.DataSource = _marketManager.marketDatas; }));//or change here something in the underlay datasource
-                }
-                else
-                {
-                    radGridView2.DataSource = _marketManager.marketDatas;
-                }
+                
 
             
         }
@@ -284,7 +285,7 @@ namespace autotrade
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            tradeApi.UserLogout();
+            if (tradeApi != null) tradeApi.UserLogout();
         }
 
         private void c1Command4_Click(object sender, C1.Win.C1Command.ClickEventArgs e)
