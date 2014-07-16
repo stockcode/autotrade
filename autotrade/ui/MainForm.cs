@@ -42,7 +42,8 @@ namespace autotrade
         private AccountManager _accountManager;
         private MarketManager _marketManager;
 
-        readonly string[] ppInstrumentID = { "IF1407", "au1412", "ag1412" };	// 行情订阅列表
+        
+        
         public MainForm()
         {
             InitializeComponent();
@@ -103,7 +104,7 @@ namespace autotrade
  
         private void MainForm_Load(object sender, EventArgs e)
         {
-            radGridView4.Columns["Direction"].DataTypeConverter = new DirectionConverter();
+            //radGridView4.Columns["Direction"].DataTypeConverter = new DirectionConverter();
 
             LoginForm loginForm = new LoginForm();
             
@@ -137,22 +138,40 @@ namespace autotrade
                 
             });
 
-            Task.Factory.StartNew(() =>
-            {
-                while (true)
-                {
-                    Thread.Sleep(1000);
-                    _accountManager.QryTradingAccount();
+            //Task.Factory.StartNew(() =>
+            //{
+            //    while (true)
+            //    {
+            //        Thread.Sleep(1000);
+            //        _accountManager.QryTradingAccount();
 
+            //    }
+
+            //});
+
+
+            string[] ppInstrumentID = new string[Properties.Settings.Default.INID.Count];
+
+            ppInstrumentID[0] = "IF1407";
+
+            for (int i = 1; i < ppInstrumentID.Count(); i++)
+            {
+                ppInstrumentID[i] = Properties.Settings.Default.INID[i].ToLower();
+            }
+
+                _marketManager.SubMarketData(ppInstrumentID);
+
+
+                if (radGridView2.InvokeRequired)
+                {
+                    radGridView2.Invoke(new MethodInvoker(() => { radGridView2.DataSource = _marketManager.marketDatas; }));//or change here something in the underlay datasource
+                }
+                else
+                {
+                    radGridView2.DataSource = _marketManager.marketDatas;
                 }
 
-            });
-
-
-            _marketManager.SubMarketData(ppInstrumentID);
-
-
-            radGridView2.DataSource = _marketManager.marketDatas;
+            
         }
 
         private delegate void RecordRecordDelegate(List<OrderRecord> orderRecords);

@@ -18,6 +18,7 @@ namespace autotrade.business
         private BlockingQueue<CThostFtdcDepthMarketDataField> marketQueue = new BlockingQueue<CThostFtdcDepthMarketDataField>();
         
         public BindingList<MarketData> marketDatas = new BindingList<MarketData>();
+        private Dictionary<String, MarketData> instrumentDictionary = new Dictionary<string, MarketData>();
 
         public delegate void MarketDataHandler(object sender, MarketDataEventArgs e);
 
@@ -27,26 +28,48 @@ namespace autotrade.business
         {
             this.mdApi = mdApi;
             this.mdApi.OnRtnDepthMarketData += mdApi_OnRtnDepthMarketData;
+            this.mdApi.OnRspError += mdApi_OnRspError;
+            this.mdApi.OnRspSubMarketData += mdApi_OnRspSubMarketData;
 
             Task.Factory.StartNew(()=>{
                 while(true) {
-                    CThostFtdcDepthMarketDataField pDepthMarketData = marketQueue.Dequeue();
+                    CThostFtdcDepthMarketDataField pDepthMarketData = marketQueue.Dequeue();                    
+                    MarketData marketData;
 
-                    MarketData marketData = new MarketData(pDepthMarketData.InstrumentID);
-                    int index = marketDatas.IndexOf(marketData);
-                    if (index >= 0) marketData = marketDatas[index];
-                    else marketDatas.Add(marketData);
+                    if (instrumentDictionary.ContainsKey(pDepthMarketData.InstrumentID))
+                    {
+                        marketData = instrumentDictionary[pDepthMarketData.InstrumentID];
+                        marketData.CopyFrom(pDepthMarketData);
+                    }
+                    else
+                    {
+                        marketData = new MarketData(pDepthMarketData);
+                        marketDatas.Add(marketData);
+                        instrumentDictionary.Add(pDepthMarketData.InstrumentID, marketData);
+                    }
                     
-                    ObjectUtils.Copy(pDepthMarketData, marketData);
+                    //ObjectUtils.Copy(pDepthMarketData, marketData);
                     //OnRtnMarketData(this, new MarketDataEventArgs(marketData));
-                    log.Info(marketData);
+                    //log.Info(marketData);
                 }
             });
+        }
+
+        void mdApi_OnRspSubMarketData(ref CThostFtdcSpecificInstrumentField pSpecificInstrument, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
+        {
+            log.Info(pRspInfo);
+            log.Info(pSpecificInstrument.InstrumentID);
+        }
+
+        void mdApi_OnRspError(ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
+        {
+            log.Info(pRspInfo);
         }
 
         void mdApi_OnRtnDepthMarketData(ref CThostFtdcDepthMarketDataField pDepthMarketData)
         {            
             marketQueue.Enqueue(pDepthMarketData);
+            //log.Info(pDepthMarketData.InstrumentID);
         }
 
         public void SubMarketData(params string[] instruments)

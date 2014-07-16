@@ -2,15 +2,42 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using C1.Win.C1Editor.Internal;
+using CTPMdApi;
 
 namespace autotrade.model
 {
-    internal class MarketData : INotifyPropertyChanged
+    class MarketData : INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler PropertyChanged;
+
+        public MarketData(CThostFtdcDepthMarketDataField pDepthMarketData)
+        {
+            CopyFrom(pDepthMarketData);
+        }
+
+        public void CopyFrom(CThostFtdcDepthMarketDataField pDepthMarketData)
+        {
+            this.InstrumentId = pDepthMarketData.InstrumentID;
+            this.TradingDay = pDepthMarketData.TradingDay;
+            this.LastPrice = pDepthMarketData.LastPrice;
+            this.PreSettlementPrice = pDepthMarketData.PreSettlementPrice;
+            this.PreClosePrice = pDepthMarketData.PreClosePrice;
+            this.PreOpenInterest = pDepthMarketData.PreOpenInterest;
+            this.OpenPrice = pDepthMarketData.OpenPrice;
+            this.HighestPrice = pDepthMarketData.HighestPrice;
+            this.LowestPrice = pDepthMarketData.LowestPrice;
+            this.Volume = pDepthMarketData.Volume;
+            this.Turnover = pDepthMarketData.Turnover;
+            this.OpenInterest = pDepthMarketData.OpenInterest;
+            this.ClosePrice = pDepthMarketData.ClosePrice;
+            this.SettlementPrice = pDepthMarketData.SettlementPrice;
+            this.UpperLimitPrice = pDepthMarketData.UpperLimitPrice;
+            this.LowerLimitPrice = pDepthMarketData.LowerLimitPrice;
+            this.UpdateTime = pDepthMarketData.UpdateTime;
+        }
 
         public MarketData()
         {
@@ -89,6 +116,7 @@ namespace autotrade.model
         /// </summary>
         public double LowerLimitPrice { get; set; }
 
+
         /// <summary>
         /// 最后修改时间
         /// </summary>
@@ -102,7 +130,7 @@ namespace autotrade.model
                 if (this._updateTime != value)
                 {
                     this._updateTime = value;
-                    OnPropertyChanged("UpdateTime");
+                    NotifyPropertyChanged();
                 }
             }
         }
@@ -110,21 +138,7 @@ namespace autotrade.model
         /// <summary>
         /// 最后修改毫秒
         /// </summary>
-        private int _updateMillisec;
-
-        public int UpdateMillisec
-        {
-            get { return _updateMillisec; }
-            set
-            {
-                if (_updateMillisec != value)
-                {
-                    this._updateMillisec = value;
-                    OnPropertyChanged("UpdateMillisec");
-                }
-            }
-        }
-
+        public int UpdateMillisec { get; set; }
         /// <summary>
         /// 申买价一
         /// </summary>
@@ -160,11 +174,17 @@ namespace autotrade.model
                 , UpperLimitPrice, LowerLimitPrice, UpdateTime, UpdateMillisec, BidPrice1, BidVolume1, AskPrice1, AskVolume1, AveragePrice);
         }
 
-        protected virtual void OnPropertyChanged(string propertyName)
+        public event PropertyChangedEventHandler PropertyChanged = delegate { };
+
+        // This method is called by the Set accessor of each property.
+        // The CallerMemberName attribute that is applied to the optional propertyName
+        // parameter causes the property name of the caller to be substituted as an argument.
+        private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
         {
-            if (PropertyChanged != null)
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null)
             {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+                handler(this, new PropertyChangedEventArgs(propertyName));
             }
         }
 

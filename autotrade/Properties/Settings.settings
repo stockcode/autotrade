@@ -8,16 +8,6 @@
     <Setting Name="Passwd" Type="System.String" Scope="User">
       <Value Profile="(Default)">05221058</Value>
     </Setting>
-    <Setting Name="ServerLines" Type="System.Collections.Specialized.StringCollection" Scope="User">
-      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
-&lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
-  &lt;string&gt;大陆期货一电信线路&lt;/string&gt;
-  &lt;string&gt;大陆期货一联通线路&lt;/string&gt;
-  &lt;string&gt;大陆期货一模拟线路&lt;/string&gt;
-  &lt;string&gt;自定义&lt;/string&gt;
-  &lt;string&gt;安信期货一模拟线路&lt;/string&gt;
-&lt;/ArrayOfString&gt;</Value>
-    </Setting>
     <Setting Name="大陆期货一电信线路Trade1" Type="System.String" Scope="User">
       <Value Profile="(Default)">61.172.206.73:41205</Value>
     </Setting>
@@ -78,11 +68,56 @@
     <Setting Name="Selected安信期货一模拟线路Market" Type="System.String" Scope="User">
       <Value Profile="(Default)">219.143.242.155:21213</Value>
     </Setting>
+    <Setting Name="ServerLines" Type="System.Collections.Specialized.StringCollection" Scope="User">
+      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;string&gt;大陆期货一电信线路&lt;/string&gt;
+  &lt;string&gt;大陆期货一联通线路&lt;/string&gt;
+  &lt;string&gt;大陆期货一模拟线路&lt;/string&gt;
+  &lt;string&gt;自定义&lt;/string&gt;
+  &lt;string&gt;安信期货一模拟线路&lt;/string&gt;
+&lt;/ArrayOfString&gt;</Value>
+    </Setting>
     <Setting Name="Direction" Type="System.Collections.Specialized.StringCollection" Scope="User">
       <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
 &lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
   &lt;string&gt;买&lt;/string&gt;
   &lt;string&gt;卖&lt;/string&gt;
+&lt;/ArrayOfString&gt;</Value>
+    </Setting>
+    <Setting Name="INID" Type="System.Collections.Specialized.StringCollection" Scope="User">
+      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;string&gt;IF1407&lt;/string&gt;
+  &lt;string&gt;ZN1409&lt;/string&gt;
+  &lt;string&gt;ZN1410&lt;/string&gt;
+  &lt;string&gt;RU1409&lt;/string&gt;
+  &lt;string&gt;RB1501&lt;/string&gt;
+  &lt;string&gt;CU1409&lt;/string&gt;
+  &lt;string&gt;AU1412&lt;/string&gt;
+  &lt;string&gt;AL1409&lt;/string&gt;
+  &lt;string&gt;AG1412&lt;/string&gt;
+  &lt;string&gt;Y1501&lt;/string&gt;
+  &lt;string&gt;PP1409&lt;/string&gt;
+  &lt;string&gt;P1501&lt;/string&gt;
+  &lt;string&gt;M1501&lt;/string&gt;
+  &lt;string&gt;L1409&lt;/string&gt;
+  &lt;string&gt;JM1409&lt;/string&gt;
+  &lt;string&gt;JD1409&lt;/string&gt;
+  &lt;string&gt;J1409&lt;/string&gt;
+  &lt;string&gt;I1409&lt;/string&gt;
+  &lt;string&gt;FB1409&lt;/string&gt;
+  &lt;string&gt;C1501&lt;/string&gt;
+  &lt;string&gt;BB1409&lt;/string&gt;
+  &lt;string&gt;A1501&lt;/string&gt;
+  &lt;string&gt;TC1409&lt;/string&gt;
+  &lt;string&gt;TA1409&lt;/string&gt;
+  &lt;string&gt;SR1501&lt;/string&gt;
+  &lt;string&gt;RM1409&lt;/string&gt;
+  &lt;string&gt;OI1501&lt;/string&gt;
+  &lt;string&gt;ME1409&lt;/string&gt;
+  &lt;string&gt;FG1501&lt;/string&gt;
+  &lt;string&gt;CF1501&lt;/string&gt;
 &lt;/ArrayOfString&gt;</Value>
     </Setting>
   </Settings>
