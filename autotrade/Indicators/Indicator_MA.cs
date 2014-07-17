@@ -2,10 +2,11 @@
 using System.Linq;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
+using autotrade;
 
-namespace autotrade
+namespace autotrade.Indicators
 {
-    internal class MA
+    internal class Indicator_MA
     {
         private readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -13,7 +14,7 @@ namespace autotrade
         private String instrumentId;
         private MongoCollection<D1BarRecord> collection;
 
-        public MA(string instrumentId, int days)
+        public Indicator_MA(string instrumentId, int days)
         {
             this.instrumentId = instrumentId;
             this.days = days;
@@ -27,7 +28,7 @@ namespace autotrade
             var client = new MongoClient(connectionString);
             MongoServer server = client.GetServer();
             MongoDatabase database = server.GetDatabase("future");
-            collection = database.GetCollection<D1BarRecord>("d1BarRecord");
+            collection = database.GetCollection<D1BarRecord>(instrumentId.ToUpper());
 
         }
 

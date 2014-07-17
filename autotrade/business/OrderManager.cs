@@ -18,7 +18,8 @@ namespace autotrade.business
         private List<PositionDetail> positionDetails = new List<PositionDetail>();
         private List<TradeRecord> tradeRecords = new List<TradeRecord>();
         private List<PositionRecord> positionRecords = new List<PositionRecord>();
-        private List<OrderRecord> orderRecords = new List<OrderRecord>(); 
+        private List<OrderRecord> orderRecords = new List<OrderRecord>();
+        private List<Order> orders = new List<Order>();
 
         public delegate void TradeRecordHandler(object sender, TradeRecordEventArgs e);
         public event TradeRecordHandler OnRtnTradeRecord;
@@ -118,6 +119,12 @@ namespace autotrade.business
             orderRecords.Add(orderRecord);
 
             OnRspQryOrderRecord(this, new OrderRecordEventArgs(orderRecords));
+
+            Order order = GetOrderByOrderRef(pOrder.OrderRef);
+
+            if (order != null) order.OrderSysID = pOrder.OrderSysID;
+
+            log.Info(order);
         }
 
         private void tradeApi_OnRspQryOrder(ref CThostFtdcOrderField porder, ref CThostFtdcRspInfoField prspinfo, int nrequestid, bool bislast)
@@ -165,7 +172,10 @@ namespace autotrade.business
 
             order.StatusType = EnumOrderStatus.开仓中;
 
-            //tradeApi.QryTrade();
+            order.OrderRef = tradeApi.MaxOrderRef.ToString();
+
+            orders.Add(order);
+
 
             return 0;
         }
@@ -176,8 +186,20 @@ namespace autotrade.business
             log.Info(pInputOrder);
         }
 
-        
 
+        private Order GetOrderByOrderRef(String orderRef)
+        {
+            foreach(var order in orders) 
+            {
+                if (order.OrderRef == orderRef)
+                {
+                    return order;   
+                }
+
+            }
+
+            return null;
+        }
         
     }
 
@@ -220,5 +242,7 @@ namespace autotrade.business
             this.OrderRecords = orderRecords;
         }
     }
+
+
     
 }

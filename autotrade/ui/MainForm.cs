@@ -8,10 +8,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using autotrade.Strategies;
 using autotrade.business;
 using autotrade.converter;
 using autotrade.model;
-using autotrade.strategy;
 using CTPMdApi;
 using CTPTradeApi;
 using MongoDB.Bson;
@@ -36,12 +36,12 @@ namespace autotrade
         public MdApi mdApi { get; set; }
         public TradeApi tradeApi { get; set; }
 
-        private MAReverseStrategy maReverseStrategy;
+        private AboveMAStrategy maReverseStrategy;
 
         private OrderManager _orderManager;
         private AccountManager _accountManager;
         private MarketManager _marketManager;
-
+        private StrategyManager _strategyManager;
         
         
         public MainForm()
@@ -49,36 +49,8 @@ namespace autotrade
             InitializeComponent();
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            maReverseStrategy = new MAReverseStrategy(20, "IF1407");
-
-            log.Info("start login");
-
-            mdApi.OnRspError += mdApi_OnRspError;
-            mdApi.OnRspSubMarketData += mdApi_OnRspSubMarketData;
-            mdApi.OnRtnDepthMarketData += mdApi_OnRtnDepthMarketData;
-            log.Info("login");
-        }
-
-        void mdApi_OnRtnDepthMarketData(ref CTPMdApi.CThostFtdcDepthMarketDataField pDepthMarketData)
-        {
-            string s = string.Format("{0,-6} : UpdateTime = {1}.{2:D3},  LasPrice = {3}", pDepthMarketData.InstrumentID, pDepthMarketData.UpdateTime, pDepthMarketData.UpdateMillisec, pDepthMarketData.LastPrice);
-            s += maReverseStrategy.Match(pDepthMarketData);
-            log.Info(s);
-        }
-
-        void mdApi_OnRspSubMarketData(ref CTPMdApi.CThostFtdcSpecificInstrumentField pSpecificInstrument, ref CTPMdApi.CThostFtdcRspInfoField pRspInfo, int nRequestId, bool bIsLast)
-        {
-            log.Info(pSpecificInstrument.InstrumentID);
-        }
-
         
-        void mdApi_OnRspError(ref CTPMdApi.CThostFtdcRspInfoField pRspInfo, int nRequestId, bool bIsLast)
-        {
-            log.Info(pRspInfo.ErrorMsg);
-        }
-
+        
         
 
         void tradeApi_OnRspQryInvestorPositionCombineDetail(ref CTPTradeApi.CThostFtdcInvestorPositionCombineDetailField pInvestorPositionCombineDetail, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
@@ -118,6 +90,9 @@ namespace autotrade
 
             _accountManager = new AccountManager(tradeApi);
             _marketManager = new MarketManager(mdApi);
+
+            _strategyManager = new StrategyManager(_orderManager);
+            _marketManager.strategyManager = _strategyManager;
 
             _accountManager.OnQryTradingAccount += accountManager_OnQryTradingAccount;
 
@@ -170,12 +145,10 @@ namespace autotrade
 
 
             this.radGridView2.MasterTemplate.Columns.Clear();
-            this.radGridView2.GroupDescriptors.Clear();
-            this.radGridView2.SortDescriptors.Clear();
-            this.radGridView2.MasterTemplate.AutoGenerateColumns = true;            
             radGridView2.DataSource = _marketManager.marketDatas;
 
-            radGridView2.Columns["LastPrice"].HeaderText = "当前价"; 
+            radGridView2.Columns["InstrumentId"].HeaderText = "合约";
+            //radGridView2.LoadLayout("c:\\columns.xml");
 
             _marketManager.SubMarketData(ppInstrumentID);
 

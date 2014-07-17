@@ -21,6 +21,8 @@ namespace autotrade.business
         public BindingList<MarketData> marketDatas = new BindingList<MarketData>();
         public Dictionary<String, MarketData> instrumentDictionary = new Dictionary<string, MarketData>();
 
+        public StrategyManager strategyManager { get; set; }
+
         public delegate void MarketDataHandler(object sender, MarketDataEventArgs e);
 
         public event MarketDataHandler OnRtnMarketData;
@@ -54,6 +56,8 @@ namespace autotrade.business
                         marketDatas.Add(marketData);
                         instrumentDictionary.Add(pDepthMarketData.InstrumentID, marketData);
                     }
+
+                    strategyManager.PrcessData(marketData);
                     //log.Info(marketQueue.Count());
                     //ObjectUtils.Copy(pDepthMarketData, marketData);
                     //OnRtnMarketData(this, new MarketDataEventArgs(marketData));

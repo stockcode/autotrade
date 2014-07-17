@@ -108,8 +108,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="business\AccountManager.cs" />
+    <Compile Include="business\IndicatorManager.cs" />
+    <Compile Include="business\IStrategy.cs" />
     <Compile Include="business\MarketManager.cs" />
     <Compile Include="business\OrderManager.cs" />
+    <Compile Include="business\StrategyManager.cs" />
     <Compile Include="converter\DirectionConverter.cs" />
     <Compile Include="model\Account.cs" />
     <Compile Include="model\D1BarRecord.cs" />
@@ -121,6 +124,7 @@
     <Compile Include="model\PositionDetail.cs" />
     <Compile Include="model\ServerLine.cs" />
     <Compile Include="model\TradeRecord.cs" />
+    <Compile Include="Strategies\BelowMAStrategy.cs" />
     <Compile Include="ui\LoginForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -133,10 +137,10 @@
     <Compile Include="ui\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="MA.cs" />
+    <Compile Include="Indicators\Indicator_MA.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="strategy\MAReverseStrategy.cs" />
+    <Compile Include="Strategies\AboveMAStrategy.cs" />
     <Compile Include="ui\ServerLineForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -197,6 +201,7 @@
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
