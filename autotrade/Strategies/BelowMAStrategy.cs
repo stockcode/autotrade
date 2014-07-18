@@ -45,6 +45,8 @@ namespace autotrade.Strategies
                     order.InstrumentId = marketData.InstrumentId;
                     order.Price = lastPrice - i*5;
                     order.Volume = 1;
+                    order.StrategyType = GetType().ToString();
+
                     orders.Add(order);
                 }
 

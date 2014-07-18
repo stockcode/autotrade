@@ -16,6 +16,8 @@ namespace autotrade.business
 
         private OrderManager orderManager;
 
+        private bool isStart = false;
+
         public StrategyManager(OrderManager orderManager)
         {
             Strategies.Add(new AboveMAStrategy(indicatorManager, 20));
@@ -26,6 +28,9 @@ namespace autotrade.business
 
         public void PrcessData(MarketData marketData)
         {
+            if (!isStart) return;
+
+
             foreach(IStrategy strategy in Strategies) {
                 List<Order> orders = strategy.Match(marketData);
                 if (orders != null)
@@ -37,6 +42,11 @@ namespace autotrade.business
                     }
                 }
             }
+        }
+
+        public void Start()
+        {
+            isStart = true;
         }
     }
 }
