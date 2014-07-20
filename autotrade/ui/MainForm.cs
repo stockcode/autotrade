@@ -102,15 +102,16 @@ namespace autotrade
             _orderManager.OnRspQryOrderRecord += _orderManager_OnRspQryOrderRecord;
 
             Task.Factory.StartNew(() => {
-                _orderManager.QryTrade();
-                Thread.Sleep(1000);
-
-                _orderManager.QryInvestorPosition();
-
-                Thread.Sleep(1000);
-
-                _orderManager.QryOrder();
                 
+                _orderManager.QryOrder();
+
+                Thread.Sleep(1000);
+
+                _orderManager.QryTrade();
+
+                Thread.Sleep(1000);
+
+                _orderManager.QryInvestorPositionDetail();
             });
 
             //Task.Factory.StartNew(() =>
@@ -152,10 +153,11 @@ namespace autotrade
 
             _marketManager.SubMarketData(ppInstrumentID);
 
-
-                
-
             
+            radGridView7.DataSource = _orderManager.getOrders();
+
+
+
         }
 
         private delegate void RecordRecordDelegate(List<OrderRecord> orderRecords);

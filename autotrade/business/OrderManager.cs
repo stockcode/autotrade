@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using autotrade.model;
+using autotrade.Repository;
 using CTPTradeApi;
 using autotrade.util;
 using MongoRepository;
@@ -20,9 +21,9 @@ namespace autotrade.business
         private List<TradeRecord> tradeRecords = new List<TradeRecord>();
         private List<PositionRecord> positionRecords = new List<PositionRecord>();
         private List<OrderRecord> orderRecords = new List<OrderRecord>();
-        private BindingList<Order> orders = new BindingList<Order>();
 
-        private MongoRepository<Order> _orderRepository = new MongoRepository<Order>();
+
+        private OrderRepository _orderRepository = new OrderRepository();
 
         public delegate void TradeRecordHandler(object sender, TradeRecordEventArgs e);
         public event TradeRecordHandler OnRtnTradeRecord;
@@ -49,9 +50,7 @@ namespace autotrade.business
 
 
             this.tradeApi.OnRtnOrder += tradeApi_OnRtnOrder;
-            this.tradeApi.OnRtnTrade += tradeApi_OnRtnTrade;
-
-            orders.ListChanged += orders_ListChanged;
+            this.tradeApi.OnRtnTrade += tradeApi_OnRtnTrade;            
         }
 
         void tradeApi_OnRspQryInvestorPosition(ref CThostFtdcInvestorPositionField pInvestorPosition, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
@@ -73,7 +72,12 @@ namespace autotrade.business
 
             positionDetails.Add(positionDetail);
 
-            if (bIsLast) OnRspQryPositionDetail(this, new PositionDetailEventArgs(positionDetails));
+
+
+            if (bIsLast)
+            {
+                OnRspQryPositionDetail(this, new PositionDetailEventArgs(positionDetails));
+            }
                 
         }
 
@@ -108,9 +112,7 @@ namespace autotrade.business
             //OnRtnTreadeRecord(this, new TradeRecordEventArgs(tradeRecord));
 
 
-            Order order = GetOrderByOrderRef(pTrade.OrderRef);
-
-            if (order != null) order.TradeID = pTrade.TradeID;
+            Order order = _orderRepository.UpdateTradeID(pTrade);
 
             log.Info(pTrade);
         }
@@ -130,9 +132,7 @@ namespace autotrade.business
 
             OnRspQryOrderRecord(this, new OrderRecordEventArgs(orderRecords));
 
-            Order order = GetOrderByOrderRef(pOrder.OrderRef);
-
-            if (order != null) order.OrderSysID = pOrder.OrderSysID;
+            Order order = _orderRepository.UpdateOrderRef(pOrder);
 
             log.Info(order);
         }
@@ -145,7 +145,12 @@ namespace autotrade.business
 
             orderRecords.Add(orderRecord);
 
-            if (bislast) OnRspQryOrderRecord(this, new OrderRecordEventArgs(orderRecords));            
+            if (bislast)
+            {
+                OnRspQryOrderRecord(this, new OrderRecordEventArgs(orderRecords));
+
+                _orderRepository.Init(orderRecords);
+            }            
         }
 
         void tradeApi_OnRspOrderInsert(ref CThostFtdcInputOrderField pInputOrder, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
@@ -162,7 +167,10 @@ namespace autotrade.business
             
             tradeRecords.Add(tradeRecord);
 
-            if (bIsLast) OnRtnTradeRecord(this, new TradeRecordEventArgs(tradeRecords));
+            if (bIsLast)
+            {
+                OnRtnTradeRecord(this, new TradeRecordEventArgs(tradeRecords));
+            }
 
             log.Info(pRspInfo);
             log.Info(pTrade);
@@ -184,27 +192,11 @@ namespace autotrade.business
 
             order.OrderRef = tradeApi.MaxOrderRef.ToString();
 
-            orders.Add(order);
+            _orderRepository.Add(order);
 
             
 
             return 0;
-        }
-
-        void orders_ListChanged(object sender, ListChangedEventArgs e)
-        {
-            switch (e.ListChangedType)
-            {
-                case ListChangedType.ItemAdded:
-                    _orderRepository.Add(orders[e.NewIndex]);
-                    break;
-                case ListChangedType.ItemChanged:
-                    _orderRepository.Update(orders[e.NewIndex]);
-                    break;
-                case ListChangedType.ItemDeleted:
-                    _orderRepository.Delete(orders[e.NewIndex]);
-                    break;
-            }
         }
 
         private void tradeApi_OnOnErrRtnOrderInsert(ref CThostFtdcInputOrderField pInputOrder, ref CThostFtdcRspInfoField pRspInfo)
@@ -213,34 +205,12 @@ namespace autotrade.business
             log.Info(pInputOrder);
         }
 
-
-        private Order GetOrderByOrderRef(String orderRef)
+        public BindingList<Order> getOrders()
         {
-            foreach(var order in orders) 
-            {
-                if (order.OrderRef == orderRef)
-                {
-                    return order;   
-                }
-
-            }
-
-            return null;
+            return _orderRepository.getOrders();
         }
 
-        private Order GetOrderByOrderSysID(String orderSysID)
-        {
-            foreach (var order in orders)
-            {
-                if (order.OrderSysID == orderSysID)
-                {
-                    return order;
-                }
-
-            }
-
-            return null;
-        }
+        
     }
 
     internal class TradeRecordEventArgs : EventArgs

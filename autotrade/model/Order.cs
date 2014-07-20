@@ -49,7 +49,7 @@ namespace autotrade.model
             get { return _orderSysID; }
             set
             {
-                if (this._orderSysID != value.Trim())
+                if (value != null && this._orderSysID != value.Trim())
                 {
                     this._orderSysID = value.Trim();
                     NotifyPropertyChanged();
@@ -67,7 +67,7 @@ namespace autotrade.model
             get { return _tradeID; }
             set
             {
-                if (this._tradeID != value.Trim())
+                if (value != null && this._tradeID != value.Trim())
                 {
                     this._tradeID = value.Trim();
                     NotifyPropertyChanged();
