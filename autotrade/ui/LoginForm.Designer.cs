@@ -34,9 +34,9 @@
             this.label2 = new System.Windows.Forms.Label();
             this.btnLogin = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
-            this.cbServer = new C1.Win.C1Input.C1ComboBox();
-            this.btnDetail = new C1.Win.C1Input.C1Button();
-            ((System.ComponentModel.ISupportInitialize)(this.cbServer)).BeginInit();
+            this.cbServer = new System.Windows.Forms.ComboBox();
+            this.btnDetail = new Telerik.WinControls.UI.RadButton();
+            ((System.ComponentModel.ISupportInitialize)(this.btnDetail)).BeginInit();
             this.SuspendLayout();
             // 
             // tbInvestorID
@@ -99,26 +99,20 @@
             // 
             // cbServer
             // 
-            this.cbServer.AutoOpen = false;
-            this.cbServer.GapHeight = 0;
-            this.cbServer.ImagePadding = new System.Windows.Forms.Padding(0);
-            this.cbServer.ItemsDisplayMember = "";
-            this.cbServer.ItemsValueMember = "";
+            this.cbServer.FormattingEnabled = true;
             this.cbServer.Location = new System.Drawing.Point(81, 136);
             this.cbServer.Name = "cbServer";
-            this.cbServer.Size = new System.Drawing.Size(155, 19);
-            this.cbServer.TabIndex = 9;
-            this.cbServer.Tag = null;
-            this.cbServer.SelectedItemChanged += new System.EventHandler(this.cbServer_SelectedItemChanged);
+            this.cbServer.Size = new System.Drawing.Size(152, 20);
+            this.cbServer.TabIndex = 11;
+            this.cbServer.SelectedIndexChanged += new System.EventHandler(this.cbServer_SelectedItemChanged);
             // 
             // btnDetail
             // 
             this.btnDetail.Location = new System.Drawing.Point(239, 136);
             this.btnDetail.Name = "btnDetail";
-            this.btnDetail.Size = new System.Drawing.Size(75, 23);
-            this.btnDetail.TabIndex = 10;
+            this.btnDetail.Size = new System.Drawing.Size(69, 24);
+            this.btnDetail.TabIndex = 12;
             this.btnDetail.Text = "详细配置";
-            this.btnDetail.UseVisualStyleBackColor = true;
             this.btnDetail.Click += new System.EventHandler(this.btnDetail_Click);
             // 
             // LoginForm
@@ -140,7 +134,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "LoginForm";
             this.Load += new System.EventHandler(this.LoginForm_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.cbServer)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btnDetail)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -154,7 +148,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button btnLogin;
         private System.Windows.Forms.Label label3;
-        private C1.Win.C1Input.C1ComboBox cbServer;
-        private C1.Win.C1Input.C1Button btnDetail;
+        private System.Windows.Forms.ComboBox cbServer;
+        private Telerik.WinControls.UI.RadButton btnDetail;
     }
 }

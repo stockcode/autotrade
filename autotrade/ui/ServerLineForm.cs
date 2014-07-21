@@ -8,7 +8,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using C1.Win.C1FlexGrid;
 
 namespace autotrade.ui
 {
@@ -37,11 +36,11 @@ namespace autotrade.ui
                 try
                 {
                     string line = settings[serverLine + "Trade" + index].ToString();
-                    fgTrade[index, 1] = line.Split(':')[0];
-                    fgTrade[index, 2] = line.Split(':')[1];
+                    //fgTrade[index, 1] = line.Split(':')[0];
+                    //fgTrade[index, 2] = line.Split(':')[1];
 
-                    if (line == selectedTrade) fgTrade.Rows[index].Selected = true;
-                    else fgTrade.Rows[index].Selected = false;
+                    //if (line == selectedTrade) fgTrade.Rows[index].Selected = true;
+                    //else fgTrade.Rows[index].Selected = false;
 
                     index++;
                 }
@@ -52,8 +51,8 @@ namespace autotrade.ui
                 
             }
 
-            Row row = fgTrade.Rows.Selected[0];
-            lblTrade.Text = "tcp://" + row[1] + ":" + row[2];
+            //Row row = fgTrade.Rows.Selected[0];
+            //lblTrade.Text = "tcp://" + row[1] + ":" + row[2];
 
             index = 1;
             while (true)
@@ -61,11 +60,11 @@ namespace autotrade.ui
                 try
                 {
                     string line = settings[serverLine + "Market" + index].ToString();
-                    fgMarket[index, 1] = line.Split(':')[0];
-                    fgMarket[index, 2] = line.Split(':')[1];
+                    //fgMarket[index, 1] = line.Split(':')[0];
+                    //fgMarket[index, 2] = line.Split(':')[1];
 
-                    if (line == selectedMarket) fgMarket.Rows[index].Selected = true;
-                    else fgMarket.Rows[index].Selected = false;
+                    //if (line == selectedMarket) fgMarket.Rows[index].Selected = true;
+                    //else fgMarket.Rows[index].Selected = false;
 
                     index++;
                 }
@@ -76,14 +75,14 @@ namespace autotrade.ui
 
             }
 
-            row = fgMarket.Rows.Selected[0];
-            lblMarket.Text = "tcp://" + row[1] + ":" + row[2];
+            //row = fgMarket.Rows.Selected[0];
+            //lblMarket.Text = "tcp://" + row[1] + ":" + row[2];
         }
 
         private void fgTrade_RowColChange(object sender, EventArgs e)
         {
-            Row row = fgTrade.Rows.Selected[0];
-            lblTrade.Text = "tcp://" + row[1] + ":" + row[2];
+            //Row row = fgTrade.Rows.Selected[0];
+            //lblTrade.Text = "tcp://" + row[1] + ":" + row[2];
         }
 
         private void label2_Click(object sender, EventArgs e)
@@ -98,21 +97,21 @@ namespace autotrade.ui
 
         private void btnOK_Click(object sender, EventArgs e)
         {
-            Row row = fgTrade.Rows.Selected[0];
+            //Row row = fgTrade.Rows.Selected[0];
 
-            settings["Selected" + serverLine + "Trade"] = row[1] + ":" + row[2];
+            //settings["Selected" + serverLine + "Trade"] = row[1] + ":" + row[2];
 
-            row = fgMarket.Rows.Selected[0];
+            //row = fgMarket.Rows.Selected[0];
 
-            settings["Selected" + serverLine + "Market"] = row[1] + ":" + row[2];
+            //settings["Selected" + serverLine + "Market"] = row[1] + ":" + row[2];
 
-            settings.Save();
+            //settings.Save();
         }
 
         private void fgMarket_RowColChange(object sender, EventArgs e)
         {
-            Row row = fgMarket.Rows.Selected[0];
-            lblMarket.Text = "tcp://" + row[1] + ":" + row[2];
+            //Row row = fgMarket.Rows.Selected[0];
+            //lblMarket.Text = "tcp://" + row[1] + ":" + row[2];
         }
     }
 }

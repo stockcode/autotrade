@@ -18,14 +18,17 @@ namespace autotrade.business
         private readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private TradeApi tradeApi;
         private List<PositionDetail> positionDetails = new List<PositionDetail>();
-        private List<TradeRecord> tradeRecords = new List<TradeRecord>();
+        private BindingList<TradeRecord> tradeRecords = new BindingList<TradeRecord>();
         private List<PositionRecord> positionRecords = new List<PositionRecord>();
-        private List<OrderRecord> orderRecords = new List<OrderRecord>();
+        private BindingList<OrderRecord> orderRecords = new BindingList<OrderRecord>();
 
 
         private OrderRepository _orderRepository = new OrderRepository();
 
+        public InstrumentManager InstrumentManager { get; set; }
+
         public delegate void TradeRecordHandler(object sender, TradeRecordEventArgs e);
+
         public event TradeRecordHandler OnRtnTradeRecord;
 
         public delegate void PositionDetailHandler(object sender, PositionDetailEventArgs e);
@@ -119,22 +122,32 @@ namespace autotrade.business
 
         void tradeApi_OnRtnOrder(ref CThostFtdcOrderField pOrder)
         {
-            OrderRecord orderRecord = new OrderRecord();
+            OrderRecord orderRecord = GetOrderRecord(pOrder.RequestID);
+
+            if (orderRecord == null)
+            {
+                orderRecord = new OrderRecord();
+                orderRecords.Add(orderRecord);
+                
+            }
 
             ObjectUtils.Copy(pOrder, orderRecord);
 
-            if (orderRecords.Contains(orderRecord))
-            {
-                orderRecords.Remove(orderRecord);                
-            }
-
-            orderRecords.Add(orderRecord);
-
-            OnRspQryOrderRecord(this, new OrderRecordEventArgs(orderRecords));
+            //OnRspQryOrderRecord(this, new OrderRecordEventArgs(orderRecords));
 
             Order order = _orderRepository.UpdateOrderRef(pOrder);
 
             log.Info(order);
+        }
+ 
+        private OrderRecord GetOrderRecord(int requestID)
+        {
+            foreach (var orderRecord in orderRecords)
+            {
+                if (orderRecord.RequestID == requestID) return orderRecord;
+            }
+
+            return null;
         }
 
         private void tradeApi_OnRspQryOrder(ref CThostFtdcOrderField porder, ref CThostFtdcRspInfoField prspinfo, int nrequestid, bool bislast)
@@ -147,9 +160,9 @@ namespace autotrade.business
 
             if (bislast)
             {
-                OnRspQryOrderRecord(this, new OrderRecordEventArgs(orderRecords));
-
                 _orderRepository.Init(orderRecords);
+
+                OnRspQryOrderRecord(this, new OrderRecordEventArgs(orderRecords));                
             }            
         }
 
@@ -166,6 +179,8 @@ namespace autotrade.business
             ObjectUtils.Copy(pTrade, tradeRecord);
             
             tradeRecords.Add(tradeRecord);
+
+            _orderRepository.UpdateTradeID(pTrade);
 
             if (bIsLast)
             {
@@ -192,11 +207,22 @@ namespace autotrade.business
 
             order.OrderRef = tradeApi.MaxOrderRef.ToString();
 
-            _orderRepository.Add(order);
+            order.Unit = InstrumentManager.GetUnit(order.InstrumentId);
+
+            _orderRepository.AddOrder(order);
 
             
 
             return 0;
+        }
+
+        public void ProcessData(MarketData marketData)
+        {
+            Order order = _orderRepository.GetByInstrumentID(marketData.InstrumentId);
+            if (order != null)
+            {
+                order.Profit = (order.Price - marketData.LastPrice) * order.Unit;
+            }
         }
 
         private void tradeApi_OnOnErrRtnOrderInsert(ref CThostFtdcInputOrderField pInputOrder, ref CThostFtdcRspInfoField pRspInfo)
@@ -215,8 +241,8 @@ namespace autotrade.business
 
     internal class TradeRecordEventArgs : EventArgs
     {
-        public List<TradeRecord> tradeRecords { get; set; }
-        public TradeRecordEventArgs(List<TradeRecord> tradeRecords)
+        public BindingList<TradeRecord> tradeRecords { get; set; }
+        public TradeRecordEventArgs(BindingList<TradeRecord> tradeRecords)
             : base()
         {
             this.tradeRecords = tradeRecords;
@@ -245,8 +271,8 @@ namespace autotrade.business
 
     internal class OrderRecordEventArgs : EventArgs
     {
-        public List<OrderRecord> OrderRecords { get; set; }
-        public OrderRecordEventArgs(List<OrderRecord> orderRecords)
+        public BindingList<OrderRecord> OrderRecords { get; set; }
+        public OrderRecordEventArgs(BindingList<OrderRecord> orderRecords)
             : base()
         {
             this.OrderRecords = orderRecords;

@@ -64,16 +64,6 @@
     </StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="C1.C1Pdf.4, Version=4.1.20141.262, Culture=neutral, PublicKeyToken=79882d576c6336da, processorArchitecture=MSIL" />
-    <Reference Include="C1.Win.C1Command.4, Version=4.0.20141.19619, Culture=neutral, PublicKeyToken=e808566f358766d8, processorArchitecture=MSIL" />
-    <Reference Include="C1.Win.C1Editor.4, Version=4.0.20141.211, Culture=neutral, PublicKeyToken=79882d576c6336da, processorArchitecture=MSIL" />
-    <Reference Include="C1.Win.C1FlexGrid.4, Version=4.6.20141.828, Culture=neutral, PublicKeyToken=79882d576c6336da, processorArchitecture=MSIL" />
-    <Reference Include="C1.Win.C1Input.4, Version=4.0.20141.33356, Culture=neutral, PublicKeyToken=7e7ff60f0c214f9a, processorArchitecture=MSIL" />
-    <Reference Include="C1.Win.C1List.4, Version=4.1.20141.251, Culture=neutral, PublicKeyToken=6b24f8f981dbd7bc, processorArchitecture=MSIL" />
-    <Reference Include="C1.Win.C1Ribbon.4, Version=4.0.20141.570, Culture=neutral, PublicKeyToken=79882d576c6336da, processorArchitecture=MSIL" />
-    <Reference Include="C1.Win.C1Sizer.4, Version=4.1.20141.81, Culture=neutral, PublicKeyToken=79882d576c6336da, processorArchitecture=MSIL" />
-    <Reference Include="C1.Win.C1SplitContainer.4, Version=4.0.20141.55, Culture=neutral, PublicKeyToken=79882d576c6336da, processorArchitecture=MSIL" />
-    <Reference Include="C1.Win.C1SuperTooltip.4, Version=4.0.20141.137, Culture=neutral, PublicKeyToken=79882d576c6336da, processorArchitecture=MSIL" />
     <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
@@ -112,6 +102,7 @@
   <ItemGroup>
     <Compile Include="business\AccountManager.cs" />
     <Compile Include="business\IndicatorManager.cs" />
+    <Compile Include="business\InstrumentManager.cs" />
     <Compile Include="business\IStrategy.cs" />
     <Compile Include="business\MarketManager.cs" />
     <Compile Include="business\OrderManager.cs" />
@@ -120,6 +111,7 @@
     <Compile Include="model\Account.cs" />
     <Compile Include="model\D1BarRecord.cs" />
     <Compile Include="model\EnumOrderStatus.cs" />
+    <Compile Include="model\Instrument.cs" />
     <Compile Include="model\MarketData.cs" />
     <Compile Include="model\Order.cs" />
     <Compile Include="model\OrderRecord.cs" />
@@ -145,6 +137,12 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Strategies\AboveMAStrategy.cs" />
+    <Compile Include="ui\InstrumentForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ui\InstrumentForm.Designer.cs">
+      <DependentUpon>InstrumentForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="ui\ServerLineForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -153,7 +151,6 @@
     </Compile>
     <Compile Include="util\BlockingQueue.cs" />
     <Compile Include="util\ObjectUtils.cs" />
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="ui\LoginForm.resx">
       <DependentUpon>LoginForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -169,6 +166,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="ui\InstrumentForm.resx">
+      <DependentUpon>InstrumentForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ui\ServerLineForm.resx">
       <DependentUpon>ServerLineForm.cs</DependentUpon>
     </EmbeddedResource>

@@ -23,6 +23,8 @@ namespace autotrade.business
 
         public StrategyManager strategyManager { get; set; }
 
+        public OrderManager orderManager { get; set; }
+
         public delegate void MarketDataHandler(object sender, MarketDataEventArgs e);
 
         public event MarketDataHandler OnRtnMarketData;
@@ -58,6 +60,9 @@ namespace autotrade.business
                     }
 
                     strategyManager.PrcessData(marketData);
+                    
+                    orderManager.ProcessData(marketData);
+
                     //log.Info(marketQueue.Count());
                     //ObjectUtils.Copy(pDepthMarketData, marketData);
                     //OnRtnMarketData(this, new MarketDataEventArgs(marketData));

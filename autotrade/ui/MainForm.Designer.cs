@@ -138,6 +138,14 @@
             this.radStatusStrip1 = new Telerik.WinControls.UI.RadStatusStrip();
             this.radSplitContainer1 = new Telerik.WinControls.UI.RadSplitContainer();
             this.splitPanel1 = new Telerik.WinControls.UI.SplitPanel();
+            this.radMenu2 = new Telerik.WinControls.UI.RadMenu();
+            this.radMenuItem4 = new Telerik.WinControls.UI.RadMenuItem();
+            this.radMenuItem9 = new Telerik.WinControls.UI.RadMenuItem();
+            this.radMenuItem5 = new Telerik.WinControls.UI.RadMenuItem();
+            this.radMenuItem6 = new Telerik.WinControls.UI.RadMenuItem();
+            this.radMenuItem7 = new Telerik.WinControls.UI.RadMenuItem();
+            this.radMenuItem10 = new Telerik.WinControls.UI.RadMenuItem();
+            this.radMenuItem8 = new Telerik.WinControls.UI.RadMenuItem();
             this.splitPanel2 = new Telerik.WinControls.UI.SplitPanel();
             this.radGridView2 = new Telerik.WinControls.UI.RadGridView();
             this.splitPanel3 = new Telerik.WinControls.UI.SplitPanel();
@@ -151,6 +159,7 @@
             this.radGridView6 = new Telerik.WinControls.UI.RadGridView();
             this.orderRecordBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.radPageViewPage6 = new Telerik.WinControls.UI.RadPageViewPage();
+            this.radGridView7 = new Telerik.WinControls.UI.RadGridView();
             this.splitPanel4 = new Telerik.WinControls.UI.SplitPanel();
             this.radSplitContainer2 = new Telerik.WinControls.UI.RadSplitContainer();
             this.splitPanel5 = new Telerik.WinControls.UI.SplitPanel();
@@ -170,13 +179,14 @@
             this.radMenuItem2 = new Telerik.WinControls.UI.RadMenuItem();
             this.radMenuItem3 = new Telerik.WinControls.UI.RadMenuItem();
             this.telerikMetroTheme1 = new Telerik.WinControls.Themes.TelerikMetroTheme();
-            this.radGridView7 = new Telerik.WinControls.UI.RadGridView();
             ((System.ComponentModel.ISupportInitialize)(this.accountBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.positionDetailBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.radStatusStrip1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.radSplitContainer1)).BeginInit();
             this.radSplitContainer1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitPanel1)).BeginInit();
+            this.splitPanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.radMenu2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitPanel2)).BeginInit();
             this.splitPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.radGridView2)).BeginInit();
@@ -198,6 +208,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.radGridView6.MasterTemplate)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.orderRecordBindingSource)).BeginInit();
             this.radPageViewPage6.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.radGridView7)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.radGridView7.MasterTemplate)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitPanel4)).BeginInit();
             this.splitPanel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.radSplitContainer2)).BeginInit();
@@ -222,8 +234,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.radGridView4.MasterTemplate)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tradeRecordBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.radMenu1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.radGridView7)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.radGridView7.MasterTemplate)).BeginInit();
             this.SuspendLayout();
             // 
             // enumBinder1
@@ -592,9 +602,9 @@
             // 
             // radStatusStrip1
             // 
-            this.radStatusStrip1.Location = new System.Drawing.Point(0, 855);
+            this.radStatusStrip1.Location = new System.Drawing.Point(0, 859);
             this.radStatusStrip1.Name = "radStatusStrip1";
-            this.radStatusStrip1.Size = new System.Drawing.Size(1624, 28);
+            this.radStatusStrip1.Size = new System.Drawing.Size(1624, 24);
             this.radStatusStrip1.TabIndex = 0;
             this.radStatusStrip1.Text = "radStatusStrip1";
             // 
@@ -608,13 +618,14 @@
             this.radSplitContainer1.Location = new System.Drawing.Point(0, 0);
             this.radSplitContainer1.Name = "radSplitContainer1";
             this.radSplitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            this.radSplitContainer1.Size = new System.Drawing.Size(1624, 855);
+            this.radSplitContainer1.Size = new System.Drawing.Size(1624, 859);
             this.radSplitContainer1.TabIndex = 2;
             this.radSplitContainer1.TabStop = false;
             this.radSplitContainer1.Text = "radSplitContainer1";
             // 
             // splitPanel1
             // 
+            this.splitPanel1.Controls.Add(this.radMenu2);
             this.splitPanel1.Location = new System.Drawing.Point(0, 0);
             this.splitPanel1.Name = "splitPanel1";
             // 
@@ -628,12 +639,87 @@
             this.splitPanel1.TabStop = false;
             this.splitPanel1.Text = "splitPanel1";
             // 
+            // radMenu2
+            // 
+            this.radMenu2.Items.AddRange(new Telerik.WinControls.RadItem[] {
+            this.radMenuItem4,
+            this.radMenuItem5,
+            this.radMenuItem6,
+            this.radMenuItem7,
+            this.radMenuItem8});
+            this.radMenu2.Location = new System.Drawing.Point(0, 0);
+            this.radMenu2.Name = "radMenu2";
+            this.radMenu2.Size = new System.Drawing.Size(1624, 20);
+            this.radMenu2.TabIndex = 0;
+            this.radMenu2.Text = "radMenu2";
+            // 
+            // radMenuItem4
+            // 
+            this.radMenuItem4.AccessibleDescription = "系统";
+            this.radMenuItem4.AccessibleName = "系统";
+            this.radMenuItem4.Items.AddRange(new Telerik.WinControls.RadItem[] {
+            this.radMenuItem9});
+            this.radMenuItem4.Name = "radMenuItem4";
+            this.radMenuItem4.Text = "系统";
+            this.radMenuItem4.Visibility = Telerik.WinControls.ElementVisibility.Visible;
+            // 
+            // radMenuItem9
+            // 
+            this.radMenuItem9.AccessibleDescription = "退出";
+            this.radMenuItem9.AccessibleName = "退出";
+            this.radMenuItem9.Name = "radMenuItem9";
+            this.radMenuItem9.Text = "退出";
+            this.radMenuItem9.Visibility = Telerik.WinControls.ElementVisibility.Visible;
+            // 
+            // radMenuItem5
+            // 
+            this.radMenuItem5.AccessibleDescription = "银期转账";
+            this.radMenuItem5.AccessibleName = "银期转账";
+            this.radMenuItem5.Name = "radMenuItem5";
+            this.radMenuItem5.Text = "银期转账";
+            this.radMenuItem5.Visibility = Telerik.WinControls.ElementVisibility.Visible;
+            // 
+            // radMenuItem6
+            // 
+            this.radMenuItem6.AccessibleDescription = "报告";
+            this.radMenuItem6.AccessibleName = "报告";
+            this.radMenuItem6.Name = "radMenuItem6";
+            this.radMenuItem6.Text = "报告";
+            this.radMenuItem6.Visibility = Telerik.WinControls.ElementVisibility.Visible;
+            // 
+            // radMenuItem7
+            // 
+            this.radMenuItem7.AccessibleDescription = "选项";
+            this.radMenuItem7.AccessibleName = "选项";
+            this.radMenuItem7.Items.AddRange(new Telerik.WinControls.RadItem[] {
+            this.radMenuItem10});
+            this.radMenuItem7.Name = "radMenuItem7";
+            this.radMenuItem7.Text = "选项";
+            this.radMenuItem7.Visibility = Telerik.WinControls.ElementVisibility.Visible;
+            // 
+            // radMenuItem10
+            // 
+            this.radMenuItem10.AccessibleDescription = "合约";
+            this.radMenuItem10.AccessibleName = "合约";
+            this.radMenuItem10.Name = "radMenuItem10";
+            this.radMenuItem10.Text = "合约";
+            this.radMenuItem10.Visibility = Telerik.WinControls.ElementVisibility.Visible;
+            this.radMenuItem10.Click += new System.EventHandler(this.radMenuItem10_Click);
+            // 
+            // radMenuItem8
+            // 
+            this.radMenuItem8.AccessibleDescription = "帮助";
+            this.radMenuItem8.AccessibleName = "帮助";
+            this.radMenuItem8.Name = "radMenuItem8";
+            this.radMenuItem8.Text = "帮助";
+            this.radMenuItem8.Visibility = Telerik.WinControls.ElementVisibility.Visible;
+            // 
             // splitPanel2
             // 
             this.splitPanel2.Controls.Add(this.radGridView2);
             this.splitPanel2.Location = new System.Drawing.Point(0, 88);
             this.splitPanel2.Name = "splitPanel2";
-            this.splitPanel2.Size = new System.Drawing.Size(1624, 180);
+            this.splitPanel2.Size = new System.Drawing.Size(1624, 181);
             this.splitPanel2.SizeInfo.AutoSizeScale = new System.Drawing.SizeF(0F, -0.03647687F);
             this.splitPanel2.SizeInfo.SplitterCorrection = new System.Drawing.Size(0, -35);
             this.splitPanel2.TabIndex = 1;
@@ -872,7 +958,7 @@
             this.radGridView2.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.radGridView2.ShowGroupPanel = false;
             this.radGridView2.ShowItemToolTips = false;
-            this.radGridView2.Size = new System.Drawing.Size(1624, 180);
+            this.radGridView2.Size = new System.Drawing.Size(1624, 181);
             this.radGridView2.TabIndex = 0;
             this.radGridView2.Text = "radGridView2";
             this.radGridView2.ThemeName = "TelerikMetro";
@@ -880,9 +966,9 @@
             // splitPanel3
             // 
             this.splitPanel3.Controls.Add(this.radSplitContainer3);
-            this.splitPanel3.Location = new System.Drawing.Point(0, 272);
+            this.splitPanel3.Location = new System.Drawing.Point(0, 273);
             this.splitPanel3.Name = "splitPanel3";
-            this.splitPanel3.Size = new System.Drawing.Size(1624, 251);
+            this.splitPanel3.Size = new System.Drawing.Size(1624, 252);
             this.splitPanel3.SizeInfo.AutoSizeScale = new System.Drawing.SizeF(0F, 0.04774614F);
             this.splitPanel3.SizeInfo.SplitterCorrection = new System.Drawing.Size(0, 21);
             this.splitPanel3.TabIndex = 2;
@@ -896,7 +982,7 @@
             this.radSplitContainer3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.radSplitContainer3.Location = new System.Drawing.Point(0, 0);
             this.radSplitContainer3.Name = "radSplitContainer3";
-            this.radSplitContainer3.Size = new System.Drawing.Size(1624, 251);
+            this.radSplitContainer3.Size = new System.Drawing.Size(1624, 252);
             this.radSplitContainer3.TabIndex = 0;
             this.radSplitContainer3.TabStop = false;
             this.radSplitContainer3.Text = "radSplitContainer3";
@@ -905,7 +991,7 @@
             // 
             this.splitPanel7.Location = new System.Drawing.Point(0, 0);
             this.splitPanel7.Name = "splitPanel7";
-            this.splitPanel7.Size = new System.Drawing.Size(450, 251);
+            this.splitPanel7.Size = new System.Drawing.Size(450, 252);
             this.splitPanel7.SizeInfo.AutoSizeScale = new System.Drawing.SizeF(-0.2222222F, 0F);
             this.splitPanel7.SizeInfo.SplitterCorrection = new System.Drawing.Size(-360, 0);
             this.splitPanel7.TabIndex = 0;
@@ -917,7 +1003,7 @@
             this.splitPanel8.Controls.Add(this.radPageView3);
             this.splitPanel8.Location = new System.Drawing.Point(454, 0);
             this.splitPanel8.Name = "splitPanel8";
-            this.splitPanel8.Size = new System.Drawing.Size(1170, 251);
+            this.splitPanel8.Size = new System.Drawing.Size(1170, 252);
             this.splitPanel8.SizeInfo.AutoSizeScale = new System.Drawing.SizeF(0.2222222F, 0F);
             this.splitPanel8.SizeInfo.SplitterCorrection = new System.Drawing.Size(360, 0);
             this.splitPanel8.TabIndex = 1;
@@ -932,15 +1018,15 @@
             this.radPageView3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.radPageView3.Location = new System.Drawing.Point(0, 0);
             this.radPageView3.Name = "radPageView3";
-            this.radPageView3.SelectedPage = this.radPageViewPage6;
-            this.radPageView3.Size = new System.Drawing.Size(1170, 251);
+            this.radPageView3.SelectedPage = this.radPageViewPage5;
+            this.radPageView3.Size = new System.Drawing.Size(1170, 252);
             this.radPageView3.TabIndex = 0;
             this.radPageView3.ThemeName = "TelerikMetro";
             // 
             // radPageViewPage4
             // 
             this.radPageViewPage4.Controls.Add(this.radGridView8);
-            this.radPageViewPage4.ItemSize = new System.Drawing.SizeF(78F, 30F);
+            this.radPageViewPage4.ItemSize = new System.Drawing.SizeF(62F, 25F);
             this.radPageViewPage4.Location = new System.Drawing.Point(5, 36);
             this.radPageViewPage4.Name = "radPageViewPage4";
             this.radPageViewPage4.Size = new System.Drawing.Size(1160, 210);
@@ -967,10 +1053,10 @@
             // radPageViewPage5
             // 
             this.radPageViewPage5.Controls.Add(this.radGridView6);
-            this.radPageViewPage5.ItemSize = new System.Drawing.SizeF(94F, 30F);
-            this.radPageViewPage5.Location = new System.Drawing.Point(5, 36);
+            this.radPageViewPage5.ItemSize = new System.Drawing.SizeF(75F, 25F);
+            this.radPageViewPage5.Location = new System.Drawing.Point(5, 31);
             this.radPageViewPage5.Name = "radPageViewPage5";
-            this.radPageViewPage5.Size = new System.Drawing.Size(1160, 210);
+            this.radPageViewPage5.Size = new System.Drawing.Size(1160, 216);
             this.radPageViewPage5.Text = "所有委托单";
             // 
             // radGridView6
@@ -1059,7 +1145,7 @@
             sortDescriptor1});
             this.radGridView6.Name = "radGridView6";
             this.radGridView6.ReadOnly = true;
-            this.radGridView6.Size = new System.Drawing.Size(1160, 210);
+            this.radGridView6.Size = new System.Drawing.Size(1160, 216);
             this.radGridView6.TabIndex = 0;
             this.radGridView6.Text = "radGridView6";
             this.radGridView6.ThemeName = "TelerikMetro";
@@ -1071,18 +1157,27 @@
             // radPageViewPage6
             // 
             this.radPageViewPage6.Controls.Add(this.radGridView7);
-            this.radPageViewPage6.ItemSize = new System.Drawing.SizeF(62F, 30F);
-            this.radPageViewPage6.Location = new System.Drawing.Point(5, 36);
+            this.radPageViewPage6.ItemSize = new System.Drawing.SizeF(50F, 25F);
+            this.radPageViewPage6.Location = new System.Drawing.Point(5, 31);
             this.radPageViewPage6.Name = "radPageViewPage6";
-            this.radPageViewPage6.Size = new System.Drawing.Size(1160, 210);
+            this.radPageViewPage6.Size = new System.Drawing.Size(1160, 216);
             this.radPageViewPage6.Text = "系统单";
+            // 
+            // radGridView7
+            // 
+            this.radGridView7.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.radGridView7.Location = new System.Drawing.Point(0, 0);
+            this.radGridView7.Name = "radGridView7";
+            this.radGridView7.Size = new System.Drawing.Size(1160, 216);
+            this.radGridView7.TabIndex = 0;
+            this.radGridView7.Text = "radGridView7";
             // 
             // splitPanel4
             // 
             this.splitPanel4.Controls.Add(this.radSplitContainer2);
-            this.splitPanel4.Location = new System.Drawing.Point(0, 527);
+            this.splitPanel4.Location = new System.Drawing.Point(0, 529);
             this.splitPanel4.Name = "splitPanel4";
-            this.splitPanel4.Size = new System.Drawing.Size(1624, 328);
+            this.splitPanel4.Size = new System.Drawing.Size(1624, 330);
             this.splitPanel4.SizeInfo.AutoSizeScale = new System.Drawing.SizeF(0F, 0.1390866F);
             this.splitPanel4.SizeInfo.SplitterCorrection = new System.Drawing.Size(0, 119);
             this.splitPanel4.TabIndex = 3;
@@ -1096,7 +1191,7 @@
             this.radSplitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.radSplitContainer2.Location = new System.Drawing.Point(0, 0);
             this.radSplitContainer2.Name = "radSplitContainer2";
-            this.radSplitContainer2.Size = new System.Drawing.Size(1624, 328);
+            this.radSplitContainer2.Size = new System.Drawing.Size(1624, 330);
             this.radSplitContainer2.TabIndex = 0;
             this.radSplitContainer2.TabStop = false;
             this.radSplitContainer2.Text = "radSplitContainer2";
@@ -1106,7 +1201,7 @@
             this.splitPanel5.Controls.Add(this.radPageView1);
             this.splitPanel5.Location = new System.Drawing.Point(0, 0);
             this.splitPanel5.Name = "splitPanel5";
-            this.splitPanel5.Size = new System.Drawing.Size(810, 328);
+            this.splitPanel5.Size = new System.Drawing.Size(810, 330);
             this.splitPanel5.TabIndex = 0;
             this.splitPanel5.TabStop = false;
             this.splitPanel5.Text = "splitPanel5";
@@ -1119,7 +1214,7 @@
             this.radPageView1.Location = new System.Drawing.Point(0, 0);
             this.radPageView1.Name = "radPageView1";
             this.radPageView1.SelectedPage = this.radPageViewPage2;
-            this.radPageView1.Size = new System.Drawing.Size(810, 328);
+            this.radPageView1.Size = new System.Drawing.Size(810, 330);
             this.radPageView1.TabIndex = 0;
             this.radPageView1.Text = "持仓";
             this.radPageView1.ThemeName = "TelerikMetro";
@@ -1129,7 +1224,7 @@
             // radPageViewPage1
             // 
             this.radPageViewPage1.Controls.Add(this.radGridView5);
-            this.radPageViewPage1.ItemSize = new System.Drawing.SizeF(46F, 30F);
+            this.radPageViewPage1.ItemSize = new System.Drawing.SizeF(37F, 25F);
             this.radPageViewPage1.Location = new System.Drawing.Point(5, 36);
             this.radPageViewPage1.Name = "radPageViewPage1";
             this.radPageViewPage1.Size = new System.Drawing.Size(800, 287);
@@ -1214,10 +1309,10 @@
             // radPageViewPage2
             // 
             this.radPageViewPage2.Controls.Add(this.radGridView3);
-            this.radPageViewPage2.ItemSize = new System.Drawing.SizeF(78F, 30F);
-            this.radPageViewPage2.Location = new System.Drawing.Point(5, 36);
+            this.radPageViewPage2.ItemSize = new System.Drawing.SizeF(62F, 25F);
+            this.radPageViewPage2.Location = new System.Drawing.Point(5, 31);
             this.radPageViewPage2.Name = "radPageViewPage2";
-            this.radPageViewPage2.Size = new System.Drawing.Size(800, 287);
+            this.radPageViewPage2.Size = new System.Drawing.Size(800, 294);
             this.radPageViewPage2.Text = "持仓明细";
             // 
             // radGridView3
@@ -1225,7 +1320,7 @@
             this.radGridView3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.radGridView3.Location = new System.Drawing.Point(0, 0);
             this.radGridView3.Name = "radGridView3";
-            this.radGridView3.Size = new System.Drawing.Size(800, 287);
+            this.radGridView3.Size = new System.Drawing.Size(800, 294);
             this.radGridView3.TabIndex = 0;
             this.radGridView3.Text = "radGridView3";
             this.radGridView3.ThemeName = "TelerikMetro";
@@ -1235,7 +1330,7 @@
             this.splitPanel6.Controls.Add(this.radPageView2);
             this.splitPanel6.Location = new System.Drawing.Point(814, 0);
             this.splitPanel6.Name = "splitPanel6";
-            this.splitPanel6.Size = new System.Drawing.Size(810, 328);
+            this.splitPanel6.Size = new System.Drawing.Size(810, 330);
             this.splitPanel6.TabIndex = 1;
             this.splitPanel6.TabStop = false;
             this.splitPanel6.Text = "splitPanel6";
@@ -1247,7 +1342,7 @@
             this.radPageView2.Location = new System.Drawing.Point(0, 0);
             this.radPageView2.Name = "radPageView2";
             this.radPageView2.SelectedPage = this.radPageViewPage3;
-            this.radPageView2.Size = new System.Drawing.Size(810, 328);
+            this.radPageView2.Size = new System.Drawing.Size(810, 330);
             this.radPageView2.TabIndex = 0;
             this.radPageView2.Text = "radPageView2";
             this.radPageView2.ThemeName = "TelerikMetro";
@@ -1255,10 +1350,10 @@
             // radPageViewPage3
             // 
             this.radPageViewPage3.Controls.Add(this.radGridView4);
-            this.radPageViewPage3.ItemSize = new System.Drawing.SizeF(78F, 30F);
-            this.radPageViewPage3.Location = new System.Drawing.Point(5, 36);
+            this.radPageViewPage3.ItemSize = new System.Drawing.SizeF(62F, 25F);
+            this.radPageViewPage3.Location = new System.Drawing.Point(5, 31);
             this.radPageViewPage3.Name = "radPageViewPage3";
-            this.radPageViewPage3.Size = new System.Drawing.Size(800, 287);
+            this.radPageViewPage3.Size = new System.Drawing.Size(800, 294);
             this.radPageViewPage3.Text = "成交记录";
             // 
             // radGridView4
@@ -1334,7 +1429,7 @@
             this.radGridView4.Name = "radGridView4";
             this.radGridView4.ReadOnly = true;
             this.radGridView4.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.radGridView4.Size = new System.Drawing.Size(800, 287);
+            this.radGridView4.Size = new System.Drawing.Size(800, 294);
             this.radGridView4.TabIndex = 1;
             this.radGridView4.Text = "gvTradeRecord";
             this.radGridView4.ThemeName = "TelerikMetro";
@@ -1377,18 +1472,9 @@
             this.radMenuItem3.Visibility = Telerik.WinControls.ElementVisibility.Visible;
             this.radMenuItem3.Click += new System.EventHandler(this.radMenuItem3_Click);
             // 
-            // radGridView7
-            // 
-            this.radGridView7.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.radGridView7.Location = new System.Drawing.Point(0, 0);
-            this.radGridView7.Name = "radGridView7";
-            this.radGridView7.Size = new System.Drawing.Size(1160, 210);
-            this.radGridView7.TabIndex = 0;
-            this.radGridView7.Text = "radGridView7";
-            // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1624, 883);
             this.Controls.Add(this.radSplitContainer1);
@@ -1406,6 +1492,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.radSplitContainer1)).EndInit();
             this.radSplitContainer1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitPanel1)).EndInit();
+            this.splitPanel1.ResumeLayout(false);
+            this.splitPanel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.radMenu2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitPanel2)).EndInit();
             this.splitPanel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.radGridView2.MasterTemplate)).EndInit();
@@ -1427,6 +1516,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.radGridView6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.orderRecordBindingSource)).EndInit();
             this.radPageViewPage6.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.radGridView7.MasterTemplate)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.radGridView7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitPanel4)).EndInit();
             this.splitPanel4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.radSplitContainer2)).EndInit();
@@ -1451,8 +1542,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.radGridView4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tradeRecordBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.radMenu1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.radGridView7.MasterTemplate)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.radGridView7)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1525,6 +1614,14 @@
         private Telerik.WinControls.UI.SplitPanel splitPanel1;
         private Telerik.WinControls.UI.RadGridView radGridView2;
         private Telerik.WinControls.UI.RadGridView radGridView7;
+        private Telerik.WinControls.UI.RadMenu radMenu2;
+        private Telerik.WinControls.UI.RadMenuItem radMenuItem4;
+        private Telerik.WinControls.UI.RadMenuItem radMenuItem9;
+        private Telerik.WinControls.UI.RadMenuItem radMenuItem5;
+        private Telerik.WinControls.UI.RadMenuItem radMenuItem6;
+        private Telerik.WinControls.UI.RadMenuItem radMenuItem7;
+        private Telerik.WinControls.UI.RadMenuItem radMenuItem10;
+        private Telerik.WinControls.UI.RadMenuItem radMenuItem8;
     }
 }
 

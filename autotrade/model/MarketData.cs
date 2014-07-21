@@ -5,7 +5,6 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
-using C1.Win.C1Editor.Internal;
 using CTPMdApi;
 
 namespace autotrade.model

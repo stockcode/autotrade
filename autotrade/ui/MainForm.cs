@@ -16,6 +16,7 @@ using CTPMdApi;
 using CTPTradeApi;
 using MongoDB.Bson;
 using MongoDB.Driver.Linq;
+using autotrade.ui;
 using CThostFtdcContractBankField = CTPTradeApi.CThostFtdcContractBankField;
 using CThostFtdcInputOrderField = CTPTradeApi.CThostFtdcInputOrderField;
 using CThostFtdcOrderField = CTPTradeApi.CThostFtdcOrderField;
@@ -42,7 +43,7 @@ namespace autotrade
         private AccountManager _accountManager;
         private MarketManager _marketManager;
         private StrategyManager _strategyManager;
-        
+        private InstrumentManager _instrumentManager;
         
         public MainForm()
         {
@@ -85,14 +86,20 @@ namespace autotrade
             mdApi = loginForm.mdApi;
             tradeApi = loginForm.tradeApi;
 
+            _instrumentManager = new InstrumentManager();
 
             _orderManager = new OrderManager(tradeApi);
+            _orderManager.InstrumentManager = _instrumentManager;
 
             _accountManager = new AccountManager(tradeApi);
+            
             _marketManager = new MarketManager(mdApi);
 
             _strategyManager = new StrategyManager(_orderManager);
+
             _marketManager.strategyManager = _strategyManager;
+            _marketManager.orderManager = _orderManager;
+            
 
             _accountManager.OnQryTradingAccount += accountManager_OnQryTradingAccount;
 
@@ -151,24 +158,18 @@ namespace autotrade
             radGridView2.Columns["InstrumentId"].HeaderText = "合约";
             //radGridView2.LoadLayout("c:\\columns.xml");
 
-            _marketManager.SubMarketData(ppInstrumentID);
-
+            _marketManager.SubMarketData(ppInstrumentID);            
             
-            radGridView7.DataSource = _orderManager.getOrders();
-
-
-
         }
 
-        private delegate void RecordRecordDelegate(List<OrderRecord> orderRecords);
-        private void ShowOrderRecord(List<OrderRecord> orderRecords)
+        private delegate void RecordRecordDelegate(BindingList<OrderRecord> orderRecords);
+        private void ShowOrderRecord(BindingList<OrderRecord> orderRecords)
         {
-            orderRecordBindingSource.Clear();
+            radGridView6.DataSource = orderRecords;
 
-            foreach (var orderRecord in orderRecords)
-            {
-                orderRecordBindingSource.Add(orderRecord);
-            }            
+
+            radGridView7.DataSource = _orderManager.getOrders();
+            if (_orderManager.getOrders().Count == 0) _strategyManager.Start();
         }
 
         void _orderManager_OnRspQryOrderRecord(object sender, OrderRecordEventArgs e)
@@ -215,10 +216,10 @@ namespace autotrade
             }
         }
 
-        private delegate void TradeRecordDelegate(List<TradeRecord> tradeRecords);
+        private delegate void TradeRecordDelegate(BindingList<TradeRecord> tradeRecords);
 
 
-        private void ShowTradeRecord(List<TradeRecord> tradeRecords)
+        private void ShowTradeRecord(BindingList<TradeRecord> tradeRecords)
         {
             radGridView4.DataSource = tradeRecords;            
         }
@@ -251,36 +252,10 @@ namespace autotrade
             
         }
 
-        private void c1Command2_Click(object sender, C1.Win.C1Command.ClickEventArgs e)
-        {
-            Order order = new Order();
-            order.InstrumentId = "IF1407";
-            order.OffsetFlag = EnumOffsetFlagType.Open;
-            order.Direction = EnumDirectionType.Buy;
-            order.Price = 10;
-            order.Volume = 1;
-
-            _orderManager.OrderInsert(order);
-        }
-
-        private void c1Command3_Click(object sender, C1.Win.C1Command.ClickEventArgs e)
-        {
-            _marketManager.SubMarketData("IF1407");
-        }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (tradeApi != null) tradeApi.UserLogout();
-        }
-
-        private void c1Command4_Click(object sender, C1.Win.C1Command.ClickEventArgs e)
-        {
-            _accountManager.QryTradingAccount();
-        }
-
-        private void c1Command5_Click(object sender, C1.Win.C1Command.ClickEventArgs e)
-        {
-            _orderManager.QryTrade();
         }
 
         private void radRibbonBar1_Click(object sender, EventArgs e)
@@ -296,6 +271,14 @@ namespace autotrade
         private void radMenuItem3_Click(object sender, EventArgs e)
         {
             
+        }
+
+        private void radMenuItem10_Click(object sender, EventArgs e)
+        {
+            InstrumentForm form = new InstrumentForm();
+            form.InstrumentManager = _instrumentManager;
+
+            form.ShowDialog();
         }
     }
 }

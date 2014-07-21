@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using CTPTradeApi;
+using MongoDB.Bson.Serialization.Attributes;
 using MongoRepository;
 
 namespace autotrade.model
@@ -56,11 +57,30 @@ namespace autotrade.model
                 }
             }
         }
+
+        public int Unit { get; set; }
+
+        private double profit;
+
+        [BsonIgnore]
+        public double Profit
+        {
+            get { return profit; }
+
+            set
+            {
+                if (this.profit != value)
+                {
+                    this.profit = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
         
         /// <summary>
         /// 成交编号
         /// </summary>
-        public string _tradeID;
+        private string _tradeID;
 
         public string TradeID
         {

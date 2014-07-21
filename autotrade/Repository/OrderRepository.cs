@@ -19,6 +19,25 @@ namespace autotrade.Repository
             orders.ListChanged += orders_ListChanged;
         }
 
+        public Order GetByInstrumentID(string instrumentId)
+        {
+            foreach (var order in orders)
+            {
+                if (order.InstrumentId == instrumentId)
+                {
+                    return order;
+                }
+
+            }
+
+            return null;
+        }
+
+        public void AddOrder(Order order)
+        {
+            orders.Add(order);
+        }
+
         void orders_ListChanged(object sender, ListChangedEventArgs e)
         {
             switch (e.ListChangedType)
@@ -53,7 +72,7 @@ namespace autotrade.Repository
         {
             foreach (var order in orders)
             {
-                if (order.OrderSysID == orderSysID)
+                if (order.OrderSysID == orderSysID && order.TradeID == null)
                 {
                     return order;
                 }
@@ -65,15 +84,15 @@ namespace autotrade.Repository
 
         public Order UpdateOrderRef(CThostFtdcOrderField pOrder)
         {
-            Order order = GetOrderByOrderRef(pOrder.OrderRef);
-            if (order != null) order.OrderRef = pOrder.OrderRef;
+            Order order = GetOrderByOrderRef(pOrder.OrderRef.Trim());
+            if (order != null) order.OrderSysID = pOrder.OrderSysID;
 
             return order;
         }
 
         public Order UpdateTradeID(CThostFtdcTradeField pTrade)
         {
-            Order order = GetOrderByOrderSysID(pTrade.OrderSysID);
+            Order order = GetOrderByOrderSysID(pTrade.OrderSysID.Trim());
             if (order != null)
             {
                 order.TradeID = pTrade.TradeID;
@@ -83,7 +102,7 @@ namespace autotrade.Repository
             return order;
         }
 
-        public void Init(List<OrderRecord> orderRecords)
+        public void Init(BindingList<OrderRecord> orderRecords)
         {
             orders.RaiseListChangedEvents = false;
 
