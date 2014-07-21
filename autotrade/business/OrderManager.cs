@@ -187,8 +187,8 @@ namespace autotrade.business
                 OnRtnTradeRecord(this, new TradeRecordEventArgs(tradeRecords));
             }
 
-            log.Info(pRspInfo);
-            log.Info(pTrade);
+//            log.Info(pRspInfo);
+//            log.Info(pTrade);
         }
 
         void tradeApi_OnErrRtnOrderAction(ref CThostFtdcOrderActionField pOrderAction, ref CThostFtdcRspInfoField pRspInfo)
@@ -219,9 +219,16 @@ namespace autotrade.business
         public void ProcessData(MarketData marketData)
         {
             Order order = _orderRepository.GetByInstrumentID(marketData.InstrumentId);
-            if (order != null)
+            if (order != null && order.StatusType == EnumOrderStatus.已开仓)
             {
-                order.Profit = (order.Price - marketData.LastPrice) * order.Unit;
+
+                double profit = (order.Direction == EnumDirectionType.Buy)
+                    ? marketData.LastPrice - order.TradePrice
+                    : order.TradePrice - marketData.LastPrice;
+
+                order.Profit = profit * order.Unit;
+
+                order.StrategyType
             }
         }
 

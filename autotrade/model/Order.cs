@@ -21,6 +21,10 @@ namespace autotrade.model
 
         public double Price { get; set; }
 
+        public double TradePrice { get; set; }
+
+        public string TradeTime { get; set; }
+
         public int Volume { get; set; }
 
         private EnumOrderStatus _statusType;

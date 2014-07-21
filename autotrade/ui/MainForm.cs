@@ -134,14 +134,14 @@ namespace autotrade
 
 
 
-            string[] ppInstrumentID = new string[Properties.Settings.Default.INID.Count];
+            //string[] ppInstrumentID = new string[Properties.Settings.Default.INID.Count];
+            string[] ppInstrumentID = new string[1];
+            ppInstrumentID[0] = "IF1408";
 
-            ppInstrumentID[0] = "IF1407";
-
-            for (int i = 1; i < ppInstrumentID.Count(); i++)
-            {
-                ppInstrumentID[i] = Properties.Settings.Default.INID[i].ToLower();                
-            }
+//            for (int i = 1; i < ppInstrumentID.Count(); i++)
+//            {
+//                ppInstrumentID[i] = Properties.Settings.Default.INID[i].ToLower();                
+//            }
 
             foreach (string id in ppInstrumentID)
             {
@@ -154,6 +154,7 @@ namespace autotrade
 
             this.radGridView2.MasterTemplate.Columns.Clear();
             radGridView2.DataSource = _marketManager.marketDatas;
+            radGridView2.BestFitColumns();
 
             radGridView2.Columns["InstrumentId"].HeaderText = "合约";
             //radGridView2.LoadLayout("c:\\columns.xml");

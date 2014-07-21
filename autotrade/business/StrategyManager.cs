@@ -20,8 +20,9 @@ namespace autotrade.business
 
         public StrategyManager(OrderManager orderManager)
         {
-            Strategies.Add(new AboveMAStrategy(indicatorManager, 20));
-            Strategies.Add(new BelowMAStrategy(indicatorManager, 20));
+            //Strategies.Add(new AboveMAStrategy(indicatorManager, 20));
+            //Strategies.Add(new BelowMAStrategy(indicatorManager, 20));
+            Strategies.Add(new BollStrategy(indicatorManager));
 
             this.orderManager = orderManager;
         }

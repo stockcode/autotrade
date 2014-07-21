@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Autofac;
 
 namespace autotrade
 {
@@ -17,6 +18,11 @@ namespace autotrade
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MainForm());
+
+            var builder = new ContainerBuilder();
+
+            var container = builder.Build();
+            
         }
     }
 }

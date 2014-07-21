@@ -1,18 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Reflection;
 using autotrade.model;
 using CTPTradeApi;
+using log4net;
 using MongoRepository;
 
 namespace autotrade.Repository
 {
-    class OrderRepository : MongoRepository<Order>
+    internal class OrderRepository : MongoRepository<Order>
     {
-        private BindingList<Order> orders = new BindingList<Order>();
+        private readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        private readonly BindingList<Order> orders = new BindingList<Order>();
 
         public OrderRepository()
         {
@@ -21,13 +22,12 @@ namespace autotrade.Repository
 
         public Order GetByInstrumentID(string instrumentId)
         {
-            foreach (var order in orders)
+            foreach (Order order in orders)
             {
                 if (order.InstrumentId == instrumentId)
                 {
                     return order;
                 }
-
             }
 
             return null;
@@ -38,7 +38,7 @@ namespace autotrade.Repository
             orders.Add(order);
         }
 
-        void orders_ListChanged(object sender, ListChangedEventArgs e)
+        private void orders_ListChanged(object sender, ListChangedEventArgs e)
         {
             switch (e.ListChangedType)
             {
@@ -56,13 +56,12 @@ namespace autotrade.Repository
 
         public Order GetOrderByOrderRef(String orderRef)
         {
-            foreach (var order in orders)
+            foreach (Order order in orders)
             {
                 if (order.OrderRef == orderRef)
                 {
                     return order;
                 }
-
             }
 
             return null;
@@ -70,13 +69,12 @@ namespace autotrade.Repository
 
         public Order GetOrderByOrderSysID(String orderSysID)
         {
-            foreach (var order in orders)
+            foreach (Order order in orders)
             {
                 if (order.OrderSysID == orderSysID && order.TradeID == null)
                 {
                     return order;
                 }
-
             }
 
             return null;
@@ -96,6 +94,8 @@ namespace autotrade.Repository
             if (order != null)
             {
                 order.TradeID = pTrade.TradeID;
+                order.TradePrice = pTrade.Price;
+                order.TradeTime = pTrade.TradeTime;
                 order.StatusType = EnumOrderStatus.已开仓;
             }
 
@@ -112,12 +112,12 @@ namespace autotrade.Repository
                 if (order != null) orders.Add(order);
             }
 
-            orders.RaiseListChangedEvents = true;            
+            orders.RaiseListChangedEvents = true;
         }
 
         public BindingList<Order> getOrders()
         {
             return orders;
-        } 
+        }
     }
 }
