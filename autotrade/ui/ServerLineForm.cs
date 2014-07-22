@@ -36,11 +36,12 @@ namespace autotrade.ui
                 try
                 {
                     string line = settings[serverLine + "Trade" + index].ToString();
-                    //fgTrade[index, 1] = line.Split(':')[0];
-                    //fgTrade[index, 2] = line.Split(':')[1];
+                    
+                    //gvTrade.Rows[index].Cells[1].Value = line.Split(':')[0];
+                    //gvTrade.Rows[index].Cells[2].Value = line.Split(':')[1];
 
-                    //if (line == selectedTrade) fgTrade.Rows[index].Selected = true;
-                    //else fgTrade.Rows[index].Selected = false;
+                    //if (line == selectedTrade) gvTrade.Rows[index].IsSelected = true;
+                    //else gvTrade.Rows[index].IsSelected = false;
 
                     index++;
                 }

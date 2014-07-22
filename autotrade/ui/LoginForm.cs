@@ -3,17 +3,15 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using autotrade.ui;
 using CTPMdApi;
 using CTPTradeApi;
+using autotrade.ui;
 
 namespace autotrade
 {
-    public partial class LoginForm : Form
+    public partial class LoginForm : Telerik.WinControls.UI.ShapedForm
     {
         private readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -30,18 +28,6 @@ namespace autotrade
             InitializeComponent();
         }
 
-        private void LoginForm_Load(object sender, EventArgs e)
-        {
-            var lines = settings.ServerLines;
-            string[] serverLines = new string[lines.Count];
-            lines.CopyTo(serverLines, 0);
-            cbServer.Items.AddRange(serverLines);
-
-            tbInvestorID.Text = settings.InvestorID;
-            tbPasswd.Text = settings.Passwd;
-            cbServer.Text = settings.SelectedServerLine;
-        }
-
         private void btnLogin_Click(object sender, EventArgs e)
         {
             settings.InvestorID = tbInvestorID.Text;
@@ -53,9 +39,9 @@ namespace autotrade
             string url = "tcp://" + settings["Selected" + settings.SelectedServerLine + "Market"];
 
             mdApi = new MdApi(settings.InvestorID, settings.Passwd, brokerId, url);
-            
-            mdApi.OnFrontConnected +=mdApi_OnFrontConnected;
-            mdApi.OnRspUserLogin +=mdApi_OnRspUserLogin;
+
+            mdApi.OnFrontConnected += mdApi_OnFrontConnected;
+            mdApi.OnRspUserLogin += mdApi_OnRspUserLogin;
             mdApi.Connect();
 
             url = "tcp://" + settings["Selected" + settings.SelectedServerLine + "Trade"];
@@ -64,6 +50,20 @@ namespace autotrade
             tradeApi.OnFrontConnect += tradeApi_OnFrontConnect;
             tradeApi.OnRspUserLogin += tradeApi_OnRspUserLogin;
             tradeApi.Connect();
+        }
+
+        
+
+        private void LoginForm_Load(object sender, EventArgs e)
+        {
+            var lines = settings.ServerLines;
+            string[] serverLines = new string[lines.Count];
+            lines.CopyTo(serverLines, 0);
+            cbServer.Items.AddRange(serverLines);
+
+            tbInvestorID.Text = settings.InvestorID;
+            tbPasswd.Text = settings.Passwd;
+            cbServer.Text = settings.SelectedServerLine;
         }
 
         void tradeApi_OnRspUserLogin(ref CTPTradeApi.CThostFtdcRspUserLoginField pRspUserLogin, ref CTPTradeApi.CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
@@ -116,10 +116,10 @@ namespace autotrade
             serverLineForm.ShowDialog();
         }
 
-        private void cbServer_SelectedItemChanged(object sender, EventArgs e)
+        private void cbServer_SelectedIndexChanged(object sender, EventArgs e)
         {
             Properties.Settings.Default.SelectedServerLine = cbServer.SelectedItem.ToString();
-            Properties.Settings.Default.Save();            
+            Properties.Settings.Default.Save();
         }
     }
 }

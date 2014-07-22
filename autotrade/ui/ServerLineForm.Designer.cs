@@ -28,13 +28,24 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ServerLineForm));
+            Telerik.WinControls.UI.GridViewTextBoxColumn gridViewTextBoxColumn1 = new Telerik.WinControls.UI.GridViewTextBoxColumn();
+            Telerik.WinControls.UI.GridViewTextBoxColumn gridViewTextBoxColumn2 = new Telerik.WinControls.UI.GridViewTextBoxColumn();
             this.label1 = new System.Windows.Forms.Label();
             this.lblBrokerId = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.lblTrade = new System.Windows.Forms.Label();
             this.lblMarket = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
+            this.gvMarket = new Telerik.WinControls.UI.RadGridView();
+            this.gvTrade = new Telerik.WinControls.UI.RadGridView();
+            this.radButton1 = new Telerik.WinControls.UI.RadButton();
+            this.radButton2 = new Telerik.WinControls.UI.RadButton();
+            ((System.ComponentModel.ISupportInitialize)(this.gvMarket)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gvMarket.MasterTemplate)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gvTrade)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gvTrade.MasterTemplate)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.radButton1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.radButton2)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -75,7 +86,6 @@
             this.lblTrade.Size = new System.Drawing.Size(188, 18);
             this.lblTrade.TabIndex = 3;
             this.lblTrade.Click += new System.EventHandler(this.label3_Click);
-            
             // 
             // lblMarket
             // 
@@ -95,11 +105,58 @@
             this.label5.TabIndex = 5;
             this.label5.Text = "行情服务";
             // 
+            // gvMarket
+            // 
+            this.gvMarket.Location = new System.Drawing.Point(41, 84);
+            // 
+            // gvMarket
+            // 
+            gridViewTextBoxColumn1.HeaderText = "column1";
+            gridViewTextBoxColumn1.Name = "column1";
+            gridViewTextBoxColumn1.Width = 51;
+            gridViewTextBoxColumn2.HeaderText = "column2";
+            gridViewTextBoxColumn2.Name = "column2";
+            gridViewTextBoxColumn2.Width = 51;
+            this.gvMarket.MasterTemplate.Columns.AddRange(new Telerik.WinControls.UI.GridViewDataColumn[] {
+            gridViewTextBoxColumn1,
+            gridViewTextBoxColumn2});
+            this.gvMarket.Name = "gvMarket";
+            this.gvMarket.Size = new System.Drawing.Size(240, 150);
+            this.gvMarket.TabIndex = 7;
+            this.gvMarket.Text = "gvMarket";
+            // 
+            // gvTrade
+            // 
+            this.gvTrade.Location = new System.Drawing.Point(41, 263);
+            this.gvTrade.Name = "gvTrade";
+            this.gvTrade.Size = new System.Drawing.Size(240, 150);
+            this.gvTrade.TabIndex = 8;
+            // 
+            // radButton1
+            // 
+            this.radButton1.Location = new System.Drawing.Point(201, 419);
+            this.radButton1.Name = "radButton1";
+            this.radButton1.Size = new System.Drawing.Size(80, 24);
+            this.radButton1.TabIndex = 9;
+            this.radButton1.Text = "radButton1";
+            // 
+            // radButton2
+            // 
+            this.radButton2.Location = new System.Drawing.Point(41, 419);
+            this.radButton2.Name = "radButton2";
+            this.radButton2.Size = new System.Drawing.Size(77, 24);
+            this.radButton2.TabIndex = 10;
+            this.radButton2.Text = "radButton2";
+            // 
             // ServerLineForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(308, 452);
+            this.Controls.Add(this.radButton2);
+            this.Controls.Add(this.radButton1);
+            this.Controls.Add(this.gvTrade);
+            this.Controls.Add(this.gvMarket);
             this.Controls.Add(this.lblMarket);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.lblTrade);
@@ -110,6 +167,12 @@
             this.Name = "ServerLineForm";
             this.Text = "ServerLineForm";
             this.Load += new System.EventHandler(this.ServerLineForm_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.gvMarket.MasterTemplate)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gvMarket)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gvTrade.MasterTemplate)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gvTrade)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.radButton1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.radButton2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -123,5 +186,9 @@
         private System.Windows.Forms.Label lblTrade;
         private System.Windows.Forms.Label lblMarket;
         private System.Windows.Forms.Label label5;
+        private Telerik.WinControls.UI.RadGridView gvMarket;
+        private Telerik.WinControls.UI.RadGridView gvTrade;
+        private Telerik.WinControls.UI.RadButton radButton1;
+        private Telerik.WinControls.UI.RadButton radButton2;
     }
 }

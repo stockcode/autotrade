@@ -123,14 +123,14 @@
     <Compile Include="model\ServerLine.cs" />
     <Compile Include="model\TradeRecord.cs" />
     <Compile Include="Repository\OrderRepository.cs" />
-    <Compile Include="Strategies\BollStrategy.cs" />
-    <Compile Include="Strategies\BelowMAStrategy.cs" />
     <Compile Include="ui\LoginForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="ui\LoginForm.Designer.cs">
       <DependentUpon>LoginForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Strategies\BollStrategy.cs" />
+    <Compile Include="Strategies\BelowMAStrategy.cs" />
     <Compile Include="ui\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -5,6 +5,8 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
+using Telerik.WinControls.UI;
 using autotrade.model;
 using autotrade.Repository;
 using CTPTradeApi;
@@ -24,6 +26,8 @@ namespace autotrade.business
 
 
         private OrderRepository _orderRepository = new OrderRepository();
+
+        public RadGridView rgv { get; set; }
 
         public InstrumentManager InstrumentManager { get; set; }
 
@@ -209,7 +213,16 @@ namespace autotrade.business
 
             order.Unit = InstrumentManager.GetUnit(order.InstrumentId);
 
-            _orderRepository.AddOrder(order);
+
+            if (rgv.InvokeRequired)
+            {
+                rgv.Invoke(new MethodInvoker(() =>
+                {
+                    _orderRepository.AddOrder(order);
+
+                }));//or change here something in the underlay datasource
+            }
+            
 
             
 
@@ -228,7 +241,7 @@ namespace autotrade.business
 
                 order.Profit = profit * order.Unit;
 
-                order.StrategyType
+                //order.StrategyType
             }
         }
 

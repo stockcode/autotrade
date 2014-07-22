@@ -19,9 +19,9 @@ namespace autotrade
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MainForm());
 
-            var builder = new ContainerBuilder();
+            //var builder = new ContainerBuilder();
 
-            var container = builder.Build();
+            //var container = builder.Build();
             
         }
     }

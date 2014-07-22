@@ -12,7 +12,7 @@ namespace autotrade.Strategies
     internal class BollStrategy : IStrategy
     {
         private readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        private readonly List<Order> orders = new List<Order>();
+        private readonly Dictionary<String, Order> orders = new Dictionary<string, Order>();
 
         private int days;
         private IndicatorManager indicatorManager;
@@ -25,26 +25,29 @@ namespace autotrade.Strategies
 
         public List<Order> Match(MarketData marketData)
         {
-            if (orders.Count() > 0) return null;
+            if (orders.ContainsKey(marketData.InstrumentId)) return null;
 
             bool result = false;
 
+            List<Order> list = new List<Order>();
 
             var order = new Order();
             order.OffsetFlag = EnumOffsetFlagType.Open;
             order.Direction = EnumDirectionType.Buy;
             order.InstrumentId = marketData.InstrumentId;
-            order.Price = marketData.LastPrice + 1;
+            order.Price = marketData.LastPrice;
             order.Volume = 1;
 
             order.StrategyType = GetType().ToString();
 
-            orders.Add(order);
+            orders.Add(marketData.InstrumentId, order);
+
+            list.Add(order);
 
             log.Info(String.Format("{0}:{1}:{2}:{3}:{4}", ToString(), marketData.InstrumentId, marketData.LastPrice, maPrice,
                 orders.Count()));
 
-            return orders;
+            return list;
         }
         
     }

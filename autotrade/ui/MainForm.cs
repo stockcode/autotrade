@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Telerik.WinControls.UI;
 using autotrade.Strategies;
 using autotrade.business;
 using autotrade.converter;
@@ -29,7 +30,7 @@ using System.Threading;
 
 namespace autotrade
 {
-    public partial class MainForm : Form
+    public partial class MainForm : RadForm
     {
         private readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         
@@ -86,6 +87,12 @@ namespace autotrade
             mdApi = loginForm.mdApi;
             tradeApi = loginForm.tradeApi;
 
+            if (tradeApi == null)
+            {
+                Application.Exit();
+                return;
+            }
+
             _instrumentManager = new InstrumentManager();
 
             _orderManager = new OrderManager(tradeApi);
@@ -108,6 +115,8 @@ namespace autotrade
             _orderManager.OnRspQryPositionRecord += _orderManager_OnRspQryPositionRecord;
             _orderManager.OnRspQryOrderRecord += _orderManager_OnRspQryOrderRecord;
 
+            _orderManager.rgv = radGridView7;
+
             Task.Factory.StartNew(() => {
                 
                 _orderManager.QryOrder();
@@ -119,29 +128,29 @@ namespace autotrade
                 Thread.Sleep(1000);
 
                 _orderManager.QryInvestorPositionDetail();
+
+                Thread.Sleep(1000);
+            }).ContinueWith(obj =>
+            {
+                while (true)
+                {
+                    Thread.Sleep(1000);
+                    _accountManager.QryTradingAccount();
+
+                }
+
             });
 
-            //Task.Factory.StartNew(() =>
-            //{
-            //    while (true)
-            //    {
-            //        Thread.Sleep(1000);
-            //        _accountManager.QryTradingAccount();
-
-            //    }
-
-            //});
 
 
-
-            //string[] ppInstrumentID = new string[Properties.Settings.Default.INID.Count];
-            string[] ppInstrumentID = new string[1];
+            string[] ppInstrumentID = new string[Properties.Settings.Default.INID.Count];
+            
             ppInstrumentID[0] = "IF1408";
 
-//            for (int i = 1; i < ppInstrumentID.Count(); i++)
-//            {
-//                ppInstrumentID[i] = Properties.Settings.Default.INID[i].ToLower();                
-//            }
+            for (int i = 1; i < ppInstrumentID.Count(); i++)
+            {
+                ppInstrumentID[i] = Properties.Settings.Default.INID[i].ToLower();                
+            }
 
             foreach (string id in ppInstrumentID)
             {
@@ -157,6 +166,22 @@ namespace autotrade
             radGridView2.BestFitColumns();
 
             radGridView2.Columns["InstrumentId"].HeaderText = "合约";
+            radGridView2.Columns["LastPrice"].HeaderText = "最新价";
+            radGridView2.Columns["BidPrice1"].HeaderText = "买价";
+            radGridView2.Columns["BidVolume1"].HeaderText = "买量";
+            radGridView2.Columns["AskPrice1"].HeaderText = "卖价";
+            radGridView2.Columns["AskVolume1"].HeaderText = "卖量";
+            radGridView2.Columns["Volume"].HeaderText = "成交量";
+            radGridView2.Columns["OpenInterest"].HeaderText = "持仓量";
+            radGridView2.Columns["UpperLimitPrice"].HeaderText = "涨停价";
+            radGridView2.Columns["LowerLimitPrice"].HeaderText = "跌停价";
+            radGridView2.Columns["OpenPrice"].HeaderText = "今开盘";
+            radGridView2.Columns["PreSettlementPrice"].HeaderText = "昨结算";
+            radGridView2.Columns["HighestPrice"].HeaderText = "最高价";
+            radGridView2.Columns["LowestPrice"].HeaderText = "最低价";
+            radGridView2.Columns["PreClosePrice"].HeaderText = "昨收盘";
+            radGridView2.Columns["Turnover"].HeaderText = "成交额";
+            radGridView2.Columns["UpdateTime"].HeaderText = "行情更新时间";
             //radGridView2.LoadLayout("c:\\columns.xml");
 
             _marketManager.SubMarketData(ppInstrumentID);            
@@ -170,6 +195,12 @@ namespace autotrade
 
 
             radGridView7.DataSource = _orderManager.getOrders();
+
+            radGridView7.Columns["Profit"].HeaderText = "持仓盈亏";
+            radGridView7.Columns["Profit"].FormatString = "{0:F2}";
+
+            radGridView7.BestFitColumns();
+
             if (_orderManager.getOrders().Count == 0) _strategyManager.Start();
         }
 
@@ -280,6 +311,16 @@ namespace autotrade
             form.InstrumentManager = _instrumentManager;
 
             form.ShowDialog();
+        }
+
+        private void miClose_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void radMenuItem11_Click(object sender, EventArgs e)
+        {
+            _strategyManager.Start();
         }
     }
 }
