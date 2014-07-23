@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
@@ -20,17 +21,9 @@ namespace autotrade.Repository
             orders.ListChanged += orders_ListChanged;
         }
 
-        public Order GetByInstrumentID(string instrumentId)
+        public List<Order> GetByInstrumentIDAndStatusType(string instrumentId, EnumOrderStatus statusType)
         {
-            foreach (Order order in orders)
-            {
-                if (order.InstrumentId == instrumentId)
-                {
-                    return order;
-                }
-            }
-
-            return null;
+            return orders.Where(o => o.InstrumentId == instrumentId && o.StatusType == statusType).ToList();
         }
 
         public void AddOrder(Order order)

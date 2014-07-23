@@ -94,11 +94,12 @@ namespace autotrade
             }
 
             _instrumentManager = new InstrumentManager();
+            _accountManager = new AccountManager(tradeApi);
 
             _orderManager = new OrderManager(tradeApi);
             _orderManager.InstrumentManager = _instrumentManager;
-
-            _accountManager = new AccountManager(tradeApi);
+            _orderManager.AccountManager = _accountManager;
+            
             
             _marketManager = new MarketManager(mdApi);
 
@@ -114,8 +115,9 @@ namespace autotrade
             _orderManager.OnRspQryPositionDetail += orderManager_OnRspQryPositionDetail;
             _orderManager.OnRspQryPositionRecord += _orderManager_OnRspQryPositionRecord;
             _orderManager.OnRspQryOrderRecord += _orderManager_OnRspQryOrderRecord;
+            _orderManager.OnRspQryOrder += _orderManager_OnRspQryOrder;
 
-            _orderManager.rgv = radGridView7;
+            radGridView8.DataSource = _accountManager.Accounts;
 
             Task.Factory.StartNew(() => {
                 
@@ -132,12 +134,8 @@ namespace autotrade
                 Thread.Sleep(1000);
             }).ContinueWith(obj =>
             {
-                while (true)
-                {
                     Thread.Sleep(1000);
                     _accountManager.QryTradingAccount();
-
-                }
 
             });
 
@@ -188,6 +186,15 @@ namespace autotrade
             
         }
 
+        void _orderManager_OnRspQryOrder(object sender, OrderEventArgs e)
+        {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(e.methodInvoker);
+            }
+        }
+
+
         private delegate void RecordRecordDelegate(BindingList<OrderRecord> orderRecords);
         private void ShowOrderRecord(BindingList<OrderRecord> orderRecords)
         {
@@ -217,7 +224,7 @@ namespace autotrade
         private delegate void PositionRecordDelegate(List<PositionRecord> positionRecords);
         private void ShowPositionRecord(List<PositionRecord> positionRecords)
         {
-            radGridView5.DataSource = positionRecords;
+            //radGridView5.DataSource = positionRecords;
         }
 
         void _orderManager_OnRspQryPositionRecord(object sender, PositionRecordEventArgs e)
@@ -253,7 +260,7 @@ namespace autotrade
 
         private void ShowTradeRecord(BindingList<TradeRecord> tradeRecords)
         {
-            radGridView4.DataSource = tradeRecords;            
+            radGridView9.DataSource = tradeRecords;            
         }
 
         void orderManager_OnRtnTradeRecord(object sender, TradeRecordEventArgs e)

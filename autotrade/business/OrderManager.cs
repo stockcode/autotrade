@@ -31,6 +31,8 @@ namespace autotrade.business
 
         public InstrumentManager InstrumentManager { get; set; }
 
+        public AccountManager AccountManager { get; set; }
+
         public delegate void TradeRecordHandler(object sender, TradeRecordEventArgs e);
 
         public event TradeRecordHandler OnRtnTradeRecord;
@@ -43,6 +45,9 @@ namespace autotrade.business
 
         public delegate void OrderRecordHandler(object sender, OrderRecordEventArgs e);
         public event OrderRecordHandler OnRspQryOrderRecord;
+
+        public delegate void OrderHandler(object sender, OrderEventArgs e);
+        public event OrderHandler OnRspQryOrder;
 
         public OrderManager(TradeApi tradeApi)
         {
@@ -214,14 +219,12 @@ namespace autotrade.business
             order.Unit = InstrumentManager.GetUnit(order.InstrumentId);
 
 
-            if (rgv.InvokeRequired)
-            {
-                rgv.Invoke(new MethodInvoker(() =>
+
+            OnRspQryOrder(this, new OrderEventArgs(new MethodInvoker(() =>
                 {
                     _orderRepository.AddOrder(order);
 
-                }));//or change here something in the underlay datasource
-            }
+                })));
             
 
             
@@ -231,8 +234,8 @@ namespace autotrade.business
 
         public void ProcessData(MarketData marketData)
         {
-            Order order = _orderRepository.GetByInstrumentID(marketData.InstrumentId);
-            if (order != null && order.StatusType == EnumOrderStatus.已开仓)
+            List<Order> orders = _orderRepository.GetByInstrumentIDAndStatusType(marketData.InstrumentId, EnumOrderStatus.已开仓);
+            foreach(var order in orders)
             {
 
                 double profit = (order.Direction == EnumDirectionType.Buy)
@@ -243,6 +246,8 @@ namespace autotrade.business
 
                 //order.StrategyType
             }
+
+            AccountManager.Accounts[0].PositionProfit =_orderRepository.getOrders().Sum(o => o.Profit);
         }
 
         private void tradeApi_OnOnErrRtnOrderInsert(ref CThostFtdcInputOrderField pInputOrder, ref CThostFtdcRspInfoField pRspInfo)
@@ -296,6 +301,16 @@ namespace autotrade.business
             : base()
         {
             this.OrderRecords = orderRecords;
+        }
+    }
+
+    internal class OrderEventArgs : EventArgs
+    {
+        public MethodInvoker methodInvoker { get; set; }
+        public OrderEventArgs(MethodInvoker methodInvoker)
+            : base()
+        {
+            this.methodInvoker = methodInvoker;
         }
     }
 

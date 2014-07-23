@@ -1,4 +1,5 @@
-﻿using autotrade.model;
+﻿using System.ComponentModel;
+using autotrade.model;
 using autotrade.util;
 using CTPTradeApi;
 using System;
@@ -11,28 +12,30 @@ namespace autotrade.business
 {
     class AccountManager
     {
+        private readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private TradeApi tradeApi;
+
+        public BindingList<Account> Accounts = new BindingList<Account>();
+
         public delegate void AccountNotifyHandler( object sender, AccountEventArgs e );
     
         public event AccountNotifyHandler OnQryTradingAccount;
-
-        private readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        private TradeApi tradeApi;
+        
+        
 
         public AccountManager(TradeApi tradeApi)
         {
             this.tradeApi = tradeApi;
             this.tradeApi.OnRspQryTradingAccount += tradeApi_OnRspQryTradingAccount;
+
+            Accounts.Add(new Account());
         }
 
         void tradeApi_OnRspQryTradingAccount(ref CThostFtdcTradingAccountField pTradingAccount, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
         {
             if (pRspInfo.ErrorID == 0)
             {
-                Account account = new Account();
-
-                ObjectUtils.Copy(pTradingAccount, account);
-
-                OnQryTradingAccount(this, new AccountEventArgs(account));
+                ObjectUtils.Copy(pTradingAccount, Accounts[0]);
             }
 
             //log.Info(pTradingAccount + ":" + bIsLast);
