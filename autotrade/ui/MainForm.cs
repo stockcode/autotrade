@@ -126,12 +126,7 @@ namespace autotrade
                 Thread.Sleep(1000);
 
                 _orderManager.QryTrade();
-
-                Thread.Sleep(1000);
-
-                _orderManager.QryInvestorPositionDetail();
-
-                Thread.Sleep(1000);
+                
             }).ContinueWith(obj =>
             {
                     Thread.Sleep(1000);
@@ -158,6 +153,7 @@ namespace autotrade
                 
             }
 
+            _marketManager.SubMarketData(ppInstrumentID);            
 
             this.radGridView2.MasterTemplate.Columns.Clear();
             radGridView2.DataSource = _marketManager.marketDatas;
@@ -180,9 +176,7 @@ namespace autotrade
             radGridView2.Columns["PreClosePrice"].HeaderText = "昨收盘";
             radGridView2.Columns["Turnover"].HeaderText = "成交额";
             radGridView2.Columns["UpdateTime"].HeaderText = "行情更新时间";
-            //radGridView2.LoadLayout("c:\\columns.xml");
-
-            _marketManager.SubMarketData(ppInstrumentID);            
+            //radGridView2.LoadLayout("c:\\columns.xml");            
             
         }
 
@@ -203,12 +197,14 @@ namespace autotrade
 
             radGridView7.DataSource = _orderManager.getOrders();
 
-            radGridView7.Columns["Profit"].HeaderText = "持仓盈亏";
-            radGridView7.Columns["Profit"].FormatString = "{0:F2}";
+            radGridView7.Columns["PositionProfit"].HeaderText = "持仓盈亏";
+            radGridView7.Columns["PositionProfit"].FormatString = "{0:F2}";
+
+            radGridView7.Columns["CloseProfit"].HeaderText = "平仓盈亏";
+            radGridView7.Columns["CloseProfit"].FormatString = "{0:F2}";
 
             radGridView7.BestFitColumns();
-
-            if (_orderManager.getOrders().Count == 0) _strategyManager.Start();
+            
         }
 
         void _orderManager_OnRspQryOrderRecord(object sender, OrderRecordEventArgs e)

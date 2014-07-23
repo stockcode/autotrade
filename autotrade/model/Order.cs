@@ -64,18 +64,34 @@ namespace autotrade.model
 
         public int Unit { get; set; }
 
-        private double profit;
+        private double positionProfit;
 
         [BsonIgnore]
-        public double Profit
+        public double PositionProfit
         {
-            get { return profit; }
+            get { return positionProfit; }
 
             set
             {
-                if (this.profit != value)
+                if (this.positionProfit != value)
                 {
-                    this.profit = value;
+                    this.positionProfit = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+        private double closeProfit;
+
+        public double CloseProfit
+        {
+            get { return closeProfit; }
+
+            set
+            {
+                if (this.closeProfit != value)
+                {
+                    this.closeProfit = value;
                     NotifyPropertyChanged();
                 }
             }
@@ -100,6 +116,8 @@ namespace autotrade.model
         }
 
         public String StrategyType { get; set; }
+
+        public Order CloseOrder { get; set; }
 
         public override string ToString()
         {

@@ -47,6 +47,8 @@ namespace autotrade.business
                     CThostFtdcDepthMarketDataField pDepthMarketData = marketQueue.Dequeue();                    
                     MarketData marketData;
 
+                    if (pDepthMarketData.InstrumentID == null) continue;
+
                     if (instrumentDictionary.ContainsKey(pDepthMarketData.InstrumentID))
                     {
                         marketData = instrumentDictionary[pDepthMarketData.InstrumentID];

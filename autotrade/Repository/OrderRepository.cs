@@ -6,6 +6,7 @@ using System.Reflection;
 using autotrade.model;
 using CTPTradeApi;
 using log4net;
+using MongoDB.Driver.Builders;
 using MongoRepository;
 
 namespace autotrade.Repository
@@ -47,52 +48,59 @@ namespace autotrade.Repository
             }
         }
 
-        public Order GetOrderByOrderRef(String orderRef)
+        public Order UpdateOrderRef(CThostFtdcOrderField pOrder)
         {
+            string orderRef = pOrder.OrderRef.Trim();
+
             foreach (Order order in orders)
             {
                 if (order.OrderRef == orderRef)
                 {
-                    return order;
+                    order.OrderSysID = pOrder.OrderSysID;
+                    return order; ;
                 }
-            }
 
-            return null;
-        }
-
-        public Order GetOrderByOrderSysID(String orderSysID)
-        {
-            foreach (Order order in orders)
-            {
-                if (order.OrderSysID == orderSysID && order.TradeID == null)
+                if (order.CloseOrder != null && order.CloseOrder.OrderRef == orderRef)
                 {
-                    return order;
+                    order.CloseOrder.OrderSysID = pOrder.OrderSysID;
+                    return order.CloseOrder;
                 }
             }
 
             return null;
-        }
-
-        public Order UpdateOrderRef(CThostFtdcOrderField pOrder)
-        {
-            Order order = GetOrderByOrderRef(pOrder.OrderRef.Trim());
-            if (order != null) order.OrderSysID = pOrder.OrderSysID;
-
-            return order;
         }
 
         public Order UpdateTradeID(CThostFtdcTradeField pTrade)
         {
-            Order order = GetOrderByOrderSysID(pTrade.OrderSysID.Trim());
-            if (order != null)
+            string orderSysID = pTrade.OrderSysID.Trim();
+
+            foreach (Order order in orders)
             {
-                order.TradeID = pTrade.TradeID;
-                order.TradePrice = pTrade.Price;
-                order.TradeTime = pTrade.TradeTime;
-                order.StatusType = EnumOrderStatus.已开仓;
+                if (order.OrderSysID == orderSysID && order.TradeID == null)
+                {
+                    order.TradeID = pTrade.TradeID;
+                    order.TradePrice = pTrade.Price;
+                    order.TradeTime = pTrade.TradeTime;
+                    order.StatusType = EnumOrderStatus.已开仓;
+
+                    return order;
+                }
+
+                if (order.CloseOrder != null && order.CloseOrder.OrderSysID == orderSysID && order.CloseOrder.TradeID == null)
+                {
+                    order.CloseOrder.TradeID = pTrade.TradeID;
+                    order.CloseOrder.TradePrice = pTrade.Price;
+                    order.CloseOrder.TradeTime = pTrade.TradeTime;
+                    order.StatusType = EnumOrderStatus.已平仓;
+                    order.CloseProfit = order.PositionProfit;
+                    order.PositionProfit = 0;
+                    ;
+
+                    return order;
+                }
             }
 
-            return order;
+            return null;
         }
 
         public void Init(BindingList<OrderRecord> orderRecords)
@@ -101,7 +109,10 @@ namespace autotrade.Repository
 
             foreach (OrderRecord orderRecord in orderRecords)
             {
-                Order order = this.FirstOrDefault(o => o.OrderSysID == orderRecord.OrderSysID.Trim());
+                string orderSysID = orderRecord.OrderSysID.Trim();
+                if (orderSysID == "") continue;
+
+                Order order = this.Collection.FindOne(Query.EQ("OrderSysID", orderSysID));
                 if (order != null) orders.Add(order);
             }
 

@@ -10,7 +10,7 @@ namespace autotrade.business
     {
         private readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        public List<IStrategy> Strategies = new List<IStrategy>();
+        private Dictionary<String, List<IStrategy>> dictStrategies = new Dictionary<string, List<IStrategy>>(); 
 
         private IndicatorManager indicatorManager = new IndicatorManager();
 
@@ -20,10 +20,6 @@ namespace autotrade.business
 
         public StrategyManager(OrderManager orderManager)
         {
-            //Strategies.Add(new AboveMAStrategy(indicatorManager, 20));
-            //Strategies.Add(new BelowMAStrategy(indicatorManager, 20));
-            Strategies.Add(new BollStrategy(indicatorManager));
-
             this.orderManager = orderManager;
         }
 
@@ -31,8 +27,10 @@ namespace autotrade.business
         {
             if (!isStart) return;
 
+            if (!dictStrategies.ContainsKey(marketData.InstrumentId)) InitStrategies(marketData.InstrumentId);
 
-            foreach(IStrategy strategy in Strategies) {
+            foreach (IStrategy strategy in dictStrategies[marketData.InstrumentId])
+            {
                 List<Order> orders = strategy.Match(marketData);
                 if (orders != null)
                 {
@@ -43,6 +41,17 @@ namespace autotrade.business
                     }
                 }
             }
+        }
+
+        private void InitStrategies(string instrumentId)
+        {
+            List<IStrategy> list = new List<IStrategy>();
+
+            //Strategies.Add(new AboveMAStrategy(indicatorManager, 20));
+            //Strategies.Add(new BelowMAStrategy(indicatorManager, 20));
+            list.Add(new BollStrategy(indicatorManager, orderManager));
+
+            dictStrategies.Add(instrumentId, list);
         }
 
         public void Start()

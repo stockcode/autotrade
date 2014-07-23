@@ -12,43 +12,66 @@ namespace autotrade.Strategies
     internal class BollStrategy : IStrategy
     {
         private readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        private readonly Dictionary<String, Order> orders = new Dictionary<string, Order>();
+        private List<Order> orders;
 
-        private int days;
+        private int days, tick;
         private IndicatorManager indicatorManager;
+        private OrderManager orderManager;
+
         private double maPrice = 0d;
 
-        public BollStrategy(IndicatorManager indicatorManager)
+
+        public BollStrategy(IndicatorManager indicatorManager, OrderManager orderManager)
         {
             this.indicatorManager = indicatorManager;
+            this.orderManager = orderManager;
         }
 
         public List<Order> Match(MarketData marketData)
         {
-            if (orders.ContainsKey(marketData.InstrumentId)) return null;
+            List<Order> orders =
+                orderManager.getOrders().Where(o => o.InstrumentId == marketData.InstrumentId && o.StrategyType == GetType().ToString()).ToList();
 
-            bool result = false;
+            tick++;
 
             List<Order> list = new List<Order>();
 
-            var order = new Order();
-            order.OffsetFlag = EnumOffsetFlagType.Open;
-            order.Direction = EnumDirectionType.Buy;
-            order.InstrumentId = marketData.InstrumentId;
-            order.Price = marketData.LastPrice;
-            order.Volume = 1;
+            foreach (Order order in orders)
+            {
+                if (order.StatusType == EnumOrderStatus.已开仓 && tick >= 10 && (tick % 10) == 0)
+                {
+                    var neworder = new Order();
+                    neworder.OffsetFlag = EnumOffsetFlagType.CloseToday;
+                    neworder.Direction = order.Direction == EnumDirectionType.Buy ? EnumDirectionType.Sell : EnumDirectionType.Buy;
+                    neworder.InstrumentId = marketData.InstrumentId;
+                    neworder.Price = marketData.LastPrice;
+                    neworder.Volume = order.Volume;
+                    neworder.StrategyType = GetType().ToString();
+                    
 
-            order.StrategyType = GetType().ToString();
+                    order.CloseOrder = neworder;
 
-            orders.Add(marketData.InstrumentId, order);
+                    list.Add(order);
 
-            list.Add(order);
+                    log.Info(String.Format("{0}:{1}:{2}:{3}:{4}", ToString(), marketData.InstrumentId, marketData.LastPrice, maPrice,
+                        orders.Count()));
+                }
+            }
 
-            log.Info(String.Format("{0}:{1}:{2}:{3}:{4}", ToString(), marketData.InstrumentId, marketData.LastPrice, maPrice,
-                orders.Count()));
+            if (orders.Count(o => o.StatusType != EnumOrderStatus.已平仓) == 0)
+            {
+                var neworder = new Order();
+                neworder.OffsetFlag = EnumOffsetFlagType.Open;
+                neworder.Direction = EnumDirectionType.Buy;
+                neworder.InstrumentId = marketData.InstrumentId;
+                neworder.Price = marketData.LastPrice;
+                neworder.Volume = 1;
+                neworder.StrategyType = GetType().ToString();
+
+                list.Add(neworder);
+            }
 
             return list;
         }
-        
     }
 }

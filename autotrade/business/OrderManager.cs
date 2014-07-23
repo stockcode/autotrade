@@ -27,8 +27,6 @@ namespace autotrade.business
 
         private OrderRepository _orderRepository = new OrderRepository();
 
-        public RadGridView rgv { get; set; }
-
         public InstrumentManager InstrumentManager { get; set; }
 
         public AccountManager AccountManager { get; set; }
@@ -202,32 +200,46 @@ namespace autotrade.business
 
         void tradeApi_OnErrRtnOrderAction(ref CThostFtdcOrderActionField pOrderAction, ref CThostFtdcRspInfoField pRspInfo)
         {
-            throw new NotImplementedException();
+            log.Info(pOrderAction.StatusMsg);
         }
 
         public int OrderInsert(Order order)
         {
-            if (order.Price < 0.01)
-                tradeApi.OrderInsert(order.InstrumentId, order.OffsetFlag, order.Direction, order.Volume);
+            if (order.CloseOrder == null)
+            {
+
+                if (order.Price < 0.01)
+                    tradeApi.OrderInsert(order.InstrumentId, order.OffsetFlag, order.Direction, order.Volume);
+                else
+                    tradeApi.OrderInsert(order.InstrumentId, order.OffsetFlag, order.Direction, order.Price,
+                        order.Volume);
+
+                order.StatusType = EnumOrderStatus.开仓中;
+
+                order.OrderRef = tradeApi.MaxOrderRef.ToString();
+
+                order.Unit = InstrumentManager.GetUnit(order.InstrumentId);
+
+
+
+                OnRspQryOrder(this, new OrderEventArgs(new MethodInvoker(() => _orderRepository.AddOrder(order))));
+
+            }
             else
-                tradeApi.OrderInsert(order.InstrumentId, order.OffsetFlag, order.Direction, order.Price, order.Volume);
+            {
+                var closeOrder = order.CloseOrder;
 
-            order.StatusType = EnumOrderStatus.开仓中;
+                if (order.Price < 0.01)
+                    tradeApi.OrderInsert(closeOrder.InstrumentId, closeOrder.OffsetFlag, closeOrder.Direction, closeOrder.Volume);
+                else
+                    tradeApi.OrderInsert(closeOrder.InstrumentId, closeOrder.OffsetFlag, closeOrder.Direction, closeOrder.Price,
+                        closeOrder.Volume);
 
-            order.OrderRef = tradeApi.MaxOrderRef.ToString();
+                closeOrder.OrderRef = tradeApi.MaxOrderRef.ToString();
 
-            order.Unit = InstrumentManager.GetUnit(order.InstrumentId);
+                order.StatusType = EnumOrderStatus.平仓中;
+            }
 
-
-
-            OnRspQryOrder(this, new OrderEventArgs(new MethodInvoker(() =>
-                {
-                    _orderRepository.AddOrder(order);
-
-                })));
-            
-
-            
 
             return 0;
         }
@@ -242,12 +254,11 @@ namespace autotrade.business
                     ? marketData.LastPrice - order.TradePrice
                     : order.TradePrice - marketData.LastPrice;
 
-                order.Profit = profit * order.Unit;
-
-                //order.StrategyType
+                order.PositionProfit = profit * order.Unit;                
             }
 
-            AccountManager.Accounts[0].PositionProfit =_orderRepository.getOrders().Sum(o => o.Profit);
+            AccountManager.Accounts[0].PositionProfit =_orderRepository.getOrders().Sum(o => o.PositionProfit);
+            AccountManager.Accounts[0].CloseProfit = _orderRepository.getOrders().Sum(o => o.CloseProfit);
         }
 
         private void tradeApi_OnOnErrRtnOrderInsert(ref CThostFtdcInputOrderField pInputOrder, ref CThostFtdcRspInfoField pRspInfo)
