@@ -624,7 +624,7 @@
             // 
             // radStatusStrip1
             // 
-            this.radStatusStrip1.Location = new System.Drawing.Point(0, 853);
+            this.radStatusStrip1.Location = new System.Drawing.Point(0, 851);
             this.radStatusStrip1.Name = "radStatusStrip1";
             this.radStatusStrip1.Size = new System.Drawing.Size(1624, 28);
             this.radStatusStrip1.TabIndex = 0;
@@ -639,7 +639,7 @@
             this.radSplitContainer1.Location = new System.Drawing.Point(0, 0);
             this.radSplitContainer1.Name = "radSplitContainer1";
             this.radSplitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            this.radSplitContainer1.Size = new System.Drawing.Size(1624, 853);
+            this.radSplitContainer1.Size = new System.Drawing.Size(1624, 851);
             this.radSplitContainer1.TabIndex = 2;
             this.radSplitContainer1.TabStop = false;
             this.radSplitContainer1.Text = "radSplitContainer1";
@@ -653,7 +653,7 @@
             // 
             // 
             this.splitPanel1.RootElement.MinSize = new System.Drawing.Size(0, 0);
-            this.splitPanel1.Size = new System.Drawing.Size(1624, 58);
+            this.splitPanel1.Size = new System.Drawing.Size(1624, 57);
             this.splitPanel1.SizeInfo.AutoSizeScale = new System.Drawing.SizeF(0F, -0.2651782F);
             this.splitPanel1.SizeInfo.SplitterCorrection = new System.Drawing.Size(0, -203);
             this.splitPanel1.TabIndex = 0;
@@ -730,7 +730,7 @@
             this.radGridView8.Name = "radGridView8";
             this.radGridView8.ReadOnly = true;
             this.radGridView8.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.radGridView8.Size = new System.Drawing.Size(1624, 58);
+            this.radGridView8.Size = new System.Drawing.Size(1624, 57);
             this.radGridView8.TabIndex = 0;
             this.radGridView8.Text = "radGridView8";
             this.radGridView8.ThemeName = "TelerikMetro";
@@ -738,9 +738,9 @@
             // splitPanel2
             // 
             this.splitPanel2.Controls.Add(this.radGridView2);
-            this.splitPanel2.Location = new System.Drawing.Point(0, 62);
+            this.splitPanel2.Location = new System.Drawing.Point(0, 61);
             this.splitPanel2.Name = "splitPanel2";
-            this.splitPanel2.Size = new System.Drawing.Size(1624, 349);
+            this.splitPanel2.Size = new System.Drawing.Size(1624, 348);
             this.splitPanel2.SizeInfo.AutoSizeScale = new System.Drawing.SizeF(0F, 0.07912259F);
             this.splitPanel2.SizeInfo.SplitterCorrection = new System.Drawing.Size(0, 63);
             this.splitPanel2.TabIndex = 1;
@@ -979,7 +979,7 @@
             this.radGridView2.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.radGridView2.ShowGroupPanel = false;
             this.radGridView2.ShowItemToolTips = false;
-            this.radGridView2.Size = new System.Drawing.Size(1624, 349);
+            this.radGridView2.Size = new System.Drawing.Size(1624, 348);
             this.radGridView2.TabIndex = 0;
             this.radGridView2.Text = "radGridView2";
             this.radGridView2.ThemeName = "TelerikMetro";
@@ -987,7 +987,7 @@
             // splitPanel3
             // 
             this.splitPanel3.Controls.Add(this.radSplitContainer3);
-            this.splitPanel3.Location = new System.Drawing.Point(0, 415);
+            this.splitPanel3.Location = new System.Drawing.Point(0, 413);
             this.splitPanel3.Name = "splitPanel3";
             this.splitPanel3.Size = new System.Drawing.Size(1624, 438);
             this.splitPanel3.SizeInfo.AutoSizeScale = new System.Drawing.SizeF(0F, 0.1860556F);
@@ -1445,7 +1445,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1624, 881);
+            this.ClientSize = new System.Drawing.Size(1624, 879);
             this.Controls.Add(this.radMenu2);
             this.Controls.Add(this.radSplitContainer1);
             this.Controls.Add(this.radStatusStrip1);

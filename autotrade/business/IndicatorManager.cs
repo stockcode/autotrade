@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
+using autotrade.Properties;
+using MongoDB.Driver;
 using MongoRepository;
 using autotrade.Indicators;
 using autotrade.model;
@@ -14,8 +17,14 @@ namespace autotrade.business
         private Dictionary<String, double> maDictionary = new Dictionary<String, double>();
         private Dictionary<String, BarRecord> recordDictionary = new Dictionary<string, BarRecord>();
 
+        private MongoDatabase database;
+
         public IndicatorManager()
         {
+            string connectionString = ConfigurationManager.ConnectionStrings["MongoServerSettings"].ConnectionString;
+            var client = new MongoClient(connectionString);
+            MongoServer server = client.GetServer();
+            database = server.GetDatabase("future");
             
         }
 
@@ -42,11 +51,14 @@ namespace autotrade.business
                 BarRecord barRecord = recordDictionary[instrumentId];
 
                 barRecord.Close = marketData.LastPrice;
-                barRecord.Date = marketData.UpdateTime;
+                barRecord.Date = marketData.TradingDay;
+                barRecord.Time = marketData.UpdateTime;
                 barRecord.Volume = marketData.Volume - barRecord.Volume;
                 barRecord.Amount = marketData.Turnover = barRecord.Amount;
 
-                
+                MongoCollection<BarRecord>  collection = database.GetCollection<BarRecord>(instrumentId);
+
+                collection.Insert(barRecord);
                 
                 log.Info(barRecord);
 

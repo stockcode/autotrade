@@ -84,6 +84,7 @@
       <HintPath>..\packages\MongoRepository.1.6.5\lib\net45\MongoRepository.Net45.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Design" />
     <Reference Include="System.Security" />

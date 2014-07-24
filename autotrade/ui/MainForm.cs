@@ -156,7 +156,7 @@ namespace autotrade
                 
             }
 
-            _marketManager.SubMarketData(ppInstrumentID[0]);            
+            _marketManager.SubMarketData(ppInstrumentID);            
 
             this.radGridView2.MasterTemplate.Columns.Clear();
             radGridView2.DataSource = _marketManager.marketDatas;

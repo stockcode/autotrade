@@ -16,6 +16,8 @@ namespace autotrade
             set;
         }
 
+        public string Time { get; set; }
+
         public double Open
         {
             get;
