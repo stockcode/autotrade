@@ -112,7 +112,7 @@
     <Compile Include="business\StrategyManager.cs" />
     <Compile Include="converter\DirectionConverter.cs" />
     <Compile Include="model\Account.cs" />
-    <Compile Include="model\D1BarRecord.cs" />
+    <Compile Include="model\BarRecord.cs" />
     <Compile Include="model\EnumOrderStatus.cs" />
     <Compile Include="model\Instrument.cs" />
     <Compile Include="model\MarketData.cs" />

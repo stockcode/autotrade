@@ -45,6 +45,7 @@ namespace autotrade
         private MarketManager _marketManager;
         private StrategyManager _strategyManager;
         private InstrumentManager _instrumentManager;
+        private IndicatorManager _indicatorManager = new IndicatorManager();
         
         public MainForm()
         {
@@ -105,9 +106,11 @@ namespace autotrade
 
             _strategyManager = new StrategyManager(_orderManager);
 
+            _strategyManager.indicatorManager = _indicatorManager;
+
             _marketManager.strategyManager = _strategyManager;
             _marketManager.orderManager = _orderManager;
-            
+            _marketManager.indicatorManager = _indicatorManager;
 
             _accountManager.OnQryTradingAccount += accountManager_OnQryTradingAccount;
 
@@ -153,7 +156,7 @@ namespace autotrade
                 
             }
 
-            _marketManager.SubMarketData(ppInstrumentID);            
+            _marketManager.SubMarketData(ppInstrumentID[0]);            
 
             this.radGridView2.MasterTemplate.Columns.Clear();
             radGridView2.DataSource = _marketManager.marketDatas;

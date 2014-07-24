@@ -4,61 +4,57 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MongoDB.Bson;
+using MongoRepository;
 
 namespace autotrade
 {
-    class D1BarRecord
+    class BarRecord : Entity
     {
-
-        public ObjectId Id
+        public string Date
         {
             get;
             set;
         }
 
-        public string _class { get; set; }
-
-        public string date
+        public double Open
         {
             get;
             set;
         }
 
-        public double open
+        public double High
         {
             get;
             set;
         }
 
-        public double high
+        public double Low
         {
             get;
             set;
         }
 
-        public double low
+        public double Close
         {
             get;
             set;
         }
 
-        public double close
+        public double Amount
         {
             get;
             set;
         }
 
-        public double amount
+        public double Volume
         {
             get;
             set;
-        }
+        }       
 
-        public double volume
+        public override string ToString()
         {
-            get;
-            set;
-        }        
-        
+            return string.Format("Date: {0} Open: {1} High: {2} Low: {3} Close: {4}", Date, Open, High, Low, Close);
+        }
     }
 }

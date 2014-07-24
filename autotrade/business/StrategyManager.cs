@@ -10,9 +10,9 @@ namespace autotrade.business
     {
         private readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        private Dictionary<String, List<IStrategy>> dictStrategies = new Dictionary<string, List<IStrategy>>(); 
+        private Dictionary<String, List<IStrategy>> dictStrategies = new Dictionary<string, List<IStrategy>>();
 
-        private IndicatorManager indicatorManager = new IndicatorManager();
+        public IndicatorManager indicatorManager { get; set; }
 
         private OrderManager orderManager;
 

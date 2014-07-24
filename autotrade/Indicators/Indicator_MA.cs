@@ -12,7 +12,7 @@ namespace autotrade.Indicators
 
         private int days;
         private String instrumentId;
-        private MongoCollection<D1BarRecord> collection;
+        private MongoCollection<BarRecord> collection;
 
         public Indicator_MA(string instrumentId, int days)
         {
@@ -28,22 +28,22 @@ namespace autotrade.Indicators
             var client = new MongoClient(connectionString);
             MongoServer server = client.GetServer();
             MongoDatabase database = server.GetDatabase("future");
-            collection = database.GetCollection<D1BarRecord>(instrumentId.ToUpper());
+            collection = database.GetCollection<BarRecord>(instrumentId.ToUpper());
 
         }
 
         public double GetMA()
         {
-            IQueryable<D1BarRecord> query =
+            IQueryable<BarRecord> query =
                 (from e in collection.AsQueryable()
-                 orderby e.date descending
+                 orderby e.Date descending
                  select e).Take(days + 1).Skip(1);
 
             double avg = 0;
 
-            foreach (D1BarRecord record in query)
+            foreach (BarRecord record in query)
             {                
-                avg += record.close;
+                avg += record.Close;
             }
 
             avg = avg / days;

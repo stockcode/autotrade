@@ -21,6 +21,8 @@ namespace autotrade.business
         public BindingList<MarketData> marketDatas = new BindingList<MarketData>();
         public Dictionary<String, MarketData> instrumentDictionary = new Dictionary<string, MarketData>();
 
+        public IndicatorManager indicatorManager { get; set; }
+
         public StrategyManager strategyManager { get; set; }
 
         public OrderManager orderManager { get; set; }
@@ -60,6 +62,8 @@ namespace autotrade.business
                         marketDatas.Add(marketData);
                         instrumentDictionary.Add(pDepthMarketData.InstrumentID, marketData);
                     }
+
+                    indicatorManager.ProcessData(marketData);
 
                     strategyManager.PrcessData(marketData);
                     
