@@ -13,7 +13,7 @@ namespace CTPMdApi
 	/// </summary>
 	public class MdApi
 	{
-		const string strDllFile = "MdApi.dll";
+        const string strDllFile = "MdApi.dll";
 
 		/// <summary>
 		/// MdApi.dll/CTPMdApi.dll/thostmduserapi.dll 放在主程序的执行文件夹中

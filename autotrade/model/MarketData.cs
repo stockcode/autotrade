@@ -12,7 +12,7 @@ namespace autotrade.model
     class MarketData : INotifyPropertyChanged
     {
 
-        public MarketData(CThostFtdcDepthMarketDataField pDepthMarketData)
+        public MarketData(CThostFtdcDepthMarketDataField pDepthMarketData) 
         {
             CopyFrom(pDepthMarketData);
         }
@@ -39,6 +39,11 @@ namespace autotrade.model
             this.AveragePrice = pDepthMarketData.AveragePrice;
             this.ExchangeID = pDepthMarketData.ExchangeID;
             this.UpdateTime = pDepthMarketData.UpdateTime;
+        }
+
+        public MarketData Copy()
+        {
+            return (MarketData)this.MemberwiseClone();
         }
 
         public MarketData()
