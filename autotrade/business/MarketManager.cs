@@ -7,15 +7,16 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using autotrade.model;
-using CTPMdApi;
 using autotrade.util;
+using QuantBox.CSharp2CTP;
+using QuantBox.CSharp2CTP.Event;
 
 namespace autotrade.business
 {
     class MarketManager
     {
         private readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        private MdApi mdApi;
+        private MdApiWrapper mdApi;
         private Queue<CThostFtdcDepthMarketDataField> marketQueue = new  Queue<CThostFtdcDepthMarketDataField>();
         
         public BindingList<MarketData> marketDatas = new BindingList<MarketData>();
@@ -31,12 +32,11 @@ namespace autotrade.business
 
         public event MarketDataHandler OnRtnMarketData;
 
-        public MarketManager(MdApi mdApi)
+        public MarketManager(MdApiWrapper mdApi)
         {
             this.mdApi = mdApi;
             this.mdApi.OnRtnDepthMarketData += mdApi_OnRtnDepthMarketData;
-            this.mdApi.OnRspError += mdApi_OnRspError;
-            this.mdApi.OnRspSubMarketData += mdApi_OnRspSubMarketData;
+            this.mdApi.OnRspError += mdApi_OnRspError;            
 
             Task.Factory.StartNew(()=>{
                 while(true) {
@@ -77,26 +77,21 @@ namespace autotrade.business
             });
         }
 
-        void mdApi_OnRspSubMarketData(ref CThostFtdcSpecificInstrumentField pSpecificInstrument, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
+        void mdApi_OnRspError(object sender, OnRspErrorArgs e)
         {
-            log.Info(pRspInfo);
-            log.Info(pSpecificInstrument.InstrumentID);
+            log.Info(e.pRspInfo);
         }
 
-        void mdApi_OnRspError(ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
+        void mdApi_OnRtnDepthMarketData(object sender, OnRtnDepthMarketDataArgs e)
         {
-            log.Info(pRspInfo);
+            marketQueue.Enqueue(e.pDepthMarketData);
         }
 
-        void mdApi_OnRtnDepthMarketData(ref CThostFtdcDepthMarketDataField pDepthMarketData)
-        {            
-            marketQueue.Enqueue(pDepthMarketData);
-            //log.Info(pDepthMarketData.InstrumentID);
-        }
+
 
         public void SubMarketData(params string[] instruments)
         {
-            mdApi.SubMarketData(instruments);
+            mdApi.Subscribe(instruments.ToString(), "");
         }
     }
 

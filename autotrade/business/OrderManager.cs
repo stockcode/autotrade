@@ -6,10 +6,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using QuantBox.CSharp2CTP;
+using QuantBox.CSharp2CTP.Event;
 using Telerik.WinControls.UI;
 using autotrade.model;
 using autotrade.Repository;
-using CTPTradeApi;
 using autotrade.util;
 using MongoRepository;
 
@@ -18,7 +19,7 @@ namespace autotrade.business
     class OrderManager
     {
         private readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        private TradeApi tradeApi;
+        private TraderApiWrapper tradeApi;
         private List<PositionDetail> positionDetails = new List<PositionDetail>();
         private BindingList<TradeRecord> tradeRecords = new BindingList<TradeRecord>();
         private List<PositionRecord> positionRecords = new List<PositionRecord>();
@@ -47,11 +48,11 @@ namespace autotrade.business
         public delegate void OrderHandler(object sender, OrderEventArgs e);
         public event OrderHandler OnRspQryOrder;
 
-        public OrderManager(TradeApi tradeApi)
+        public OrderManager(TraderApiWrapper tradeApi)
         {
             this.tradeApi = tradeApi;
             this.tradeApi.OnRspQryOrder += tradeApi_OnRspQryOrder;
-            this.tradeApi.OnErrRtnOrderInsert += tradeApi_OnOnErrRtnOrderInsert;
+            this.tradeApi.OnErrRtnOrderInsert += tradeApi_OnErrRtnOrderInsert;
             this.tradeApi.OnErrRtnOrderAction += tradeApi_OnErrRtnOrderAction;
             this.tradeApi.OnRspQryTrade += tradeApi_OnRspQryTrade;
             this.tradeApi.OnRspOrderInsert += tradeApi_OnRspOrderInsert;
@@ -63,89 +64,139 @@ namespace autotrade.business
             this.tradeApi.OnRtnTrade += tradeApi_OnRtnTrade;            
         }
 
-        void tradeApi_OnRspQryInvestorPosition(ref CThostFtdcInvestorPositionField pInvestorPosition, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
-        {
-            PositionRecord  positionRecord = new PositionRecord();
-
-            ObjectUtils.Copy(pInvestorPosition, positionRecord);
-
-            positionRecords.Add(positionRecord);
-
-            if (bIsLast) OnRspQryPositionRecord(this, new PositionRecordEventArgs(positionRecords));
-        }
-
-        void tradeApi_OnRspQryInvestorPositionDetail(ref CThostFtdcInvestorPositionDetailField pInvestorPositionDetail, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
-        {
-            PositionDetail positionDetail = new PositionDetail();
-
-            ObjectUtils.Copy(pInvestorPositionDetail, positionDetail);
-
-            positionDetails.Add(positionDetail);
-
-
-
-            if (bIsLast)
-            {
-                OnRspQryPositionDetail(this, new PositionDetailEventArgs(positionDetails));
-            }
-                
-        }
-
-        public int QryOrder()
-        {
-            return tradeApi.QryOrder();
-        }
-
-        public int QryTrade()
-        {
-            return this.tradeApi.QryTrade();
-        }
-
-        public int QryInvestorPosition()
-        {
-            return this.tradeApi.QryInvestorPosition();
-        }
-
-        public int QryInvestorPositionDetail()
-        {
-            return this.tradeApi.QryInvestorPositionDetail();
-        }
-
-        
-
-        void tradeApi_OnRtnTrade(ref CThostFtdcTradeField pTrade)
+        void tradeApi_OnRtnTrade(object sender, OnRtnTradeArgs e)
         {
             TradeRecord tradeRecord = new TradeRecord();
 
-            ObjectUtils.Copy(pTrade, tradeRecord);
+            ObjectUtils.Copy(e.pTrade, tradeRecord);
 
             //OnRtnTreadeRecord(this, new TradeRecordEventArgs(tradeRecord));
 
 
-            Order order = _orderRepository.UpdateTradeID(pTrade);
+            Order order = _orderRepository.UpdateTradeID(e.pTrade);
 
-            log.Info(pTrade);
+            log.Info(e.pTrade);
         }
 
-        void tradeApi_OnRtnOrder(ref CThostFtdcOrderField pOrder)
+        void tradeApi_OnRtnOrder(object sender, OnRtnOrderArgs e)
         {
-            OrderRecord orderRecord = GetOrderRecord(pOrder.RequestID);
+            OrderRecord orderRecord = GetOrderRecord(e.pOrder.RequestID);
 
             if (orderRecord == null)
             {
                 orderRecord = new OrderRecord();
                 orderRecords.Add(orderRecord);
-                
+
             }
 
-            ObjectUtils.Copy(pOrder, orderRecord);
+            ObjectUtils.Copy(e.pOrder, orderRecord);
 
             //OnRspQryOrderRecord(this, new OrderRecordEventArgs(orderRecords));
 
-            Order order = _orderRepository.UpdateOrderRef(pOrder);
+            Order order = _orderRepository.UpdateOrderRef(e.pOrder);
 
             log.Info(order);
         }
+
+        void tradeApi_OnRspQryInvestorPositionDetail(object sender, OnRspQryInvestorPositionDetailArgs e)
+        {
+            PositionDetail positionDetail = new PositionDetail();
+
+            ObjectUtils.Copy(e.pInvestorPositionDetail, positionDetail);
+
+            positionDetails.Add(positionDetail);
+
+
+
+            if (e.bIsLast)
+            {
+                OnRspQryPositionDetail(this, new PositionDetailEventArgs(positionDetails));
+            }
+        }
+
+        void tradeApi_OnRspQryInvestorPosition(object sender, OnRspQryInvestorPositionArgs e)
+        {
+            PositionRecord positionRecord = new PositionRecord();
+
+            ObjectUtils.Copy(e.pInvestorPosition, positionRecord);
+
+            positionRecords.Add(positionRecord);
+
+            if (e.bIsLast) OnRspQryPositionRecord(this, new PositionRecordEventArgs(positionRecords));
+        }
+
+        void tradeApi_OnRspOrderInsert(object sender, OnRspOrderInsertArgs e)
+        {
+            log.Info(e.pRspInfo);
+            log.Info(e.pInputOrder);
+        }
+
+        void tradeApi_OnRspQryTrade(object sender, OnRspQryTradeArgs e)
+        {
+            TradeRecord tradeRecord = new TradeRecord();
+
+            ObjectUtils.Copy(e.pTrade, tradeRecord);
+
+            tradeRecords.Add(tradeRecord);
+
+            _orderRepository.UpdateTradeID(e.pTrade);
+
+            if (e.bIsLast)
+            {
+                OnRtnTradeRecord(this, new TradeRecordEventArgs(tradeRecords));
+            }
+
+            //            log.Info(pRspInfo);
+            //            log.Info(pTrade);
+        }
+
+        void tradeApi_OnErrRtnOrderAction(object sender, OnErrRtnOrderActionArgs e)
+        {
+            log.Info(e.pOrderAction.StatusMsg);
+        }
+
+        void tradeApi_OnErrRtnOrderInsert(object sender, OnErrRtnOrderInsertArgs e)
+        {
+            log.Info(e.pRspInfo);
+            log.Info(e.pInputOrder);
+        }
+
+        void tradeApi_OnRspQryOrder(object sender, OnRspQryOrderArgs e)
+        {
+            OrderRecord orderRecord = new OrderRecord();
+
+            ObjectUtils.Copy(e.pOrder, orderRecord);
+
+            orderRecords.Add(orderRecord);
+
+            if (e.bIsLast)
+            {
+                _orderRepository.Init(orderRecords);
+
+                OnRspQryOrderRecord(this, new OrderRecordEventArgs(orderRecords));
+            } 
+        }
+
+//        public int QryOrder()
+//        {
+//            return tradeApi.QryOrder();
+//        }
+//
+//        public int QryTrade()
+//        {
+//            return this.tradeApi.QryTrade();
+//        }
+
+        public void QryInvestorPosition()
+        {
+            this.tradeApi.ReqQryInvestorPosition("");
+        }
+
+        public void QryInvestorPositionDetail()
+        {
+            this.tradeApi.ReqQryInvestorPositionDetail("");
+        }
+
  
         private OrderRecord GetOrderRecord(int requestID)
         {
@@ -157,66 +208,21 @@ namespace autotrade.business
             return null;
         }
 
-        private void tradeApi_OnRspQryOrder(ref CThostFtdcOrderField porder, ref CThostFtdcRspInfoField prspinfo, int nrequestid, bool bislast)
-        {
-            OrderRecord orderRecord = new OrderRecord();
-
-            ObjectUtils.Copy(porder, orderRecord);
-
-            orderRecords.Add(orderRecord);
-
-            if (bislast)
-            {
-                _orderRepository.Init(orderRecords);
-
-                OnRspQryOrderRecord(this, new OrderRecordEventArgs(orderRecords));                
-            }            
-        }
-
-        void tradeApi_OnRspOrderInsert(ref CThostFtdcInputOrderField pInputOrder, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
-        {
-            log.Info(pRspInfo);
-            log.Info(pInputOrder);
-        }
-
-        void tradeApi_OnRspQryTrade(ref CThostFtdcTradeField pTrade, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
-        {
-            TradeRecord tradeRecord = new TradeRecord();
-
-            ObjectUtils.Copy(pTrade, tradeRecord);
-            
-            tradeRecords.Add(tradeRecord);
-
-            _orderRepository.UpdateTradeID(pTrade);
-
-            if (bIsLast)
-            {
-                OnRtnTradeRecord(this, new TradeRecordEventArgs(tradeRecords));
-            }
-
-//            log.Info(pRspInfo);
-//            log.Info(pTrade);
-        }
-
-        void tradeApi_OnErrRtnOrderAction(ref CThostFtdcOrderActionField pOrderAction, ref CThostFtdcRspInfoField pRspInfo)
-        {
-            log.Info(pOrderAction.StatusMsg);
-        }
 
         public int OrderInsert(Order order)
         {
             if (order.CloseOrder == null)
             {
 
-                if (order.Price < 0.01)
-                    tradeApi.OrderInsert(order.InstrumentId, order.OffsetFlag, order.Direction, order.Volume);
-                else
-                    tradeApi.OrderInsert(order.InstrumentId, order.OffsetFlag, order.Direction, order.Price,
-                        order.Volume);
+//                if (order.Price < 0.01)
+//                    tradeApi.OrderInsert(order.InstrumentId, order.OffsetFlag, order.Direction, order.Volume);
+//                else
+//                    tradeApi.OrderInsert(order.InstrumentId, order.OffsetFlag, order.Direction, order.Price,
+//                        order.Volume);
 
                 order.StatusType = EnumOrderStatus.开仓中;
 
-                order.OrderRef = tradeApi.MaxOrderRef.ToString();
+                //order.OrderRef = tradeApi.MaxOrderRef.ToString();
 
                 order.Unit = InstrumentManager.GetUnit(order.InstrumentId);
 
@@ -229,13 +235,13 @@ namespace autotrade.business
             {
                 var closeOrder = order.CloseOrder;
 
-                if (order.Price < 0.01)
-                    tradeApi.OrderInsert(closeOrder.InstrumentId, closeOrder.OffsetFlag, closeOrder.Direction, closeOrder.Volume);
-                else
-                    tradeApi.OrderInsert(closeOrder.InstrumentId, closeOrder.OffsetFlag, closeOrder.Direction, closeOrder.Price,
-                        closeOrder.Volume);
-
-                closeOrder.OrderRef = tradeApi.MaxOrderRef.ToString();
+//                if (order.Price < 0.01)
+//                    tradeApi.OrderInsert(closeOrder.InstrumentId, closeOrder.OffsetFlag, closeOrder.Direction, closeOrder.Volume);
+//                else
+//                    tradeApi.OrderInsert(closeOrder.InstrumentId, closeOrder.OffsetFlag, closeOrder.Direction, closeOrder.Price,
+//                        closeOrder.Volume);
+//
+//                closeOrder.OrderRef = tradeApi.MaxOrderRef.ToString();
 
                 order.StatusType = EnumOrderStatus.平仓中;
             }
@@ -250,7 +256,7 @@ namespace autotrade.business
             foreach(var order in orders)
             {
 
-                double profit = (order.Direction == EnumDirectionType.Buy)
+                double profit = (order.Direction == TThostFtdcDirectionType.Buy)
                     ? marketData.LastPrice - order.TradePrice
                     : order.TradePrice - marketData.LastPrice;
 
@@ -259,13 +265,7 @@ namespace autotrade.business
 
             AccountManager.Accounts[0].PositionProfit =_orderRepository.getOrders().Sum(o => o.PositionProfit);
             AccountManager.Accounts[0].CloseProfit = _orderRepository.getOrders().Sum(o => o.CloseProfit);
-        }
-
-        private void tradeApi_OnOnErrRtnOrderInsert(ref CThostFtdcInputOrderField pInputOrder, ref CThostFtdcRspInfoField pRspInfo)
-        {
-            log.Info(pRspInfo);
-            log.Info(pInputOrder);
-        }
+        }        
 
         public BindingList<Order> getOrders()
         {

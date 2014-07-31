@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Globalization;
 using autotrade.Properties;
-using CTPTradeApi;
+using QuantBox.CSharp2CTP;
 
 namespace autotrade.converter
 {
@@ -10,13 +10,13 @@ namespace autotrade.converter
     {
         public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
         {
-            return destinationType == typeof(EnumDirectionType);
+            return destinationType == typeof(TThostFtdcDirectionType);
         }
 
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
 
-            var direction = (EnumDirectionType)value;
+            var direction = (TThostFtdcDirectionType)value;
             int index = (int)direction - (int)'0';
 
             return Settings.Default.Direction[index];

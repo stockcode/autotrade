@@ -1,4 +1,6 @@
-﻿namespace autotrade
+﻿using QuantBox.CSharp2CTP;
+
+namespace autotrade
 {
     partial class MainForm
     {
@@ -218,7 +220,7 @@
             // 
             // enumBinder1
             // 
-            this.enumBinder1.Source = typeof(CTPTradeApi.EnumDirectionType);
+            this.enumBinder1.Source = typeof(TThostFtdcDirectionType);
             gridViewComboBoxColumn1.DataSource = this.enumBinder1;
             gridViewComboBoxColumn1.DataType = typeof(object);
             gridViewComboBoxColumn1.DisplayMember = "Description";
@@ -232,7 +234,7 @@
             // 
             // enumBinder2
             // 
-            this.enumBinder2.Source = typeof(CTPTradeApi.EnumHedgeFlagType);
+            this.enumBinder2.Source = typeof(TThostFtdcHedgeFlagType);
             gridViewComboBoxColumn2.DataSource = this.enumBinder2;
             gridViewComboBoxColumn2.DataType = typeof(object);
             gridViewComboBoxColumn2.DisplayMember = "Description";
@@ -246,7 +248,7 @@
             // 
             // enumBinder3
             // 
-            this.enumBinder3.Source = typeof(CTPTradeApi.EnumTradeTypeType);
+            this.enumBinder3.Source = typeof(TThostFtdcTradeTypeType);
             gridViewComboBoxColumn3.DataSource = this.enumBinder3;
             gridViewComboBoxColumn3.DataType = typeof(object);
             gridViewComboBoxColumn3.DisplayMember = "Description";
@@ -260,7 +262,7 @@
             // 
             // enumBinder4
             // 
-            this.enumBinder4.Source = typeof(CTPTradeApi.EnumDirectionType);
+            this.enumBinder4.Source = typeof(TThostFtdcDirectionType);
             gridViewComboBoxColumn4.DataSource = this.enumBinder4;
             gridViewComboBoxColumn4.DataType = typeof(object);
             gridViewComboBoxColumn4.DisplayMember = "Description";
@@ -274,7 +276,7 @@
             // 
             // enumBinder5
             // 
-            this.enumBinder5.Source = typeof(CTPTradeApi.EnumOffsetFlagType);
+            this.enumBinder5.Source = typeof(TThostFtdcOffsetFlagType);
             gridViewComboBoxColumn5.DataSource = this.enumBinder5;
             gridViewComboBoxColumn5.DataType = typeof(object);
             gridViewComboBoxColumn5.DisplayMember = "Description";
@@ -288,7 +290,7 @@
             // 
             // enumBinder6
             // 
-            this.enumBinder6.Source = typeof(CTPTradeApi.EnumTradeTypeType);
+            this.enumBinder6.Source = typeof(TThostFtdcTradeTypeType);
             gridViewComboBoxColumn6.DataSource = this.enumBinder6;
             gridViewComboBoxColumn6.DataType = typeof(object);
             gridViewComboBoxColumn6.DisplayMember = "Description";
@@ -302,7 +304,7 @@
             // 
             // enumBinder7
             // 
-            this.enumBinder7.Source = typeof(CTPTradeApi.EnumHedgeFlagType);
+            this.enumBinder7.Source = typeof(TThostFtdcHedgeFlagType);
             gridViewComboBoxColumn7.DataSource = this.enumBinder7;
             gridViewComboBoxColumn7.DataType = typeof(object);
             gridViewComboBoxColumn7.DisplayMember = "Description";
@@ -316,7 +318,7 @@
             // 
             // enumBinder8
             // 
-            this.enumBinder8.Source = typeof(CTPTradeApi.EnumDirectionType);
+            this.enumBinder8.Source = typeof(TThostFtdcDirectionType);
             gridViewComboBoxColumn8.DataSource = this.enumBinder8;
             gridViewComboBoxColumn8.DataType = typeof(object);
             gridViewComboBoxColumn8.DisplayMember = "Description";
@@ -330,7 +332,7 @@
             // 
             // enumBinder9
             // 
-            this.enumBinder9.Source = typeof(CTPTradeApi.EnumHedgeFlagType);
+            this.enumBinder9.Source = typeof(TThostFtdcHedgeFlagType);
             gridViewComboBoxColumn9.DataSource = this.enumBinder9;
             gridViewComboBoxColumn9.DataType = typeof(object);
             gridViewComboBoxColumn9.DisplayMember = "Description";
@@ -344,7 +346,7 @@
             // 
             // enumBinder10
             // 
-            this.enumBinder10.Source = typeof(CTPTradeApi.EnumTradeTypeType);
+            this.enumBinder10.Source = typeof(TThostFtdcTradeTypeType);
             gridViewComboBoxColumn10.DataSource = this.enumBinder10;
             gridViewComboBoxColumn10.DataType = typeof(object);
             gridViewComboBoxColumn10.DisplayMember = "Description";
@@ -358,7 +360,7 @@
             // 
             // enumBinder11
             // 
-            this.enumBinder11.Source = typeof(CTPTradeApi.EnumDirectionType);
+            this.enumBinder11.Source = typeof(TThostFtdcDirectionType);
             gridViewComboBoxColumn11.DataSource = this.enumBinder11;
             gridViewComboBoxColumn11.DataType = typeof(object);
             gridViewComboBoxColumn11.DisplayMember = "Description";
@@ -372,7 +374,7 @@
             // 
             // enumBinder12
             // 
-            this.enumBinder12.Source = typeof(CTPTradeApi.EnumOffsetFlagType);
+            this.enumBinder12.Source = typeof(TThostFtdcOffsetFlagType);
             gridViewComboBoxColumn12.DataSource = this.enumBinder12;
             gridViewComboBoxColumn12.DataType = typeof(object);
             gridViewComboBoxColumn12.DisplayMember = "Description";
@@ -386,7 +388,7 @@
             // 
             // enumBinder13
             // 
-            this.enumBinder13.Source = typeof(CTPTradeApi.EnumTradeTypeType);
+            this.enumBinder13.Source = typeof(TThostFtdcTradeTypeType);
             gridViewComboBoxColumn13.DataSource = this.enumBinder13;
             gridViewComboBoxColumn13.DataType = typeof(object);
             gridViewComboBoxColumn13.DisplayMember = "Description";
@@ -400,7 +402,7 @@
             // 
             // enumBinder14
             // 
-            this.enumBinder14.Source = typeof(CTPTradeApi.EnumHedgeFlagType);
+            this.enumBinder14.Source = typeof(TThostFtdcHedgeFlagType);
             gridViewComboBoxColumn14.DataSource = this.enumBinder14;
             gridViewComboBoxColumn14.DataType = typeof(object);
             gridViewComboBoxColumn14.DisplayMember = "Description";
@@ -414,7 +416,7 @@
             // 
             // enumBinder15
             // 
-            this.enumBinder15.Source = typeof(CTPTradeApi.EnumOffsetFlagType);
+            this.enumBinder15.Source = typeof(TThostFtdcOffsetFlagType);
             gridViewComboBoxColumn15.DataSource = this.enumBinder15;
             gridViewComboBoxColumn15.DataType = typeof(object);
             gridViewComboBoxColumn15.DisplayMember = "Description";
@@ -427,7 +429,7 @@
             // 
             // enumBinder16
             // 
-            this.enumBinder16.Source = typeof(CTPTradeApi.EnumTradeTypeType);
+            this.enumBinder16.Source = typeof(TThostFtdcTradeTypeType);
             gridViewComboBoxColumn16.DataSource = this.enumBinder16;
             gridViewComboBoxColumn16.DataType = typeof(object);
             gridViewComboBoxColumn16.DisplayMember = "Description";
@@ -440,7 +442,7 @@
             // 
             // enumBinder17
             // 
-            this.enumBinder17.Source = typeof(CTPTradeApi.EnumHedgeFlagType);
+            this.enumBinder17.Source = typeof(TThostFtdcHedgeFlagType);
             gridViewComboBoxColumn17.DataSource = this.enumBinder17;
             gridViewComboBoxColumn17.DataType = typeof(object);
             gridViewComboBoxColumn17.DisplayMember = "Description";
@@ -453,7 +455,7 @@
             // 
             // enumBinder18
             // 
-            this.enumBinder18.Source = typeof(CTPTradeApi.EnumDirectionType);
+            this.enumBinder18.Source = typeof(TThostFtdcDirectionType);
             gridViewComboBoxColumn18.DataSource = this.enumBinder18;
             gridViewComboBoxColumn18.DisplayMember = "Description";
             gridViewComboBoxColumn18.ValueMember = "Value";
@@ -461,7 +463,7 @@
             // 
             // enumBinder19
             // 
-            this.enumBinder19.Source = typeof(CTPTradeApi.EnumOffsetFlagType);
+            this.enumBinder19.Source = typeof(TThostFtdcOffsetFlagType);
             gridViewComboBoxColumn19.DataSource = this.enumBinder19;
             gridViewComboBoxColumn19.DataType = typeof(object);
             gridViewComboBoxColumn19.DisplayMember = "Description";
@@ -475,7 +477,7 @@
             // 
             // enumBinder20
             // 
-            this.enumBinder20.Source = typeof(CTPTradeApi.EnumTradeTypeType);
+            this.enumBinder20.Source = typeof(TThostFtdcTradeTypeType);
             gridViewComboBoxColumn20.DataSource = this.enumBinder20;
             gridViewComboBoxColumn20.DataType = typeof(object);
             gridViewComboBoxColumn20.DisplayMember = "Description";
@@ -489,7 +491,7 @@
             // 
             // enumBinder21
             // 
-            this.enumBinder21.Source = typeof(CTPTradeApi.EnumHedgeFlagType);
+            this.enumBinder21.Source = typeof(TThostFtdcHedgeFlagType);
             gridViewComboBoxColumn21.DataSource = this.enumBinder21;
             gridViewComboBoxColumn21.DataType = typeof(object);
             gridViewComboBoxColumn21.DisplayMember = "Description";
@@ -503,7 +505,7 @@
             // 
             // enumBinder22
             // 
-            this.enumBinder22.Source = typeof(CTPTradeApi.EnumPosiDirectionType);
+            this.enumBinder22.Source = typeof(TThostFtdcPosiDirectionType);
             gridViewComboBoxColumn22.DataSource = this.enumBinder22;
             gridViewComboBoxColumn22.DataType = typeof(object);
             gridViewComboBoxColumn22.DisplayMember = "Description";
@@ -517,7 +519,7 @@
             // 
             // enumBinder23
             // 
-            this.enumBinder23.Source = typeof(CTPTradeApi.EnumHedgeFlagType);
+            this.enumBinder23.Source = typeof(TThostFtdcHedgeFlagType);
             gridViewComboBoxColumn23.DataSource = this.enumBinder23;
             gridViewComboBoxColumn23.DataType = typeof(object);
             gridViewComboBoxColumn23.DisplayMember = "Description";
@@ -531,7 +533,7 @@
             // 
             // enumBinder24
             // 
-            this.enumBinder24.Source = typeof(CTPTradeApi.EnumDirectionType);
+            this.enumBinder24.Source = typeof(TThostFtdcDirectionType);
             gridViewComboBoxColumn24.DataSource = this.enumBinder24;
             gridViewComboBoxColumn24.DataType = typeof(object);
             gridViewComboBoxColumn24.DisplayMember = "Description";
@@ -545,7 +547,7 @@
             // 
             // enumBinder25
             // 
-            this.enumBinder25.Source = typeof(CTPTradeApi.EnumOrderStatusType);
+            this.enumBinder25.Source = typeof(TThostFtdcOrderStatusType);
             gridViewComboBoxColumn25.DataSource = this.enumBinder25;
             gridViewComboBoxColumn25.DataType = typeof(object);
             gridViewComboBoxColumn25.DisplayMember = "Description";
@@ -559,7 +561,7 @@
             // 
             // enumBinder26
             // 
-            this.enumBinder26.Source = typeof(CTPTradeApi.EnumOrderTypeType);
+            this.enumBinder26.Source = typeof(TThostFtdcOrderTypeType);
             gridViewComboBoxColumn26.DataSource = this.enumBinder26;
             gridViewComboBoxColumn26.DataType = typeof(object);
             gridViewComboBoxColumn26.DisplayMember = "Description";
@@ -573,7 +575,7 @@
             // 
             // enumBinder27
             // 
-            this.enumBinder27.Source = typeof(CTPTradeApi.EnumDirectionType);
+            this.enumBinder27.Source = typeof(TThostFtdcDirectionType);
             gridViewComboBoxColumn27.DataSource = this.enumBinder27;
             gridViewComboBoxColumn27.DataType = typeof(object);
             gridViewComboBoxColumn27.DisplayMember = "Description";
@@ -587,7 +589,7 @@
             // 
             // enumBinder28
             // 
-            this.enumBinder28.Source = typeof(CTPTradeApi.EnumHedgeFlagType);
+            this.enumBinder28.Source = typeof(TThostFtdcHedgeFlagType);
             gridViewComboBoxColumn28.DataSource = this.enumBinder28;
             gridViewComboBoxColumn28.DataType = typeof(object);
             gridViewComboBoxColumn28.DisplayMember = "Description";
@@ -601,7 +603,7 @@
             // 
             // enumBinder29
             // 
-            this.enumBinder29.Source = typeof(CTPTradeApi.EnumTradeTypeType);
+            this.enumBinder29.Source = typeof(TThostFtdcTradeTypeType);
             gridViewComboBoxColumn29.DataSource = this.enumBinder29;
             gridViewComboBoxColumn29.DataType = typeof(object);
             gridViewComboBoxColumn29.DisplayMember = "Description";
@@ -1223,7 +1225,7 @@
             gridViewTextBoxColumn13.IsAutoGenerated = true;
             gridViewTextBoxColumn13.Name = "InstrumentID";
             gridViewTextBoxColumn13.Width = 48;
-            gridViewTextBoxColumn14.DataType = typeof(CTPTradeApi.EnumDirectionType);
+            gridViewTextBoxColumn14.DataType = typeof(TThostFtdcDirectionType);
             gridViewTextBoxColumn14.FieldName = "Direction";
             gridViewTextBoxColumn14.HeaderText = "买卖";
             gridViewTextBoxColumn14.Name = "Direction";

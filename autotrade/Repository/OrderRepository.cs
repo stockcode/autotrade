@@ -4,10 +4,10 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using autotrade.model;
-using CTPTradeApi;
 using log4net;
 using MongoDB.Driver.Builders;
 using MongoRepository;
+using QuantBox.CSharp2CTP;
 
 namespace autotrade.Repository
 {

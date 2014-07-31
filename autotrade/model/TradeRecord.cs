@@ -1,11 +1,11 @@
 ﻿using System.ComponentModel;
 using autotrade.converter;
-using CTPTradeApi;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using QuantBox.CSharp2CTP;
 
 namespace autotrade.model
 {
@@ -25,12 +25,12 @@ namespace autotrade.model
         /// 买卖方向
         /// </summary>
         [TypeConverterAttribute(typeof(DirectionConverter))]
-        public EnumDirectionType Direction { get; set; }
+        public TThostFtdcDirectionType Direction { get; set; }
 
         /// <summary>
         /// 开平标志
         /// </summary>
-        public EnumOffsetFlagType OffsetFlag { get; set; }
+        public TThostFtdcOffsetFlagType OffsetFlag { get; set; }
 
         /// <summary>
         /// 价格
@@ -55,12 +55,12 @@ namespace autotrade.model
         /// <summary>
         /// 成交类型
         /// </summary>
-        public EnumTradeTypeType TradeType { get; set; }
+        public TThostFtdcTradeTypeType TradeType { get; set; }
 
         /// <summary>
         /// 投机套保标志
         /// </summary>
-        public EnumHedgeFlagType HedgeFlag { get; set; }
+        public TThostFtdcHedgeFlagType HedgeFlag { get; set; }
 
         /// <summary>
         /// 交易所代码

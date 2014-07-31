@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CTPTradeApi;
+using QuantBox.CSharp2CTP;
 
 namespace autotrade.model
 {
@@ -24,7 +24,7 @@ namespace autotrade.model
         /// <summary>
         /// 买卖方向
         /// </summary>
-        public EnumDirectionType Direction { get; set; }   
+        public TThostFtdcDirectionType Direction { get; set; }   
         /// <summary>
         /// 报单价格
         /// </summary>
@@ -36,11 +36,11 @@ namespace autotrade.model
         /// <summary>
         /// 报单状态
         /// </summary>
-        public EnumOrderStatusType OrderStatus { get; set; }
+        public TThostFtdcOrderStatusType OrderStatus { get; set; }
         /// <summary>
         /// 报单类型
         /// </summary>
-        public EnumOrderTypeType OrderType { get; set; }
+        public TThostFtdcOrderTypeType OrderType { get; set; }
         /// <summary>
         /// 今成交数量
         /// </summary>

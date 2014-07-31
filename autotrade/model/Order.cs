@@ -5,9 +5,9 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
-using CTPTradeApi;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoRepository;
+using QuantBox.CSharp2CTP;
 
 namespace autotrade.model
 {
@@ -15,9 +15,9 @@ namespace autotrade.model
     {
         public string InstrumentId { get; set; }
 
-        public EnumOffsetFlagType OffsetFlag { get; set; }
+        public TThostFtdcOffsetFlagType OffsetFlag { get; set; }
 
-        public EnumDirectionType Direction { get; set; }
+        public TThostFtdcDirectionType Direction { get; set; }
 
         public double Price { get; set; }
 

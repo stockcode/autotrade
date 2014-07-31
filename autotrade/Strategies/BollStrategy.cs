@@ -4,8 +4,8 @@ using System.Linq;
 using System.Reflection;
 using autotrade.business;
 using autotrade.model;
-using CTPTradeApi;
 using log4net;
+using QuantBox.CSharp2CTP;
 
 namespace autotrade.Strategies
 {
@@ -41,8 +41,8 @@ namespace autotrade.Strategies
                 if (order.StatusType == EnumOrderStatus.已开仓 && tick >= 10 && (tick % 10) == 0)
                 {
                     var neworder = new Order();
-                    neworder.OffsetFlag = EnumOffsetFlagType.CloseToday;
-                    neworder.Direction = order.Direction == EnumDirectionType.Buy ? EnumDirectionType.Sell : EnumDirectionType.Buy;
+                    neworder.OffsetFlag = TThostFtdcOffsetFlagType.CloseToday;
+                    neworder.Direction = order.Direction == TThostFtdcDirectionType.Buy ? TThostFtdcDirectionType.Sell : TThostFtdcDirectionType.Buy;
                     neworder.InstrumentId = marketData.InstrumentId;
                     neworder.Price = marketData.LastPrice;
                     neworder.Volume = order.Volume;
@@ -61,8 +61,8 @@ namespace autotrade.Strategies
             if (orders.Count(o => o.StatusType != EnumOrderStatus.已平仓) == 0)
             {
                 var neworder = new Order();
-                neworder.OffsetFlag = EnumOffsetFlagType.Open;
-                neworder.Direction = EnumDirectionType.Buy;
+                neworder.OffsetFlag = TThostFtdcOffsetFlagType.Open;
+                neworder.Direction = TThostFtdcDirectionType.Buy;
                 neworder.InstrumentId = marketData.InstrumentId;
                 neworder.Price = marketData.LastPrice;
                 neworder.Volume = 1;

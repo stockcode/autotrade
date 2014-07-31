@@ -8,24 +8,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using QuantBox.CSharp2CTP;
+using QuantBox.CSharp2CTP.Event;
 using Telerik.WinControls.UI;
 using autotrade.Strategies;
 using autotrade.business;
 using autotrade.converter;
 using autotrade.model;
-using CTPMdApi;
-using CTPTradeApi;
-using MongoDB.Bson;
-using MongoDB.Driver.Linq;
 using autotrade.ui;
-using CThostFtdcContractBankField = CTPTradeApi.CThostFtdcContractBankField;
-using CThostFtdcInputOrderField = CTPTradeApi.CThostFtdcInputOrderField;
-using CThostFtdcOrderField = CTPTradeApi.CThostFtdcOrderField;
-using CThostFtdcReqQueryAccountField = CTPTradeApi.CThostFtdcReqQueryAccountField;
-using CThostFtdcRspInfoField = CTPTradeApi.CThostFtdcRspInfoField;
-using CThostFtdcTradingAccountField = CTPTradeApi.CThostFtdcTradingAccountField;
-using EnumDirectionType = CTPTradeApi.EnumDirectionType;
-using EnumOffsetFlagType = CTPTradeApi.EnumOffsetFlagType;
 using System.Threading;
 
 namespace autotrade
@@ -35,8 +25,8 @@ namespace autotrade
         private readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         
 
-        public MdApi mdApi { get; set; }
-        public TradeApi tradeApi { get; set; }
+        public MdApiWrapper mdApi { get; set; }
+        public TraderApiWrapper tradeApi { get; set; }
 
         private AboveMAStrategy maReverseStrategy;
 
@@ -56,7 +46,7 @@ namespace autotrade
         
         
 
-        void tradeApi_OnRspQryInvestorPositionCombineDetail(ref CTPTradeApi.CThostFtdcInvestorPositionCombineDetailField pInvestorPositionCombineDetail, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
+        void tradeApi_OnRspQryInvestorPositionCombineDetail(ref CThostFtdcInvestorPositionCombineDetailField pInvestorPositionCombineDetail, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
         {
             log.Info(pRspInfo);
             log.Info(pInvestorPositionCombineDetail);
@@ -68,14 +58,6 @@ namespace autotrade
             log.Info(prspinfo);
             log.Info(pcontractbank);
         }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-            //tradeApi.QryInvestorPosition();
-            //tradeApi.QryInvestorPositionDetail();
-            tradeApi.QryInvestorPositionCombinaDetail();
-        }
-
  
         private void MainForm_Load(object sender, EventArgs e)
         {
@@ -124,11 +106,11 @@ namespace autotrade
 
             Task.Factory.StartNew(() => {
                 
-                _orderManager.QryOrder();
-
-                Thread.Sleep(1000);
-
-                _orderManager.QryTrade();
+//                _orderManager.QryOrder();
+//
+//                Thread.Sleep(1000);
+//
+//                _orderManager.QryTrade();
                 
             }).ContinueWith(obj =>
             {
@@ -293,7 +275,9 @@ namespace autotrade
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (tradeApi != null) tradeApi.UserLogout();
+            if (mdApi != null)  mdApi.Disconnect();
+
+            if (tradeApi != null) tradeApi.Disconnect();
         }
 
         private void radRibbonBar1_Click(object sender, EventArgs e)
@@ -303,7 +287,7 @@ namespace autotrade
 
         private void radMenuItem2_Click(object sender, EventArgs e)
         {
-            tradeApi.QryOrder();
+            //tradeApi.QryOrder();
         }
 
         private void radMenuItem3_Click(object sender, EventArgs e)

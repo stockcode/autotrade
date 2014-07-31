@@ -1,9 +1,9 @@
-﻿using CTPTradeApi;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using QuantBox.CSharp2CTP;
 
 namespace autotrade.model
 {
@@ -17,7 +17,7 @@ namespace autotrade.model
         /// <summary>
         /// 持仓多空方向
         /// </summary>
-        public EnumPosiDirectionType PosiDirection { get; set; }
+        public TThostFtdcPosiDirectionType PosiDirection { get; set; }
 
         /// <summary>
         /// 总持仓
@@ -52,7 +52,7 @@ namespace autotrade.model
         /// <summary>
         /// 投机套保标志
         /// </summary>
-        public EnumHedgeFlagType HedgeFlag { get; set; }
+        public TThostFtdcHedgeFlagType HedgeFlag { get; set; }
 
         /// <summary>
         /// 交易所代码

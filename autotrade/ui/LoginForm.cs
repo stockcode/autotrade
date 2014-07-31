@@ -5,9 +5,9 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
-using CTPMdApi;
-using CTPTradeApi;
 using autotrade.ui;
+using QuantBox.CSharp2CTP;
+using QuantBox.CSharp2CTP.Event;
 
 namespace autotrade
 {
@@ -17,8 +17,8 @@ namespace autotrade
 
         Properties.Settings settings = Properties.Settings.Default;
 
-        public MdApi mdApi { get; set; }
-        public TradeApi tradeApi { get; set; }
+        public MdApiWrapper mdApi { get; set; }
+        public TraderApiWrapper tradeApi { get; set; }
 
         public bool isMarketConnected = false;
         public bool isTradeConnected = false;
@@ -38,18 +38,33 @@ namespace autotrade
 
             string url = "tcp://" + settings["Selected" + settings.SelectedServerLine + "Market"];
 
-            mdApi = new MdApi(settings.InvestorID, settings.Passwd, brokerId, url);
+            mdApi = new MdApiWrapper();
 
-            mdApi.OnFrontConnected += mdApi_OnFrontConnected;
-            mdApi.OnRspUserLogin += mdApi_OnRspUserLogin;
-            mdApi.Connect();
+            mdApi.OnConnect += mdApi_OnConnect;
+            mdApi.Connect(@"D:\", settings.InvestorID, settings.Passwd, brokerId, url);
 
             url = "tcp://" + settings["Selected" + settings.SelectedServerLine + "Trade"];
 
-            tradeApi = new TradeApi(settings.InvestorID, settings.Passwd, brokerId, url);
-            tradeApi.OnFrontConnect += tradeApi_OnFrontConnect;
-            tradeApi.OnRspUserLogin += tradeApi_OnRspUserLogin;
-            tradeApi.Connect();
+            tradeApi = new TraderApiWrapper();
+
+            tradeApi.OnConnect += tradeApi_OnConnect;
+            tradeApi.Connect(@"D:\",  settings.InvestorID, settings.Passwd, brokerId, url, THOST_TE_RESUME_TYPE.THOST_TERT_RESUME, "vicky", "");
+        }
+
+        void tradeApi_OnConnect(object sender, OnConnectArgs e)
+        {
+            log.Info("Trade Connected");
+
+            isTradeConnected = true;
+            startMainForm();
+        }
+
+        void mdApi_OnConnect(object sender, OnConnectArgs e)
+        {
+            log.Info("Market Connected");
+
+            isMarketConnected = true;
+            startMainForm();
         }
 
         
@@ -66,33 +81,7 @@ namespace autotrade
             cbServer.Text = settings.SelectedServerLine;
         }
 
-        void tradeApi_OnRspUserLogin(ref CTPTradeApi.CThostFtdcRspUserLoginField pRspUserLogin, ref CTPTradeApi.CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
-        {
-            if (pRspInfo.ErrorID == 0)
-            {
-                isTradeConnected = true;
-                startMainForm();
-            }
-            log.Info(pRspInfo);
-            log.Info(pRspUserLogin);
-        }
-
-        void tradeApi_OnFrontConnect()
-        {
-            log.Info("Trade Connected");
-            tradeApi.UserLogin();
-        }
-
-        void mdApi_OnRspUserLogin(ref CTPMdApi.CThostFtdcRspUserLoginField pRspUserLogin, ref CTPMdApi.CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
-        {
-            if (pRspInfo.ErrorID == 0)
-            {
-                isMarketConnected = true;
-                startMainForm();
-            }
-            log.Info(pRspInfo);
-            log.Info(pRspUserLogin);
-        }
+        
 
         private void startMainForm()
         {
@@ -102,12 +91,6 @@ namespace autotrade
             }
         }
 
-        void mdApi_OnFrontConnected()
-        {
-            log.Info("Market Connected");
-
-            mdApi.UserLogin();
-        }
 
         private void btnDetail_Click(object sender, EventArgs e)
         {

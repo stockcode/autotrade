@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CTPTradeApi;
 using autotrade.Indicators;
 using autotrade.business;
 using autotrade.model;
+using QuantBox.CSharp2CTP;
 
 namespace autotrade.Strategies
 {
@@ -42,8 +42,8 @@ namespace autotrade.Strategies
                 for (int i = 1; i <= 5; i++)
                 {
                     Order order = new Order();
-                    order.OffsetFlag = EnumOffsetFlagType.Open;
-                    order.Direction = EnumDirectionType.Sell;
+                    order.OffsetFlag = TThostFtdcOffsetFlagType.Open;
+                    order.Direction = TThostFtdcDirectionType.Sell;
                     order.InstrumentId = marketData.InstrumentId;
                     order.Price = lastPrice + i*5;
                     order.Volume = 1;
