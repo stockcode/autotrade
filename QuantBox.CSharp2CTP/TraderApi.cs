@@ -89,7 +89,6 @@ namespace QuantBox.CSharp2CTP
             IntPtr pTraderApi,
             int OrderRef,
             string szInstrument,
-            string szExchange,
             TThostFtdcDirectionType Direction,
             string szCombOffsetFlag,
             string szCombHedgeFlag,

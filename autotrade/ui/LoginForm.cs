@@ -58,6 +58,7 @@ namespace autotrade
 
             if (e.result == ConnectionStatus.Logined)
             {
+                tradeApi.MaxOrderRef = Convert.ToInt32(e.pRspUserLogin.MaxOrderRef);
                 isTradeConnected = true;
                 startMainForm();
             }

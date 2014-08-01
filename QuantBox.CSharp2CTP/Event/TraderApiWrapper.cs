@@ -156,10 +156,9 @@ namespace QuantBox.CSharp2CTP.Event
             return m_Api.SendOrder(
                 ++this.MaxOrderRef,
                 InstrumentID,
-                "",
                 Direction,
-                OffsetFlag.ToString(),
-                "Speculation",
+                OffsetFlag,
+                TThostFtdcHedgeFlagType.Speculation,
                 Volume,
                 Price,
                 TThostFtdcOrderPriceTypeType.LimitPrice,
@@ -169,36 +168,34 @@ namespace QuantBox.CSharp2CTP.Event
                 TThostFtdcVolumeConditionType.AV);
         }
 
-        public int SendOrder(
-            int OrderRef,
-            string szInstrument,
-            string szExchange,
-            TThostFtdcDirectionType Direction,
-            string szCombOffsetFlag,
-            string szCombHedgeFlag,
-            int VolumeTotalOriginal,
-            double LimitPrice,
-            TThostFtdcOrderPriceTypeType OrderPriceType,
-            TThostFtdcTimeConditionType TimeCondition,
-            TThostFtdcContingentConditionType ContingentCondition,
-            double StopPrice,
-            TThostFtdcVolumeConditionType VolumeCondition)
-        {
-            return m_Api.SendOrder(
-                OrderRef,
-                szInstrument,
-                szExchange,
-                Direction,
-                szCombOffsetFlag,
-                szCombHedgeFlag,
-                VolumeTotalOriginal,
-                LimitPrice,
-                OrderPriceType,
-                TimeCondition,
-                ContingentCondition,
-                StopPrice,
-                VolumeCondition);
-        }
+//        public int SendOrder(
+//            int OrderRef,
+//            string szInstrument,
+//            TThostFtdcDirectionType Direction,
+//            string szCombOffsetFlag,
+//            string szCombHedgeFlag,
+//            int VolumeTotalOriginal,
+//            double LimitPrice,
+//            TThostFtdcOrderPriceTypeType OrderPriceType,
+//            TThostFtdcTimeConditionType TimeCondition,
+//            TThostFtdcContingentConditionType ContingentCondition,
+//            double StopPrice,
+//            TThostFtdcVolumeConditionType VolumeCondition)
+//        {
+//            return m_Api.SendOrder(
+//                OrderRef,
+//                szInstrument,
+//                Direction,
+//                szCombOffsetFlag,
+//                szCombHedgeFlag,
+//                VolumeTotalOriginal,
+//                LimitPrice,
+//                OrderPriceType,
+//                TimeCondition,
+//                ContingentCondition,
+//                StopPrice,
+//                VolumeCondition);
+//        }
 
         public void CancelOrder(ref CThostFtdcOrderField pOrder)
         {

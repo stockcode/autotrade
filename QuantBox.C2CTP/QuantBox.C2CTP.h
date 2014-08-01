@@ -163,7 +163,6 @@ QUANTBOXC2CTP_API int __stdcall TD_OrderInsert(
 	void* pTraderApi,
 	int OrderRef,
 	const char* szInstrument,
-	const char* szExchange,
 	TThostFtdcDirectionType Direction,
 	const char* szCombOffsetFlag,
 	const char* szCombHedgeFlag,

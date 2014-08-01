@@ -213,12 +213,10 @@ namespace autotrade.business
         {
             if (order.CloseOrder == null)
             {
-                 tradeApi.OrderInsert(order.InstrumentId, order.OffsetFlag, order.Direction, order.Price,
-                        order.Volume);
+                order.OrderRef = tradeApi.OrderInsert(order.InstrumentId, order.OffsetFlag, order.Direction, order.Price,
+                        order.Volume).ToString();
 
                 order.StatusType = EnumOrderStatus.开仓中;
-
-                //order.OrderRef = tradeApi.MaxOrderRef.ToString();
 
                 order.Unit = InstrumentManager.GetUnit(order.InstrumentId);
 
@@ -231,13 +229,8 @@ namespace autotrade.business
             {
                 var closeOrder = order.CloseOrder;
 
-//                if (order.Price < 0.01)
-//                    tradeApi.OrderInsert(closeOrder.InstrumentId, closeOrder.OffsetFlag, closeOrder.Direction, closeOrder.Volume);
-//                else
-//                    tradeApi.OrderInsert(closeOrder.InstrumentId, closeOrder.OffsetFlag, closeOrder.Direction, closeOrder.Price,
-//                        closeOrder.Volume);
-//
-//                closeOrder.OrderRef = tradeApi.MaxOrderRef.ToString();
+                closeOrder.OrderRef = tradeApi.OrderInsert(closeOrder.InstrumentId, closeOrder.OffsetFlag, closeOrder.Direction, closeOrder.Price,
+                        closeOrder.Volume).ToString();
 
                 order.StatusType = EnumOrderStatus.平仓中;
             }

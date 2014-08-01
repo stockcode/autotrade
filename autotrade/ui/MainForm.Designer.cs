@@ -220,7 +220,7 @@ namespace autotrade
             // 
             // enumBinder1
             // 
-            this.enumBinder1.Source = typeof(TThostFtdcDirectionType);
+            this.enumBinder1.Source = typeof(QuantBox.CSharp2CTP.TThostFtdcDirectionType);
             gridViewComboBoxColumn1.DataSource = this.enumBinder1;
             gridViewComboBoxColumn1.DataType = typeof(object);
             gridViewComboBoxColumn1.DisplayMember = "Description";
@@ -234,7 +234,7 @@ namespace autotrade
             // 
             // enumBinder2
             // 
-            this.enumBinder2.Source = typeof(TThostFtdcHedgeFlagType);
+            this.enumBinder2.Source = typeof(QuantBox.CSharp2CTP.TThostFtdcHedgeFlagType);
             gridViewComboBoxColumn2.DataSource = this.enumBinder2;
             gridViewComboBoxColumn2.DataType = typeof(object);
             gridViewComboBoxColumn2.DisplayMember = "Description";
@@ -248,7 +248,7 @@ namespace autotrade
             // 
             // enumBinder3
             // 
-            this.enumBinder3.Source = typeof(TThostFtdcTradeTypeType);
+            this.enumBinder3.Source = typeof(QuantBox.CSharp2CTP.TThostFtdcTradeTypeType);
             gridViewComboBoxColumn3.DataSource = this.enumBinder3;
             gridViewComboBoxColumn3.DataType = typeof(object);
             gridViewComboBoxColumn3.DisplayMember = "Description";
@@ -262,7 +262,7 @@ namespace autotrade
             // 
             // enumBinder4
             // 
-            this.enumBinder4.Source = typeof(TThostFtdcDirectionType);
+            this.enumBinder4.Source = typeof(QuantBox.CSharp2CTP.TThostFtdcDirectionType);
             gridViewComboBoxColumn4.DataSource = this.enumBinder4;
             gridViewComboBoxColumn4.DataType = typeof(object);
             gridViewComboBoxColumn4.DisplayMember = "Description";
@@ -276,7 +276,7 @@ namespace autotrade
             // 
             // enumBinder5
             // 
-            this.enumBinder5.Source = typeof(TThostFtdcOffsetFlagType);
+            this.enumBinder5.Source = typeof(QuantBox.CSharp2CTP.TThostFtdcOffsetFlagType);
             gridViewComboBoxColumn5.DataSource = this.enumBinder5;
             gridViewComboBoxColumn5.DataType = typeof(object);
             gridViewComboBoxColumn5.DisplayMember = "Description";
@@ -290,7 +290,7 @@ namespace autotrade
             // 
             // enumBinder6
             // 
-            this.enumBinder6.Source = typeof(TThostFtdcTradeTypeType);
+            this.enumBinder6.Source = typeof(QuantBox.CSharp2CTP.TThostFtdcTradeTypeType);
             gridViewComboBoxColumn6.DataSource = this.enumBinder6;
             gridViewComboBoxColumn6.DataType = typeof(object);
             gridViewComboBoxColumn6.DisplayMember = "Description";
@@ -304,7 +304,7 @@ namespace autotrade
             // 
             // enumBinder7
             // 
-            this.enumBinder7.Source = typeof(TThostFtdcHedgeFlagType);
+            this.enumBinder7.Source = typeof(QuantBox.CSharp2CTP.TThostFtdcHedgeFlagType);
             gridViewComboBoxColumn7.DataSource = this.enumBinder7;
             gridViewComboBoxColumn7.DataType = typeof(object);
             gridViewComboBoxColumn7.DisplayMember = "Description";
@@ -318,7 +318,7 @@ namespace autotrade
             // 
             // enumBinder8
             // 
-            this.enumBinder8.Source = typeof(TThostFtdcDirectionType);
+            this.enumBinder8.Source = typeof(QuantBox.CSharp2CTP.TThostFtdcDirectionType);
             gridViewComboBoxColumn8.DataSource = this.enumBinder8;
             gridViewComboBoxColumn8.DataType = typeof(object);
             gridViewComboBoxColumn8.DisplayMember = "Description";
@@ -332,7 +332,7 @@ namespace autotrade
             // 
             // enumBinder9
             // 
-            this.enumBinder9.Source = typeof(TThostFtdcHedgeFlagType);
+            this.enumBinder9.Source = typeof(QuantBox.CSharp2CTP.TThostFtdcHedgeFlagType);
             gridViewComboBoxColumn9.DataSource = this.enumBinder9;
             gridViewComboBoxColumn9.DataType = typeof(object);
             gridViewComboBoxColumn9.DisplayMember = "Description";
@@ -346,7 +346,7 @@ namespace autotrade
             // 
             // enumBinder10
             // 
-            this.enumBinder10.Source = typeof(TThostFtdcTradeTypeType);
+            this.enumBinder10.Source = typeof(QuantBox.CSharp2CTP.TThostFtdcTradeTypeType);
             gridViewComboBoxColumn10.DataSource = this.enumBinder10;
             gridViewComboBoxColumn10.DataType = typeof(object);
             gridViewComboBoxColumn10.DisplayMember = "Description";
@@ -360,7 +360,7 @@ namespace autotrade
             // 
             // enumBinder11
             // 
-            this.enumBinder11.Source = typeof(TThostFtdcDirectionType);
+            this.enumBinder11.Source = typeof(QuantBox.CSharp2CTP.TThostFtdcDirectionType);
             gridViewComboBoxColumn11.DataSource = this.enumBinder11;
             gridViewComboBoxColumn11.DataType = typeof(object);
             gridViewComboBoxColumn11.DisplayMember = "Description";
@@ -374,7 +374,7 @@ namespace autotrade
             // 
             // enumBinder12
             // 
-            this.enumBinder12.Source = typeof(TThostFtdcOffsetFlagType);
+            this.enumBinder12.Source = typeof(QuantBox.CSharp2CTP.TThostFtdcOffsetFlagType);
             gridViewComboBoxColumn12.DataSource = this.enumBinder12;
             gridViewComboBoxColumn12.DataType = typeof(object);
             gridViewComboBoxColumn12.DisplayMember = "Description";
@@ -388,7 +388,7 @@ namespace autotrade
             // 
             // enumBinder13
             // 
-            this.enumBinder13.Source = typeof(TThostFtdcTradeTypeType);
+            this.enumBinder13.Source = typeof(QuantBox.CSharp2CTP.TThostFtdcTradeTypeType);
             gridViewComboBoxColumn13.DataSource = this.enumBinder13;
             gridViewComboBoxColumn13.DataType = typeof(object);
             gridViewComboBoxColumn13.DisplayMember = "Description";
@@ -402,7 +402,7 @@ namespace autotrade
             // 
             // enumBinder14
             // 
-            this.enumBinder14.Source = typeof(TThostFtdcHedgeFlagType);
+            this.enumBinder14.Source = typeof(QuantBox.CSharp2CTP.TThostFtdcHedgeFlagType);
             gridViewComboBoxColumn14.DataSource = this.enumBinder14;
             gridViewComboBoxColumn14.DataType = typeof(object);
             gridViewComboBoxColumn14.DisplayMember = "Description";
@@ -416,7 +416,7 @@ namespace autotrade
             // 
             // enumBinder15
             // 
-            this.enumBinder15.Source = typeof(TThostFtdcOffsetFlagType);
+            this.enumBinder15.Source = typeof(QuantBox.CSharp2CTP.TThostFtdcOffsetFlagType);
             gridViewComboBoxColumn15.DataSource = this.enumBinder15;
             gridViewComboBoxColumn15.DataType = typeof(object);
             gridViewComboBoxColumn15.DisplayMember = "Description";
@@ -429,7 +429,7 @@ namespace autotrade
             // 
             // enumBinder16
             // 
-            this.enumBinder16.Source = typeof(TThostFtdcTradeTypeType);
+            this.enumBinder16.Source = typeof(QuantBox.CSharp2CTP.TThostFtdcTradeTypeType);
             gridViewComboBoxColumn16.DataSource = this.enumBinder16;
             gridViewComboBoxColumn16.DataType = typeof(object);
             gridViewComboBoxColumn16.DisplayMember = "Description";
@@ -442,7 +442,7 @@ namespace autotrade
             // 
             // enumBinder17
             // 
-            this.enumBinder17.Source = typeof(TThostFtdcHedgeFlagType);
+            this.enumBinder17.Source = typeof(QuantBox.CSharp2CTP.TThostFtdcHedgeFlagType);
             gridViewComboBoxColumn17.DataSource = this.enumBinder17;
             gridViewComboBoxColumn17.DataType = typeof(object);
             gridViewComboBoxColumn17.DisplayMember = "Description";
@@ -455,7 +455,7 @@ namespace autotrade
             // 
             // enumBinder18
             // 
-            this.enumBinder18.Source = typeof(TThostFtdcDirectionType);
+            this.enumBinder18.Source = typeof(QuantBox.CSharp2CTP.TThostFtdcDirectionType);
             gridViewComboBoxColumn18.DataSource = this.enumBinder18;
             gridViewComboBoxColumn18.DisplayMember = "Description";
             gridViewComboBoxColumn18.ValueMember = "Value";
@@ -463,7 +463,7 @@ namespace autotrade
             // 
             // enumBinder19
             // 
-            this.enumBinder19.Source = typeof(TThostFtdcOffsetFlagType);
+            this.enumBinder19.Source = typeof(QuantBox.CSharp2CTP.TThostFtdcOffsetFlagType);
             gridViewComboBoxColumn19.DataSource = this.enumBinder19;
             gridViewComboBoxColumn19.DataType = typeof(object);
             gridViewComboBoxColumn19.DisplayMember = "Description";
@@ -477,7 +477,7 @@ namespace autotrade
             // 
             // enumBinder20
             // 
-            this.enumBinder20.Source = typeof(TThostFtdcTradeTypeType);
+            this.enumBinder20.Source = typeof(QuantBox.CSharp2CTP.TThostFtdcTradeTypeType);
             gridViewComboBoxColumn20.DataSource = this.enumBinder20;
             gridViewComboBoxColumn20.DataType = typeof(object);
             gridViewComboBoxColumn20.DisplayMember = "Description";
@@ -491,7 +491,7 @@ namespace autotrade
             // 
             // enumBinder21
             // 
-            this.enumBinder21.Source = typeof(TThostFtdcHedgeFlagType);
+            this.enumBinder21.Source = typeof(QuantBox.CSharp2CTP.TThostFtdcHedgeFlagType);
             gridViewComboBoxColumn21.DataSource = this.enumBinder21;
             gridViewComboBoxColumn21.DataType = typeof(object);
             gridViewComboBoxColumn21.DisplayMember = "Description";
@@ -505,7 +505,7 @@ namespace autotrade
             // 
             // enumBinder22
             // 
-            this.enumBinder22.Source = typeof(TThostFtdcPosiDirectionType);
+            this.enumBinder22.Source = typeof(QuantBox.CSharp2CTP.TThostFtdcPosiDirectionType);
             gridViewComboBoxColumn22.DataSource = this.enumBinder22;
             gridViewComboBoxColumn22.DataType = typeof(object);
             gridViewComboBoxColumn22.DisplayMember = "Description";
@@ -519,7 +519,7 @@ namespace autotrade
             // 
             // enumBinder23
             // 
-            this.enumBinder23.Source = typeof(TThostFtdcHedgeFlagType);
+            this.enumBinder23.Source = typeof(QuantBox.CSharp2CTP.TThostFtdcHedgeFlagType);
             gridViewComboBoxColumn23.DataSource = this.enumBinder23;
             gridViewComboBoxColumn23.DataType = typeof(object);
             gridViewComboBoxColumn23.DisplayMember = "Description";
@@ -533,7 +533,7 @@ namespace autotrade
             // 
             // enumBinder24
             // 
-            this.enumBinder24.Source = typeof(TThostFtdcDirectionType);
+            this.enumBinder24.Source = typeof(QuantBox.CSharp2CTP.TThostFtdcDirectionType);
             gridViewComboBoxColumn24.DataSource = this.enumBinder24;
             gridViewComboBoxColumn24.DataType = typeof(object);
             gridViewComboBoxColumn24.DisplayMember = "Description";
@@ -547,7 +547,7 @@ namespace autotrade
             // 
             // enumBinder25
             // 
-            this.enumBinder25.Source = typeof(TThostFtdcOrderStatusType);
+            this.enumBinder25.Source = typeof(QuantBox.CSharp2CTP.TThostFtdcOrderStatusType);
             gridViewComboBoxColumn25.DataSource = this.enumBinder25;
             gridViewComboBoxColumn25.DataType = typeof(object);
             gridViewComboBoxColumn25.DisplayMember = "Description";
@@ -561,7 +561,7 @@ namespace autotrade
             // 
             // enumBinder26
             // 
-            this.enumBinder26.Source = typeof(TThostFtdcOrderTypeType);
+            this.enumBinder26.Source = typeof(QuantBox.CSharp2CTP.TThostFtdcOrderTypeType);
             gridViewComboBoxColumn26.DataSource = this.enumBinder26;
             gridViewComboBoxColumn26.DataType = typeof(object);
             gridViewComboBoxColumn26.DisplayMember = "Description";
@@ -575,7 +575,7 @@ namespace autotrade
             // 
             // enumBinder27
             // 
-            this.enumBinder27.Source = typeof(TThostFtdcDirectionType);
+            this.enumBinder27.Source = typeof(QuantBox.CSharp2CTP.TThostFtdcDirectionType);
             gridViewComboBoxColumn27.DataSource = this.enumBinder27;
             gridViewComboBoxColumn27.DataType = typeof(object);
             gridViewComboBoxColumn27.DisplayMember = "Description";
@@ -589,7 +589,7 @@ namespace autotrade
             // 
             // enumBinder28
             // 
-            this.enumBinder28.Source = typeof(TThostFtdcHedgeFlagType);
+            this.enumBinder28.Source = typeof(QuantBox.CSharp2CTP.TThostFtdcHedgeFlagType);
             gridViewComboBoxColumn28.DataSource = this.enumBinder28;
             gridViewComboBoxColumn28.DataType = typeof(object);
             gridViewComboBoxColumn28.DisplayMember = "Description";
@@ -603,7 +603,7 @@ namespace autotrade
             // 
             // enumBinder29
             // 
-            this.enumBinder29.Source = typeof(TThostFtdcTradeTypeType);
+            this.enumBinder29.Source = typeof(QuantBox.CSharp2CTP.TThostFtdcTradeTypeType);
             gridViewComboBoxColumn29.DataSource = this.enumBinder29;
             gridViewComboBoxColumn29.DataType = typeof(object);
             gridViewComboBoxColumn29.DisplayMember = "Description";
@@ -626,7 +626,7 @@ namespace autotrade
             // 
             // radStatusStrip1
             // 
-            this.radStatusStrip1.Location = new System.Drawing.Point(0, 851);
+            this.radStatusStrip1.Location = new System.Drawing.Point(0, 849);
             this.radStatusStrip1.Name = "radStatusStrip1";
             this.radStatusStrip1.Size = new System.Drawing.Size(1624, 28);
             this.radStatusStrip1.TabIndex = 0;
@@ -641,7 +641,7 @@ namespace autotrade
             this.radSplitContainer1.Location = new System.Drawing.Point(0, 0);
             this.radSplitContainer1.Name = "radSplitContainer1";
             this.radSplitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            this.radSplitContainer1.Size = new System.Drawing.Size(1624, 851);
+            this.radSplitContainer1.Size = new System.Drawing.Size(1624, 849);
             this.radSplitContainer1.TabIndex = 2;
             this.radSplitContainer1.TabStop = false;
             this.radSplitContainer1.Text = "radSplitContainer1";
@@ -742,7 +742,7 @@ namespace autotrade
             this.splitPanel2.Controls.Add(this.radGridView2);
             this.splitPanel2.Location = new System.Drawing.Point(0, 61);
             this.splitPanel2.Name = "splitPanel2";
-            this.splitPanel2.Size = new System.Drawing.Size(1624, 348);
+            this.splitPanel2.Size = new System.Drawing.Size(1624, 347);
             this.splitPanel2.SizeInfo.AutoSizeScale = new System.Drawing.SizeF(0F, 0.07912259F);
             this.splitPanel2.SizeInfo.SplitterCorrection = new System.Drawing.Size(0, 63);
             this.splitPanel2.TabIndex = 1;
@@ -981,7 +981,7 @@ namespace autotrade
             this.radGridView2.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.radGridView2.ShowGroupPanel = false;
             this.radGridView2.ShowItemToolTips = false;
-            this.radGridView2.Size = new System.Drawing.Size(1624, 348);
+            this.radGridView2.Size = new System.Drawing.Size(1624, 347);
             this.radGridView2.TabIndex = 0;
             this.radGridView2.Text = "radGridView2";
             this.radGridView2.ThemeName = "TelerikMetro";
@@ -989,9 +989,9 @@ namespace autotrade
             // splitPanel3
             // 
             this.splitPanel3.Controls.Add(this.radSplitContainer3);
-            this.splitPanel3.Location = new System.Drawing.Point(0, 413);
+            this.splitPanel3.Location = new System.Drawing.Point(0, 412);
             this.splitPanel3.Name = "splitPanel3";
-            this.splitPanel3.Size = new System.Drawing.Size(1624, 438);
+            this.splitPanel3.Size = new System.Drawing.Size(1624, 437);
             this.splitPanel3.SizeInfo.AutoSizeScale = new System.Drawing.SizeF(0F, 0.1860556F);
             this.splitPanel3.SizeInfo.SplitterCorrection = new System.Drawing.Size(0, 21);
             this.splitPanel3.TabIndex = 2;
@@ -1004,7 +1004,7 @@ namespace autotrade
             this.radSplitContainer3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.radSplitContainer3.Location = new System.Drawing.Point(0, 0);
             this.radSplitContainer3.Name = "radSplitContainer3";
-            this.radSplitContainer3.Size = new System.Drawing.Size(1624, 438);
+            this.radSplitContainer3.Size = new System.Drawing.Size(1624, 437);
             this.radSplitContainer3.TabIndex = 0;
             this.radSplitContainer3.TabStop = false;
             this.radSplitContainer3.Text = "radSplitContainer3";
@@ -1014,7 +1014,7 @@ namespace autotrade
             this.splitPanel7.Controls.Add(this.radPageView3);
             this.splitPanel7.Location = new System.Drawing.Point(0, 0);
             this.splitPanel7.Name = "splitPanel7";
-            this.splitPanel7.Size = new System.Drawing.Size(1624, 438);
+            this.splitPanel7.Size = new System.Drawing.Size(1624, 437);
             this.splitPanel7.SizeInfo.AutoSizeScale = new System.Drawing.SizeF(-0.2222222F, 0F);
             this.splitPanel7.SizeInfo.SplitterCorrection = new System.Drawing.Size(-360, 0);
             this.splitPanel7.TabIndex = 0;
@@ -1030,7 +1030,7 @@ namespace autotrade
             this.radPageView3.Location = new System.Drawing.Point(0, 0);
             this.radPageView3.Name = "radPageView3";
             this.radPageView3.SelectedPage = this.radPageViewPage6;
-            this.radPageView3.Size = new System.Drawing.Size(1624, 438);
+            this.radPageView3.Size = new System.Drawing.Size(1624, 437);
             this.radPageView3.TabIndex = 1;
             this.radPageView3.ThemeName = "TelerikMetro";
             // 
@@ -1040,7 +1040,7 @@ namespace autotrade
             this.radPageViewPage6.ItemSize = new System.Drawing.SizeF(62F, 30F);
             this.radPageViewPage6.Location = new System.Drawing.Point(5, 36);
             this.radPageViewPage6.Name = "radPageViewPage6";
-            this.radPageViewPage6.Size = new System.Drawing.Size(1614, 397);
+            this.radPageViewPage6.Size = new System.Drawing.Size(1614, 396);
             this.radPageViewPage6.Text = "系统单";
             // 
             // radGridView7
@@ -1053,7 +1053,7 @@ namespace autotrade
             this.radGridView7.MasterTemplate.AllowAddNewRow = false;
             this.radGridView7.Name = "radGridView7";
             this.radGridView7.ReadOnly = true;
-            this.radGridView7.Size = new System.Drawing.Size(1614, 397);
+            this.radGridView7.Size = new System.Drawing.Size(1614, 396);
             this.radGridView7.TabIndex = 0;
             this.radGridView7.Text = "radGridView7";
             this.radGridView7.ThemeName = "TelerikMetro";
@@ -1225,7 +1225,7 @@ namespace autotrade
             gridViewTextBoxColumn13.IsAutoGenerated = true;
             gridViewTextBoxColumn13.Name = "InstrumentID";
             gridViewTextBoxColumn13.Width = 48;
-            gridViewTextBoxColumn14.DataType = typeof(TThostFtdcDirectionType);
+            gridViewTextBoxColumn14.DataType = typeof(QuantBox.CSharp2CTP.TThostFtdcDirectionType);
             gridViewTextBoxColumn14.FieldName = "Direction";
             gridViewTextBoxColumn14.HeaderText = "买卖";
             gridViewTextBoxColumn14.Name = "Direction";
@@ -1447,7 +1447,7 @@ namespace autotrade
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1624, 879);
+            this.ClientSize = new System.Drawing.Size(1624, 877);
             this.Controls.Add(this.radMenu2);
             this.Controls.Add(this.radSplitContainer1);
             this.Controls.Add(this.radStatusStrip1);

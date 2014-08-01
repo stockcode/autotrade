@@ -440,10 +440,9 @@ namespace QuantBox.CSharp2CTP.Callback
         public int SendOrder(
             int OrderRef,
             string szInstrument,
-            string szExchange,
             TThostFtdcDirectionType Direction,
-            string szCombOffsetFlag,
-            string szCombHedgeFlag,
+            TThostFtdcOffsetFlagType OffsetFlag,
+            TThostFtdcHedgeFlagType HedgeFlag,
             int VolumeTotalOriginal,
             double LimitPrice,
             TThostFtdcOrderPriceTypeType OrderPriceType,
@@ -456,15 +455,15 @@ namespace QuantBox.CSharp2CTP.Callback
             {
                 return 0;
             }
-
+            char szOffsetFlag = (char) OffsetFlag;
+            char hedgeFlag = (char) HedgeFlag;
             return TraderApi.TD_SendOrder(
                IntPtrKey,
                OrderRef,
                szInstrument,
-               szExchange,
                Direction,
-               szCombOffsetFlag,
-               szCombHedgeFlag,
+               szOffsetFlag.ToString(),
+               hedgeFlag.ToString(),
                VolumeTotalOriginal,
                LimitPrice,
                OrderPriceType,
