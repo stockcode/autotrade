@@ -213,12 +213,8 @@ namespace autotrade.business
         {
             if (order.CloseOrder == null)
             {
-
-//                if (order.Price < 0.01)
-//                    tradeApi.OrderInsert(order.InstrumentId, order.OffsetFlag, order.Direction, order.Volume);
-//                else
-//                    tradeApi.OrderInsert(order.InstrumentId, order.OffsetFlag, order.Direction, order.Price,
-//                        order.Volume);
+                 tradeApi.OrderInsert(order.InstrumentId, order.OffsetFlag, order.Direction, order.Price,
+                        order.Volume);
 
                 order.StatusType = EnumOrderStatus.开仓中;
 

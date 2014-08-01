@@ -84,7 +84,7 @@ namespace QuantBox.CSharp2CTP
             THOST_TE_RESUME_TYPE nResumeType,
             string szUserProductInfo, string szAuthCode);
 
-        [DllImport(CommApi.DllFileName, EntryPoint = "TD_SendOrder")]
+        [DllImport(CommApi.DllFileName, EntryPoint = "TD_OrderInsert")]
         public static extern int TD_SendOrder(
             IntPtr pTraderApi,
             int OrderRef,

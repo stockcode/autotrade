@@ -71,6 +71,24 @@ namespace autotrade.model
         public double LastPrice { get; set; }
 
         /// <summary>
+        /// 当日均价
+        /// </summary>
+        private double averagePrice;
+
+        public double AveragePrice
+        {
+            get { return averagePrice; }
+            set
+            {
+                if (this.averagePrice != value)
+                {
+                    this.averagePrice = Math.Round(value / Unit, 2, MidpointRounding.AwayFromZero);
+                }
+            }
+        }
+        public int Unit { get; set; }
+
+        /// <summary>
         /// 上次结算价
         /// </summary>
         public double PreSettlementPrice { get; set; }
@@ -161,12 +179,9 @@ namespace autotrade.model
         /// <summary>
         /// 申卖量一
         /// </summary>
-        public int AskVolume1 { get; set; }        
-        /// <summary>
-        /// 当日均价
-        /// </summary>
-        public double AveragePrice { get; set; }
+        public int AskVolume1 { get; set; }
 
+        
         /// <summary>
         /// 交易所代码
         /// </summary>

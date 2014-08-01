@@ -50,6 +50,7 @@ namespace autotrade.business
             //Strategies.Add(new AboveMAStrategy(indicatorManager, 20));
             //Strategies.Add(new BelowMAStrategy(indicatorManager, 20));
             list.Add(new BollStrategy(indicatorManager, orderManager));
+            list.Add(new DayAverageStrategy(orderManager));
 
             dictStrategies.Add(instrumentId, list);
         }

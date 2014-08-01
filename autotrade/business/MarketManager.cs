@@ -59,6 +59,7 @@ namespace autotrade.business
                     else
                     {
                         marketData = new MarketData(pDepthMarketData);
+                        marketData.Unit = orderManager.InstrumentManager.GetUnit(pDepthMarketData.InstrumentID);
                         marketDatas.Add(marketData);
                         instrumentDictionary.Add(pDepthMarketData.InstrumentID, marketData);
                     }
@@ -89,9 +90,9 @@ namespace autotrade.business
 
 
 
-        public void SubMarketData(params string[] instruments)
+        public void SubMarketData(string instruments)
         {
-            mdApi.Subscribe(instruments.ToString(), "");
+            mdApi.Subscribe(instruments, "");
         }
     }
 

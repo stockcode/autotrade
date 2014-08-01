@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using autotrade.ui;
 using QuantBox.CSharp2CTP;
 using QuantBox.CSharp2CTP.Event;
+using QuantBox.Library;
 
 namespace autotrade
 {
@@ -41,30 +42,36 @@ namespace autotrade
             mdApi = new MdApiWrapper();
 
             mdApi.OnConnect += mdApi_OnConnect;
-            mdApi.Connect(@"D:\", settings.InvestorID, settings.Passwd, brokerId, url);
+            mdApi.Connect("", url, brokerId, settings.InvestorID, settings.Passwd);
 
             url = "tcp://" + settings["Selected" + settings.SelectedServerLine + "Trade"];
 
             tradeApi = new TraderApiWrapper();
 
             tradeApi.OnConnect += tradeApi_OnConnect;
-            tradeApi.Connect(@"D:\",  settings.InvestorID, settings.Passwd, brokerId, url, THOST_TE_RESUME_TYPE.THOST_TERT_RESUME, "vicky", "");
+            tradeApi.Connect("",  url, brokerId, settings.InvestorID, settings.Passwd, THOST_TE_RESUME_TYPE.THOST_TERT_RESUME, "vicky", "");
         }
 
         void tradeApi_OnConnect(object sender, OnConnectArgs e)
         {
-            log.Info("Trade Connected");
+            log.Info("Trade Connected:" + e.result);
 
-            isTradeConnected = true;
-            startMainForm();
+            if (e.result == ConnectionStatus.Logined)
+            {
+                isTradeConnected = true;
+                startMainForm();
+            }
         }
 
         void mdApi_OnConnect(object sender, OnConnectArgs e)
         {
-            log.Info("Market Connected");
+            log.Info("Market Connected:" + e.result);
 
-            isMarketConnected = true;
-            startMainForm();
+            if (e.result == ConnectionStatus.Logined)
+            {
+                isMarketConnected = true;
+                startMainForm();
+            }
         }
 
         

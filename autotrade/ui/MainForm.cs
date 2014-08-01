@@ -133,12 +133,20 @@ namespace autotrade
             foreach (string id in ppInstrumentID)
             {
                 MarketData    marketData = new MarketData(id);
+                marketData.Unit = _instrumentManager.GetUnit(id);
                 _marketManager.marketDatas.Add(marketData);
                 _marketManager.instrumentDictionary.Add(id, marketData);
                 
             }
 
-            _marketManager.SubMarketData(ppInstrumentID);            
+            StringBuilder builder = new StringBuilder();
+            foreach (string value in ppInstrumentID)
+            {
+                builder.Append(value);
+                builder.Append(',');
+            }
+
+            _marketManager.SubMarketData(ppInstrumentID[0]);            
 
             this.radGridView2.MasterTemplate.Columns.Clear();
             radGridView2.DataSource = _marketManager.marketDatas;

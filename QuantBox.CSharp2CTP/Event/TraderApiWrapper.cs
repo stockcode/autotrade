@@ -32,6 +32,11 @@ namespace QuantBox.CSharp2CTP.Event
 
         public bool IsConnected { get; private set; }
 
+        /// <summary>
+        /// 最大报单引用
+        /// </summary>
+        public int MaxOrderRef { get; set; }
+
         private MsgQueue m_pMsgQueue;
         private TradeApi m_Api;
 
@@ -136,6 +141,32 @@ namespace QuantBox.CSharp2CTP.Event
         private void Disconnect_TD()
         {
             m_Api.Disconnect();
+        }
+
+        /// <summary>
+        /// 开平仓:限价单
+        /// </summary>
+        /// <param name="InstrumentID">合约代码</param>
+        /// <param name="OffsetFlag">平仓:仅上期所平今时使用CloseToday/其它情况均使用Close</param>
+        /// <param name="Direction">买卖</param>
+        /// <param name="Price">价格</param>
+        /// <param name="Volume">手数</param>
+        public int OrderInsert(string InstrumentID, TThostFtdcOffsetFlagType OffsetFlag, TThostFtdcDirectionType Direction, double Price, int Volume)
+        {
+            return m_Api.SendOrder(
+                ++this.MaxOrderRef,
+                InstrumentID,
+                "",
+                Direction,
+                OffsetFlag.ToString(),
+                "Speculation",
+                Volume,
+                Price,
+                TThostFtdcOrderPriceTypeType.LimitPrice,
+                TThostFtdcTimeConditionType.GFD,
+                TThostFtdcContingentConditionType.Immediately,
+                0,
+                TThostFtdcVolumeConditionType.AV);
         }
 
         public int SendOrder(

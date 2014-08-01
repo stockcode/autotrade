@@ -124,6 +124,7 @@
     <Compile Include="model\ServerLine.cs" />
     <Compile Include="model\TradeRecord.cs" />
     <Compile Include="Repository\OrderRepository.cs" />
+    <Compile Include="Strategies\DayAverageStrategy.cs" />
     <Compile Include="ui\LoginForm.cs">
       <SubType>Form</SubType>
     </Compile>

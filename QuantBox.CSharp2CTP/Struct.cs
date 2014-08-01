@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.Runtime.InteropServices;
 
 namespace QuantBox.CSharp2CTP
 {
@@ -648,6 +649,12 @@ namespace QuantBox.CSharp2CTP
         /// </summary>
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 81)]
         public string ErrorMsg;
+
+        public override string ToString()
+        {
+            return String.Format("CThostFtdcRspInfoField(错误代码={0},错误信息={1})"
+                , ErrorID, ErrorMsg);
+        }
     }
 
     /// <summary>
@@ -2642,6 +2649,16 @@ namespace QuantBox.CSharp2CTP
         /// 互换单标志
         /// </summary>
         public int IsSwapOrder;
+
+        public override string ToString()
+        {
+            return String.Format("CThostFtdcInputOrderField(经纪公司代码={0},投资者代码={1},合约代码={2},报单引用={3},用户代码={4},报单价格条件={5},买卖方向={6}" +
+                                 ",组合开平标志={7},组合投机套保标志={8},价格={9},数量={10},有效期类型={11},GTD日期={12},成交量类型={13},最小成交量={14},触发条件={15},止损价={16}" +
+                                 ",强平原因={17},自动挂起标志={18},业务单元={19},请求编号={20},用户强评标志={21},互换单标志={22})"
+                , BrokerID, InvestorID, InstrumentID, OrderRef, UserID, OrderPriceType, Direction, CombOffsetFlag, CombHedgeFlag
+                , LimitPrice, VolumeTotalOriginal, TimeCondition, GTDDate, VolumeCondition, MinVolume, ContingentCondition, StopPrice, ForceCloseReason, IsAutoSuspend, BusinessUnit
+                , RequestID, UserForceClose, IsSwapOrder);
+        }
     }
 
     /// <summary>

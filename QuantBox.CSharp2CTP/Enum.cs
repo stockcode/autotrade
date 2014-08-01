@@ -792,7 +792,12 @@ public enum TThostFtdcDirectionType:byte
 	/// <summary>
 	/// 卖
 	/// </summary>
-	Sell = (byte)'1'
+	Sell = (byte)'1',
+
+    /// <summary>
+    /// 平
+    /// </summary>
+    Nothing = (byte)'2'
 }
 
 /// <summary>
