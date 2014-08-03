@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<BrokerManager>
+  <NetworkInfo name="大陆期货—电信线路" type="CT" BrokerId="8888" isHot="0">
+    <NetLine ip="61.172.206.73" port="41205" type="TD" isHot="0" />
+    <NetLine ip="61.172.206.73" port="32111" type="MD" isHot="0" />
+    <NetLine ip="61.172.206.78" port="41205" type="TD" isHot="0" />
+    <NetLine ip="61.172.206.78" port="32111" type="MD" isHot="0" />
+  </NetworkInfo>
+  <NetworkInfo name="大陆期货—联通线路" type="CN" BrokerId="8888" isHot="0">
+    <NetLine ip="210.51.25.90" port="41205" type="TD" isHot="1" />
+    <NetLine ip="210.51.25.90" port="32111" type="MD" isHot="1" />
+    <NetLine ip="210.51.25.86" port="41205" type="TD" isHot="0" />
+    <NetLine ip="210.51.25.86" port="32111" type="MD" isHot="0" />
+  </NetworkInfo>
+  <NetworkInfo name="大陆期货—模拟交易" type="CN" BrokerId="1003" isHot="0">
+    <NetLine ip="180.166.192.101" port="5637" type="TD" isHot="0" />
+    <NetLine ip="180.166.192.101" port="5638" type="MD" isHot="0" />
+    <NetLine ip="180.166.192.101" port="5638" type="TD" isHot="0" />
+    <NetLine ip="180.166.192.101" port="5637" type="MD" isHot="0" />
+  </NetworkInfo>
+  <NetworkInfo name="自定义" type="UD" BrokerId="8000" isHot="0">
+    <NetLine ip="qqfz-front1.ctp.shcifco.com" port="32305" type="TD" isHot="0" />
+    <NetLine ip="qqfz-md1.ctp.shcifco.com" port="32313" type="MD" isHot="0" />
+  </NetworkInfo>
+  <NetworkInfo name="安信期货—模拟交易" type="CN" BrokerId="1061" isHot="1">
+    <NetLine ip="219.143.242.155" port="21205" type="TD" isHot="1" />
+    <NetLine ip="219.143.242.155" port="21213" type="MD" isHot="1" />
+  </NetworkInfo>
+</BrokerManager>

@@ -104,20 +104,9 @@ namespace autotrade
 
             radGridView8.DataSource = _accountManager.Accounts;
 
-            Task.Factory.StartNew(() => {
-                
-//                _orderManager.QryOrder();
-//
-//                Thread.Sleep(1000);
-//
-//                _orderManager.QryTrade();
-                
-            }).ContinueWith(obj =>
-            {
-                    Thread.Sleep(1000);
-                    _accountManager.QryTradingAccount();
-
-            });
+                _orderManager.QryOrder();
+                _orderManager.QryTrade();
+                _accountManager.QryTradingAccount();
 
 
 
@@ -146,7 +135,7 @@ namespace autotrade
                 builder.Append(',');
             }
 
-            _marketManager.SubMarketData(ppInstrumentID[0]);            
+            _marketManager.SubMarketData(builder.ToString());            
 
             this.radGridView2.MasterTemplate.Columns.Clear();
             radGridView2.DataSource = _marketManager.marketDatas;

@@ -111,6 +111,7 @@
     <Compile Include="business\MarketManager.cs" />
     <Compile Include="business\OrderManager.cs" />
     <Compile Include="business\StrategyManager.cs" />
+    <Compile Include="Config\BrokerManager.cs" />
     <Compile Include="converter\DirectionConverter.cs" />
     <Compile Include="model\Account.cs" />
     <Compile Include="model\BarRecord.cs" />
@@ -156,7 +157,10 @@
       <DependentUpon>ServerLineForm.cs</DependentUpon>
     </Compile>
     <Compile Include="util\BlockingQueue.cs" />
+    <Compile Include="util\Enumerations.cs" />
     <Compile Include="util\ObjectUtils.cs" />
+    <Compile Include="util\ParseHelpers.cs" />
+    <Compile Include="util\SettingUtils.cs" />
     <EmbeddedResource Include="ui\LoginForm.resx">
       <DependentUpon>LoginForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -211,6 +215,9 @@
       <Project>{6a06ab48-e3ea-47a1-930d-660462aa941e}</Project>
       <Name>QuantBox.Library</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Config\Broker.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

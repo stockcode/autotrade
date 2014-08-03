@@ -398,5 +398,15 @@ namespace QuantBox.CSharp2CTP.Event
                 OnRtnTrade(this, new OnRtnTradeArgs(pTraderApi, ref pTrade));
             }
         }
+
+        public void ReqQryOrder()
+        {
+            m_Api.ReqQryOrder();
+        }
+
+        public void ReqQryTrade()
+        {
+            m_Api.ReqQryTrade();
+        }
     }
 }

@@ -588,5 +588,23 @@ namespace QuantBox.CSharp2CTP.Callback
             }
             TraderApi.TD_ReqQryInstrumentMarginRate(IntPtrKey, szInstrument, HedgeFlag);
         }
+
+        public void ReqQryOrder()
+        {
+            if (null == IntPtrKey || IntPtr.Zero == IntPtrKey)
+            {
+                return;
+            }
+            TraderApi.TD_ReqQryOrder(IntPtrKey);
+        }
+
+        public void ReqQryTrade()
+        {
+            if (null == IntPtrKey || IntPtr.Zero == IntPtrKey)
+            {
+                return;
+            }
+            TraderApi.TD_ReqQryTrade(IntPtrKey);
+        }
     }
 }

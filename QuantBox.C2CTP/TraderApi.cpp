@@ -273,6 +273,12 @@ void CTraderApi::RunInThread()
 		case E_QrySettlementInfoField:
 			iRet = m_pApi->ReqQrySettlementInfo(&pRequest->QrySettlementInfoField, lRequest);
 			break;
+		case E_QryOrderField:
+			iRet = m_pApi->ReqQryOrder(&pRequest->QryOrderField, lRequest);
+			break;
+		case E_QryTradeField:
+			iRet = m_pApi->ReqQryTrade(&pRequest->QryTradeField, lRequest);
+			break;
 		default:
 			_ASSERT(FALSE);
 			break;
@@ -774,6 +780,40 @@ void CTraderApi::ReqQryTradingAccount()
 	strncpy(body.BrokerID, m_RspUserLogin.BrokerID,sizeof(TThostFtdcBrokerIDType));
 	strncpy(body.InvestorID, m_RspUserLogin.UserID,sizeof(TThostFtdcInvestorIDType));
 	
+	AddToSendQueue(pRequest);
+}
+
+void CTraderApi::ReqQryOrder()
+{
+	if (NULL == m_pApi)
+		return;
+
+	SRequest* pRequest = MakeRequestBuf(E_QryOrderField);
+	if (NULL == pRequest)
+		return;
+
+	CThostFtdcQryOrderField& body = pRequest->QryOrderField;
+
+	strncpy(body.BrokerID, m_RspUserLogin.BrokerID, sizeof(TThostFtdcBrokerIDType));
+	strncpy(body.InvestorID, m_RspUserLogin.UserID, sizeof(TThostFtdcInvestorIDType));
+
+	AddToSendQueue(pRequest);
+}
+
+void CTraderApi::ReqQryTrade()
+{
+	if (NULL == m_pApi)
+		return;
+
+	SRequest* pRequest = MakeRequestBuf(E_QryTradeField);
+	if (NULL == pRequest)
+		return;
+
+	CThostFtdcQryTradeField& body = pRequest->QryTradeField;
+
+	strncpy(body.BrokerID, m_RspUserLogin.BrokerID, sizeof(TThostFtdcBrokerIDType));
+	strncpy(body.InvestorID, m_RspUserLogin.UserID, sizeof(TThostFtdcInvestorIDType));
+
 	AddToSendQueue(pRequest);
 }
 

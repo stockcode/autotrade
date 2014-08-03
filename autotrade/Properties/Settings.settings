@@ -71,10 +71,15 @@
     <Setting Name="ServerLines" Type="System.Collections.Specialized.StringCollection" Scope="User">
       <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
 &lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;string&gt;dlqh-telecom&lt;/string&gt;
   &lt;string&gt;大陆期货一电信线路&lt;/string&gt;
+  &lt;string&gt;dlqh-unicom&lt;/string&gt;
   &lt;string&gt;大陆期货一联通线路&lt;/string&gt;
+  &lt;string&gt;dlqh-analog&lt;/string&gt;
   &lt;string&gt;大陆期货一模拟线路&lt;/string&gt;
+  &lt;string&gt;custom&lt;/string&gt;
   &lt;string&gt;自定义&lt;/string&gt;
+  &lt;string&gt;anxinqh-analog&lt;/string&gt;
   &lt;string&gt;安信期货一模拟线路&lt;/string&gt;
 &lt;/ArrayOfString&gt;</Value>
     </Setting>

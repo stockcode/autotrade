@@ -147,5 +147,11 @@ namespace QuantBox.CSharp2CTP
 
         [DllImport(CommApi.DllFileName, EntryPoint = "TD_ReqQrySettlementInfo")]
         public static extern void TD_ReqQrySettlementInfo(IntPtr pTraderApi, string szTradingDay);
+
+        [DllImport(CommApi.DllFileName, EntryPoint = "TD_ReqQryOrder")]
+        public static extern void TD_ReqQryOrder(IntPtr pTraderApi);
+
+        [DllImport(CommApi.DllFileName, EntryPoint = "TD_ReqQryTrade")]
+        public static extern void TD_ReqQryTrade(IntPtr pTraderApi);
     }
 }

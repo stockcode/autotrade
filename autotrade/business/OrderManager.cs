@@ -261,7 +261,16 @@ namespace autotrade.business
             return _orderRepository.getOrders();
         }
 
-        
+
+        public void QryOrder()
+        {
+            tradeApi.ReqQryOrder();
+        }
+
+        public void QryTrade()
+        {
+            tradeApi.ReqQryTrade();
+        }
     }
 
     internal class TradeRecordEventArgs : EventArgs

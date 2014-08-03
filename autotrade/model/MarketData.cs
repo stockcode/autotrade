@@ -55,10 +55,7 @@ namespace autotrade.model
             InstrumentId = instrumentId;
         }
 
-        /// <summary>
-        /// 交易日
-        /// </summary>
-        public string TradingDay { get; set; }
+       
 
         /// <summary>
         /// 合约代码
@@ -87,6 +84,24 @@ namespace autotrade.model
             }
         }
         public int Unit { get; set; }
+
+        /// <summary>
+        /// 最后修改时间
+        /// </summary>
+        private string _updateTime;
+
+        public string UpdateTime
+        {
+            get { return _updateTime; }
+            set
+            {
+                if (this._updateTime != value)
+                {
+                    this._updateTime = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
 
         /// <summary>
         /// 上次结算价
@@ -142,23 +157,7 @@ namespace autotrade.model
         public double LowerLimitPrice { get; set; }
 
 
-        /// <summary>
-        /// 最后修改时间
-        /// </summary>
-        private string _updateTime;
-
-        public string UpdateTime
-        {
-            get { return _updateTime; }
-            set
-            {
-                if (this._updateTime != value)
-                {
-                    this._updateTime = value;
-                    NotifyPropertyChanged();
-                }
-            }
-        }
+        
 
         /// <summary>
         /// 最后修改毫秒
@@ -181,7 +180,12 @@ namespace autotrade.model
         /// </summary>
         public int AskVolume1 { get; set; }
 
-        
+
+        /// <summary>
+        /// 交易日
+        /// </summary>
+        public string TradingDay { get; set; }
+
         /// <summary>
         /// 交易所代码
         /// </summary>

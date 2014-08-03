@@ -35,6 +35,8 @@ class CTraderApi :
 		E_QryInstrumentMarginRateField,
 		E_QryDepthMarketDataField,
 		E_QrySettlementInfoField,
+		E_QryOrderField,
+		E_QryTradeField
 	};
 
 	//请求数据包结构体
@@ -57,6 +59,8 @@ class CTraderApi :
 			CThostFtdcInputQuoteField					InputQuoteField;
 			CThostFtdcInputQuoteActionField				InputQuoteActionField;
 			CThostFtdcQrySettlementInfoField			QrySettlementInfoField;
+			CThostFtdcQryOrderField						QryOrderField;
+			CThostFtdcQryTradeField						QryTradeField;
 		};
 	};
 
@@ -113,7 +117,8 @@ public:
 	void ReqQryInstrumentMarginRate(const string& szInstrumentId,TThostFtdcHedgeFlagType HedgeFlag = THOST_FTDC_HF_Speculation);
 	void ReqQryDepthMarketData(const string& szInstrumentId);
 	void ReqQrySettlementInfo(const string& szTradingDay);
-
+	void ReqQryOrder();
+	void ReqQryTrade();
 private:
 	//数据包发送线程
 	friend DWORD WINAPI SendThread(LPVOID lpParam);

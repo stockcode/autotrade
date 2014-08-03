@@ -215,7 +215,10 @@ QUANTBOXC2CTP_API void __stdcall TD_ReqQryInstrumentMarginRate(void* pTraderApi,
 QUANTBOXC2CTP_API void __stdcall TD_ReqQryDepthMarketData(void* pTraderApi, const char* szInstrumentId);
 //请求查询投资者结算结果
 QUANTBOXC2CTP_API void __stdcall TD_ReqQrySettlementInfo(void* pTraderApi, const char* szTradingDay);
-
+//查委托单
+QUANTBOXC2CTP_API void __stdcall TD_ReqQryOrder(void* pTraderApi);
+//查成交单
+QUANTBOXC2CTP_API void __stdcall TD_ReqQryTrade(void* pTraderApi);
 #ifdef __cplusplus
 }
 #endif

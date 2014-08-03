@@ -540,6 +540,22 @@ QUANTBOXC2CTP_API void __stdcall TD_ReqQryTradingAccount(void* pTraderApi)
 	}
 }
 
+QUANTBOXC2CTP_API void __stdcall TD_ReqQryOrder(void* pTraderApi)
+{
+	if (pTraderApi)
+	{
+		TD_GetApi(pTraderApi)->ReqQryOrder();
+	}
+}
+
+QUANTBOXC2CTP_API void __stdcall TD_ReqQryTrade(void* pTraderApi)
+{
+	if (pTraderApi)
+	{
+		TD_GetApi(pTraderApi)->ReqQryTrade();
+	}
+}
+
 QUANTBOXC2CTP_API void __stdcall TD_ReqQryInstrument(void* pTraderApi,const char* szInstrumentId)
 {
 	if(pTraderApi)

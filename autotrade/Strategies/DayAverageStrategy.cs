@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Windows.Forms.VisualStyles;
 using autotrade.business;
 using autotrade.model;
 using log4net;
@@ -21,7 +22,9 @@ namespace autotrade.Strategies
 
         private double maPrice = 0d;
         private List<Order> orders;
-        private int tick;
+        private int tick, upThreshold = 0, downThreshold = 0;
+        private int maxThreshold = 3;
+        private bool buyCount = false, sellCount;
 
         public DayAverageStrategy(OrderManager orderManager)
         {
@@ -74,21 +77,73 @@ namespace autotrade.Strategies
             {
                 var result = Cross(preMarketDataDictionary[instrumentId], marketData);
 
-                if (result != TThostFtdcDirectionType.Nothing)
+                if (result == TThostFtdcDirectionType.Buy)
                 {
-                    var neworder = new Order();
-                    neworder.OffsetFlag = TThostFtdcOffsetFlagType.Open;
-                    neworder.Direction = result;
-                    neworder.InstrumentId = marketData.InstrumentId;
-                    neworder.Price = marketData.LastPrice;
-                    neworder.Volume = 1;
-                    neworder.StrategyType = GetType().ToString();
+                    buyCount = true;
+                    sellCount = false;
 
-                    list.Add(neworder);
+                    upThreshold++;
+                    downThreshold = 0;
+                } else if (result == TThostFtdcDirectionType.Sell)
+                {
+                    sellCount = true;
+                    buyCount = false;
 
-                    log.Info(String.Format("{0}:{1}:{2}:{3}:{4}", ToString(), marketData.InstrumentId,
-                        marketData.LastPrice, marketData.AveragePrice,
-                        result));
+                    downThreshold++;
+                    upThreshold = 0;
+
+                }
+
+                if (result == TThostFtdcDirectionType.Nothing && buyCount)
+                {
+                    if (upThreshold >= maxThreshold)
+                    {
+
+                        var neworder = new Order();
+                        neworder.OffsetFlag = TThostFtdcOffsetFlagType.Open;
+                        neworder.Direction = TThostFtdcDirectionType.Buy;
+                        neworder.InstrumentId = marketData.InstrumentId;
+                        neworder.Price = marketData.LastPrice;
+                        neworder.Volume = 1;
+                        neworder.StrategyType = GetType().ToString();
+
+                        list.Add(neworder);
+
+                        log.Info(String.Format("{0}:{1}:{2}:{3}:{4}", ToString(), marketData.InstrumentId,
+                            marketData.LastPrice, marketData.AveragePrice,
+                            result));
+                        upThreshold = 0;
+                    }
+                    else
+                    {
+                        upThreshold++;
+                    }
+                }
+
+                if (result == TThostFtdcDirectionType.Nothing && sellCount)
+                {
+                    if (downThreshold >= maxThreshold)
+                    {
+
+                        var neworder = new Order();
+                        neworder.OffsetFlag = TThostFtdcOffsetFlagType.Open;
+                        neworder.Direction = TThostFtdcDirectionType.Sell;
+                        neworder.InstrumentId = marketData.InstrumentId;
+                        neworder.Price = marketData.LastPrice;
+                        neworder.Volume = 1;
+                        neworder.StrategyType = GetType().ToString();
+
+                        list.Add(neworder);
+
+                        log.Info(String.Format("{0}:{1}:{2}:{3}:{4}", ToString(), marketData.InstrumentId,
+                            marketData.LastPrice, marketData.AveragePrice,
+                            result));
+                        downThreshold = 0;
+                    }
+                    else
+                    {
+                        downThreshold++;
+                    }
                 }
             }
 
@@ -104,6 +159,7 @@ namespace autotrade.Strategies
                 preMarketDataDictionary.Add(instrumentId, preMarketData);
             }
 
+            log.Info(instrumentId + ":buyThreshold=" + upThreshold + ":sellThreshold=" + downThreshold);
             return list;
         }
 

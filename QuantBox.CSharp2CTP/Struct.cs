@@ -146,6 +146,12 @@ namespace QuantBox.CSharp2CTP
         /// </summary>
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 9)]
         public string INETime;
+
+        public override string ToString()
+        {
+            return String.Format("CThostFtdcRspUserLoginField(交易日={0},登录成功时间={1},经纪公司代码={2},用户代码={3},交易系统名称={4},前置编号={5},会话编号={6},最大报单引用={7},上期所时间={8},大商所时间={9},郑商所时间={10},中金所时间={11})"
+                , TradingDay, LoginTime, BrokerID, UserID, SystemName, FrontID, SessionID, MaxOrderRef, SHFETime, DCETime, CZCETime, FFEXTime);
+        }
     }
 
     /// <summary>
