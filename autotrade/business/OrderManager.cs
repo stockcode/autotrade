@@ -19,14 +19,15 @@ namespace autotrade.business
     public class OrderManager
     {
         private readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        public TraderApiWrapper tradeApi { get; set; }
+        private TraderApiWrapper tradeApi;
+
         private List<PositionDetail> positionDetails = new List<PositionDetail>();
         private BindingList<TradeRecord> tradeRecords = new BindingList<TradeRecord>();
         private List<PositionRecord> positionRecords = new List<PositionRecord>();
         private BindingList<OrderRecord> orderRecords = new BindingList<OrderRecord>();
 
 
-        private OrderRepository _orderRepository = new OrderRepository();
+        public OrderRepository OrderRepository { get; set; }
 
         public InstrumentManager InstrumentManager { get; set; }
 
@@ -48,8 +49,10 @@ namespace autotrade.business
         public delegate void OrderHandler(object sender, OrderEventArgs e);
         public event OrderHandler OnRspQryOrder;
 
-        public OrderManager()
+        public OrderManager(TraderApiWrapper traderApi)
         {
+            this.tradeApi = traderApi;
+
 //            this.tradeApi.OnRspQryOrder += tradeApi_OnRspQryOrder;
 //            this.tradeApi.OnErrRtnOrderInsert += tradeApi_OnErrRtnOrderInsert;
 //            this.tradeApi.OnErrRtnOrderAction += tradeApi_OnErrRtnOrderAction;
@@ -59,8 +62,8 @@ namespace autotrade.business
 //            this.tradeApi.OnRspQryInvestorPositionDetail += tradeApi_OnRspQryInvestorPositionDetail;
 //
 //
-//            this.tradeApi.OnRtnOrder += tradeApi_OnRtnOrder;
-//            this.tradeApi.OnRtnTrade += tradeApi_OnRtnTrade;            
+            this.tradeApi.OnRtnOrder += tradeApi_OnRtnOrder;
+            this.tradeApi.OnRtnTrade += tradeApi_OnRtnTrade;            
         }
 
         void tradeApi_OnRtnTrade(object sender, OnRtnTradeArgs e)
@@ -72,7 +75,7 @@ namespace autotrade.business
             //OnRtnTreadeRecord(this, new TradeRecordEventArgs(tradeRecord));
 
 
-            Order order = _orderRepository.UpdateTradeID(e.pTrade);
+            Order order = OrderRepository.UpdateTradeID(e.pTrade);
 
             log.Info(e.pTrade);
         }
@@ -92,7 +95,7 @@ namespace autotrade.business
 
             //OnRspQryOrderRecord(this, new OrderRecordEventArgs(orderRecords));
 
-            Order order = _orderRepository.UpdateOrderRef(e.pOrder);
+            Order order = OrderRepository.UpdateOrderRef(e.pOrder);
 
             log.Info(order);
         }
@@ -138,7 +141,7 @@ namespace autotrade.business
 
             tradeRecords.Add(tradeRecord);
 
-            _orderRepository.UpdateTradeID(e.pTrade);
+            OrderRepository.UpdateTradeID(e.pTrade);
 
             if (e.bIsLast)
             {
@@ -160,31 +163,6 @@ namespace autotrade.business
             log.Info(e.pInputOrder);
         }
 
-        void tradeApi_OnRspQryOrder(object sender, OnRspQryOrderArgs e)
-        {
-            OrderRecord orderRecord = new OrderRecord();
-
-            ObjectUtils.Copy(e.pOrder, orderRecord);
-
-            orderRecords.Add(orderRecord);
-
-            if (e.bIsLast)
-            {
-                _orderRepository.Init(orderRecords);
-
-                OnRspQryOrderRecord(this, new OrderRecordEventArgs(orderRecords));
-            } 
-        }
-
-//        public int QryOrder()
-//        {
-//            return tradeApi.QryOrder();
-//        }
-//
-//        public int QryTrade()
-//        {
-//            return this.tradeApi.QryTrade();
-//        }
 
         public void QryInvestorPosition()
         {
@@ -212,7 +190,7 @@ namespace autotrade.business
         {
             if (order.CloseOrder == null)
             {
-                OnRspQryOrder(this, new OrderEventArgs(new MethodInvoker(() => _orderRepository.AddOrder(order))));
+                OnRspQryOrder(this, new OrderEventArgs(new MethodInvoker(() => OrderRepository.AddOrder(order))));
 
                 int orderRef = tradeApi.OrderInsert(order.InstrumentId, order.OffsetFlag, order.Direction, order.Price,
                         order.Volume);
@@ -246,7 +224,7 @@ namespace autotrade.business
 
         public void ProcessData(MarketData marketData)
         {
-            List<Order> orders = _orderRepository.GetByInstrumentIDAndStatusType(marketData.InstrumentId, EnumOrderStatus.已开仓);
+            List<Order> orders = OrderRepository.GetByInstrumentIDAndStatusType(marketData.InstrumentId, EnumOrderStatus.已开仓);
             foreach(var order in orders)
             {
 
@@ -257,13 +235,13 @@ namespace autotrade.business
                 order.PositionProfit = profit * order.Unit;                
             }
 
-            AccountManager.Accounts[0].PositionProfit =_orderRepository.getOrders().Sum(o => o.PositionProfit);
-            AccountManager.Accounts[0].CloseProfit = _orderRepository.getOrders().Sum(o => o.CloseProfit);
+            AccountManager.Accounts[0].PositionProfit = OrderRepository.getOrders().Sum(o => o.PositionProfit);
+            AccountManager.Accounts[0].CloseProfit = OrderRepository.getOrders().Sum(o => o.CloseProfit);
         }        
 
         public BindingList<Order> getOrders()
         {
-            return _orderRepository.getOrders();
+            return OrderRepository.getOrders();
         }
 
 
@@ -275,6 +253,26 @@ namespace autotrade.business
         public void QryTrade()
         {
             tradeApi.ReqQryTrade();
+        }
+
+        public void AddOrderRecord(OrderRecord orderRecord)
+        {
+            orderRecords.Add(orderRecord);
+        }
+
+        public BindingList<OrderRecord> GetOrderRecords()
+        {
+            return orderRecords;
+        }
+
+        public void AddTradeRecord(TradeRecord tradeRecord)
+        {
+            tradeRecords.Add(tradeRecord);
+        }
+
+        public BindingList<TradeRecord> GetTradeRecords()
+        {
+            return tradeRecords;
         }
     }
 

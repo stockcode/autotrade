@@ -11,7 +11,7 @@ using QuantBox.CSharp2CTP;
 
 namespace autotrade.Repository
 {
-    internal class OrderRepository : MongoRepository<Order>
+    public class OrderRepository : MongoRepository<Order>
     {
         private readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 

@@ -28,7 +28,9 @@ namespace autotrade
 
         private BrokerManager brokerManager;
         
-        public InstrumentManager instrumentManager { get; set; }
+        public InstrumentManager InstrumentManager { get; set; }
+
+        public OrderManager OrderManager { get; set; }
 
         private string brokerFile;
 
@@ -86,8 +88,7 @@ namespace autotrade
         private void mdApi_OnConnect(object sender, OnConnectArgs e)
         {
             log.Info("Market Connected:" + e.result);
-            radProgressBar1.Text = Enumerations.GetEnumDescription(e.result); ;
-            radProgressBar1.Value1++;
+            ShowProgress(Enumerations.GetEnumDescription(e.result));
 
             if (e.result == ConnectionStatus.Logined)
             {
@@ -105,10 +106,10 @@ namespace autotrade
             Instrument instrument = new Instrument();
             ObjectUtils.Copy(e.pInstrument, instrument);
             if (instrument.InstrumentID.Contains(" ")) return;
-
-            if (!instrumentManager.instruments.Any(o => o.InstrumentID == instrument.InstrumentID))
+            
+            if (!InstrumentManager.instruments.Any(o => o.InstrumentID == instrument.InstrumentID))
             {
-                instrumentManager.instruments.Add(instrument);
+                InstrumentManager.instruments.Add(instrument);
                 log.Info(e.pInstrument.InstrumentID + ":" + e.pInstrument.LongMarginRatio + ":" +
                          e.pInstrument.ShortMarginRatio);
             }
@@ -144,6 +145,46 @@ namespace autotrade
             tradeApi.OnConnect += tradeApi_OnConnect;
             tradeApi.OnRspQryInstrument += tradeApi_OnRspQryInstrument;
             tradeApi.OnRspQryTradingAccount += tradeApi_OnRspQryTradingAccount;
+            tradeApi.OnRspQryOrder += tradeApi_OnRspQryOrder;
+            tradeApi.OnRspQryTrade += tradeApi_OnRspQryTrade;
+        }
+
+        void tradeApi_OnRspQryTrade(object sender, OnRspQryTradeArgs e)
+        {
+            TradeRecord tradeRecord = new TradeRecord();
+
+            ObjectUtils.Copy(e.pTrade, tradeRecord);
+
+            OrderManager.AddTradeRecord(tradeRecord);
+
+            OrderManager.OrderRepository.UpdateTradeID(e.pTrade);
+
+            if (e.bIsLast)
+            {
+                ShowProgress("查询成交单成功");
+                DialogResult = DialogResult.OK;
+            }
+        }
+
+        void tradeApi_OnRspQryOrder(object sender, OnRspQryOrderArgs e)
+        {
+            if (e.pRspInfo.ErrorID == 0)
+            {
+                OrderRecord orderRecord = new OrderRecord();
+
+                ObjectUtils.Copy(e.pOrder, orderRecord);
+
+                OrderManager.AddOrderRecord(orderRecord);
+
+                if (e.bIsLast)
+                {
+                    OrderManager.OrderRepository.Init(OrderManager.GetOrderRecords());
+
+                    ShowProgress("查询委托单成功");
+
+                    tradeApi.ReqQryTrade();
+                } 
+            }
         }
 
         void tradeApi_OnRspQryTradingAccount(object sender, OnRspQryTradingAccountArgs e)
@@ -153,6 +194,8 @@ namespace autotrade
                 ObjectUtils.Copy(e.pTradingAccount, AccountManager.Accounts[0]);
 
                 ShowProgress("查询账户成功");
+
+                tradeApi.ReqQryOrder();
             }
         }
 

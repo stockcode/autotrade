@@ -35,11 +35,11 @@ namespace autotrade
         public OrderManager _orderManager { get; set; }
         public IContainer Container { get; set; }
 
-        private AccountManager _accountManager;
-        private MarketManager _marketManager;
-        private StrategyManager _strategyManager;
-        private InstrumentManager _instrumentManager;
-        private IndicatorManager _indicatorManager = new IndicatorManager();
+        public AccountManager _accountManager { get; set; }
+        public MarketManager _marketManager { get; set; }
+        public StrategyManager _strategyManager { get; set; }
+        public InstrumentManager _instrumentManager { get; set; }
+        public IndicatorManager _indicatorManager { get; set; }
         
         public MainForm()
         {
@@ -77,47 +77,26 @@ namespace autotrade
             }
 
 
-            _accountManager.OnQryTradingAccount += accountManager_OnQryTradingAccount;
-
-            _orderManager.OnRtnTradeRecord += orderManager_OnRtnTradeRecord;
-            _orderManager.OnRspQryPositionDetail += orderManager_OnRspQryPositionDetail;
-            _orderManager.OnRspQryPositionRecord += _orderManager_OnRspQryPositionRecord;
-            _orderManager.OnRspQryOrderRecord += _orderManager_OnRspQryOrderRecord;
-            _orderManager.OnRspQryOrder += _orderManager_OnRspQryOrder;
-
             radGridView8.DataSource = _accountManager.Accounts;
 
-                _orderManager.QryOrder();
-                _orderManager.QryTrade();
+
+            radGridView6.DataSource = _orderManager.GetOrderRecords();
 
 
+            radGridView7.DataSource = _orderManager.getOrders();
 
-            string[] ppInstrumentID = new string[Properties.Settings.Default.INID.Count];
-            
-            ppInstrumentID[0] = "IF1408";
+            radGridView9.DataSource = _orderManager.GetTradeRecords();
 
-            for (int i = 1; i < ppInstrumentID.Count(); i++)
-            {
-                ppInstrumentID[i] = Properties.Settings.Default.INID[i].ToLower();                
-            }
 
-            foreach (string id in ppInstrumentID)
-            {
-                MarketData    marketData = new MarketData(id);
-                marketData.Unit = _instrumentManager.GetUnit(id);
-                _marketManager.marketDatas.Add(marketData);
-                _marketManager.instrumentDictionary.Add(id, marketData);
-                
-            }
+            radGridView7.Columns["PositionProfit"].HeaderText = "持仓盈亏";
+            radGridView7.Columns["PositionProfit"].FormatString = "{0:F2}";
 
-            StringBuilder builder = new StringBuilder();
-            foreach (string value in ppInstrumentID)
-            {
-                builder.Append(value);
-                builder.Append(',');
-            }
+            radGridView7.Columns["CloseProfit"].HeaderText = "平仓盈亏";
+            radGridView7.Columns["CloseProfit"].FormatString = "{0:F2}";
 
-            _marketManager.SubMarketData(builder.ToString());            
+            radGridView7.BestFitColumns();
+
+            _marketManager.Subscribe();
 
             this.radGridView2.MasterTemplate.Columns.Clear();
             radGridView2.DataSource = _marketManager.marketDatas;
@@ -141,122 +120,13 @@ namespace autotrade
             radGridView2.Columns["Turnover"].HeaderText = "成交额";
             radGridView2.Columns["UpdateTime"].HeaderText = "行情更新时间";
             //radGridView2.LoadLayout("c:\\columns.xml");            
-            
         }
-
-        void _orderManager_OnRspQryOrder(object sender, OrderEventArgs e)
-        {
-            if (this.InvokeRequired)
-            {
-                this.Invoke(e.methodInvoker);
-            }
-        }
-
-
-        private delegate void RecordRecordDelegate(BindingList<OrderRecord> orderRecords);
-        private void ShowOrderRecord(BindingList<OrderRecord> orderRecords)
-        {
-            radGridView6.DataSource = orderRecords;
-
-
-            radGridView7.DataSource = _orderManager.getOrders();
-
-            radGridView7.Columns["PositionProfit"].HeaderText = "持仓盈亏";
-            radGridView7.Columns["PositionProfit"].FormatString = "{0:F2}";
-
-            radGridView7.Columns["CloseProfit"].HeaderText = "平仓盈亏";
-            radGridView7.Columns["CloseProfit"].FormatString = "{0:F2}";
-
-            radGridView7.BestFitColumns();
-            
-        }
-
-        void _orderManager_OnRspQryOrderRecord(object sender, OrderRecordEventArgs e)
-        {
-            if (this.InvokeRequired)
-            {
-                RecordRecordDelegate d = new RecordRecordDelegate(ShowOrderRecord);
-                object arg = e.OrderRecords;
-                this.Invoke(d, arg);
-            }
-        }
-
-        private delegate void PositionRecordDelegate(List<PositionRecord> positionRecords);
-        private void ShowPositionRecord(List<PositionRecord> positionRecords)
-        {
-            //radGridView5.DataSource = positionRecords;
-        }
-
-        void _orderManager_OnRspQryPositionRecord(object sender, PositionRecordEventArgs e)
-        {
-            if (this.InvokeRequired)
-            {
-                PositionRecordDelegate d = new PositionRecordDelegate(ShowPositionRecord);
-                object arg = e.PositionRecords;
-                this.Invoke(d, arg);
-            }
-        }
-
-        private delegate void PositionDetailDelegate(List<PositionDetail> positionDetails);
-        private void ShowPositionDetail(List<PositionDetail> positionDetails)
-        {
-            foreach (var positionDetail in positionDetails)
-            {
-                positionDetailBindingSource.Add(positionDetail);
-            }
-        }
-        void orderManager_OnRspQryPositionDetail(object sender, PositionDetailEventArgs e)
-        {
-            if (this.InvokeRequired)
-            {
-                PositionDetailDelegate d = new PositionDetailDelegate(ShowPositionDetail);
-                object arg = e.PositionDetails;
-                this.Invoke(d, arg);
-            }
-        }
-
-        private delegate void TradeRecordDelegate(BindingList<TradeRecord> tradeRecords);
-
-
-        private void ShowTradeRecord(BindingList<TradeRecord> tradeRecords)
-        {
-            radGridView9.DataSource = tradeRecords;            
-        }
-
-        void orderManager_OnRtnTradeRecord(object sender, TradeRecordEventArgs e)
-        {
-            if (this.InvokeRequired)
-            {
-                TradeRecordDelegate d = new TradeRecordDelegate(ShowTradeRecord);
-                object arg = e.tradeRecords;
-                this.Invoke(d, arg);
-            }
-        }
-
-        private delegate void TradingAccountDelegate(Account account);
-
-        private void ShowTradingAccount(Account account)
-        {
-            accountBindingSource.Clear();
-            accountBindingSource.Add(account);
-        }
-        void accountManager_OnQryTradingAccount(object sender, AccountEventArgs e)
-        {
-            if (this.InvokeRequired)
-            {
-                TradingAccountDelegate d = new TradingAccountDelegate(ShowTradingAccount);
-                object arg = e.account;
-                this.Invoke(d, arg);
-            }
-            
-        }
-
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (mdApi != null)  mdApi.Disconnect();
+            mdApi.Disconnect();
 
-            if (tradeApi != null) tradeApi.Disconnect();
+            tradeApi.Disconnect();
         }
 
         private void radRibbonBar1_Click(object sender, EventArgs e)

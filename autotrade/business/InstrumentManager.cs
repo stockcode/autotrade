@@ -27,11 +27,9 @@ namespace autotrade.business
 
         public int GetUnit(string instrumentId)
         {
-            string str = instrumentId.Substring(0, instrumentId.Length - 4);
-
             foreach (var instrument in instruments)
             {
-                if (instrument.InstrumentID == str) return instrument.VolumeMultiple;
+                if (instrument.InstrumentID == instrumentId) return instrument.VolumeMultiple;
             }
 
             return 0;

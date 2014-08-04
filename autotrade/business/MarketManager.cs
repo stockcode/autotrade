@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using autotrade.model;
-using autotrade.util;
+using log4net;
 using QuantBox.CSharp2CTP;
 using QuantBox.CSharp2CTP.Event;
 
@@ -15,12 +14,14 @@ namespace autotrade.business
 {
     public class MarketManager
     {
-        private readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        private MdApiWrapper mdApi;
-        private Queue<CThostFtdcDepthMarketDataField> marketQueue = new  Queue<CThostFtdcDepthMarketDataField>();
-        
-        public BindingList<MarketData> marketDatas = new BindingList<MarketData>();
+        public delegate void MarketDataHandler(object sender, MarketDataEventArgs e);
+
+        private readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private readonly Queue<CThostFtdcDepthMarketDataField> marketQueue = new Queue<CThostFtdcDepthMarketDataField>();
+
         public Dictionary<String, MarketData> instrumentDictionary = new Dictionary<string, MarketData>();
+        public BindingList<MarketData> marketDatas = new BindingList<MarketData>();
+        public MdApiWrapper mdApi { get; set; }
 
         public IndicatorManager indicatorManager { get; set; }
 
@@ -28,25 +29,42 @@ namespace autotrade.business
 
         public OrderManager orderManager { get; set; }
 
-        public delegate void MarketDataHandler(object sender, MarketDataEventArgs e);
+        public InstrumentManager InstrumentManager { get; set; }
 
         public event MarketDataHandler OnRtnMarketData;
 
-        public MarketManager(MdApiWrapper mdApi)
+        public void Subscribe()
         {
-            this.mdApi = mdApi;
-            this.mdApi.OnRtnDepthMarketData += mdApi_OnRtnDepthMarketData;
-            this.mdApi.OnRspError += mdApi_OnRspError;            
+            mdApi.OnRtnDepthMarketData += mdApi_OnRtnDepthMarketData;
+            mdApi.OnRspError += mdApi_OnRspError;
 
-            Task.Factory.StartNew(()=>{
-                while(true) {
+            string ppInstrumentId = "";
+
+            foreach (Instrument instrument in InstrumentManager.instruments.Where(instrument => instrument.AutoTrade))
+            {
+                string instrumentID = instrument.InstrumentID;
+
+                var marketData = new MarketData(instrumentID);
+                marketData.Unit = InstrumentManager.GetUnit(instrumentID);
+
+                marketDatas.Add(marketData);
+                instrumentDictionary.Add(instrumentID, marketData);
+                ppInstrumentId += instrumentID + ",";
+            }
+
+            mdApi.Subscribe(ppInstrumentId, "");
+
+            Task.Factory.StartNew(() =>
+            {
+                while (true)
+                {
                     if (marketQueue.Count() == 0)
                     {
                         Thread.Sleep(100);
                         continue;
                     }
 
-                    CThostFtdcDepthMarketDataField pDepthMarketData = marketQueue.Dequeue();                    
+                    CThostFtdcDepthMarketDataField pDepthMarketData = marketQueue.Dequeue();
                     MarketData marketData;
 
                     if (pDepthMarketData.InstrumentID == null) continue;
@@ -67,7 +85,7 @@ namespace autotrade.business
                     indicatorManager.ProcessData(marketData);
 
                     strategyManager.PrcessData(marketData);
-                    
+
                     orderManager.ProcessData(marketData);
 
                     //log.Info(marketQueue.Count());
@@ -78,31 +96,24 @@ namespace autotrade.business
             });
         }
 
-        void mdApi_OnRspError(object sender, OnRspErrorArgs e)
+        private void mdApi_OnRspError(object sender, OnRspErrorArgs e)
         {
             log.Info(e.pRspInfo);
         }
 
-        void mdApi_OnRtnDepthMarketData(object sender, OnRtnDepthMarketDataArgs e)
+        private void mdApi_OnRtnDepthMarketData(object sender, OnRtnDepthMarketDataArgs e)
         {
             marketQueue.Enqueue(e.pDepthMarketData);
-        }
-
-
-
-        public void SubMarketData(string instruments)
-        {
-            mdApi.Subscribe(instruments, "");
         }
     }
 
     public class MarketDataEventArgs : EventArgs
     {
-        public MarketData marketData { get; set; }
         public MarketDataEventArgs(MarketData marketData)
-            : base()
         {
             this.marketData = marketData;
         }
+
+        public MarketData marketData { get; set; }
     }
 }

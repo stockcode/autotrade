@@ -37,6 +37,24 @@ namespace autotrade.model
         /// </summary>
         public string ProductID { get; set; }
 
+        public double Volume { get; set; }
+
+
+        private bool _autoTrade;
+
+        public bool AutoTrade
+        {
+            get { return _autoTrade; }
+            set
+            {
+                if (this._autoTrade != value)
+                {
+                    this._autoTrade = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
         /// <summary>
         /// 产品类型
         /// </summary>
@@ -160,6 +178,8 @@ namespace autotrade.model
         /// 合约基础商品乘数
         /// </summary>
         public double UnderlyingMultiple { get; set; }
+
+        
 
         /// <summary>
         /// 组合类型

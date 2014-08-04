@@ -21,11 +21,11 @@ namespace autotrade
 
             var assembly = Assembly.GetExecutingAssembly();
 
-            builder.RegisterType(typeof (TraderApiWrapper));
-            builder.RegisterType(typeof(MdApiWrapper));
+            builder.RegisterType(typeof (TraderApiWrapper)).SingleInstance();
+            builder.RegisterType(typeof(MdApiWrapper)).SingleInstance();
 
             builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly())
-                .Where(t => t.Name.EndsWith("Manager")).PropertiesAutowired();
+                .Where(t => t.Name.EndsWith("Manager") || t.Name.EndsWith("Repository") ).PropertiesAutowired().SingleInstance();
 
             builder.RegisterAssemblyTypes(assembly).AssignableTo<Form>().PropertiesAutowired();
             

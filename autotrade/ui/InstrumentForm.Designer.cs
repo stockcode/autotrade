@@ -39,15 +39,15 @@
             this.radGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.radGridView1.Location = new System.Drawing.Point(0, 0);
             this.radGridView1.Name = "radGridView1";
-            this.radGridView1.Size = new System.Drawing.Size(788, 526);
+            this.radGridView1.Size = new System.Drawing.Size(1033, 542);
             this.radGridView1.TabIndex = 0;
             this.radGridView1.Text = "radGridView1";
             // 
             // InstrumentForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(788, 526);
+            this.ClientSize = new System.Drawing.Size(1033, 542);
             this.Controls.Add(this.radGridView1);
             this.Name = "InstrumentForm";
             // 
