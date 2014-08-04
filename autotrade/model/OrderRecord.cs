@@ -7,7 +7,7 @@ using QuantBox.CSharp2CTP;
 
 namespace autotrade.model
 {
-    class OrderRecord : IEquatable<OrderRecord>
+    public class OrderRecord : IEquatable<OrderRecord>
     {
         /// <summary>
         /// 报单编号

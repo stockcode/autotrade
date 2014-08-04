@@ -30,18 +30,13 @@ namespace autotrade.Repository
         public void AddOrder(Order order)
         {
             orders.Add(order);
+            Add(order);
         }
 
         private void orders_ListChanged(object sender, ListChangedEventArgs e)
         {
             switch (e.ListChangedType)
             {
-                case ListChangedType.ItemAdded:
-                    Add(orders[e.NewIndex]);
-                    break;
-                case ListChangedType.ItemChanged:
-                    Update(orders[e.NewIndex]);
-                    break;
                 case ListChangedType.ItemDeleted:
                     Delete(orders[e.NewIndex]);
                     break;
@@ -50,19 +45,21 @@ namespace autotrade.Repository
 
         public Order UpdateOrderRef(CThostFtdcOrderField pOrder)
         {
-            string orderRef = pOrder.OrderRef.Trim();
+            string orderRef = pOrder.FrontID.ToString() + pOrder.SessionID.ToString() +  pOrder.OrderRef.Trim();
 
             foreach (Order order in orders)
             {
                 if (order.OrderRef == orderRef)
                 {
                     order.OrderSysID = pOrder.OrderSysID;
+                    Update(order);
                     return order; ;
                 }
 
                 if (order.CloseOrder != null && order.CloseOrder.OrderRef == orderRef)
                 {
                     order.CloseOrder.OrderSysID = pOrder.OrderSysID;
+                    Update(order);
                     return order.CloseOrder;
                 }
             }
@@ -82,7 +79,7 @@ namespace autotrade.Repository
                     order.TradePrice = pTrade.Price;
                     order.TradeTime = pTrade.TradeTime;
                     order.StatusType = EnumOrderStatus.已开仓;
-
+                    Update(order);
                     return order;
                 }
 
@@ -94,7 +91,7 @@ namespace autotrade.Repository
                     order.StatusType = EnumOrderStatus.已平仓;
                     order.CloseProfit = order.PositionProfit;
                     order.PositionProfit = 0;
-                    ;
+                    Update(order);
 
                     return order;
                 }

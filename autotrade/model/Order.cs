@@ -11,7 +11,7 @@ using QuantBox.CSharp2CTP;
 
 namespace autotrade.model
 {
-    class Order : Entity, INotifyPropertyChanged
+    public class Order : Entity, INotifyPropertyChanged
     {
         public string InstrumentId { get; set; }
 

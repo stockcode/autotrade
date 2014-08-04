@@ -7,7 +7,7 @@ using QuantBox.CSharp2CTP;
 
 namespace autotrade.model
 {
-    class PositionDetail
+    public class PositionDetail
     {
         /// <summary>
         /// 成交编号

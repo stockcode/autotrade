@@ -8,7 +8,7 @@ using MongoRepository;
 
 namespace autotrade
 {
-    class BarRecord : Entity
+    public class BarRecord : Entity
     {
         public string Date
         {

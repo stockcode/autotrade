@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Autofac;
 using QuantBox.CSharp2CTP;
 using QuantBox.CSharp2CTP.Event;
 using Telerik.WinControls.UI;
@@ -17,6 +18,7 @@ using autotrade.converter;
 using autotrade.model;
 using autotrade.ui;
 using System.Threading;
+using IContainer = Autofac.IContainer;
 
 namespace autotrade
 {
@@ -30,7 +32,9 @@ namespace autotrade
 
         private AboveMAStrategy maReverseStrategy;
 
-        private OrderManager _orderManager;
+        public OrderManager _orderManager { get; set; }
+        public IContainer Container { get; set; }
+
         private AccountManager _accountManager;
         private MarketManager _marketManager;
         private StrategyManager _strategyManager;
@@ -63,36 +67,15 @@ namespace autotrade
         {
             //radGridView4.Columns["Direction"].DataTypeConverter = new DirectionConverter();
 
-            LoginForm loginForm = new LoginForm();
-            
-            if (loginForm.ShowDialog() != DialogResult.OK) Close();
 
-            mdApi = loginForm.mdApi;
-            tradeApi = loginForm.tradeApi;
+            var loginForm = Container.Resolve<LoginForm>();
 
-            if (tradeApi == null)
+            if (loginForm.ShowDialog() != DialogResult.OK)
             {
-                Application.Exit();
+                Close();
                 return;
             }
 
-            _instrumentManager = new InstrumentManager();
-            _accountManager = new AccountManager(tradeApi);
-
-            _orderManager = new OrderManager(tradeApi);
-            _orderManager.InstrumentManager = _instrumentManager;
-            _orderManager.AccountManager = _accountManager;
-            
-            
-            _marketManager = new MarketManager(mdApi);
-
-            _strategyManager = new StrategyManager(_orderManager);
-
-            _strategyManager.indicatorManager = _indicatorManager;
-
-            _marketManager.strategyManager = _strategyManager;
-            _marketManager.orderManager = _orderManager;
-            _marketManager.indicatorManager = _indicatorManager;
 
             _accountManager.OnQryTradingAccount += accountManager_OnQryTradingAccount;
 
@@ -106,7 +89,6 @@ namespace autotrade
 
                 _orderManager.QryOrder();
                 _orderManager.QryTrade();
-                _accountManager.QryTradingAccount();
 
 
 
@@ -294,9 +276,8 @@ namespace autotrade
 
         private void radMenuItem10_Click(object sender, EventArgs e)
         {
-            InstrumentForm form = new InstrumentForm();
-            form.InstrumentManager = _instrumentManager;
-
+            
+            var form = Container.Resolve<InstrumentForm>();
             form.ShowDialog();
         }
 

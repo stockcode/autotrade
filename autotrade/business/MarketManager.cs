@@ -13,7 +13,7 @@ using QuantBox.CSharp2CTP.Event;
 
 namespace autotrade.business
 {
-    class MarketManager
+    public class MarketManager
     {
         private readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private MdApiWrapper mdApi;
@@ -96,7 +96,7 @@ namespace autotrade.business
         }
     }
 
-    internal class MarketDataEventArgs : EventArgs
+    public class MarketDataEventArgs : EventArgs
     {
         public MarketData marketData { get; set; }
         public MarketDataEventArgs(MarketData marketData)

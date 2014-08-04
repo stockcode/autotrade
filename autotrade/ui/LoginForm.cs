@@ -2,13 +2,17 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
+using autotrade.business;
 using autotrade.Config;
+using autotrade.model;
 using autotrade.Properties;
 using autotrade.ui;
 using autotrade.util;
 using log4net;
+using MongoDB.Driver.Linq;
 using QuantBox.CSharp2CTP;
 using QuantBox.CSharp2CTP.Event;
 using QuantBox.Library;
@@ -23,6 +27,8 @@ namespace autotrade
         private readonly Settings settings = Settings.Default;
 
         private BrokerManager brokerManager;
+        
+        public InstrumentManager instrumentManager { get; set; }
 
         private string brokerFile;
 
@@ -33,6 +39,8 @@ namespace autotrade
 
         public MdApiWrapper mdApi { get; set; }
         public TraderApiWrapper tradeApi { get; set; }
+
+        public AccountManager AccountManager { get; set; }
 
         private void btnLogin_Click(object sender, EventArgs e)
         {
@@ -47,9 +55,6 @@ namespace autotrade
 
             string url = brokerManager.GetHotMarketUrl();
 
-            mdApi = new MdApiWrapper();
-
-            mdApi.OnConnect += mdApi_OnConnect;
             mdApi.Connect("", url, brokerId, settings.InvestorID, settings.Passwd);
         }
 
@@ -57,18 +62,25 @@ namespace autotrade
         {
             log.Info("Trade Connected:" + e.pRspUserLogin);
 
-            radProgressBar1.Text = Enumerations.GetEnumDescription(e.result);
-            radProgressBar1.Value1++;
+            ShowProgress(Enumerations.GetEnumDescription(e.result));
 
             if (e.result == ConnectionStatus.Logined)
             {
-                tradeApi.MaxOrderRef = Convert.ToInt32(e.pRspUserLogin.MaxOrderRef);                
+                tradeApi.MaxOrderRef = Convert.ToInt32(e.pRspUserLogin.MaxOrderRef);
+                tradeApi.FrontID = e.pRspUserLogin.FrontID.ToString();
+                tradeApi.SessionID = e.pRspUserLogin.SessionID.ToString();
             }
 
             if (e.result == ConnectionStatus.Confirmed)
             {
-                DialogResult = DialogResult.OK;
+                tradeApi.ReqQryInstrument("");
             }
+        }
+
+        private void ShowProgress(String info)
+        {
+            radProgressBar1.Text = info;
+            radProgressBar1.Value1++;
         }
 
         private void mdApi_OnConnect(object sender, OnConnectArgs e)
@@ -82,11 +94,30 @@ namespace autotrade
                 string brokerId = brokerManager.GetHotBroker().BrokerId.ToString();
                 string url = brokerManager.GetHotTradeUrl();
 
-                tradeApi = new TraderApiWrapper();
-
-                tradeApi.OnConnect += tradeApi_OnConnect;
+                
                 tradeApi.Connect("", url, brokerId, settings.InvestorID, settings.Passwd,
                     THOST_TE_RESUME_TYPE.THOST_TERT_RESUME, "vicky", "");
+            }
+        }
+
+        void tradeApi_OnRspQryInstrument(object sender, OnRspQryInstrumentArgs e)
+        {
+            Instrument instrument = new Instrument();
+            ObjectUtils.Copy(e.pInstrument, instrument);
+            if (instrument.InstrumentID.Contains(" ")) return;
+
+            if (!instrumentManager.instruments.Any(o => o.InstrumentID == instrument.InstrumentID))
+            {
+                instrumentManager.instruments.Add(instrument);
+                log.Info(e.pInstrument.InstrumentID + ":" + e.pInstrument.LongMarginRatio + ":" +
+                         e.pInstrument.ShortMarginRatio);
+            }
+
+            if (e.bIsLast)
+            {
+                ShowProgress("查询合约成功");
+
+                tradeApi.ReqQryTradingAccount();
             }
         }
 
@@ -106,6 +137,23 @@ namespace autotrade
             
             tbInvestorID.Text = settings.InvestorID;
             tbPasswd.Text = settings.Passwd;
+
+            mdApi.OnConnect += mdApi_OnConnect;
+
+
+            tradeApi.OnConnect += tradeApi_OnConnect;
+            tradeApi.OnRspQryInstrument += tradeApi_OnRspQryInstrument;
+            tradeApi.OnRspQryTradingAccount += tradeApi_OnRspQryTradingAccount;
+        }
+
+        void tradeApi_OnRspQryTradingAccount(object sender, OnRspQryTradingAccountArgs e)
+        {
+            if (e.pRspInfo.ErrorID == 0)
+            {
+                ObjectUtils.Copy(e.pTradingAccount, AccountManager.Accounts[0]);
+
+                ShowProgress("查询账户成功");
+            }
         }
 
 

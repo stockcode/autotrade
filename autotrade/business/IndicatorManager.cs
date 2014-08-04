@@ -10,7 +10,7 @@ using autotrade.model;
 
 namespace autotrade.business
 {
-    class IndicatorManager
+    public class IndicatorManager
     {
         private readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 

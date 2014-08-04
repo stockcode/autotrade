@@ -31,7 +31,7 @@ namespace autotrade.business
 
             foreach (var instrument in instruments)
             {
-                if (instrument.Code == str) return instrument.Unit;
+                if (instrument.InstrumentID == str) return instrument.VolumeMultiple;
             }
 
             return 0;

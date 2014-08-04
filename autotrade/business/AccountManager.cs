@@ -11,10 +11,11 @@ using QuantBox.CSharp2CTP.Event;
 
 namespace autotrade.business
 {
-    class AccountManager
+    public class AccountManager
     {
         private readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        private TraderApiWrapper tradeApi;
+
+        public TraderApiWrapper tradeApi { get; set; }
 
         public BindingList<Account> Accounts = new BindingList<Account>();
 
@@ -24,21 +25,11 @@ namespace autotrade.business
 
 
 
-        public AccountManager(TraderApiWrapper tradeApi)
+        public AccountManager()
         {
-            this.tradeApi = tradeApi;
-            this.tradeApi.OnRspQryTradingAccount += tradeApi_OnRspQryTradingAccount;
-
             Accounts.Add(new Account());
         }
 
-        void tradeApi_OnRspQryTradingAccount(object sender, OnRspQryTradingAccountArgs e)
-        {
-            if (e.pRspInfo.ErrorID == 0)
-            {
-                ObjectUtils.Copy(e.pTradingAccount, Accounts[0]);
-            }
-        }
 
         public void QryTradingAccount()
         {
@@ -46,7 +37,7 @@ namespace autotrade.business
         }
     }
 
-    internal class AccountEventArgs : EventArgs
+    public class AccountEventArgs : EventArgs
     {
         public Account account { get; set; }
         public AccountEventArgs(Account account)

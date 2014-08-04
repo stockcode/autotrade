@@ -9,7 +9,7 @@ using QuantBox.CSharp2CTP;
 
 namespace autotrade.model
 {
-    class MarketData : INotifyPropertyChanged
+    public class MarketData : INotifyPropertyChanged
     {
 
         public MarketData(CThostFtdcDepthMarketDataField pDepthMarketData) 
