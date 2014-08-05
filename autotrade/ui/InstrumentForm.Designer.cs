@@ -38,10 +38,15 @@
             // 
             this.radGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.radGridView1.Location = new System.Drawing.Point(0, 0);
+            // 
+            // radGridView1
+            // 
+            this.radGridView1.MasterTemplate.EnableAlternatingRowColor = true;
             this.radGridView1.Name = "radGridView1";
             this.radGridView1.Size = new System.Drawing.Size(1033, 542);
             this.radGridView1.TabIndex = 0;
             this.radGridView1.Text = "radGridView1";
+            this.radGridView1.ValueChanged += new System.EventHandler(this.radGridView1_ValueChanged);
             // 
             // InstrumentForm
             // 

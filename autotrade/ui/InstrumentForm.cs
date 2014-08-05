@@ -12,7 +12,7 @@ namespace autotrade.ui
 {
     public partial class InstrumentForm : Telerik.WinControls.UI.RadForm
     {
-        public InstrumentManager InstrumentManager { get; set;}
+        public MarketManager MarketManager { get; set; }
 
         public InstrumentForm()
         {
@@ -21,9 +21,17 @@ namespace autotrade.ui
 
         private void InstrumentForm_Load(object sender, EventArgs e)
         {
-            radGridView1.DataSource = InstrumentManager.instruments;
+            radGridView1.DataSource = MarketManager.instruments;
 
             radGridView1.BestFitColumns();
+        }
+
+        private void radGridView1_ValueChanged(object sender, EventArgs e)
+        {
+            if (radGridView1.CurrentColumn.Name == "AutoTrade")
+            {
+                radGridView1.EndEdit();
+            }
         }
     }
 }

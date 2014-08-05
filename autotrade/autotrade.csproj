@@ -106,7 +106,6 @@
   <ItemGroup>
     <Compile Include="business\AccountManager.cs" />
     <Compile Include="business\IndicatorManager.cs" />
-    <Compile Include="business\InstrumentManager.cs" />
     <Compile Include="business\IStrategy.cs" />
     <Compile Include="business\MarketManager.cs" />
     <Compile Include="business\OrderManager.cs" />

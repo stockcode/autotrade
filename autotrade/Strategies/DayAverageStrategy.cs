@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Windows.Forms.VisualStyles;
 using autotrade.business;
 using autotrade.model;
@@ -12,21 +13,42 @@ using QuantBox.CSharp2CTP;
 
 namespace autotrade.Strategies
 {
-    internal class DayAverageStrategy : Strategy
+    internal class DayAverageStrategy : Strategy, INotifyPropertyChanged
     {
         private readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        [BsonIgnore]
-        [Browsable(false)]
-        public OrderManager orderManager { get; set; }
+        private int _maxOpenThreshold;
 
         [DisplayName("开仓阀值")]
         [DefaultValue(3)]
-        public int MaxOpenThreshold { get; set; }
+        public int MaxOpenThreshold
+        {
+            get { return _maxOpenThreshold; }
+            set
+            {
+                if (this._maxOpenThreshold != value)
+                {
+                    this._maxOpenThreshold = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        private int _maxCloseThreshold;
 
         [DisplayName("平仓阀值")]
         [DefaultValue(3)]
-        public int MaxCloseThreshold { get; set; }
+        public int MaxCloseThreshold
+        {
+            get { return _maxCloseThreshold; }
+            set
+            {
+                if (this._maxCloseThreshold != value)
+                {
+                    this._maxCloseThreshold = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
 
         private readonly Dictionary<String, MarketData> preMarketDataDictionary = new Dictionary<string, MarketData>();
         private double TOLERANCE = 0.01d;
@@ -40,14 +62,16 @@ namespace autotrade.Strategies
 
         public DayAverageStrategy()
         {
+            MaxCloseThreshold = 3;
+            MaxOpenThreshold = 3;
         }
 
-        public override List<Order> Match(MarketData marketData)
+        public override List<Order> Match(MarketData marketData, InstrumentStrategy instrumentStrategy)
         {
             var instrumentId = marketData.InstrumentId;
 
             List<Order> orders =
-                orderManager.getOrders()
+                OrderManager.getOrders()
                     .Where(o => o.InstrumentId == marketData.InstrumentId && o.StrategyType == GetType().ToString())
                     .ToList();
 
@@ -143,7 +167,7 @@ namespace autotrade.Strategies
                         neworder.Direction = TThostFtdcDirectionType.Buy;
                         neworder.InstrumentId = marketData.InstrumentId;
                         neworder.Price = marketData.LastPrice;
-                        neworder.Volume = 1;
+                        neworder.Volume = instrumentStrategy.Volume;
                         neworder.StrategyType = GetType().ToString();
 
                         list.Add(neworder);
@@ -169,7 +193,7 @@ namespace autotrade.Strategies
                         neworder.Direction = TThostFtdcDirectionType.Sell;
                         neworder.InstrumentId = marketData.InstrumentId;
                         neworder.Price = marketData.LastPrice;
-                        neworder.Volume = 1;
+                        neworder.Volume = instrumentStrategy.Volume;
                         neworder.StrategyType = GetType().ToString();
 
                         list.Add(neworder);
@@ -214,6 +238,20 @@ namespace autotrade.Strategies
                 return TThostFtdcDirectionType.Sell;
             } else 
                 return TThostFtdcDirectionType.Nothing;
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged = delegate { };
+
+        // This method is called by the Set accessor of each property.
+        // The CallerMemberName attribute that is applied to the optional propertyName
+        // parameter causes the property name of the caller to be substituted as an argument.
+        private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null)
+            {
+                handler(this, new PropertyChangedEventArgs(propertyName));
+            }
         }
     }
 }

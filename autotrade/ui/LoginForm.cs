@@ -28,8 +28,8 @@ namespace autotrade
         private readonly Settings settings = Settings.Default;
 
         private BrokerManager brokerManager;
-        
-        public InstrumentManager InstrumentManager { get; set; }
+
+        public MarketManager MarketManager { get; set; }
 
         public OrderManager OrderManager { get; set; }
 
@@ -203,7 +203,7 @@ namespace autotrade
 
                 tradeApi.ReqQryOrder();
 
-                Thread.Sleep(1000);
+                Thread.Sleep(3000);
 
                 if (noOrder) DialogResult = DialogResult.OK;                
             }

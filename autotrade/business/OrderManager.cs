@@ -30,8 +30,6 @@ namespace autotrade.business
 
         public OrderRepository OrderRepository { get; set; }
 
-        public InstrumentManager InstrumentManager { get; set; }
-
         public AccountManager AccountManager { get; set; }
 
         public delegate void TradeRecordHandler(object sender, TradeRecordEventArgs e);
@@ -204,13 +202,6 @@ namespace autotrade.business
                 order.OrderRef = tradeApi.FrontID + tradeApi.SessionID + orderRef;
 
                 order.StatusType = EnumOrderStatus.开仓中;
-
-                order.Unit = InstrumentManager.GetUnit(order.InstrumentId);
-
-
-
-                
-
             }
             else
             {

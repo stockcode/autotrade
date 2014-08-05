@@ -39,7 +39,6 @@ namespace autotrade
         public AccountManager _accountManager { get; set; }
         public MarketManager _marketManager { get; set; }
         public StrategyManager _strategyManager { get; set; }
-        public InstrumentManager _instrumentManager { get; set; }
         public IndicatorManager _indicatorManager { get; set; }
         
         public MainForm()

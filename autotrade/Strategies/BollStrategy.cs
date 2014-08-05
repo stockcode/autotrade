@@ -20,14 +20,6 @@ namespace autotrade.Strategies
 
         public int Day { get; set; }
 
-        [BsonIgnore]
-        [Browsable(false)]
-        public IndicatorManager indicatorManager { get; set; }
-
-        [BsonIgnore]
-        [Browsable(false)]
-        public OrderManager orderManager { get; set; }
-
         private double maPrice = 0d;
 
 
@@ -35,10 +27,10 @@ namespace autotrade.Strategies
         {
         }
 
-        public override List<Order> Match(MarketData marketData)
+        public override List<Order> Match(MarketData marketData, InstrumentStrategy instrumentStrategy)
         {
             List<Order> orders =
-                orderManager.getOrders().Where(o => o.InstrumentId == marketData.InstrumentId && o.StrategyType == GetType().ToString()).ToList();
+                OrderManager.getOrders().Where(o => o.InstrumentId == marketData.InstrumentId && o.StrategyType == GetType().ToString()).ToList();
 
             tick++;
 
@@ -73,7 +65,7 @@ namespace autotrade.Strategies
                 neworder.Direction = TThostFtdcDirectionType.Buy;
                 neworder.InstrumentId = marketData.InstrumentId;
                 neworder.Price = marketData.LastPrice;
-                neworder.Volume = 1;
+                neworder.Volume = instrumentStrategy.Volume;
                 neworder.StrategyType = GetType().ToString();
 
                 list.Add(neworder);

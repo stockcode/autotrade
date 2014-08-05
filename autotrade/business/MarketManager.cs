@@ -9,6 +9,7 @@ using autotrade.model;
 using log4net;
 using QuantBox.CSharp2CTP;
 using QuantBox.CSharp2CTP.Event;
+using MongoRepository;
 
 namespace autotrade.business
 {
@@ -21,6 +22,11 @@ namespace autotrade.business
 
         public Dictionary<String, MarketData> instrumentDictionary = new Dictionary<string, MarketData>();
         public BindingList<MarketData> marketDatas = new BindingList<MarketData>();
+
+        public BindingList<Instrument> instruments = new BindingList<Instrument>();
+
+        private MongoRepository<Instrument> instrumentRepo = new MongoRepository<Instrument>();
+
         public MdApiWrapper mdApi { get; set; }
 
         public IndicatorManager indicatorManager { get; set; }
@@ -29,11 +35,19 @@ namespace autotrade.business
 
         public OrderManager orderManager { get; set; }
 
-        public InstrumentManager InstrumentManager { get; set; }
-
         public StrategyManager StrategyManager { get; set; }
 
         public event MarketDataHandler OnRtnMarketData;
+
+        public MarketManager()
+        {
+            foreach (var instrument in instrumentRepo.Collection.FindAll())
+            {
+                instruments.Add(instrument);
+            }
+
+            instruments.ListChanged += instruments_ListChanged;
+        }
 
         public void Subscribe()
         {
@@ -42,18 +56,18 @@ namespace autotrade.business
 
             string ppInstrumentId = "";
 
-            foreach (Instrument instrument in InstrumentManager.instruments.Where(instrument => instrument.AutoTrade))
+            foreach (Instrument instrument in instruments.Where(instrument => instrument.AutoTrade))
             {
                 string instrumentID = instrument.InstrumentID;
 
                 var marketData = new MarketData(instrumentID);
-                marketData.Unit = InstrumentManager.GetUnit(instrumentID);
+                marketData.Unit = GetInstrument(instrumentID).VolumeMultiple;
 
                 marketDatas.Add(marketData);
                 instrumentDictionary.Add(instrumentID, marketData);
                 ppInstrumentId += instrumentID + ",";
 
-                StrategyManager.InitStrategies(instrumentID);
+                StrategyManager.InitStrategies(instrument);
             }
 
             mdApi.Subscribe(ppInstrumentId, "");
@@ -81,7 +95,7 @@ namespace autotrade.business
                     else
                     {
                         marketData = new MarketData(pDepthMarketData);
-                        marketData.Unit = orderManager.InstrumentManager.GetUnit(pDepthMarketData.InstrumentID);
+                        marketData.Unit = GetInstrument(pDepthMarketData.InstrumentID).VolumeMultiple;
                         marketDatas.Add(marketData);
                         instrumentDictionary.Add(pDepthMarketData.InstrumentID, marketData);
                     }
@@ -105,6 +119,34 @@ namespace autotrade.business
             log.Info(e.pRspInfo);
         }
 
+        public void Subscribe(string instrumentID)
+        {
+            var marketData = new MarketData(instrumentID);
+            marketData.Unit = GetInstrument(instrumentID).VolumeMultiple;
+
+
+            StrategyManager.InitStrategies(GetInstrument(instrumentID));
+
+
+            marketDatas.Add(marketData);
+            instrumentDictionary.Add(instrumentID, marketData);
+
+            
+
+            mdApi.Subscribe(instrumentID, "");
+        }
+
+        public void UnSubscribe(string instrumentID)
+        {
+            marketDatas.Remove(marketDatas.First(md => md.InstrumentId == instrumentID));
+
+            instrumentDictionary.Remove(instrumentID);
+
+            StrategyManager.RemoveStrategies(instrumentID);
+
+            mdApi.Unsubscribe(instrumentID, "");
+        }
+
         private void mdApi_OnRtnDepthMarketData(object sender, OnRtnDepthMarketDataArgs e)
         {
             marketQueue.Enqueue(e.pDepthMarketData);
@@ -123,6 +165,31 @@ namespace autotrade.business
             }
 
             return -1;
+        }
+
+        public Instrument GetInstrument(string instrumentId)
+        {
+            return instruments.First(inst => inst.InstrumentID == instrumentId);
+        }
+
+        void instruments_ListChanged(object sender, ListChangedEventArgs e)
+        {
+            switch (e.ListChangedType)
+            {
+                case ListChangedType.ItemAdded:
+                    instrumentRepo.Add(instruments[e.NewIndex]);
+                    break;
+                case ListChangedType.ItemChanged:
+                    var instrument = instruments[e.NewIndex];
+                    instrumentRepo.Update(instrument);
+                    if (instrument.AutoTrade) Subscribe(instrument.InstrumentID);
+                    else UnSubscribe(instrument.InstrumentID);
+
+                    break;
+                case ListChangedType.ItemDeleted:
+                    instrumentRepo.Delete(instruments[e.NewIndex]);
+                    break;
+            }
         }
     }
 
