@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using autotrade.model;
+using autotrade.util;
 using log4net;
 using MongoDB.Driver.Builders;
 using MongoRepository;
@@ -17,9 +18,17 @@ namespace autotrade.Repository
 
         private readonly BindingList<Order> orders = new BindingList<Order>();
 
+        private readonly BindingList<OrderLog> orderlogs = new BindingList<OrderLog>();
+
+        private MongoRepository<OrderLog> orderLogRepo = new MongoRepository<OrderLog>(); 
+
         public OrderRepository()
         {
-            orders.ListChanged += orders_ListChanged;
+            
+            foreach(OrderLog orderLog in orderLogRepo.Where(log=>log.TradeDate == DateTime.Today.ToString("yyyyMMdd")).ToList())
+            {
+                orderlogs.Add(orderLog);
+            }
         }
 
         public List<Order> GetByInstrumentIDAndStatusType(string instrumentId, EnumOrderStatus statusType)
@@ -27,20 +36,12 @@ namespace autotrade.Repository
             return orders.Where(o => o.InstrumentId == instrumentId && o.StatusType == statusType).ToList();
         }
 
-        public void AddOrder(Order order)
-        {
-            orders.Add(order);
-            Add(order);
-        }
 
-        private void orders_ListChanged(object sender, ListChangedEventArgs e)
+        public override Order Add(Order entity)
         {
-            switch (e.ListChangedType)
-            {
-                case ListChangedType.ItemDeleted:
-                    Delete(orders[e.NewIndex]);
-                    break;
-            }
+            orders.Add(entity);
+            
+            return base.Add(entity);
         }
 
         public Order UpdateOrderRef(CThostFtdcOrderField pOrder)
@@ -77,6 +78,7 @@ namespace autotrade.Repository
                 {
                     order.TradeID = pTrade.TradeID;
                     order.TradePrice = pTrade.Price;
+                    order.TradeDate = pTrade.TradeDate;
                     order.TradeTime = pTrade.TradeTime;
                     order.StatusType = EnumOrderStatus.已开仓;
                     Update(order);
@@ -87,6 +89,7 @@ namespace autotrade.Repository
                 {
                     order.CloseOrder.TradeID = pTrade.TradeID;
                     order.CloseOrder.TradePrice = pTrade.Price;
+                    order.CloseOrder.TradeDate = pTrade.TradeDate;
                     order.CloseOrder.TradeTime = pTrade.TradeTime;
                     order.StatusType = EnumOrderStatus.已平仓;
                     order.CloseProfit = order.PositionProfit;
@@ -100,17 +103,32 @@ namespace autotrade.Repository
             return null;
         }
 
+        public override void Delete(Order entity)
+        {
+            OrderLog orderLog = new OrderLog();
+
+            ObjectUtils.Copy(entity, orderLog);
+
+            orders.Remove(entity);
+
+            orderlogs.Add(orderLog);
+            orderLogRepo.Add(orderLog);
+
+            base.Delete(entity);
+        }
+
         public void Init(BindingList<OrderRecord> orderRecords)
         {
+            List<Order> orderdb = this.ToList();
+
             orders.RaiseListChangedEvents = false;
 
-            foreach (OrderRecord orderRecord in orderRecords)
+            foreach (var order in orderdb)
             {
-                string orderSysID = orderRecord.OrderSysID.Trim();
-                if (orderSysID == "") continue;
-
-                Order order = this.Collection.FindOne(Query.EQ("OrderSysID", orderSysID));
-                if (order != null) orders.Add(order);
+                if (orderRecords.Any(record => record.OrderSysID.Trim() == order.OrderSysID))
+                {
+                    orders.Add(order);
+                }
             }
 
             orders.RaiseListChangedEvents = true;
@@ -119,6 +137,11 @@ namespace autotrade.Repository
         public BindingList<Order> getOrders()
         {
             return orders;
+        }
+
+        public BindingList<OrderLog> getOrderLogs()
+        {
+            return orderlogs;
         }
     }
 }

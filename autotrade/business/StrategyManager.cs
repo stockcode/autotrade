@@ -1,27 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using autotrade.Strategies;
+using System.Reflection;
+using Autofac;
 using autotrade.model;
+using autotrade.Strategies;
+using log4net;
+using MongoRepository;
 
 namespace autotrade.business
 {
     public class StrategyManager
     {
-        private readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private readonly Dictionary<String, InstrumentStrategy> dictStrategies =
+            new Dictionary<string, InstrumentStrategy>();
 
-        private Dictionary<String, List<IStrategy>> dictStrategies = new Dictionary<string, List<IStrategy>>();
+        private readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        public IndicatorManager indicatorManager { get; set; }
+        private readonly MongoRepository<InstrumentStrategy> strategyRepo = new MongoRepository<InstrumentStrategy>();
+        private bool isStart;
 
-        private OrderManager orderManager;
+        public IndicatorManager IndicatorManager { get; set; }
 
-        private bool isStart = false;
+        public OrderManager OrderManager { get; set; }
 
-        public StrategyManager(OrderManager orderManager)
-        {
-            this.orderManager = orderManager;
-        }
+        public IContainer Container { get; set; }
 
         public void PrcessData(MarketData marketData)
         {
@@ -29,35 +32,53 @@ namespace autotrade.business
 
             if (!dictStrategies.ContainsKey(marketData.InstrumentId)) InitStrategies(marketData.InstrumentId);
 
-            foreach (IStrategy strategy in dictStrategies[marketData.InstrumentId])
+            foreach (IStrategy strategy in dictStrategies[marketData.InstrumentId].Strategies)
             {
                 List<Order> orders = strategy.Match(marketData);
                 if (orders != null)
                 {
-                    foreach (var order in orders)
+                    foreach (Order order in orders)
                     {
                         log.Info(order);
-                        orderManager.OrderInsert(order);
+                        OrderManager.OrderInsert(order);
                     }
                 }
             }
         }
 
-        private void InitStrategies(string instrumentId)
+        public void InitStrategies(string instrumentId)
         {
-            List<IStrategy> list = new List<IStrategy>();
+            InstrumentStrategy instrumentStrategy;
 
-            //Strategies.Add(new AboveMAStrategy(indicatorManager, 20));
-            //Strategies.Add(new BelowMAStrategy(indicatorManager, 20));
-            //list.Add(new BollStrategy(indicatorManager, orderManager));
-            list.Add(new DayAverageStrategy(orderManager));
+            instrumentStrategy = strategyRepo.FirstOrDefault(strat => strat.InstrumentID == instrumentId);
 
-            dictStrategies.Add(instrumentId, list);
+            if (instrumentStrategy == null)
+            {
+                instrumentStrategy = new InstrumentStrategy();
+
+                instrumentStrategy.InstrumentID = instrumentId;
+
+                instrumentStrategy.Strategies.Add(Container.Resolve<BollStrategy>());
+
+                instrumentStrategy.Strategies.Add(Container.Resolve<DayAverageStrategy>());
+
+                //Strategies.Add(new AboveMAStrategy(indicatorManager, 20));
+                //Strategies.Add(new BelowMAStrategy(indicatorManager, 20));
+
+                strategyRepo.Add(instrumentStrategy);
+            }
+
+            dictStrategies.Add(instrumentId, instrumentStrategy);
         }
 
         public void Start()
         {
             isStart = true;
+        }
+
+        public InstrumentStrategy GetInstrumentStrategy(string instrumentId)
+        {
+            return dictStrategies.ContainsKey(instrumentId) ? dictStrategies[instrumentId] : null;
         }
     }
 }

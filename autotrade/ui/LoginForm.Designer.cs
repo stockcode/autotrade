@@ -82,7 +82,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(41, 145);
+            this.label3.Location = new System.Drawing.Point(34, 146);
             this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(77, 12);
@@ -92,7 +92,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(72, 112);
+            this.label2.Location = new System.Drawing.Point(70, 113);
             this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(41, 12);
@@ -102,7 +102,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(72, 76);
+            this.label1.Location = new System.Drawing.Point(70, 77);
             this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(41, 12);
@@ -112,7 +112,7 @@
             // tbPasswd
             // 
             this.tbPasswd.Location = new System.Drawing.Point(115, 110);
-            this.tbPasswd.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbPasswd.Margin = new System.Windows.Forms.Padding(2);
             this.tbPasswd.Name = "tbPasswd";
             this.tbPasswd.PasswordChar = '*';
             this.tbPasswd.Size = new System.Drawing.Size(155, 21);
@@ -121,7 +121,7 @@
             // tbInvestorID
             // 
             this.tbInvestorID.Location = new System.Drawing.Point(115, 74);
-            this.tbInvestorID.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbInvestorID.Margin = new System.Windows.Forms.Padding(2);
             this.tbInvestorID.Name = "tbInvestorID";
             this.tbInvestorID.Size = new System.Drawing.Size(155, 21);
             this.tbInvestorID.TabIndex = 13;
@@ -138,7 +138,7 @@
             // radProgressBar1
             // 
             this.radProgressBar1.Location = new System.Drawing.Point(115, 170);
-            this.radProgressBar1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.radProgressBar1.Margin = new System.Windows.Forms.Padding(2);
             this.radProgressBar1.Maximum = 30;
             this.radProgressBar1.Name = "radProgressBar1";
             this.radProgressBar1.Size = new System.Drawing.Size(227, 24);
@@ -147,7 +147,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(52, 177);
+            this.label4.Location = new System.Drawing.Point(46, 176);
             this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(65, 12);
@@ -158,7 +158,7 @@
             // 
             this.cbServer.AllowShowFocusCues = false;
             this.cbServer.Location = new System.Drawing.Point(115, 142);
-            this.cbServer.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cbServer.Margin = new System.Windows.Forms.Padding(2);
             this.cbServer.Name = "cbServer";
             this.cbServer.Size = new System.Drawing.Size(154, 20);
             this.cbServer.TabIndex = 23;

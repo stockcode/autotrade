@@ -113,11 +113,14 @@
     <Compile Include="business\StrategyManager.cs" />
     <Compile Include="Config\BrokerManager.cs" />
     <Compile Include="converter\DirectionConverter.cs" />
+    <Compile Include="converter\StrategyUIEditor.cs" />
     <Compile Include="model\Account.cs" />
     <Compile Include="model\BarRecord.cs" />
     <Compile Include="model\EnumOrderStatus.cs" />
     <Compile Include="model\Instrument.cs" />
+    <Compile Include="model\InstrumentStrategy.cs" />
     <Compile Include="model\MarketData.cs" />
+    <Compile Include="model\OrderLog.cs" />
     <Compile Include="model\Order.cs" />
     <Compile Include="model\OrderRecord.cs" />
     <Compile Include="model\PositionRecord.cs" />
@@ -126,6 +129,7 @@
     <Compile Include="model\TradeRecord.cs" />
     <Compile Include="Repository\OrderRepository.cs" />
     <Compile Include="Strategies\DayAverageStrategy.cs" />
+    <Compile Include="Strategies\Strategy.cs" />
     <Compile Include="ui\LoginForm.cs">
       <SubType>Form</SubType>
     </Compile>

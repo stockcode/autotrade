@@ -27,6 +27,10 @@ namespace autotrade
             builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly())
                 .Where(t => t.Name.EndsWith("Manager") || t.Name.EndsWith("Repository") ).PropertiesAutowired().SingleInstance();
 
+
+            builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly())
+                .Where(t => t.Name.EndsWith("Strategy")).PropertiesAutowired();
+
             builder.RegisterAssemblyTypes(assembly).AssignableTo<Form>().PropertiesAutowired();
             
             IContainer container = builder.Build();

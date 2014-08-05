@@ -42,6 +42,8 @@ namespace autotrade.model
         /// </summary>
         public int Volume { get; set; }
 
+        public string TradeDate { get; set; }
+
         /// <summary>
         /// 成交时间
         /// </summary>

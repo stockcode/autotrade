@@ -4,6 +4,7 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using System.Windows.Forms;
 using autotrade.business;
 using autotrade.Config;
@@ -33,6 +34,8 @@ namespace autotrade
         public OrderManager OrderManager { get; set; }
 
         private string brokerFile;
+
+        private bool noOrder = true;
 
         public LoginForm()
         {
@@ -75,7 +78,8 @@ namespace autotrade
 
             if (e.result == ConnectionStatus.Confirmed)
             {
-                tradeApi.ReqQryInstrument("");
+                //tradeApi.ReqQryInstrument("");
+                tradeApi.ReqQryTradingAccount();
             }
         }
 
@@ -97,22 +101,22 @@ namespace autotrade
 
                 
                 tradeApi.Connect("", url, brokerId, settings.InvestorID, settings.Passwd,
-                    THOST_TE_RESUME_TYPE.THOST_TERT_RESUME, "vicky", "");
+                    THOST_TE_RESUME_TYPE.THOST_TERT_QUICK, "vicky", "");
             }
         }
 
         void tradeApi_OnRspQryInstrument(object sender, OnRspQryInstrumentArgs e)
         {
-            Instrument instrument = new Instrument();
-            ObjectUtils.Copy(e.pInstrument, instrument);
-            if (instrument.InstrumentID.Contains(" ")) return;
+//            Instrument instrument = new Instrument();
+//            ObjectUtils.CopyStruct(e.pInstrument, instrument);
+//            if (instrument.InstrumentID.Contains(" ")) return;
             
-            if (!InstrumentManager.instruments.Any(o => o.InstrumentID == instrument.InstrumentID))
-            {
-                InstrumentManager.instruments.Add(instrument);
-                log.Info(e.pInstrument.InstrumentID + ":" + e.pInstrument.LongMarginRatio + ":" +
-                         e.pInstrument.ShortMarginRatio);
-            }
+//            if (!InstrumentManager.instruments.Any(o => o.InstrumentID == instrument.InstrumentID))
+//            {
+//                InstrumentManager.instruments.Add(instrument);
+//                log.Info(e.pInstrument.InstrumentID + ":" + e.pInstrument.LongMarginRatio + ":" +
+//                         e.pInstrument.ShortMarginRatio);
+//            }
 
             if (e.bIsLast)
             {
@@ -153,7 +157,7 @@ namespace autotrade
         {
             TradeRecord tradeRecord = new TradeRecord();
 
-            ObjectUtils.Copy(e.pTrade, tradeRecord);
+            ObjectUtils.CopyStruct(e.pTrade, tradeRecord);
 
             OrderManager.AddTradeRecord(tradeRecord);
 
@@ -170,15 +174,17 @@ namespace autotrade
         {
             if (e.pRspInfo.ErrorID == 0)
             {
+                noOrder = false;
+
                 OrderRecord orderRecord = new OrderRecord();
 
-                ObjectUtils.Copy(e.pOrder, orderRecord);
+                ObjectUtils.CopyStruct(e.pOrder, orderRecord);
 
                 OrderManager.AddOrderRecord(orderRecord);
 
                 if (e.bIsLast)
                 {
-                    OrderManager.OrderRepository.Init(OrderManager.GetOrderRecords());
+                    OrderManager.Init();
 
                     ShowProgress("查询委托单成功");
 
@@ -191,11 +197,15 @@ namespace autotrade
         {
             if (e.pRspInfo.ErrorID == 0)
             {
-                ObjectUtils.Copy(e.pTradingAccount, AccountManager.Accounts[0]);
+                ObjectUtils.CopyStruct(e.pTradingAccount, AccountManager.Accounts[0]);
 
                 ShowProgress("查询账户成功");
 
                 tradeApi.ReqQryOrder();
+
+                Thread.Sleep(1000);
+
+                if (noOrder) DialogResult = DialogResult.OK;                
             }
         }
 

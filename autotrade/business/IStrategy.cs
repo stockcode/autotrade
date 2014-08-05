@@ -7,7 +7,7 @@ using autotrade.model;
 
 namespace autotrade.business
 {
-    interface IStrategy
+    public interface IStrategy
     {
         List<Order> Match(MarketData marketData);
     }

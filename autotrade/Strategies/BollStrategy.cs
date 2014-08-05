@@ -1,33 +1,41 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using autotrade.business;
 using autotrade.model;
 using log4net;
+using MongoDB.Bson.Serialization.Attributes;
 using QuantBox.CSharp2CTP;
 
 namespace autotrade.Strategies
 {
-    internal class BollStrategy : IStrategy
+    public class BollStrategy : Strategy
     {
         private readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private List<Order> orders;
 
         private int days, tick;
-        private IndicatorManager indicatorManager;
-        private OrderManager orderManager;
+
+        public int Day { get; set; }
+
+        [BsonIgnore]
+        [Browsable(false)]
+        public IndicatorManager indicatorManager { get; set; }
+
+        [BsonIgnore]
+        [Browsable(false)]
+        public OrderManager orderManager { get; set; }
 
         private double maPrice = 0d;
 
 
-        public BollStrategy(IndicatorManager indicatorManager, OrderManager orderManager)
+        public BollStrategy()
         {
-            this.indicatorManager = indicatorManager;
-            this.orderManager = orderManager;
         }
 
-        public List<Order> Match(MarketData marketData)
+        public override List<Order> Match(MarketData marketData)
         {
             List<Order> orders =
                 orderManager.getOrders().Where(o => o.InstrumentId == marketData.InstrumentId && o.StrategyType == GetType().ToString()).ToList();

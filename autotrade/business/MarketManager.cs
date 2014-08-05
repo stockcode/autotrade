@@ -31,6 +31,8 @@ namespace autotrade.business
 
         public InstrumentManager InstrumentManager { get; set; }
 
+        public StrategyManager StrategyManager { get; set; }
+
         public event MarketDataHandler OnRtnMarketData;
 
         public void Subscribe()
@@ -50,6 +52,8 @@ namespace autotrade.business
                 marketDatas.Add(marketData);
                 instrumentDictionary.Add(instrumentID, marketData);
                 ppInstrumentId += instrumentID + ",";
+
+                StrategyManager.InitStrategies(instrumentID);
             }
 
             mdApi.Subscribe(ppInstrumentId, "");
@@ -89,7 +93,7 @@ namespace autotrade.business
                     orderManager.ProcessData(marketData);
 
                     //log.Info(marketQueue.Count());
-                    //ObjectUtils.Copy(pDepthMarketData, marketData);
+                    //ObjectUtils.CopyStruct(pDepthMarketData, marketData);
                     //OnRtnMarketData(this, new MarketDataEventArgs(marketData));
                     //log.Info(marketData);
                 }
@@ -104,6 +108,21 @@ namespace autotrade.business
         private void mdApi_OnRtnDepthMarketData(object sender, OnRtnDepthMarketDataArgs e)
         {
             marketQueue.Enqueue(e.pDepthMarketData);
+        }
+
+        public int GetIndex(string instrumentId)
+        {
+            try
+            {
+                return marketDatas.IndexOf(marketDatas.First(data => data.InstrumentId == instrumentId));
+
+            }
+            catch (Exception)
+            {
+                
+            }
+
+            return -1;
         }
     }
 

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MongoDB.Driver.Linq;
 using QuantBox.CSharp2CTP;
 using QuantBox.CSharp2CTP.Event;
 using Telerik.WinControls.UI;
@@ -70,12 +71,17 @@ namespace autotrade.business
         {
             TradeRecord tradeRecord = new TradeRecord();
 
-            ObjectUtils.Copy(e.pTrade, tradeRecord);
+            ObjectUtils.CopyStruct(e.pTrade, tradeRecord);
 
             //OnRtnTreadeRecord(this, new TradeRecordEventArgs(tradeRecord));
 
 
             Order order = OrderRepository.UpdateTradeID(e.pTrade);
+
+            if (order != null && order.StatusType == EnumOrderStatus.已平仓)
+            {
+                OnRspQryOrder(this, new OrderEventArgs(new MethodInvoker(() => OrderRepository.Delete(order))));                
+            }
 
             log.Info(e.pTrade);
         }
@@ -91,7 +97,7 @@ namespace autotrade.business
 
             }
 
-            ObjectUtils.Copy(e.pOrder, orderRecord);
+            ObjectUtils.CopyStruct(e.pOrder, orderRecord);
 
             //OnRspQryOrderRecord(this, new OrderRecordEventArgs(orderRecords));
 
@@ -104,7 +110,7 @@ namespace autotrade.business
         {
             PositionDetail positionDetail = new PositionDetail();
 
-            ObjectUtils.Copy(e.pInvestorPositionDetail, positionDetail);
+            ObjectUtils.CopyStruct(e.pInvestorPositionDetail, positionDetail);
 
             positionDetails.Add(positionDetail);
 
@@ -120,7 +126,7 @@ namespace autotrade.business
         {
             PositionRecord positionRecord = new PositionRecord();
 
-            ObjectUtils.Copy(e.pInvestorPosition, positionRecord);
+            ObjectUtils.CopyStruct(e.pInvestorPosition, positionRecord);
 
             positionRecords.Add(positionRecord);
 
@@ -137,7 +143,7 @@ namespace autotrade.business
         {
             TradeRecord tradeRecord = new TradeRecord();
 
-            ObjectUtils.Copy(e.pTrade, tradeRecord);
+            ObjectUtils.CopyStruct(e.pTrade, tradeRecord);
 
             tradeRecords.Add(tradeRecord);
 
@@ -190,7 +196,7 @@ namespace autotrade.business
         {
             if (order.CloseOrder == null)
             {
-                OnRspQryOrder(this, new OrderEventArgs(new MethodInvoker(() => OrderRepository.AddOrder(order))));
+                OnRspQryOrder(this, new OrderEventArgs(new MethodInvoker(() => OrderRepository.Add(order))));
 
                 int orderRef = tradeApi.OrderInsert(order.InstrumentId, order.OffsetFlag, order.Direction, order.Price,
                         order.Volume);
@@ -273,6 +279,16 @@ namespace autotrade.business
         public BindingList<TradeRecord> GetTradeRecords()
         {
             return tradeRecords;
+        }
+
+        public BindingList<OrderLog> getOrderLogs()
+        {
+            return OrderRepository.getOrderLogs();
+        }
+
+        public void Init()
+        {
+            OrderRepository.Init(orderRecords);
         }
     }
 

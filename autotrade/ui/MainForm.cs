@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Autofac;
+using MongoDB.Driver.Linq;
 using QuantBox.CSharp2CTP;
 using QuantBox.CSharp2CTP.Event;
 using Telerik.WinControls.UI;
@@ -65,6 +66,8 @@ namespace autotrade
  
         private void MainForm_Load(object sender, EventArgs e)
         {
+            _strategyManager.Container = Container;
+
             //radGridView4.Columns["Direction"].DataTypeConverter = new DirectionConverter();
 
 
@@ -76,6 +79,7 @@ namespace autotrade
                 return;
             }
 
+            _orderManager.OnRspQryOrder += _orderManager_OnRspQryOrder;
 
             radGridView8.DataSource = _accountManager.Accounts;
 
@@ -83,42 +87,44 @@ namespace autotrade
             radGridView6.DataSource = _orderManager.GetOrderRecords();
 
 
-            radGridView7.DataSource = _orderManager.getOrders();
+            gvOrder.DataSource = _orderManager.getOrders();
+
+            radGridView3.DataSource = _orderManager.getOrderLogs();
 
             radGridView9.DataSource = _orderManager.GetTradeRecords();
 
 
-            radGridView7.Columns["PositionProfit"].HeaderText = "持仓盈亏";
-            radGridView7.Columns["PositionProfit"].FormatString = "{0:F2}";
+            gvOrder.Columns["PositionProfit"].HeaderText = "持仓盈亏";
+            gvOrder.Columns["PositionProfit"].FormatString = "{0:F2}";
 
-            radGridView7.Columns["CloseProfit"].HeaderText = "平仓盈亏";
-            radGridView7.Columns["CloseProfit"].FormatString = "{0:F2}";
+            gvOrder.Columns["CloseProfit"].HeaderText = "平仓盈亏";
+            gvOrder.Columns["CloseProfit"].FormatString = "{0:F2}";
 
-            radGridView7.BestFitColumns();
+            gvOrder.BestFitColumns();
 
             _marketManager.Subscribe();
 
-            this.radGridView2.MasterTemplate.Columns.Clear();
-            radGridView2.DataSource = _marketManager.marketDatas;
-            radGridView2.BestFitColumns();
+            this.gvInstrument.MasterTemplate.Columns.Clear();
+            gvInstrument.DataSource = _marketManager.marketDatas;
+            gvInstrument.BestFitColumns();
 
-            radGridView2.Columns["InstrumentId"].HeaderText = "合约";
-            radGridView2.Columns["LastPrice"].HeaderText = "最新价";
-            radGridView2.Columns["BidPrice1"].HeaderText = "买价";
-            radGridView2.Columns["BidVolume1"].HeaderText = "买量";
-            radGridView2.Columns["AskPrice1"].HeaderText = "卖价";
-            radGridView2.Columns["AskVolume1"].HeaderText = "卖量";
-            radGridView2.Columns["Volume"].HeaderText = "成交量";
-            radGridView2.Columns["OpenInterest"].HeaderText = "持仓量";
-            radGridView2.Columns["UpperLimitPrice"].HeaderText = "涨停价";
-            radGridView2.Columns["LowerLimitPrice"].HeaderText = "跌停价";
-            radGridView2.Columns["OpenPrice"].HeaderText = "今开盘";
-            radGridView2.Columns["PreSettlementPrice"].HeaderText = "昨结算";
-            radGridView2.Columns["HighestPrice"].HeaderText = "最高价";
-            radGridView2.Columns["LowestPrice"].HeaderText = "最低价";
-            radGridView2.Columns["PreClosePrice"].HeaderText = "昨收盘";
-            radGridView2.Columns["Turnover"].HeaderText = "成交额";
-            radGridView2.Columns["UpdateTime"].HeaderText = "行情更新时间";
+            gvInstrument.Columns["InstrumentId"].HeaderText = "合约";
+            gvInstrument.Columns["LastPrice"].HeaderText = "最新价";
+            gvInstrument.Columns["BidPrice1"].HeaderText = "买价";
+            gvInstrument.Columns["BidVolume1"].HeaderText = "买量";
+            gvInstrument.Columns["AskPrice1"].HeaderText = "卖价";
+            gvInstrument.Columns["AskVolume1"].HeaderText = "卖量";
+            gvInstrument.Columns["Volume"].HeaderText = "成交量";
+            gvInstrument.Columns["OpenInterest"].HeaderText = "持仓量";
+            gvInstrument.Columns["UpperLimitPrice"].HeaderText = "涨停价";
+            gvInstrument.Columns["LowerLimitPrice"].HeaderText = "跌停价";
+            gvInstrument.Columns["OpenPrice"].HeaderText = "今开盘";
+            gvInstrument.Columns["PreSettlementPrice"].HeaderText = "昨结算";
+            gvInstrument.Columns["HighestPrice"].HeaderText = "最高价";
+            gvInstrument.Columns["LowestPrice"].HeaderText = "最低价";
+            gvInstrument.Columns["PreClosePrice"].HeaderText = "昨收盘";
+            gvInstrument.Columns["Turnover"].HeaderText = "成交额";
+            gvInstrument.Columns["UpdateTime"].HeaderText = "行情更新时间";
             //radGridView2.LoadLayout("c:\\columns.xml");            
         }
 
@@ -127,6 +133,14 @@ namespace autotrade
             mdApi.Disconnect();
 
             tradeApi.Disconnect();
+        }
+
+        void _orderManager_OnRspQryOrder(object sender, OrderEventArgs e)
+        {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(e.methodInvoker);
+            }
         }
 
         private void radRibbonBar1_Click(object sender, EventArgs e)
@@ -159,6 +173,24 @@ namespace autotrade
         private void radMenuItem11_Click(object sender, EventArgs e)
         {
             _strategyManager.Start();
+        }
+
+        private void gvOrder_SelectionChanged(object sender, EventArgs e)
+        {
+            Order order = (Order) gvOrder.SelectedRows[0].DataBoundItem;
+
+            int index = _marketManager.GetIndex(order.InstrumentId);
+            if (index < 0) return;
+
+            gvInstrument.Rows[index].IsSelected = true;
+            gvInstrument.TableElement.ScrollToRow(index);
+        }
+
+        private void RadGridView_SelectionChanged(object sender, EventArgs e)
+        {
+            MarketData marketData = (MarketData) gvInstrument.SelectedRows[0].DataBoundItem;
+
+            radPropertyGrid1.SelectedObject = _strategyManager.GetInstrumentStrategy(marketData.InstrumentId);
         }
     }
 }

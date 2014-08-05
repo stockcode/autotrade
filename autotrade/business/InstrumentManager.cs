@@ -17,7 +17,7 @@ namespace autotrade.business
 
         public InstrumentManager()
         {
-            foreach (var instrument in instrumentRepo.Collection.FindAll())
+            foreach (var instrument in instrumentRepo.Collection.FindAll())            
             {
                 instruments.Add(instrument);
             }

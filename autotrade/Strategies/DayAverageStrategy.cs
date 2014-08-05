@@ -1,19 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms.VisualStyles;
 using autotrade.business;
 using autotrade.model;
 using log4net;
+using MongoDB.Bson.Serialization.Attributes;
 using QuantBox.CSharp2CTP;
 
 namespace autotrade.Strategies
 {
-    internal class DayAverageStrategy : IStrategy
+    internal class DayAverageStrategy : Strategy
     {
         private readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        private readonly OrderManager orderManager;
+
+        [BsonIgnore]
+        [Browsable(false)]
+        public OrderManager orderManager { get; set; }
+
+        [DisplayName("开仓阀值")]
+        [DefaultValue(3)]
+        public int MaxOpenThreshold { get; set; }
+
+        [DisplayName("平仓阀值")]
+        [DefaultValue(3)]
+        public int MaxCloseThreshold { get; set; }
 
         private readonly Dictionary<String, MarketData> preMarketDataDictionary = new Dictionary<string, MarketData>();
         private double TOLERANCE = 0.01d;
@@ -23,15 +36,13 @@ namespace autotrade.Strategies
         private double maPrice = 0d;
         private List<Order> orders;
         private int tick, upThreshold = 0, downThreshold = 0, closeThreshold = 0;
-        private int maxThreshold = 3, maxCloseThreshold = 3;
         private bool buyCount = false, sellCount = false, closeCount = false;
 
-        public DayAverageStrategy(OrderManager orderManager)
+        public DayAverageStrategy()
         {
-            this.orderManager = orderManager;
         }
 
-        public List<Order> Match(MarketData marketData)
+        public override List<Order> Match(MarketData marketData)
         {
             var instrumentId = marketData.InstrumentId;
 
@@ -62,7 +73,7 @@ namespace autotrade.Strategies
                     {
                         if (closeCount)
                         {
-                            if (closeThreshold >= maxCloseThreshold)
+                            if (closeThreshold >= MaxCloseThreshold)
                             {
 
                                 var neworder = new Order();
@@ -124,7 +135,7 @@ namespace autotrade.Strategies
 
                 if (result == TThostFtdcDirectionType.Nothing && buyCount)
                 {
-                    if (upThreshold >= maxThreshold)
+                    if (upThreshold >= MaxOpenThreshold)
                     {
 
                         var neworder = new Order();
@@ -150,7 +161,7 @@ namespace autotrade.Strategies
 
                 if (result == TThostFtdcDirectionType.Nothing && sellCount)
                 {
-                    if (downThreshold >= maxThreshold)
+                    if (downThreshold >= MaxOpenThreshold)
                     {
 
                         var neworder = new Order();

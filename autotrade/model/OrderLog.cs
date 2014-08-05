@@ -11,7 +11,7 @@ using QuantBox.CSharp2CTP;
 
 namespace autotrade.model
 {
-    public class Order : Entity, INotifyPropertyChanged
+    public class OrderLog : Entity , INotifyPropertyChanged
     {
         public string InstrumentId { get; set; }
 
@@ -31,18 +31,7 @@ namespace autotrade.model
 
         private EnumOrderStatus _statusType;
 
-        public EnumOrderStatus StatusType
-        {
-            get { return _statusType; }
-            set
-            {
-                if (this._statusType != value)
-                {
-                    this._statusType = value;
-                    NotifyPropertyChanged();
-                }
-            }
-        }
+        public EnumOrderStatus StatusType { get; set; }
 
         public string OrderRef { get; set; }
 
@@ -51,37 +40,9 @@ namespace autotrade.model
         /// </summary>        
         private string _orderSysID;
 
-        public string OrderSysID
-        {
-            get { return _orderSysID; }
-            set
-            {
-                if (value != null && this._orderSysID != value.Trim())
-                {
-                    this._orderSysID = value.Trim();
-                    NotifyPropertyChanged();
-                }
-            }
-        }
+        public string OrderSysID { get; set; }
 
         public int Unit { get; set; }
-
-        private double positionProfit;
-
-        [BsonIgnore]
-        public double PositionProfit
-        {
-            get { return positionProfit; }
-
-            set
-            {
-                if (this.positionProfit != value)
-                {
-                    this.positionProfit = value;
-                    NotifyPropertyChanged();
-                }
-            }
-        }
 
         private double closeProfit;
 
@@ -99,23 +60,12 @@ namespace autotrade.model
             }
         }
         
+        
         /// <summary>
         /// 成交编号
         /// </summary>
-        private string _tradeID;
-
-        public string TradeID
-        {
-            get { return _tradeID; }
-            set
-            {
-                if (value != null && this._tradeID != value.Trim())
-                {
-                    this._tradeID = value.Trim();
-                    NotifyPropertyChanged();
-                }
-            }
-        }
+        public string TradeID { get; set; }
+        
 
         public String StrategyType { get; set; }
 
@@ -125,8 +75,8 @@ namespace autotrade.model
         {
             return string.Format("Order(合约代码={0},开平标志={1},买卖方向={2},价格={3},手数={4},状态={5},报单引用={6},报单编号={7})"
                 ,InstrumentId, OffsetFlag, Direction, Price, Volume, StatusType, OrderRef, OrderSysID);
-        }
-
+        }      
+  
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
 
         // This method is called by the Set accessor of each property.
