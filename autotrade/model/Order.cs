@@ -1,8 +1,10 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 using MongoDB.Bson.Serialization.Attributes;
@@ -42,11 +44,10 @@ namespace autotrade.model
 
             set
             {
-                if (this.positionProfit != value)
-                {
+                
                     this.positionProfit = value;
                     NotifyPropertyChanged();
-                }
+                
             }
         }
 
@@ -134,14 +135,53 @@ namespace autotrade.model
             }
         }
 
-        [DisplayName("成交日期")]
+        [Browsable(false)]
         public string TradeDate { get; set; }
 
-        [DisplayName("成交时间")]
+        [Browsable(false)]
+        public string ActualTradeDate {
+            get
+            {
+                return
+                    DateTime.Today.CompareTo(DateTime.ParseExact(TradeDate, "yyyyMMdd", CultureInfo.InvariantCulture)) ==
+                    0
+                        ? TradeDateTime
+                        : DateTime.Today.ToString("yyyyMMdd") + " " + TradeTime;
+            } 
+        }
+
+        [Browsable(false)]
         public string TradeTime { get; set; }
 
-        [DisplayName("策略")]
+        [BsonIgnore]
+        [DisplayName("成交时间")]
+        public string TradeDateTime {
+            get { return TradeDate + " " + TradeTime; }
+        }
+
+        [BsonIgnore]
+        [DisplayName("持仓时间")]
+        public TimeSpan PositionTimeSpan { get; set; }
+        
+
+
+        [DisplayName("开仓策略")]
         public String StrategyType { get; set; }
+
+        [BsonIgnore]
+        [DisplayName("平仓挂单价")]
+        public double ClosePrice {
+            get {
+                return CloseOrder != null ? CloseOrder.Price : 0;
+            }
+        }
+
+        [BsonIgnore]
+        [DisplayName("平仓策略")]
+        public String CloseStrategyType
+        {
+            get { return CloseOrder != null ? CloseOrder.StrategyType : ""; }
+        }
 
         [Browsable(false)]        
         public Order CloseOrder { get; set; }

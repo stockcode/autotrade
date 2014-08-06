@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -204,7 +205,10 @@ namespace autotrade.business
                     : order.TradePrice - marketData.LastPrice;
 
                 order.LastPrice = marketData.LastPrice;
-                order.PositionProfit = profit * order.Unit * order.Volume;                
+                order.PositionProfit = profit * order.Unit * order.Volume;
+                order.PositionTimeSpan =
+                    DateTime.Now.Subtract(DateTime.ParseExact(order.ActualTradeDate, "yyyyMMdd HH:mm:ss",
+                        CultureInfo.InvariantCulture));
             }
 
             AccountManager.Accounts[0].PositionProfit = OrderRepository.getOrders().Sum(o => o.PositionProfit);

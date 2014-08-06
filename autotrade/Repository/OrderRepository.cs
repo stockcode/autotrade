@@ -92,7 +92,11 @@ namespace autotrade.Repository
                     order.CloseOrder.TradeDate = pTrade.TradeDate;
                     order.CloseOrder.TradeTime = pTrade.TradeTime;
                     order.StatusType = EnumOrderStatus.已平仓;
-                    order.CloseProfit = order.PositionProfit;
+
+                    double profit = (order.Direction == TThostFtdcDirectionType.Buy)
+                    ? order.CloseOrder.TradePrice - order.TradePrice
+                    : order.TradePrice - order.CloseOrder.TradePrice;
+                    order.CloseProfit = profit * order.Volume;
                     order.PositionProfit = 0;
                     Update(order);
 

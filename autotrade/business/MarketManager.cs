@@ -82,6 +82,8 @@ namespace autotrade.business
                         continue;
                     }
 
+                    log.Info("queueCount=" + marketQueue.Count);
+
                     CThostFtdcDepthMarketDataField pDepthMarketData = marketQueue.Dequeue();
                     MarketData marketData;
 
@@ -100,11 +102,14 @@ namespace autotrade.business
                         instrumentDictionary.Add(pDepthMarketData.InstrumentID, marketData);
                     }
 
-                    indicatorManager.ProcessData(marketData);
+                    Task.Factory.StartNew(() =>
+                    {
+                        indicatorManager.ProcessData(marketData);
 
-                    strategyManager.PrcessData(marketData);
+                        strategyManager.PrcessData(marketData);
 
-                    orderManager.ProcessData(marketData);
+                        orderManager.ProcessData(marketData);
+                    });
 
                     //log.Info(marketQueue.Count());
                     //ObjectUtils.CopyStruct(pDepthMarketData, marketData);
