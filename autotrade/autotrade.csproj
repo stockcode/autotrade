@@ -87,6 +87,7 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Design" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -106,12 +107,13 @@
   <ItemGroup>
     <Compile Include="business\AccountManager.cs" />
     <Compile Include="business\IndicatorManager.cs" />
-    <Compile Include="business\IStrategy.cs" />
     <Compile Include="business\MarketManager.cs" />
     <Compile Include="business\OrderManager.cs" />
     <Compile Include="business\StrategyManager.cs" />
     <Compile Include="Config\BrokerManager.cs" />
     <Compile Include="converter\DirectionConverter.cs" />
+    <Compile Include="converter\StopProfitUIEditor.cs" />
+    <Compile Include="converter\StopLossUIEditor.cs" />
     <Compile Include="converter\StrategyUIEditor.cs" />
     <Compile Include="model\Account.cs" />
     <Compile Include="model\BarRecord.cs" />
@@ -119,6 +121,7 @@
     <Compile Include="model\Instrument.cs" />
     <Compile Include="model\InstrumentStrategy.cs" />
     <Compile Include="model\MarketData.cs" />
+    <Compile Include="model\MongoEntity.cs" />
     <Compile Include="model\OrderLog.cs" />
     <Compile Include="model\Order.cs" />
     <Compile Include="model\OrderRecord.cs" />
@@ -127,6 +130,12 @@
     <Compile Include="model\ServerLine.cs" />
     <Compile Include="model\TradeRecord.cs" />
     <Compile Include="Repository\OrderRepository.cs" />
+    <Compile Include="Stop\Loss\PercentStopLoss.cs" />
+    <Compile Include="Stop\Loss\PriceStopLoss.cs" />
+    <Compile Include="Stop\Loss\StopLoss.cs" />
+    <Compile Include="Stop\Profit\PercentStopProfit.cs" />
+    <Compile Include="Stop\Profit\PriceStopProfit.cs" />
+    <Compile Include="Stop\Profit\StopProfit.cs" />
     <Compile Include="Strategies\DayAverageStrategy.cs" />
     <Compile Include="Strategies\Strategy.cs" />
     <Compile Include="ui\LoginForm.cs">

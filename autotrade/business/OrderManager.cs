@@ -66,14 +66,7 @@ namespace autotrade.business
         }
 
         void tradeApi_OnRtnTrade(object sender, OnRtnTradeArgs e)
-        {
-            TradeRecord tradeRecord = new TradeRecord();
-
-            ObjectUtils.CopyStruct(e.pTrade, tradeRecord);
-
-            //OnRtnTreadeRecord(this, new TradeRecordEventArgs(tradeRecord));
-
-
+        {             
             Order order = OrderRepository.UpdateTradeID(e.pTrade);
 
             if (order != null && order.StatusType == EnumOrderStatus.已平仓)
@@ -135,26 +128,7 @@ namespace autotrade.business
         {
             log.Info(e.pRspInfo);
             log.Info(e.pInputOrder);
-        }
-
-        void tradeApi_OnRspQryTrade(object sender, OnRspQryTradeArgs e)
-        {
-            TradeRecord tradeRecord = new TradeRecord();
-
-            ObjectUtils.CopyStruct(e.pTrade, tradeRecord);
-
-            tradeRecords.Add(tradeRecord);
-
-            OrderRepository.UpdateTradeID(e.pTrade);
-
-            if (e.bIsLast)
-            {
-                OnRtnTradeRecord(this, new TradeRecordEventArgs(tradeRecords));
-            }
-
-            //            log.Info(pRspInfo);
-            //            log.Info(pTrade);
-        }
+        }        
 
         void tradeApi_OnErrRtnOrderAction(object sender, OnErrRtnOrderActionArgs e)
         {
@@ -229,7 +203,8 @@ namespace autotrade.business
                     ? marketData.LastPrice - order.TradePrice
                     : order.TradePrice - marketData.LastPrice;
 
-                order.PositionProfit = profit * order.Unit;                
+                order.LastPrice = marketData.LastPrice;
+                order.PositionProfit = profit * order.Unit * order.Volume;                
             }
 
             AccountManager.Accounts[0].PositionProfit = OrderRepository.getOrders().Sum(o => o.PositionProfit);

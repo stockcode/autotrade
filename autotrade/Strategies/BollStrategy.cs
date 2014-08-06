@@ -25,6 +25,7 @@ namespace autotrade.Strategies
 
         public BollStrategy()
         {
+            Day = 10;
         }
 
         public override List<Order> Match(MarketData marketData, InstrumentStrategy instrumentStrategy)
@@ -38,13 +39,13 @@ namespace autotrade.Strategies
 
             foreach (Order order in orders)
             {
-                if (order.StatusType == EnumOrderStatus.已开仓 && tick >= 10 && (tick % 10) == 0)
+                if (order.StatusType == EnumOrderStatus.已开仓 && tick >= Day && (tick % Day) == 0)
                 {
                     var neworder = new Order();
                     neworder.OffsetFlag = TThostFtdcOffsetFlagType.CloseToday;
                     neworder.Direction = order.Direction == TThostFtdcDirectionType.Buy ? TThostFtdcDirectionType.Sell : TThostFtdcDirectionType.Buy;
                     neworder.InstrumentId = marketData.InstrumentId;
-                    neworder.Price = marketData.LastPrice;
+                    neworder.Price = GetAnyPrice(marketData, instrumentStrategy, neworder.Direction);
                     neworder.Volume = order.Volume;
                     neworder.StrategyType = GetType().ToString();
                     
@@ -64,7 +65,7 @@ namespace autotrade.Strategies
                 neworder.OffsetFlag = TThostFtdcOffsetFlagType.Open;
                 neworder.Direction = TThostFtdcDirectionType.Buy;
                 neworder.InstrumentId = marketData.InstrumentId;
-                neworder.Price = marketData.LastPrice;
+                neworder.Price = GetAnyPrice(marketData, instrumentStrategy, neworder.Direction);
                 neworder.Volume = instrumentStrategy.Volume;
                 neworder.StrategyType = GetType().ToString();
 

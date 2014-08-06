@@ -31,6 +31,12 @@ namespace autotrade
             builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly())
                 .Where(t => t.Name.EndsWith("Strategy")).PropertiesAutowired();
 
+            builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly())
+                .Where(t => t.Name.EndsWith("StopLoss")).PropertiesAutowired();
+
+            builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly())
+                .Where(t => t.Name.EndsWith("StopProfit")).PropertiesAutowired();
+
             builder.RegisterAssemblyTypes(assembly).AssignableTo<Form>().PropertiesAutowired();
             
             IContainer container = builder.Build();

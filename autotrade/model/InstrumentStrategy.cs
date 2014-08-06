@@ -8,17 +8,21 @@ using System.Threading.Tasks;
 using Autofac;
 using autotrade.business;
 using autotrade.converter;
+using autotrade.Stop.Loss;
+using autotrade.Stop.Profit;
 using autotrade.Strategies;
 using MongoRepository;
 using IContainer = Autofac.IContainer;
 
 namespace autotrade.model
 {
-    public class InstrumentStrategy : Entity, INotifyPropertyChanged
+    public class InstrumentStrategy : MongoEntity, INotifyPropertyChanged
     {
         public InstrumentStrategy()
         {
-            Strategies = new BindingList<Strategy>();            
+            Strategies = new BindingList<Strategy>();
+            StopLosses = new BindingList<StopLoss>();
+            StopProfits = new BindingList<StopProfit>();
         }
 
         public void BindEvent(IContainer container)
@@ -32,6 +36,27 @@ namespace autotrade.model
                 if (strategy.OrderManager == null)
                     strategy.OrderManager = container.Resolve<OrderManager>();
             }
+
+            StopLosses.ListChanged += Strategies_ListChanged;
+            foreach (var stopLoss in StopLosses)
+            {
+                if (stopLoss.IndicatorManager == null)
+                    stopLoss.IndicatorManager = container.Resolve<IndicatorManager>();
+
+                if (stopLoss.OrderManager == null)
+                    stopLoss.OrderManager = container.Resolve<OrderManager>();
+            }
+
+            StopProfits.ListChanged += Strategies_ListChanged;
+
+            foreach (var stopProfit in StopProfits)
+            {
+                if (stopProfit.IndicatorManager == null)
+                    stopProfit.IndicatorManager = container.Resolve<IndicatorManager>();
+
+                if (stopProfit.OrderManager == null)
+                    stopProfit.OrderManager = container.Resolve<OrderManager>();
+            }
         }
 
         void Strategies_ListChanged(object sender, ListChangedEventArgs e)
@@ -39,18 +64,43 @@ namespace autotrade.model
             if (e.ListChangedType == ListChangedType.ItemAdded) NotifyPropertyChanged();
         }
 
+        [DisplayName("合约")]
         [ReadOnly(true)]
         public string InstrumentID { get; set; }
 
+        [DisplayName("合约名称")]
+        [ReadOnly(true)]
+        public string InstrumentName { get; set; }
+
         [ReadOnly(true)]
         [DisplayName("合约数量乘数")]
-        /// <summary>
-        /// 合约数量乘数
-        /// </summary>
         public int VolumeMultiple { get; set; }
 
+        [ReadOnly(true)]
+        [DisplayName("最小变动价位")]
+        public double PriceTick { get; set; }
+
+
+        [ReadOnly(true)]
+        [DisplayName("多头保证金率")]
+        public double LongMarginRatio { get; set; }
+
+        [ReadOnly(true)]
+        [DisplayName("空头保证金率")]
+        public double ShortMarginRatio { get; set; }
+
+
+        [DisplayName("策略列表")]
         [Editor(typeof(StrategyUIEditor), typeof(System.Drawing.Design.UITypeEditor))]
         public BindingList<Strategy> Strategies { get; set; }
+
+        [DisplayName("止损列表")]
+        [Editor(typeof(StopLossUIEditor), typeof(System.Drawing.Design.UITypeEditor))]
+        public BindingList<StopLoss> StopLosses { get; set; }
+
+        [DisplayName("止盈列表")]
+        [Editor(typeof(StopProfitUIEditor), typeof(System.Drawing.Design.UITypeEditor))]
+        public BindingList<StopProfit> StopProfits { get; set; }
 
         private bool _startTrade = true;
 
@@ -63,6 +113,38 @@ namespace autotrade.model
                 if (this._startTrade != value)
                 {
                     this._startTrade = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+        private bool _allowStopLoss = true;
+
+        [DisplayName("是否止损")]
+        public bool AllowStopLoss
+        {
+            get { return _allowStopLoss; }
+            set
+            {
+                if (this._allowStopLoss != value)
+                {
+                    this._allowStopLoss = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+        private bool _allowStopProfit = true;
+
+        [DisplayName("是否止盈")]
+        public bool AllowStopProfit
+        {
+            get { return _allowStopProfit; }
+            set
+            {
+                if (this._allowStopProfit != value)
+                {
+                    this._allowStopProfit = value;
                     NotifyPropertyChanged();
                 }
             }

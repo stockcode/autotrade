@@ -57,13 +57,13 @@ namespace autotrade.Strategies
 
         private double maPrice = 0d;
         private List<Order> orders;
-        private int tick, upThreshold = 0, downThreshold = 0, closeThreshold = 0;
+        private int  upThreshold = 0, downThreshold = 0, closeThreshold = 0;
         private bool buyCount = false, sellCount = false, closeCount = false;
 
         public DayAverageStrategy()
-        {
-            MaxCloseThreshold = 3;
+        {            
             MaxOpenThreshold = 3;
+            MaxCloseThreshold = 5;
         }
 
         public override List<Order> Match(MarketData marketData, InstrumentStrategy instrumentStrategy)
@@ -74,8 +74,6 @@ namespace autotrade.Strategies
                 OrderManager.getOrders()
                     .Where(o => o.InstrumentId == marketData.InstrumentId && o.StrategyType == GetType().ToString())
                     .ToList();
-
-            tick++;
 
             var list = new List<Order>();
 
@@ -106,7 +104,7 @@ namespace autotrade.Strategies
                                     ? TThostFtdcDirectionType.Sell
                                     : TThostFtdcDirectionType.Buy;
                                 neworder.InstrumentId = marketData.InstrumentId;
-                                neworder.Price = marketData.LastPrice;
+                                neworder.Price = GetAnyPrice(marketData, instrumentStrategy, neworder.Direction);
                                 neworder.Volume = order.Volume;
                                 neworder.StrategyType = GetType().ToString();
 
@@ -118,6 +116,23 @@ namespace autotrade.Strategies
                                 log.Info(String.Format("{0}:{1}:{2}:{3}:{4}", ToString(), marketData.InstrumentId,
                                     marketData.LastPrice, maPrice,
                                     orders.Count()));
+
+                                //开反向新仓
+                                neworder = new Order();
+                                neworder.OffsetFlag = TThostFtdcOffsetFlagType.Open;
+                                neworder.Direction = order.Direction == TThostFtdcDirectionType.Buy
+                                    ? TThostFtdcDirectionType.Sell
+                                    : TThostFtdcDirectionType.Buy;
+
+                                neworder.InstrumentId = marketData.InstrumentId;
+                                neworder.Price = GetAnyPrice(marketData, instrumentStrategy, neworder.Direction);
+                                neworder.Volume = instrumentStrategy.Volume;
+                                neworder.StrategyType = GetType().ToString();
+
+                                list.Add(neworder);
+
+                                closeCount = false;
+                                closeThreshold = 0;
                             }
                             else
                             {
@@ -166,7 +181,7 @@ namespace autotrade.Strategies
                         neworder.OffsetFlag = TThostFtdcOffsetFlagType.Open;
                         neworder.Direction = TThostFtdcDirectionType.Buy;
                         neworder.InstrumentId = marketData.InstrumentId;
-                        neworder.Price = marketData.LastPrice;
+                        neworder.Price = GetAnyPrice(marketData, instrumentStrategy, neworder.Direction);
                         neworder.Volume = instrumentStrategy.Volume;
                         neworder.StrategyType = GetType().ToString();
 
@@ -175,7 +190,9 @@ namespace autotrade.Strategies
                         log.Info(String.Format("{0}:{1}:{2}:{3}:{4}", ToString(), marketData.InstrumentId,
                             marketData.LastPrice, marketData.AveragePrice,
                             result));
+
                         upThreshold = 0;
+                        buyCount = false;
                     }
                     else
                     {
@@ -192,7 +209,7 @@ namespace autotrade.Strategies
                         neworder.OffsetFlag = TThostFtdcOffsetFlagType.Open;
                         neworder.Direction = TThostFtdcDirectionType.Sell;
                         neworder.InstrumentId = marketData.InstrumentId;
-                        neworder.Price = marketData.LastPrice;
+                        neworder.Price = GetAnyPrice(marketData, instrumentStrategy, neworder.Direction);
                         neworder.Volume = instrumentStrategy.Volume;
                         neworder.StrategyType = GetType().ToString();
 
@@ -201,7 +218,9 @@ namespace autotrade.Strategies
                         log.Info(String.Format("{0}:{1}:{2}:{3}:{4}", ToString(), marketData.InstrumentId,
                             marketData.LastPrice, marketData.AveragePrice,
                             result));
+
                         downThreshold = 0;
+                        sellCount = false;
                     }
                     else
                     {
@@ -224,7 +243,7 @@ namespace autotrade.Strategies
 
             //log.Info(instrumentId + ":buyThreshold=" + upThreshold + ":sellThreshold=" + downThreshold);
             return list;
-        }
+        }        
 
         private TThostFtdcDirectionType Cross(MarketData preMarketData, MarketData marketData)
         {

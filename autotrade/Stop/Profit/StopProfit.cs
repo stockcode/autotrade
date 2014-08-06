@@ -1,18 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using autotrade.business;
 using autotrade.model;
 using MongoDB.Bson.Serialization.Attributes;
 using QuantBox.CSharp2CTP;
 
-namespace autotrade.Strategies
+namespace autotrade.Stop.Profit
 {
-    [BsonKnownTypes(typeof(BollStrategy), typeof(DayAverageStrategy))]
-    public  abstract class Strategy
+    [BsonKnownTypes(typeof(PriceStopProfit), typeof(PercentStopProfit))]
+    public  abstract class StopProfit
     {
         [BsonIgnore]
         [Browsable(false)]

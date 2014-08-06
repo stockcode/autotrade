@@ -55,23 +55,17 @@ namespace autotrade.model
             InstrumentId = instrumentId;
         }
 
-       
 
-        /// <summary>
-        /// 合约代码
-        /// </summary>
+
+        [DisplayName("合约")]
         public string InstrumentId { get; set; }
 
-        /// <summary>
-        /// 最新价
-        /// </summary>
+        [DisplayName("最新价")]
         public double LastPrice { get; set; }
 
-        /// <summary>
-        /// 当日均价
-        /// </summary>
         private double averagePrice;
 
+        [DisplayName("当日均价")]
         public double AveragePrice
         {
             get { return averagePrice; }
@@ -83,13 +77,10 @@ namespace autotrade.model
                 }
             }
         }
-        public int Unit { get; set; }
 
-        /// <summary>
-        /// 最后修改时间
-        /// </summary>
         private string _updateTime;
 
+        [DisplayName("更新时间")]
         public string UpdateTime
         {
             get { return _updateTime; }
@@ -103,58 +94,75 @@ namespace autotrade.model
             }
         }
 
-        /// <summary>
-        /// 上次结算价
-        /// </summary>
+       [DisplayName("买价")]
+        public double BidPrice1 { get; set; }
+
+        [DisplayName("买量")]
+        public int BidVolume1 { get; set; }
+
+        [DisplayName("卖价")]
+        public double AskPrice1 { get; set; }
+
+        [DisplayName("卖量")]
+        public int AskVolume1 { get; set; }
+
+        [DisplayName("成交量")]
+        public int Volume { get; set; }
+
+        [DisplayName("持仓量")]
+        public double OpenInterest { get; set; }
+
+        [DisplayName("今开盘")]
+        public double OpenPrice { get; set; }
+
+        [DisplayName("最高价")]
+        public double HighestPrice { get; set; }
+
+        [DisplayName("最低价")]
+        public double LowestPrice { get; set; }
+
+        [DisplayName("涨停价")]
+        public double UpperLimitPrice { get; set; }
+
+        [DisplayName("跌停价")]
+        public double LowerLimitPrice { get; set; }
+
+        [DisplayName("昨结算")]
         public double PreSettlementPrice { get; set; }
-        /// <summary>
-        /// 昨收盘
-        /// </summary>
+
+        [DisplayName("昨收盘")]
         public double PreClosePrice { get; set; }
+
+
+        [DisplayName("成交额")]
+        public double Turnover { get; set; }
+
+        [Browsable(false)]
+        public int Unit { get; set; }
+
+        
+        
         /// <summary>
         /// 昨持仓量
         /// </summary>
+        [Browsable(false)]
         public double PreOpenInterest { get; set; }
-        /// <summary>
-        /// 今开盘
-        /// </summary>
-        public double OpenPrice { get; set; }
-        /// <summary>
-        /// 最高价
-        /// </summary>
-        public double HighestPrice { get; set; }
-        /// <summary>
-        /// 最低价
-        /// </summary>
-        public double LowestPrice { get; set; }
-        /// <summary>
-        /// 数量
-        /// </summary>
-        public int Volume { get; set; }
-        /// <summary>
-        /// 成交金额
-        /// </summary>
-        public double Turnover { get; set; }
-        /// <summary>
-        /// 持仓量
-        /// </summary>
-        public double OpenInterest { get; set; }
+        
+        
+        
+        
         /// <summary>
         /// 今收盘
         /// </summary>
+        [Browsable(false)]
         public double ClosePrice { get; set; }
+
         /// <summary>
         /// 本次结算价
         /// </summary>
+        [Browsable(false)]
         public double SettlementPrice { get; set; }
-        /// <summary>
-        /// 涨停板价
-        /// </summary>
-        public double UpperLimitPrice { get; set; }
-        /// <summary>
-        /// 跌停板价
-        /// </summary>
-        public double LowerLimitPrice { get; set; }
+        
 
 
         
@@ -162,33 +170,21 @@ namespace autotrade.model
         /// <summary>
         /// 最后修改毫秒
         /// </summary>
+        [Browsable(false)]
         public int UpdateMillisec { get; set; }
-        /// <summary>
-        /// 申买价一
-        /// </summary>
-        public double BidPrice1 { get; set; }
-        /// <summary>
-        /// 申买量一
-        /// </summary>
-        public int BidVolume1 { get; set; }
-        /// <summary>
-        /// 申卖价一
-        /// </summary>
-        public double AskPrice1 { get; set; }
-        /// <summary>
-        /// 申卖量一
-        /// </summary>
-        public int AskVolume1 { get; set; }
+        
 
 
         /// <summary>
         /// 交易日
         /// </summary>
+        [Browsable(false)]
         public string TradingDay { get; set; }
 
         /// <summary>
         /// 交易所代码
         /// </summary>
+        [Browsable(false)]
         public string ExchangeID { get; set; }
 
         public override string ToString()

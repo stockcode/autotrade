@@ -11,23 +11,50 @@ using QuantBox.CSharp2CTP;
 
 namespace autotrade.model
 {
-    public class Order : Entity, INotifyPropertyChanged
+    public class Order : MongoEntity, INotifyPropertyChanged
     {
+        [DisplayName("合约")]
         public string InstrumentId { get; set; }
 
+        [Browsable(false)]
         public TThostFtdcOffsetFlagType OffsetFlag { get; set; }
 
+        [DisplayName("买卖")]
         public TThostFtdcDirectionType Direction { get; set; }
 
+        [DisplayName("挂单价")]
         public double Price { get; set; }
 
+        [DisplayName("成交价")]
         public double TradePrice { get; set; }
 
-        public string TradeDate { get; set; }
+        [DisplayName("最新价")]
+        [BsonIgnore]
+        public double LastPrice { get; set; }
 
-        public string TradeTime { get; set; }
+        private double positionProfit;
 
+        [DisplayName("持仓盈亏")]
+        [BsonIgnore]
+        public double PositionProfit
+        {
+            get { return positionProfit; }
+
+            set
+            {
+                if (this.positionProfit != value)
+                {
+                    this.positionProfit = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+        [DisplayName("持仓手数")]
         public int Volume { get; set; }
+
+        [DisplayName("占用的保证金")]
+        public double UseMargin { get; set; }
 
         private EnumOrderStatus _statusType;
 
@@ -44,6 +71,7 @@ namespace autotrade.model
             }
         }
 
+        [Browsable(false)]
         public string OrderRef { get; set; }
 
         /// <summary>
@@ -51,6 +79,7 @@ namespace autotrade.model
         /// </summary>        
         private string _orderSysID;
 
+        [Browsable(false)]
         public string OrderSysID
         {
             get { return _orderSysID; }
@@ -64,27 +93,14 @@ namespace autotrade.model
             }
         }
 
+        [Browsable(false)]
         public int Unit { get; set; }
 
-        private double positionProfit;
-
-        [BsonIgnore]
-        public double PositionProfit
-        {
-            get { return positionProfit; }
-
-            set
-            {
-                if (this.positionProfit != value)
-                {
-                    this.positionProfit = value;
-                    NotifyPropertyChanged();
-                }
-            }
-        }
+        
 
         private double closeProfit;
 
+        [Browsable(false)]
         public double CloseProfit
         {
             get { return closeProfit; }
@@ -104,6 +120,7 @@ namespace autotrade.model
         /// </summary>
         private string _tradeID;
 
+        [Browsable(false)]
         public string TradeID
         {
             get { return _tradeID; }
@@ -117,8 +134,16 @@ namespace autotrade.model
             }
         }
 
+        [DisplayName("成交日期")]
+        public string TradeDate { get; set; }
+
+        [DisplayName("成交时间")]
+        public string TradeTime { get; set; }
+
+        [DisplayName("策略")]
         public String StrategyType { get; set; }
 
+        [Browsable(false)]        
         public Order CloseOrder { get; set; }
 
         public override string ToString()

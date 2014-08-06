@@ -85,6 +85,7 @@ namespace autotrade
 
         private void ShowProgress(String info)
         {
+            log.Info(info);
             radProgressBar1.Text = info;
             radProgressBar1.Value1++;
         }
@@ -183,9 +184,7 @@ namespace autotrade
                 OrderManager.AddOrderRecord(orderRecord);
 
                 if (e.bIsLast)
-                {
-                    OrderManager.Init();
-
+                {                    
                     ShowProgress("查询委托单成功");
 
                     tradeApi.ReqQryTrade();

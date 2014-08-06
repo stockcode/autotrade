@@ -11,41 +11,48 @@ using QuantBox.CSharp2CTP;
 
 namespace autotrade.model
 {
-    public class OrderLog : Entity , INotifyPropertyChanged
+    public class OrderLog : MongoEntity , INotifyPropertyChanged
     {
+        [DisplayName("合约")]
         public string InstrumentId { get; set; }
 
+        [Browsable(false)]
         public TThostFtdcOffsetFlagType OffsetFlag { get; set; }
 
+        [DisplayName("买卖")]
         public TThostFtdcDirectionType Direction { get; set; }
 
+        [DisplayName("挂单价")]
         public double Price { get; set; }
 
+        [DisplayName("成交价")]
         public double TradePrice { get; set; }
 
+        [DisplayName("成交日期")]
         public string TradeDate { get; set; }
 
+        [DisplayName("成交时间")]
         public string TradeTime { get; set; }
 
+        [DisplayName("持仓手数")]
         public int Volume { get; set; }
 
-        private EnumOrderStatus _statusType;
 
         public EnumOrderStatus StatusType { get; set; }
 
+        [Browsable(false)]
         public string OrderRef { get; set; }
 
-        /// <summary>
-        /// 报单编号
-        /// </summary>        
-        private string _orderSysID;
 
+        [Browsable(false)]
         public string OrderSysID { get; set; }
 
+        [Browsable(false)]
         public int Unit { get; set; }
 
         private double closeProfit;
 
+        [DisplayName("平仓盈亏")]
         public double CloseProfit
         {
             get { return closeProfit; }
@@ -59,14 +66,12 @@ namespace autotrade.model
                 }
             }
         }
-        
-        
-        /// <summary>
-        /// 成交编号
-        /// </summary>
-        public string TradeID { get; set; }
-        
 
+
+        [Browsable(false)]
+        public string TradeID { get; set; }
+
+        [DisplayName("策略")]
         public String StrategyType { get; set; }
 
         public Order CloseOrder { get; set; }

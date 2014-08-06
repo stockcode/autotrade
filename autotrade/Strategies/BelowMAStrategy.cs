@@ -10,7 +10,7 @@ using QuantBox.CSharp2CTP;
 
 namespace autotrade.Strategies
 {
-    class BelowMAStrategy : IStrategy
+    class BelowMAStrategy : Strategy
     {
         private readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -27,7 +27,7 @@ namespace autotrade.Strategies
             this.indicatorManager = indicatorManager;            
 
         }
-        public List<Order> Match(MarketData marketData)
+        public override List<Order> Match(MarketData marketData, InstrumentStrategy instrumentStrategy)
         {
             if ( orders.Count() > 0) return null;
 

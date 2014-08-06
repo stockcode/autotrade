@@ -125,7 +125,9 @@ namespace autotrade.Repository
 
             foreach (var order in orderdb)
             {
-                if (orderRecords.Any(record => record.OrderSysID.Trim() == order.OrderSysID))
+                if (order.StatusType == EnumOrderStatus.已平仓) continue;
+
+                if (order.TradeID != null || orderRecords.Any(record => record.OrderSysID.Trim() == order.OrderSysID))
                 {
                     orders.Add(order);
                 }

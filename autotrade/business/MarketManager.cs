@@ -138,13 +138,14 @@ namespace autotrade.business
 
         public void UnSubscribe(string instrumentID)
         {
+            mdApi.Unsubscribe(instrumentID, "");
+
             marketDatas.Remove(marketDatas.First(md => md.InstrumentId == instrumentID));
 
             instrumentDictionary.Remove(instrumentID);
 
             StrategyManager.RemoveStrategies(instrumentID);
-
-            mdApi.Unsubscribe(instrumentID, "");
+            
         }
 
         private void mdApi_OnRtnDepthMarketData(object sender, OnRtnDepthMarketDataArgs e)
