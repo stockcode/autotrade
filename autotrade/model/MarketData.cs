@@ -187,6 +187,7 @@ namespace autotrade.model
         [Browsable(false)]
         public string ExchangeID { get; set; }
 
+        [Browsable(false)]
         public string UpdateTimeSec
         {
             get { return UpdateTime + ":" + UpdateMillisec; }

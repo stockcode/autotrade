@@ -24,16 +24,6 @@ namespace autotrade.Repository
 
         public OrderRepository()
         {
-            
-            foreach(OrderLog orderLog in orderLogRepo.Where(log=>log.TradeDate == DateTime.Today.ToString("yyyyMMdd")).ToList())
-            {
-                orderlogs.Add(orderLog);
-            }
-        }
-
-        public List<Order> GetByInstrumentIDAndStatusType(string instrumentId, EnumOrderStatus statusType)
-        {
-            return orders.Where(o => o.InstrumentId == instrumentId && o.StatusType == statusType).ToList();
         }
 
 
@@ -46,18 +36,17 @@ namespace autotrade.Repository
 
         public Order UpdateOrderRef(CThostFtdcOrderField pOrder)
         {
-            string orderRef = pOrder.FrontID.ToString() + pOrder.SessionID.ToString() +  pOrder.OrderRef.Trim();
-
             foreach (Order order in orders)
             {
-                if (order.OrderRef == orderRef)
+                if (order.OrderRef == pOrder.OrderRef && order.FrontID == pOrder.FrontID && order.SessionID == pOrder.SessionID )
                 {
                     order.OrderSysID = pOrder.OrderSysID;
+                    order.ExchangeID = pOrder.ExchangeID;
                     Update(order);
                     return order; ;
                 }
 
-                if (order.CloseOrder != null && order.CloseOrder.OrderRef == orderRef)
+                if (order.CloseOrder != null && order.CloseOrder.OrderRef == pOrder.OrderRef && order.CloseOrder.FrontID == pOrder.FrontID && order.CloseOrder.SessionID == pOrder.SessionID)
                 {
                     order.CloseOrder.OrderSysID = pOrder.OrderSysID;
                     Update(order);
@@ -96,7 +85,7 @@ namespace autotrade.Repository
                     double profit = (order.Direction == TThostFtdcDirectionType.Buy)
                     ? order.CloseOrder.TradePrice - order.TradePrice
                     : order.TradePrice - order.CloseOrder.TradePrice;
-                    order.CloseProfit = profit * order.Volume;
+                    order.CloseProfit = profit * order.Volume * order.Unit;
                     order.PositionProfit = 0;
                     Update(order);
 
@@ -145,9 +134,25 @@ namespace autotrade.Repository
             return orders;
         }
 
-        public BindingList<OrderLog> getOrderLogs()
+        public BindingList<OrderLog> GetOrderLogs()
         {
+            return GetOrderLogs(DateTime.Today.ToString("yyyyMMdd"));
+        }
+
+        public BindingList<OrderLog> GetOrderLogs(String tradingDay)
+        {
+            orderlogs.RaiseListChangedEvents = false;
+
+            orderlogs.Clear();
+            foreach (OrderLog orderLog in orderLogRepo.Where(ol => ol.TradeDate == tradingDay).ToList())
+            {
+                orderlogs.Add(orderLog);
+            }
+            orderlogs.RaiseListChangedEvents = true;
+
             return orderlogs;
+
+
         }
     }
 }

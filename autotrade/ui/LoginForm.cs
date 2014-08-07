@@ -72,8 +72,9 @@ namespace autotrade
             if (e.result == ConnectionStatus.Logined)
             {
                 tradeApi.MaxOrderRef = Convert.ToInt32(e.pRspUserLogin.MaxOrderRef);
-                tradeApi.FrontID = e.pRspUserLogin.FrontID.ToString();
-                tradeApi.SessionID = e.pRspUserLogin.SessionID.ToString();
+                tradeApi.FrontID = e.pRspUserLogin.FrontID;
+                tradeApi.SessionID = e.pRspUserLogin.SessionID;
+                tradeApi.TradingDay = e.pRspUserLogin.TradingDay;
             }
 
             if (e.result == ConnectionStatus.Confirmed)

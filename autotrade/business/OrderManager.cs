@@ -33,6 +33,7 @@ namespace autotrade.business
 
         public AccountManager AccountManager { get; set; }
 
+
         public delegate void TradeRecordHandler(object sender, TradeRecordEventArgs e);
 
         public event TradeRecordHandler OnRtnTradeRecord;
@@ -54,16 +55,23 @@ namespace autotrade.business
             this.tradeApi = traderApi;
 
 //            this.tradeApi.OnRspQryOrder += tradeApi_OnRspQryOrder;
-//            this.tradeApi.OnErrRtnOrderInsert += tradeApi_OnErrRtnOrderInsert;
-//            this.tradeApi.OnErrRtnOrderAction += tradeApi_OnErrRtnOrderAction;
+
 //            this.tradeApi.OnRspQryTrade += tradeApi_OnRspQryTrade;
-//            this.tradeApi.OnRspOrderInsert += tradeApi_OnRspOrderInsert;
 //            this.tradeApi.OnRspQryInvestorPosition += tradeApi_OnRspQryInvestorPosition;
 //            this.tradeApi.OnRspQryInvestorPositionDetail += tradeApi_OnRspQryInvestorPositionDetail;
 //
 //
+            traderApi.OnRspOrderAction += traderApi_OnRspOrderAction;
             this.tradeApi.OnRtnOrder += tradeApi_OnRtnOrder;
-            this.tradeApi.OnRtnTrade += tradeApi_OnRtnTrade;            
+            this.tradeApi.OnRtnTrade += tradeApi_OnRtnTrade;
+                        this.tradeApi.OnErrRtnOrderInsert += tradeApi_OnErrRtnOrderInsert;
+                        this.tradeApi.OnErrRtnOrderAction += tradeApi_OnErrRtnOrderAction;
+                        this.tradeApi.OnRspOrderInsert += tradeApi_OnRspOrderInsert;
+        }
+
+        void traderApi_OnRspOrderAction(object sender, OnRspOrderActionArgs e)
+        {
+            log.Info(e.pInputOrderAction);
         }
 
         void tradeApi_OnRtnTrade(object sender, OnRtnTradeArgs e)
@@ -174,7 +182,11 @@ namespace autotrade.business
                 int orderRef = tradeApi.OrderInsert(order.InstrumentId, order.OffsetFlag, order.Direction, order.Price,
                         order.Volume);
 
-                order.OrderRef = tradeApi.FrontID + tradeApi.SessionID + orderRef;
+                order.OrderRef = orderRef.ToString();
+
+                order.FrontID = tradeApi.FrontID;
+
+                order.SessionID = tradeApi.SessionID;
 
                 order.StatusType = EnumOrderStatus.开仓中;
             }
@@ -185,19 +197,32 @@ namespace autotrade.business
                 int orderRef = tradeApi.OrderInsert(closeOrder.InstrumentId, closeOrder.OffsetFlag, closeOrder.Direction, closeOrder.Price,
                         closeOrder.Volume);
 
-                order.CloseOrder.OrderRef = tradeApi.FrontID + tradeApi.SessionID + orderRef;
+                order.CloseOrder.OrderRef = orderRef.ToString();
+
+                order.CloseOrder.FrontID = tradeApi.FrontID;
+
+                order.CloseOrder.SessionID = tradeApi.SessionID;
+                
+                order.CloseOrder.StatusType = EnumOrderStatus.平仓中;
 
                 order.StatusType = EnumOrderStatus.平仓中;
+                
             }
 
 
             return 0;
         }
 
+        public void CancelOrder(Order order)
+        {
+            tradeApi.CancelOrder(order.OrderRef, order.FrontID, order.SessionID, order.InstrumentId);
+            OrderRepository.Delete(order);                
+        }
+
         public void ProcessData(MarketData marketData)
         {
             
-            foreach(var order in getOrders().Where(o=>o.StatusType != EnumOrderStatus.开仓中))
+            foreach(var order in getOrders().Where(o=>o.InstrumentId == marketData.InstrumentId && o.StatusType != EnumOrderStatus.开仓中))
             {
 
                 double profit = (order.Direction == TThostFtdcDirectionType.Buy)
@@ -240,14 +265,32 @@ namespace autotrade.business
             return tradeRecords;
         }
 
-        public BindingList<OrderLog> getOrderLogs()
+        public BindingList<OrderLog> GetOrderLogs(String tradingDay)
         {
-            return OrderRepository.getOrderLogs();
+            return OrderRepository.GetOrderLogs(tradingDay);
         }
 
         public void Init()
         {
             OrderRepository.Init(orderRecords);
+        }
+
+        public void CloseOrder(Order order)
+        {
+            var neworder = new Order();
+            neworder.OffsetFlag = TThostFtdcOffsetFlagType.CloseToday;
+            neworder.Direction = order.Direction == TThostFtdcDirectionType.Buy
+                ? TThostFtdcDirectionType.Sell
+                : TThostFtdcDirectionType.Buy;
+            neworder.InstrumentId = order.InstrumentId;
+            
+            neworder.Price = MarketManager.instrumentDictionary[order.InstrumentId].LastPrice;
+            neworder.Volume = order.Volume;
+            neworder.StrategyType = "Close Order By User";
+
+            order.CloseOrder = neworder;
+
+            OrderInsert(order);
         }
     }
 

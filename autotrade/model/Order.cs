@@ -64,6 +64,7 @@ namespace autotrade.model
 
         private EnumOrderStatus _statusType;
 
+        [DisplayName("状态")]
         public EnumOrderStatus StatusType
         {
             get { return _statusType; }
@@ -98,6 +99,10 @@ namespace autotrade.model
                 }
             }
         }
+
+        public int SessionID { get; set; }
+
+        public int FrontID { get; set; }
 
         [Browsable(false)]
         public int Unit { get; set; }
@@ -192,6 +197,8 @@ namespace autotrade.model
 
         [Browsable(false)]
         public List<DayAverageLog> DayAverageLogs { get; set; }
+
+        public string ExchangeID { get; set; }
 
         public override string ToString()
         {

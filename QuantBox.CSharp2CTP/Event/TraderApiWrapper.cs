@@ -36,9 +36,14 @@ namespace QuantBox.CSharp2CTP.Event
         /// 最大报单引用
         /// </summary>
         public int MaxOrderRef { get; set; }
-        public string FrontID { get; set; }
+        
+        public int FrontID { get; set; }
 
-        public string SessionID { get; set; }
+        public int SessionID { get; set; }
+
+        public string TradingDay { get; set; }
+
+        
 
         private MsgQueue m_pMsgQueue;
         private TradeApi m_Api;
@@ -196,34 +201,16 @@ namespace QuantBox.CSharp2CTP.Event
                 TThostFtdcVolumeConditionType.AV);
         }
 
-//        public int SendOrder(
-//            int OrderRef,
-//            string szInstrument,
-//            TThostFtdcDirectionType Direction,
-//            string szCombOffsetFlag,
-//            string szCombHedgeFlag,
-//            int VolumeTotalOriginal,
-//            double LimitPrice,
-//            TThostFtdcOrderPriceTypeType OrderPriceType,
-//            TThostFtdcTimeConditionType TimeCondition,
-//            TThostFtdcContingentConditionType ContingentCondition,
-//            double StopPrice,
-//            TThostFtdcVolumeConditionType VolumeCondition)
-//        {
-//            return m_Api.SendOrder(
-//                OrderRef,
-//                szInstrument,
-//                Direction,
-//                szCombOffsetFlag,
-//                szCombHedgeFlag,
-//                VolumeTotalOriginal,
-//                LimitPrice,
-//                OrderPriceType,
-//                TimeCondition,
-//                ContingentCondition,
-//                StopPrice,
-//                VolumeCondition);
-//        }
+        public void CancelOrder(string OrderRef, int FrontID, int SessionID, string instrumentID)
+        {
+            var orderField = new CThostFtdcOrderField();
+            orderField.OrderRef = OrderRef;
+            orderField.FrontID = FrontID;
+            orderField.SessionID = SessionID;
+            orderField.InstrumentID = instrumentID;
+
+            m_Api.CancelOrder(ref orderField);
+        }
 
         public void CancelOrder(ref CThostFtdcOrderField pOrder)
         {

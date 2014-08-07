@@ -27,13 +27,13 @@ namespace autotrade
         public MdApiWrapper mdApi { get; set; }
         public TraderApiWrapper tradeApi { get; set; }
 
-        public OrderManager _orderManager { get; set; }
+        public OrderManager OrderManager { get; set; }
         public IContainer Container { get; set; }
 
-        public AccountManager _accountManager { get; set; }
-        public MarketManager _marketManager { get; set; }
-        public StrategyManager _strategyManager { get; set; }
-        public IndicatorManager _indicatorManager { get; set; }
+        public AccountManager AccountManager { get; set; }
+        public MarketManager MarketManager { get; set; }
+        public StrategyManager StrategyManager { get; set; }
+        public IndicatorManager IndicatorManager { get; set; }
 
 
         private void tradeApi_OnRspQryInvestorPositionCombineDetail(
@@ -54,11 +54,14 @@ namespace autotrade
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            _strategyManager.Container = Container;
+            StrategyManager.Container = Container;
 
             //radGridView4.Columns["Direction"].DataTypeConverter = new DirectionConverter();
 
             miDetail.Click += miDetail_Click;
+            miCloseOrder.Click += miCloseOrder_Click;
+            miCancelOrder.Click += miCancelOrder_Click;
+
             miOrderLogDetail.Click += miOrderLogDetail_Click;
 
             var loginForm = Container.Resolve<LoginForm>();
@@ -67,38 +70,55 @@ namespace autotrade
             {
                 Close();
                 return;
-            }
+            }            
 
-            _orderManager.Init();
+            OrderManager.Init();
 
-            _orderManager.OnRspQryOrder += _orderManager_OnRspQryOrder;
+            OrderManager.OnRspQryOrder += _orderManager_OnRspQryOrder;
 
-            radGridView8.DataSource = _accountManager.Accounts;
-
-
-            radGridView6.DataSource = _orderManager.GetOrderRecords();
+            radGridView8.DataSource = AccountManager.Accounts;
 
 
-            gvOrder.DataSource = _orderManager.getOrders();
-
-            gvOrderLog.DataSource = _orderManager.getOrderLogs();
-
-            radGridView9.DataSource = _orderManager.GetTradeRecords();
+            radGridView6.DataSource = OrderManager.GetOrderRecords();
 
 
-            gvOrder.Columns["PositionProfit"].FormatString = "{0:F2}";
+            gvOrder.DataSource = OrderManager.getOrders();
+            ConfigGridView(gvOrder, "PositionProfit");
 
-            gvOrder.BestFitColumns();
+            gvOrderLog.DataSource = OrderManager.GetOrderLogs(tradeApi.TradingDay);
+            ConfigGridView(gvOrderLog, "CloseProfit");
 
-            gvOrderLog.BestFitColumns();
+            radGridView9.DataSource = OrderManager.GetTradeRecords();
 
-            _marketManager.Subscribe();
+
+
+            MarketManager.Subscribe();
 
             gvInstrument.MasterTemplate.Columns.Clear();
-            gvInstrument.DataSource = _marketManager.marketDatas;
+            gvInstrument.DataSource = MarketManager.marketDatas;
             gvInstrument.BestFitColumns();
 
-            _strategyManager.Start();
+            StrategyManager.Start();
+        }
+
+        void miCancelOrder_Click(object sender, EventArgs e)
+        {
+            var order = (Order)gvOrder.SelectedRows[0].DataBoundItem;
+
+            OrderManager.CancelOrder(order);
+        }
+
+        void miCloseOrder_Click(object sender, EventArgs e)
+        {
+            var order = (Order)gvOrder.SelectedRows[0].DataBoundItem;
+
+            OrderManager.CloseOrder(order);
+        }
+
+        private void ConfigGridView(RadGridView radGridView, string Column)
+        {
+            radGridView.Columns[Column].FormatString = "{0:F2}";
+            radGridView.BestFitColumns();
         }
 
         void miOrderLogDetail_Click(object sender, EventArgs e)
@@ -156,14 +176,14 @@ namespace autotrade
 
         private void radMenuItem11_Click(object sender, EventArgs e)
         {
-            _strategyManager.Start();
+            StrategyManager.Start();
         }
 
         private void gvOrder_SelectionChanged(object sender, EventArgs e)
         {
 //            Order order = (Order) gvOrder.SelectedRows[0].DataBoundItem;
 //
-//            int index = _marketManager.GetIndex(order.InstrumentId);
+//            int index = MarketManager.GetIndex(order.InstrumentId);
 //            if (index < 0) return;
 //
 //            gvInstrument.Rows[index].IsSelected = true;
@@ -174,7 +194,7 @@ namespace autotrade
         {
             var marketData = (MarketData) gvInstrument.SelectedRows[0].DataBoundItem;
 
-            radPropertyGrid1.SelectedObject = _strategyManager.GetInstrumentStrategy(marketData.InstrumentId);
+            radPropertyGrid1.SelectedObject = StrategyManager.GetInstrumentStrategy(marketData.InstrumentId);
         }
 
         private void gvOrder_ContextMenuOpening(object sender, ContextMenuOpeningEventArgs e)
@@ -185,6 +205,14 @@ namespace autotrade
         private void gvOrderLog_ContextMenuOpening(object sender, ContextMenuOpeningEventArgs e)
         {
             e.ContextMenu = cmOrderLog.DropDown;
+        }
+
+        private void dtTradingDay_ValueChanged(object sender, EventArgs e)
+        {
+            gvOrderLog.DataSource = null;
+
+            gvOrderLog.DataSource = OrderManager.GetOrderLogs(dtTradingDay.Value.ToString("yyyyMMdd"));
+            ConfigGridView(gvOrderLog, "CloseProfit");
         }
     }
 }

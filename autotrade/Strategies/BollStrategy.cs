@@ -14,7 +14,9 @@ namespace autotrade.Strategies
     public class BollStrategy : Strategy
     {
         private readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        private List<Order> orders;
+        
+
+        private List<Order> newOrders = new List<Order>();
 
         private int days, tick;
 
@@ -22,6 +24,7 @@ namespace autotrade.Strategies
 
         private double maPrice = 0d;
 
+        private MarketData currMarketData;
 
         public BollStrategy()
         {
@@ -30,49 +33,62 @@ namespace autotrade.Strategies
 
         public override List<Order> Match(MarketData marketData)
         {
-            List<Order> orders =
-                OrderManager.getOrders().Where(o => o.InstrumentId == marketData.InstrumentId && o.StrategyType == GetType().ToString()).ToList();
+            newOrders.Clear();
+
+            var instrumentId = marketData.InstrumentId;
+            
+            currMarketData = marketData;
 
             tick++;
 
-            List<Order> list = new List<Order>();
+            List<Order> orders = GetStrategyOrders(instrumentId);
 
-            foreach (Order order in orders)
-            {
-                if (order.StatusType == EnumOrderStatus.已开仓 && tick >= Day && (tick % Day) == 0)
-                {
-                    var neworder = new Order();
-                    neworder.OffsetFlag = TThostFtdcOffsetFlagType.CloseToday;
-                    neworder.Direction = order.Direction == TThostFtdcDirectionType.Buy ? TThostFtdcDirectionType.Sell : TThostFtdcDirectionType.Buy;
-                    neworder.InstrumentId = marketData.InstrumentId;
-                    neworder.Price = GetAnyPrice(marketData, neworder.Direction);
-                    neworder.Volume = order.Volume;
-                    neworder.StrategyType = GetType().ToString();
-                    
 
-                    order.CloseOrder = neworder;
+            //CloseOrder(orders.FindAll(o => o.StatusType == EnumOrderStatus.已开仓));
 
-                    list.Add(order);
+            if (!orders.Exists(o => o.StatusType != EnumOrderStatus.已平仓))
+                OpenOrder();
 
-                    log.Info(String.Format("{0}:{1}:{2}:{3}:{4}", ToString(), marketData.InstrumentId, marketData.LastPrice, maPrice,
-                        orders.Count()));
-                }
-            }
 
-            if (orders.Count(o => o.StatusType != EnumOrderStatus.已平仓) == 0)
+            return newOrders;
+        }
+
+        private void OpenOrder()
+        {
+            var neworder = new Order();
+            neworder.OffsetFlag = TThostFtdcOffsetFlagType.Open;
+            neworder.Direction = TThostFtdcDirectionType.Buy;
+            neworder.InstrumentId = currMarketData.InstrumentId;
+            neworder.Price = GetAnyPrice(currMarketData, neworder.Direction);            
+            neworder.Volume = InstrumentStrategy.Volume;
+            neworder.StrategyType = GetType().ToString();
+
+            newOrders.Add(neworder);
+        }
+
+        private void CloseOrder(List<Order> orders)
+        {
+            foreach (var order in orders)
             {
                 var neworder = new Order();
-                neworder.OffsetFlag = TThostFtdcOffsetFlagType.Open;
-                neworder.Direction = TThostFtdcDirectionType.Buy;
-                neworder.InstrumentId = marketData.InstrumentId;
-                neworder.Price = GetAnyPrice(marketData, neworder.Direction);
-                neworder.Volume = InstrumentStrategy.Volume;
+                neworder.OffsetFlag = TThostFtdcOffsetFlagType.CloseToday;
+                neworder.Direction = order.Direction == TThostFtdcDirectionType.Buy
+                    ? TThostFtdcDirectionType.Sell
+                    : TThostFtdcDirectionType.Buy;
+                neworder.InstrumentId = currMarketData.InstrumentId;
+                neworder.Price = GetAnyPrice(currMarketData, neworder.Direction);
+                neworder.Volume = order.Volume;
                 neworder.StrategyType = GetType().ToString();
 
-                list.Add(neworder);
-            }
 
-            return list;
+                order.CloseOrder = neworder;
+
+                newOrders.Add(order);
+
+                log.Info(String.Format("{0}:{1}:{2}:{3}:{4}", ToString(), currMarketData.InstrumentId, currMarketData.LastPrice,
+                    maPrice,
+                    orders.Count()));
+            }
         }
     }
 }

@@ -42,6 +42,8 @@ namespace autotrade.model
         [DisplayName("持仓手数")]
         public int Volume { get; set; }
 
+        [DisplayName("占用的保证金")]
+        public double UseMargin { get; set; }
 
         public EnumOrderStatus StatusType { get; set; }
 
@@ -101,6 +103,20 @@ namespace autotrade.model
         }
 
         [BsonIgnore]
+        [DisplayName("平仓成交价")]
+        public double CloseTradePrice
+        {
+            get
+            {
+                return CloseOrder != null ? CloseOrder.TradePrice : 0;
+            }
+            set
+            {
+
+            }
+        }
+
+        [BsonIgnore]
         [DisplayName("平仓策略")]
         public String CloseStrategyType
         {
@@ -110,6 +126,7 @@ namespace autotrade.model
 
             }
         }
+
 
         public override string ToString()
         {
