@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 using autotrade.business;
 using autotrade.model;
@@ -13,7 +14,7 @@ using QuantBox.CSharp2CTP;
 
 namespace autotrade.Strategies
 {
-    internal class DayAverageStrategy : Strategy, INotifyPropertyChanged
+    internal class DayAverageStrategy : Strategy
     {
         private readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -36,7 +37,7 @@ namespace autotrade.Strategies
         private int _maxCloseThreshold;
 
         [DisplayName("平仓阀值")]
-        [DefaultValue(3)]
+        [DefaultValue(5)]
         public int MaxCloseThreshold
         {
             get { return _maxCloseThreshold; }
@@ -51,14 +52,22 @@ namespace autotrade.Strategies
         }
 
         private readonly Dictionary<String, MarketData> preMarketDataDictionary = new Dictionary<string, MarketData>();
-        private double TOLERANCE = 0.01d;
+        
 
         private int days;
 
         private double maPrice = 0d;
-        private List<Order> orders;
-        private int  upThreshold = 0, downThreshold = 0, closeThreshold = 0;
-        private bool buyCount = false, sellCount = false, closeCount = false;
+        private int  openThreshold = 0, closeThreshold = 0;
+        private bool openCount, closeCount = false;
+
+        private TThostFtdcDirectionType openDirection;
+
+        private List<DayAverageLog> dayAverageLogs = new List<DayAverageLog>(); 
+
+        private List<Order> newOrders = new List<Order>();
+
+        private MarketData preMarketData, currMarketData;
+        
 
         public DayAverageStrategy()
         {            
@@ -66,27 +75,102 @@ namespace autotrade.Strategies
             MaxCloseThreshold = 5;
         }
 
-        public override List<Order> Match(MarketData marketData, InstrumentStrategy instrumentStrategy)
+        public override List<Order> Match(MarketData marketData)
         {
+            newOrders.Clear();
+
             var instrumentId = marketData.InstrumentId;
 
-            List<Order> orders =
-                OrderManager.getOrders()
-                    .Where(o => o.InstrumentId == marketData.InstrumentId && o.StrategyType == GetType().ToString())
-                    .ToList();
+            currMarketData = marketData;
 
-            var list = new List<Order>();
+            preMarketData = IndicatorManager.GetPreMarketData(instrumentId);
+
+            if (preMarketData == null) return newOrders;
+
+            
+            List<Order> orders = GetStrategyOrders(instrumentId);
+
+
+            CloseOrder(orders.FindAll(o => o.StatusType == EnumOrderStatus.已开仓));
+
+            if (!orders.Exists(o => o.StatusType != EnumOrderStatus.已平仓))
+                OpenOrder();
+
+            
+            
+            return newOrders;
+        }
+
+        private void OpenOrder()
+        {
+                var result = Cross(preMarketData, currMarketData);
+
+                if (result == TThostFtdcDirectionType.Buy)
+                {                    
+                    openCount = true;
+                    openDirection = result;
+
+                    openThreshold = 1;
+
+                    GetLog(result.ToString(), preMarketData, currMarketData, openThreshold);
+
+                } else if (result == TThostFtdcDirectionType.Sell)
+                {
+                    openDirection = result;
+                    openCount = true;
+
+                    openThreshold = 1;
+
+                    GetLog(result.ToString(), preMarketData, currMarketData, openThreshold);
+                }
+
+                if (result == TThostFtdcDirectionType.Nothing && openCount)
+                {
+                    if (openThreshold >= MaxOpenThreshold)
+                    {
+
+                        var neworder = new Order();
+                        neworder.OffsetFlag = TThostFtdcOffsetFlagType.Open;
+                        neworder.Direction = openDirection;
+                        neworder.InstrumentId = currMarketData.InstrumentId;
+                        neworder.Price = GetAnyPrice(currMarketData, neworder.Direction);
+                        neworder.Volume = InstrumentStrategy.Volume;
+                        neworder.StrategyType = GetType().ToString();
+                        neworder.DayAverageLogs.AddRange(dayAverageLogs);
+
+                        newOrders.Add(neworder);
+
+                        log.Info(String.Format("{0}:{1}:{2}:{3}:{4}", ToString(), currMarketData.InstrumentId,
+                            currMarketData.LastPrice, currMarketData.AveragePrice,
+                            result));
+
+                        openThreshold = 0;
+                        openCount = false;
+                        dayAverageLogs.Clear();
+                    }
+                    else
+                    {
+                        openThreshold++;
+
+                        GetLog(result.ToString(), preMarketData, currMarketData, openThreshold);
+                    }
+                }
+            
+        }
+
+        private void CloseOrder(List<Order> orders)
+        {
+
 
             foreach (var order in orders)
             {
-                if (order.StatusType == EnumOrderStatus.已开仓 && preMarketDataDictionary.ContainsKey(instrumentId))
-                {
-                    var result = Cross(preMarketDataDictionary[instrumentId], marketData);
+                    var result = Cross(preMarketData, currMarketData);
 
                     if (result == order.Direction)
                     {
                         closeCount = false;
                         closeThreshold = 0;
+                        dayAverageLogs.Clear();
 
                         continue;
                     }
@@ -97,24 +181,23 @@ namespace autotrade.Strategies
                         {
                             if (closeThreshold >= MaxCloseThreshold)
                             {
-
                                 var neworder = new Order();
                                 neworder.OffsetFlag = TThostFtdcOffsetFlagType.CloseToday;
                                 neworder.Direction = order.Direction == TThostFtdcDirectionType.Buy
                                     ? TThostFtdcDirectionType.Sell
                                     : TThostFtdcDirectionType.Buy;
-                                neworder.InstrumentId = marketData.InstrumentId;
-                                neworder.Price = GetAnyPrice(marketData, instrumentStrategy, neworder.Direction);
+                                neworder.InstrumentId = currMarketData.InstrumentId;
+                                neworder.Price = GetAnyPrice(currMarketData, neworder.Direction);
                                 neworder.Volume = order.Volume;
                                 neworder.StrategyType = GetType().ToString();
-
+                                neworder.DayAverageLogs.AddRange(dayAverageLogs);
 
                                 order.CloseOrder = neworder;
 
-                                list.Add(order);
+                                newOrders.Add(order);
 
-                                log.Info(String.Format("{0}:{1}:{2}:{3}:{4}", ToString(), marketData.InstrumentId,
-                                    marketData.LastPrice, maPrice,
+                                log.Info(String.Format("{0}:{1}:{2}:{3}:{4}", ToString(), currMarketData.InstrumentId,
+                                    currMarketData.LastPrice, maPrice,
                                     orders.Count()));
 
                                 //开反向新仓
@@ -124,126 +207,50 @@ namespace autotrade.Strategies
                                     ? TThostFtdcDirectionType.Sell
                                     : TThostFtdcDirectionType.Buy;
 
-                                neworder.InstrumentId = marketData.InstrumentId;
-                                neworder.Price = GetAnyPrice(marketData, instrumentStrategy, neworder.Direction);
-                                neworder.Volume = instrumentStrategy.Volume;
+                                neworder.InstrumentId = currMarketData.InstrumentId;
+                                neworder.Price = GetAnyPrice(currMarketData, neworder.Direction);
+                                neworder.Volume = InstrumentStrategy.Volume;
                                 neworder.StrategyType = GetType().ToString();
+                                neworder.DayAverageLogs.AddRange(dayAverageLogs);
 
-                                list.Add(neworder);
+                                newOrders.Add(neworder);
 
                                 closeCount = false;
                                 closeThreshold = 0;
+                                dayAverageLogs.Clear();
                             }
                             else
                             {
                                 closeThreshold++;
+                                GetLog(result.ToString(), preMarketData, currMarketData, closeThreshold);
                             }
                         }
                     }
                     else
                     {
+                        GetLog(result.ToString(), preMarketData, currMarketData, closeThreshold);
                         closeCount = true;
                     }
 
-                    log.Info(instrumentId + ":closeThreshold=" + closeThreshold);
-                }
 
-                
             }
+        }
 
-            if (orders.Count(o => o.StatusType != EnumOrderStatus.已平仓) == 0 && preMarketDataDictionary.ContainsKey(instrumentId))
-            {
-                var result = Cross(preMarketDataDictionary[instrumentId], marketData);
-
-                if (result == TThostFtdcDirectionType.Buy)
-                {
-                    buyCount = true;
-                    sellCount = false;
-
-                    upThreshold++;
-                    downThreshold = 0;
-                } else if (result == TThostFtdcDirectionType.Sell)
-                {
-                    sellCount = true;
-                    buyCount = false;
-
-                    downThreshold++;
-                    upThreshold = 0;
-
-                }
-
-                if (result == TThostFtdcDirectionType.Nothing && buyCount)
-                {
-                    if (upThreshold >= MaxOpenThreshold)
-                    {
-
-                        var neworder = new Order();
-                        neworder.OffsetFlag = TThostFtdcOffsetFlagType.Open;
-                        neworder.Direction = TThostFtdcDirectionType.Buy;
-                        neworder.InstrumentId = marketData.InstrumentId;
-                        neworder.Price = GetAnyPrice(marketData, instrumentStrategy, neworder.Direction);
-                        neworder.Volume = instrumentStrategy.Volume;
-                        neworder.StrategyType = GetType().ToString();
-
-                        list.Add(neworder);
-
-                        log.Info(String.Format("{0}:{1}:{2}:{3}:{4}", ToString(), marketData.InstrumentId,
-                            marketData.LastPrice, marketData.AveragePrice,
-                            result));
-
-                        upThreshold = 0;
-                        buyCount = false;
-                    }
-                    else
-                    {
-                        upThreshold++;
-                    }
-                }
-
-                if (result == TThostFtdcDirectionType.Nothing && sellCount)
-                {
-                    if (downThreshold >= MaxOpenThreshold)
-                    {
-
-                        var neworder = new Order();
-                        neworder.OffsetFlag = TThostFtdcOffsetFlagType.Open;
-                        neworder.Direction = TThostFtdcDirectionType.Sell;
-                        neworder.InstrumentId = marketData.InstrumentId;
-                        neworder.Price = GetAnyPrice(marketData, instrumentStrategy, neworder.Direction);
-                        neworder.Volume = instrumentStrategy.Volume;
-                        neworder.StrategyType = GetType().ToString();
-
-                        list.Add(neworder);
-
-                        log.Info(String.Format("{0}:{1}:{2}:{3}:{4}", ToString(), marketData.InstrumentId,
-                            marketData.LastPrice, marketData.AveragePrice,
-                            result));
-
-                        downThreshold = 0;
-                        sellCount = false;
-                    }
-                    else
-                    {
-                        downThreshold++;
-                    }
-                }
-            }
-
-
-            if (preMarketDataDictionary.ContainsKey(instrumentId))
-            {
-                preMarketDataDictionary[instrumentId] = marketData.Copy();
-            }
-            else
-            {
-                var preMarketData = new MarketData();
-                preMarketData = marketData.Copy();
-                preMarketDataDictionary.Add(instrumentId, preMarketData);
-            }
-
-            //log.Info(instrumentId + ":buyThreshold=" + upThreshold + ":sellThreshold=" + downThreshold);
-            return list;
-        }        
+        private void GetLog(String direction, MarketData preMarketData, MarketData marketData, int threshold)
+        {
+            DayAverageLog dayAverageLog = new DayAverageLog();
+            dayAverageLog.Direction = direction;
+            dayAverageLog.Threshold = threshold;
+            dayAverageLog.PreLastPrice = preMarketData.LastPrice;
+            dayAverageLog.PreAveragePrice = preMarketData.AveragePrice;
+            dayAverageLog.PreUpdateTime = preMarketData.UpdateTimeSec;
+            dayAverageLog.LastPrice = marketData.LastPrice;
+            dayAverageLog.AveragePrice = marketData.AveragePrice;
+            dayAverageLog.UpdateTime = marketData.UpdateTimeSec;
+            dayAverageLogs.Add(dayAverageLog);   
+         
+            log.Info(dayAverageLog.Direction + ":" + dayAverageLog.Threshold);
+        }
 
         private TThostFtdcDirectionType Cross(MarketData preMarketData, MarketData marketData)
         {
@@ -259,18 +266,5 @@ namespace autotrade.Strategies
                 return TThostFtdcDirectionType.Nothing;
         }
 
-        public event PropertyChangedEventHandler PropertyChanged = delegate { };
-
-        // This method is called by the Set accessor of each property.
-        // The CallerMemberName attribute that is applied to the optional propertyName
-        // parameter causes the property name of the caller to be substituted as an argument.
-        private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
     }
 }

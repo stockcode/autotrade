@@ -20,23 +20,22 @@ namespace autotrade.business
         private readonly Dictionary<String, InstrumentStrategy> dictStrategies =
             new Dictionary<string, InstrumentStrategy>();
 
+        private readonly BindingList<InstrumentStrategy> instrumentStrategies = new BindingList<InstrumentStrategy>();
         private readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
-        private BindingList<InstrumentStrategy> instrumentStrategies = new BindingList<InstrumentStrategy>(); 
 
         private readonly MongoRepository<InstrumentStrategy> strategyRepo = new MongoRepository<InstrumentStrategy>();
         private bool isStart;
+
+        public StrategyManager()
+        {
+            instrumentStrategies.ListChanged += Strategies_ListChanged;
+        }
 
         public IndicatorManager IndicatorManager { get; set; }
 
         public OrderManager OrderManager { get; set; }
 
         public IContainer Container { get; set; }
-
-        public StrategyManager()
-        {
-            instrumentStrategies.ListChanged += Strategies_ListChanged;
-        }
 
         public void PrcessData(MarketData marketData)
         {
@@ -48,28 +47,25 @@ namespace autotrade.business
 
             foreach (Strategy strategy in instrumentStrategy.Strategies)
             {
-                List<Order> orders = strategy.Match(marketData, instrumentStrategy);
-                if (orders != null)
+                List<Order> orders = strategy.Match(marketData);
+
+                foreach (Order order in orders)
                 {
-                    foreach (Order order in orders)
-                    {
-                        order.Unit = instrumentStrategy.VolumeMultiple;
+                    order.Unit = instrumentStrategy.VolumeMultiple;
 
-                        if (order.Direction == TThostFtdcDirectionType.Buy)
-                            order.UseMargin = order.Price * order.Unit * order.Volume * instrumentStrategy.LongMarginRatio;
-                        else
-                            order.UseMargin = order.Price * order.Unit * order.Volume * instrumentStrategy.ShortMarginRatio;
+                    if (order.Direction == TThostFtdcDirectionType.Buy)
+                        order.UseMargin = order.Price*order.Unit*order.Volume*instrumentStrategy.LongMarginRatio;
+                    else
+                        order.UseMargin = order.Price*order.Unit*order.Volume*instrumentStrategy.ShortMarginRatio;
 
-                        log.Info(order);
-                        OrderManager.OrderInsert(order);
-                    }
+                    log.Info(order);
+                    OrderManager.OrderInsert(order);
                 }
             }
 
             if (instrumentStrategy.AllowStopLoss)
             {
-
-                foreach (var stopLoss in instrumentStrategy.StopLosses)
+                foreach (StopLoss stopLoss in instrumentStrategy.StopLosses)
                 {
                     List<Order> orders = stopLoss.Match(marketData, instrumentStrategy);
                     if (orders != null)
@@ -85,9 +81,9 @@ namespace autotrade.business
 
             if (instrumentStrategy.AllowStopProfit)
             {
-                foreach (var stopProfit in instrumentStrategy.StopProfits)
+                foreach (StopProfit stopProfit in instrumentStrategy.StopProfits)
                 {
-                    List<Order> orders = stopProfit.Match(marketData, instrumentStrategy);
+                    List<Order> orders = stopProfit.Match(marketData);
                     if (orders != null)
                     {
                         foreach (Order order in orders)
@@ -130,10 +126,6 @@ namespace autotrade.business
 
                 strategyRepo.Add(instrumentStrategy);
             }
-            else
-            {
-                
-            }
 
             instrumentStrategy.BindEvent(Container);
 
@@ -142,11 +134,11 @@ namespace autotrade.business
             dictStrategies.Add(instrument.InstrumentID, instrumentStrategy);
         }
 
-        void Strategies_ListChanged(object sender, System.ComponentModel.ListChangedEventArgs e)
-        {            
+        private void Strategies_ListChanged(object sender, ListChangedEventArgs e)
+        {
             switch (e.ListChangedType)
             {
-                    case ListChangedType.ItemChanged:
+                case ListChangedType.ItemChanged:
                     strategyRepo.Update(instrumentStrategies[e.NewIndex]);
                     break;
             }
@@ -164,7 +156,7 @@ namespace autotrade.business
 
         public void RemoveStrategies(string instrumentId)
         {
-            var instrumentStrategy = GetInstrumentStrategy(instrumentId);
+            InstrumentStrategy instrumentStrategy = GetInstrumentStrategy(instrumentId);
 
             if (instrumentStrategy == null) return;
 

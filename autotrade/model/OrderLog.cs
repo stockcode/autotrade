@@ -11,8 +11,13 @@ using QuantBox.CSharp2CTP;
 
 namespace autotrade.model
 {
-    public class OrderLog : MongoEntity , INotifyPropertyChanged
+    public class OrderLog : Entity , INotifyPropertyChanged
     {
+        public OrderLog()
+        {
+            DayAverageLogs = new List<DayAverageLog>();
+        }
+
         [DisplayName("合约")]
         public string InstrumentId { get; set; }
 
@@ -74,7 +79,37 @@ namespace autotrade.model
         [DisplayName("策略")]
         public String StrategyType { get; set; }
 
+        [Browsable(false)]
+        public List<DayAverageLog> DayAverageLogs { get; set; }
+
+        [Browsable(false)]
         public Order CloseOrder { get; set; }
+
+
+        [BsonIgnore]
+        [DisplayName("平仓挂单价")]
+        public double ClosePrice
+        {
+            get
+            {
+                return CloseOrder != null ? CloseOrder.Price : 0;
+            }
+            set
+            {
+                
+            }
+        }
+
+        [BsonIgnore]
+        [DisplayName("平仓策略")]
+        public String CloseStrategyType
+        {
+            get { return CloseOrder != null ? CloseOrder.StrategyType : ""; }
+            set
+            {
+
+            }
+        }
 
         public override string ToString()
         {

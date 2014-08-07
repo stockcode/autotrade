@@ -187,6 +187,11 @@ namespace autotrade.model
         [Browsable(false)]
         public string ExchangeID { get; set; }
 
+        public string UpdateTimeSec
+        {
+            get { return UpdateTime + ":" + UpdateMillisec; }
+        }
+
         public override string ToString()
         {
             return String.Format("MarketData(交易日={0},合约代码={1},最新价={2},上次结算价={3},昨收盘={4},昨持仓量={5},今开盘={6}" +

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using autotrade.model;
@@ -12,22 +13,28 @@ namespace autotrade.Stop.Profit
     {
         private readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        public double Price { get; set; }
+        private double _price = 5000;
 
-
-        public PriceStopProfit()
+        [DisplayName("止盈收益阀值")]
+        public double Price
         {
-            Price = 5000;
-        }
+            get { return _price; }
+            set
+            {
+                if (Math.Abs(this._price - value) > TOLERANCE)
+                {
+                    this._price = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }        
 
-        public override List<Order> Match(MarketData marketData, InstrumentStrategy instrumentStrategy)
+
+        public override List<Order> Match(MarketData marketData)
         {
              var instrumentId = marketData.InstrumentId;
 
-            List<Order> orders =
-                OrderManager.getOrders()
-                    .Where(o => o.InstrumentId == marketData.InstrumentId)
-                    .ToList();
+             List<Order> orders = GetOrders(instrumentId);
 
 
             var list = new List<Order>();
@@ -40,7 +47,7 @@ namespace autotrade.Stop.Profit
                     neworder.OffsetFlag = TThostFtdcOffsetFlagType.CloseToday;
                     neworder.Direction = order.Direction == TThostFtdcDirectionType.Buy ? TThostFtdcDirectionType.Sell : TThostFtdcDirectionType.Buy;
                     neworder.InstrumentId = marketData.InstrumentId;
-                    neworder.Price = GetAnyPrice(marketData, instrumentStrategy, neworder.Direction);
+                    neworder.Price = GetAnyPrice(marketData, neworder.Direction);
                     neworder.Volume = order.Volume;
                     neworder.StrategyType = GetType().ToString();
 

@@ -13,8 +13,13 @@ using QuantBox.CSharp2CTP;
 
 namespace autotrade.model
 {
-    public class Order : MongoEntity, INotifyPropertyChanged
+    public class Order : Entity, INotifyPropertyChanged
     {
+        public Order()
+        {            
+            DayAverageLogs = new List<DayAverageLog>();
+        }
+
         [DisplayName("合约")]
         public string InstrumentId { get; set; }
 
@@ -142,12 +147,11 @@ namespace autotrade.model
         public string ActualTradeDate {
             get
             {
-                return
-                    DateTime.Today.CompareTo(DateTime.ParseExact(TradeDate, "yyyyMMdd", CultureInfo.InvariantCulture)) ==
-                    0
+                return (DateTime.Today.CompareTo(DateTime.ParseExact(TradeDate, "yyyyMMdd", CultureInfo.InvariantCulture)) ==
+                       0
                         ? TradeDateTime
-                        : DateTime.Today.ToString("yyyyMMdd") + " " + TradeTime;
-            } 
+                        : DateTime.Today.ToString("yyyyMMdd") + " " + TradeTime);
+            }
         }
 
         [Browsable(false)]
@@ -185,6 +189,9 @@ namespace autotrade.model
 
         [Browsable(false)]        
         public Order CloseOrder { get; set; }
+
+        [Browsable(false)]
+        public List<DayAverageLog> DayAverageLogs { get; set; }
 
         public override string ToString()
         {

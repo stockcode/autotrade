@@ -105,6 +105,11 @@ namespace autotrade.business
             }
         }
 
+        public MarketData GetPreMarketData(string instrumentId)
+        {
+            return preMarketDataDictionary.ContainsKey(instrumentId) ? preMarketDataDictionary[instrumentId] : null;
+        }
+
         public double GetMAPrice(String instrumentId, int days) 
         {
             if (!maDictionary.ContainsKey(instrumentId))

@@ -76,7 +76,7 @@ namespace autotrade.business
             {
                 while (true)
                 {
-                    if (marketQueue.Count() == 0)
+                    if (!marketQueue.Any())
                     {
                         Thread.Sleep(100);
                         continue;
@@ -102,14 +102,14 @@ namespace autotrade.business
                         instrumentDictionary.Add(pDepthMarketData.InstrumentID, marketData);
                     }
 
-                    Task.Factory.StartNew(() =>
-                    {
-                        indicatorManager.ProcessData(marketData);
-
+                    //Task.Factory.StartNew(() =>
+                    //{
                         strategyManager.PrcessData(marketData);
 
                         orderManager.ProcessData(marketData);
-                    });
+
+                        indicatorManager.ProcessData(marketData);
+                   // });
 
                     //log.Info(marketQueue.Count());
                     //ObjectUtils.CopyStruct(pDepthMarketData, marketData);

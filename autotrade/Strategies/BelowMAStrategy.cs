@@ -15,7 +15,6 @@ namespace autotrade.Strategies
         private readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         private int days;
-        private IndicatorManager indicatorManager;
         private double maPrice = 0d;
 
         private List<Order> orders = new List<Order>();
@@ -24,14 +23,13 @@ namespace autotrade.Strategies
         public BelowMAStrategy(IndicatorManager indicatorManager, int days)
         {
             this.days = days;
-            this.indicatorManager = indicatorManager;            
 
         }
-        public override List<Order> Match(MarketData marketData, InstrumentStrategy instrumentStrategy)
+        public override List<Order> Match(MarketData marketData)
         {
             if ( orders.Count() > 0) return null;
 
-            maPrice = this.indicatorManager.GetMAPrice(marketData.InstrumentId, days);            
+            maPrice = IndicatorManager.GetMAPrice(marketData.InstrumentId, days);            
             double lastPrice = marketData.LastPrice;
 
 

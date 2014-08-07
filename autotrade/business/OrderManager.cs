@@ -196,8 +196,8 @@ namespace autotrade.business
 
         public void ProcessData(MarketData marketData)
         {
-            List<Order> orders = OrderRepository.GetByInstrumentIDAndStatusType(marketData.InstrumentId, EnumOrderStatus.已开仓);
-            foreach(var order in orders)
+            
+            foreach(var order in getOrders().Where(o=>o.StatusType != EnumOrderStatus.开仓中))
             {
 
                 double profit = (order.Direction == TThostFtdcDirectionType.Buy)
@@ -218,17 +218,6 @@ namespace autotrade.business
         public BindingList<Order> getOrders()
         {
             return OrderRepository.getOrders();
-        }
-
-
-        public void QryOrder()
-        {
-            tradeApi.ReqQryOrder();
-        }
-
-        public void QryTrade()
-        {
-            tradeApi.ReqQryTrade();
         }
 
         public void AddOrderRecord(OrderRecord orderRecord)

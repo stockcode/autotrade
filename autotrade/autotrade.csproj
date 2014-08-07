@@ -84,6 +84,7 @@
       <HintPath>..\packages\MongoRepository.1.6.5\lib\net45\MongoRepository.Net45.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Design" />
@@ -99,6 +100,7 @@
     <Reference Include="System.Xml" />
     <Reference Include="Telerik.WinControls, Version=2014.2.617.40, Culture=neutral, PublicKeyToken=5bb2a467cbec794e" />
     <Reference Include="Telerik.WinControls.GridView, Version=2014.2.617.40, Culture=neutral, PublicKeyToken=5bb2a467cbec794e, processorArchitecture=MSIL" />
+    <Reference Include="Telerik.WinControls.RichTextBox, Version=2014.2.617.40, Culture=neutral, PublicKeyToken=5bb2a467cbec794e, processorArchitecture=MSIL" />
     <Reference Include="Telerik.WinControls.Themes.TelerikMetro, Version=2014.2.617.40, Culture=neutral, PublicKeyToken=5bb2a467cbec794e, processorArchitecture=MSIL" />
     <Reference Include="Telerik.WinControls.Themes.Windows7, Version=2014.2.617.40, Culture=neutral, PublicKeyToken=5bb2a467cbec794e, processorArchitecture=MSIL" />
     <Reference Include="Telerik.WinControls.UI, Version=2014.2.617.40, Culture=neutral, PublicKeyToken=5bb2a467cbec794e" />
@@ -117,11 +119,11 @@
     <Compile Include="converter\StrategyUIEditor.cs" />
     <Compile Include="model\Account.cs" />
     <Compile Include="model\BarRecord.cs" />
+    <Compile Include="model\DayAverageLog.cs" />
     <Compile Include="model\EnumOrderStatus.cs" />
     <Compile Include="model\Instrument.cs" />
     <Compile Include="model\InstrumentStrategy.cs" />
     <Compile Include="model\MarketData.cs" />
-    <Compile Include="model\MongoEntity.cs" />
     <Compile Include="model\OrderLog.cs" />
     <Compile Include="model\Order.cs" />
     <Compile Include="model\OrderRecord.cs" />
@@ -162,6 +164,12 @@
     <Compile Include="ui\InstrumentForm.Designer.cs">
       <DependentUpon>InstrumentForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="ui\OrderDetailForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ui\OrderDetailForm.Designer.cs">
+      <DependentUpon>OrderDetailForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="ui\ServerLineForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -191,6 +199,9 @@
     <EmbeddedResource Include="ui\InstrumentForm.resx">
       <DependentUpon>InstrumentForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ui\OrderDetailForm.resx">
+      <DependentUpon>OrderDetailForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ui\ServerLineForm.resx">
       <DependentUpon>ServerLineForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -198,6 +209,7 @@
     <None Include="packages.config" />
     <None Include="Properties\DataSources\autotrade.model.Account.datasource" />
     <None Include="Properties\DataSources\autotrade.model.MarketData.datasource" />
+    <None Include="Properties\DataSources\autotrade.model.Order.datasource" />
     <None Include="Properties\DataSources\autotrade.model.OrderRecord.datasource" />
     <None Include="Properties\DataSources\autotrade.model.PositionDetail.datasource" />
     <None Include="Properties\DataSources\autotrade.model.PositionRecord1.datasource" />

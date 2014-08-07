@@ -1,37 +1,31 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Reflection;
 using System.Windows.Forms;
 using Autofac;
-using MongoDB.Driver.Linq;
+using autotrade.business;
+using autotrade.model;
+using autotrade.Strategies;
+using autotrade.ui;
+using log4net;
 using QuantBox.CSharp2CTP;
 using QuantBox.CSharp2CTP.Event;
 using Telerik.WinControls.UI;
-using autotrade.Strategies;
-using autotrade.business;
-using autotrade.converter;
-using autotrade.model;
-using autotrade.ui;
-using System.Threading;
-using IContainer = Autofac.IContainer;
 
 namespace autotrade
 {
     public partial class MainForm : RadForm
     {
-        private readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        
+        private readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private AboveMAStrategy maReverseStrategy;
+
+        public MainForm()
+        {
+            InitializeComponent();
+        }
+
 
         public MdApiWrapper mdApi { get; set; }
         public TraderApiWrapper tradeApi { get; set; }
-
-        private AboveMAStrategy maReverseStrategy;
 
         public OrderManager _orderManager { get; set; }
         public IContainer Container { get; set; }
@@ -40,35 +34,32 @@ namespace autotrade
         public MarketManager _marketManager { get; set; }
         public StrategyManager _strategyManager { get; set; }
         public IndicatorManager _indicatorManager { get; set; }
-        
-        public MainForm()
-        {
-            InitializeComponent();
-        }
 
-        
-        
-        
 
-        void tradeApi_OnRspQryInvestorPositionCombineDetail(ref CThostFtdcInvestorPositionCombineDetailField pInvestorPositionCombineDetail, ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
+        private void tradeApi_OnRspQryInvestorPositionCombineDetail(
+            ref CThostFtdcInvestorPositionCombineDetailField pInvestorPositionCombineDetail,
+            ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
         {
             log.Info(pRspInfo);
             log.Info(pInvestorPositionCombineDetail);
         }
-        
 
-        private void tradeApi_OnRspQryContractBank(ref CThostFtdcContractBankField pcontractbank, ref CThostFtdcRspInfoField prspinfo, int nrequestid, bool bislast)
+
+        private void tradeApi_OnRspQryContractBank(ref CThostFtdcContractBankField pcontractbank,
+            ref CThostFtdcRspInfoField prspinfo, int nrequestid, bool bislast)
         {
             log.Info(prspinfo);
             log.Info(pcontractbank);
         }
- 
+
         private void MainForm_Load(object sender, EventArgs e)
         {
             _strategyManager.Container = Container;
 
             //radGridView4.Columns["Direction"].DataTypeConverter = new DirectionConverter();
 
+            miDetail.Click += miDetail_Click;
+            miOrderLogDetail.Click += miOrderLogDetail_Click;
 
             var loginForm = Container.Resolve<LoginForm>();
 
@@ -90,7 +81,7 @@ namespace autotrade
 
             gvOrder.DataSource = _orderManager.getOrders();
 
-            radGridView3.DataSource = _orderManager.getOrderLogs();
+            gvOrderLog.DataSource = _orderManager.getOrderLogs();
 
             radGridView9.DataSource = _orderManager.GetTradeRecords();
 
@@ -99,13 +90,33 @@ namespace autotrade
 
             gvOrder.BestFitColumns();
 
+            gvOrderLog.BestFitColumns();
+
             _marketManager.Subscribe();
 
-            this.gvInstrument.MasterTemplate.Columns.Clear();
+            gvInstrument.MasterTemplate.Columns.Clear();
             gvInstrument.DataSource = _marketManager.marketDatas;
             gvInstrument.BestFitColumns();
-            
+
             _strategyManager.Start();
+        }
+
+        void miOrderLogDetail_Click(object sender, EventArgs e)
+        {
+            var orderLog = (OrderLog)gvOrderLog.SelectedRows[0].DataBoundItem;
+
+            var orderDetailForm = new OrderDetailForm();
+            orderDetailForm.OrderLog = orderLog;
+            orderDetailForm.ShowDialog();
+        }
+
+        private void miDetail_Click(object sender, EventArgs e)
+        {            
+            var order = (Order) gvOrder.SelectedRows[0].DataBoundItem;
+
+            var orderDetailForm = new OrderDetailForm();
+            orderDetailForm.Order = order;
+            orderDetailForm.ShowDialog();
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -115,11 +126,11 @@ namespace autotrade
             tradeApi.Disconnect();
         }
 
-        void _orderManager_OnRspQryOrder(object sender, OrderEventArgs e)
+        private void _orderManager_OnRspQryOrder(object sender, OrderEventArgs e)
         {
-            if (this.InvokeRequired)
+            if (InvokeRequired)
             {
-                this.Invoke(e.methodInvoker);
+                Invoke(e.methodInvoker);
             }
         }
 
@@ -130,12 +141,10 @@ namespace autotrade
 
         private void radMenuItem3_Click(object sender, EventArgs e)
         {
-            
         }
 
         private void radMenuItem10_Click(object sender, EventArgs e)
         {
-            
             var form = Container.Resolve<InstrumentForm>();
             form.ShowDialog();
         }
@@ -152,20 +161,30 @@ namespace autotrade
 
         private void gvOrder_SelectionChanged(object sender, EventArgs e)
         {
-            Order order = (Order) gvOrder.SelectedRows[0].DataBoundItem;
-
-            int index = _marketManager.GetIndex(order.InstrumentId);
-            if (index < 0) return;
-
-            gvInstrument.Rows[index].IsSelected = true;
-            gvInstrument.TableElement.ScrollToRow(index);
+//            Order order = (Order) gvOrder.SelectedRows[0].DataBoundItem;
+//
+//            int index = _marketManager.GetIndex(order.InstrumentId);
+//            if (index < 0) return;
+//
+//            gvInstrument.Rows[index].IsSelected = true;
+//            gvInstrument.TableElement.ScrollToRow(index);
         }
 
         private void RadGridView_SelectionChanged(object sender, EventArgs e)
         {
-            MarketData marketData = (MarketData) gvInstrument.SelectedRows[0].DataBoundItem;
+            var marketData = (MarketData) gvInstrument.SelectedRows[0].DataBoundItem;
 
             radPropertyGrid1.SelectedObject = _strategyManager.GetInstrumentStrategy(marketData.InstrumentId);
+        }
+
+        private void gvOrder_ContextMenuOpening(object sender, ContextMenuOpeningEventArgs e)
+        {
+            e.ContextMenu = cmOrder.DropDown;
+        }
+
+        private void gvOrderLog_ContextMenuOpening(object sender, ContextMenuOpeningEventArgs e)
+        {
+            e.ContextMenu = cmOrderLog.DropDown;
         }
     }
 }

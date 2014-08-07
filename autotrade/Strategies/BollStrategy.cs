@@ -28,7 +28,7 @@ namespace autotrade.Strategies
             Day = 10;
         }
 
-        public override List<Order> Match(MarketData marketData, InstrumentStrategy instrumentStrategy)
+        public override List<Order> Match(MarketData marketData)
         {
             List<Order> orders =
                 OrderManager.getOrders().Where(o => o.InstrumentId == marketData.InstrumentId && o.StrategyType == GetType().ToString()).ToList();
@@ -45,7 +45,7 @@ namespace autotrade.Strategies
                     neworder.OffsetFlag = TThostFtdcOffsetFlagType.CloseToday;
                     neworder.Direction = order.Direction == TThostFtdcDirectionType.Buy ? TThostFtdcDirectionType.Sell : TThostFtdcDirectionType.Buy;
                     neworder.InstrumentId = marketData.InstrumentId;
-                    neworder.Price = GetAnyPrice(marketData, instrumentStrategy, neworder.Direction);
+                    neworder.Price = GetAnyPrice(marketData, neworder.Direction);
                     neworder.Volume = order.Volume;
                     neworder.StrategyType = GetType().ToString();
                     
@@ -65,8 +65,8 @@ namespace autotrade.Strategies
                 neworder.OffsetFlag = TThostFtdcOffsetFlagType.Open;
                 neworder.Direction = TThostFtdcDirectionType.Buy;
                 neworder.InstrumentId = marketData.InstrumentId;
-                neworder.Price = GetAnyPrice(marketData, instrumentStrategy, neworder.Direction);
-                neworder.Volume = instrumentStrategy.Volume;
+                neworder.Price = GetAnyPrice(marketData, neworder.Direction);
+                neworder.Volume = InstrumentStrategy.Volume;
                 neworder.StrategyType = GetType().ToString();
 
                 list.Add(neworder);

@@ -16,7 +16,7 @@ using IContainer = Autofac.IContainer;
 
 namespace autotrade.model
 {
-    public class InstrumentStrategy : MongoEntity, INotifyPropertyChanged
+    public class InstrumentStrategy : Entity, INotifyPropertyChanged
     {
         public InstrumentStrategy()
         {
@@ -35,6 +35,9 @@ namespace autotrade.model
 
                 if (strategy.OrderManager == null)
                     strategy.OrderManager = container.Resolve<OrderManager>();
+
+                if (strategy.InstrumentStrategy == null)
+                    strategy.InstrumentStrategy = this;
             }
 
             StopLosses.ListChanged += Strategies_ListChanged;
@@ -56,6 +59,9 @@ namespace autotrade.model
 
                 if (stopProfit.OrderManager == null)
                     stopProfit.OrderManager = container.Resolve<OrderManager>();
+
+                if (stopProfit.InstrumentStrategy == null)
+                    stopProfit.InstrumentStrategy = this;
             }
         }
 
