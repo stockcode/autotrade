@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Configuration;
 using System.Linq;
 using System.Threading;
@@ -8,6 +9,7 @@ using System.Windows.Forms.VisualStyles;
 using autotrade.Properties;
 using autotrade.util;
 using MongoDB.Driver;
+using MongoDB.Driver.Linq;
 using MongoRepository;
 using autotrade.Indicators;
 using autotrade.model;
@@ -21,7 +23,8 @@ namespace autotrade.business
         private Dictionary<String, double> maDictionary = new Dictionary<String, double>();
         private Dictionary<String, BarRecord> recordDictionary = new Dictionary<string, BarRecord>();
         private Dictionary<String, MarketData> preMarketDataDictionary = new Dictionary<string, MarketData>();
-        private List<BarRecord> oneMinuteRecord = new List<BarRecord>();
+        private Dictionary<String,List<BarRecord>> oneMinuteRecordDictionary = new Dictionary<string, List<BarRecord>>();
+
         private MongoDatabase database;
         private string today = DateTime.Today.ToString("yyyyMMdd");
 
@@ -29,11 +32,29 @@ namespace autotrade.business
 
 
         public IndicatorManager()
+        {            
+        }
+
+        public void Init(IEnumerable<MarketData> marketDatas)
         {
             string connectionString = ConfigurationManager.ConnectionStrings["MongoServerFutureSettings"].ConnectionString;
             var client = new MongoClient(connectionString);
             MongoServer server = client.GetServer();
             database = server.GetDatabase("futuredata");
+
+            foreach (var marketData in marketDatas)
+            {
+                var collection = database.GetCollection<BarRecord>(marketData.InstrumentId);
+
+                IQueryable<BarRecord> query =
+                (from e in collection.AsQueryable()
+                 orderby e.ActualDate descending
+                 select e).Take(20);
+
+                List<BarRecord> barRecords = query.ToList();
+
+                oneMinuteRecordDictionary.Add(marketData.InstrumentId, barRecords);
+            }
 
             Task.Factory.StartNew(() =>
             {
@@ -74,9 +95,7 @@ namespace autotrade.business
 
                     DateTime preUpdateTime = DateTime.Parse(preMarketData.UpdateTime);
 
-                    //log.Info(marketData);
-                    //log.Info(preMarketData);
-
+                    
                     if (preUpdateTime.Second == 59)
                     {
                         BarRecord barRecord = recordDictionary[instrumentId];
@@ -132,14 +151,11 @@ namespace autotrade.business
 
         private void InsertToList(BarRecord barRecord)
         {
+            List<BarRecord> oneMinuteRecord = oneMinuteRecordDictionary[barRecord.InstrumentID];
+
             if (oneMinuteRecord.Count == 20) oneMinuteRecord.RemoveAt(0);
 
-            oneMinuteRecord.Add(barRecord);
-
-            foreach (var record in oneMinuteRecord)
-            {
-                log.Info(record);
-            }
+            oneMinuteRecord.Add(barRecord);            
         }
 
         public MarketData GetPreMarketData(string instrumentId)
@@ -158,11 +174,11 @@ namespace autotrade.business
             return maDictionary[instrumentId];
         }
 
-        public Indicator_BOLL GetBoll(int day)
+        public Indicator_BOLL GetBoll(int day, string instrumentID)
         {
-            if (day > oneMinuteRecord.Count) return null;
+            if (day > oneMinuteRecordDictionary[instrumentID].Count) return null;
 
-            List<double> closePrices = oneMinuteRecord.Select(barRecord => barRecord.Close).ToList();
+            List<double> closePrices = oneMinuteRecordDictionary[instrumentID].Select(barRecord => barRecord.Close).ToList();
 
             return new Indicator_BOLL(closePrices);
         }

@@ -56,11 +56,11 @@ namespace autotrade.Strategies
 
         private void OpenOrder()
         {
-            Indicator_BOLL boll = IndicatorManager.GetBoll(Day);
+            Indicator_BOLL boll = IndicatorManager.GetBoll(Day,currMarketData.InstrumentId);
 
             if (boll == null) return;
 
-            log.Info(boll);
+            //log.Info(boll);
 
             TThostFtdcDirectionType direction;
 
@@ -83,11 +83,11 @@ namespace autotrade.Strategies
 
         private void CloseOrder(List<Order> orders)
         {
-            Indicator_BOLL boll = IndicatorManager.GetBoll(Day);
+            Indicator_BOLL boll = IndicatorManager.GetBoll(Day, currMarketData.InstrumentId);
 
             if (boll == null) return;
 
-            log.Info(boll);
+            //log.Info(boll);
 
             foreach (var order in orders)
             {

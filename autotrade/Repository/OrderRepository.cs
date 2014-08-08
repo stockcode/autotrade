@@ -136,10 +136,10 @@ namespace autotrade.Repository
 
         public BindingList<OrderLog> GetOrderLogs()
         {
-            return GetOrderLogs(DateTime.Today.ToString("yyyyMMdd"));
+            return orderlogs;
         }
 
-        public BindingList<OrderLog> GetOrderLogs(String tradingDay)
+        public void ChangeOrderLogs(string tradingDay)
         {
             orderlogs.RaiseListChangedEvents = false;
 
@@ -150,9 +150,7 @@ namespace autotrade.Repository
             }
             orderlogs.RaiseListChangedEvents = true;
 
-            return orderlogs;
-
-
+            orderlogs.ResetBindings();
         }
     }
 }

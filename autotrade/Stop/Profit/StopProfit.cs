@@ -8,7 +8,7 @@ using QuantBox.CSharp2CTP;
 
 namespace autotrade.Stop.Profit
 {
-    [BsonKnownTypes(typeof(PriceStopProfit), typeof(PercentStopProfit))]
+    [BsonKnownTypes(typeof(PriceStopProfit), typeof(PercentStopProfit), typeof(FallBackStopProfit))]
     public  abstract class StopProfit : Strategy
     {
     }

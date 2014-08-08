@@ -7,6 +7,7 @@ using autotrade.model;
 using autotrade.Strategies;
 using autotrade.ui;
 using log4net;
+using MongoDB.Driver.Linq;
 using QuantBox.CSharp2CTP;
 using QuantBox.CSharp2CTP.Event;
 using Telerik.WinControls.UI;
@@ -58,7 +59,7 @@ namespace autotrade
 
             //radGridView4.Columns["Direction"].DataTypeConverter = new DirectionConverter();
 
-            dtTradingDay.Value = DateTime.Today;
+            dtTradingDay.Text = tradeApi.TradingDay;
 
             miDetail.Click += miDetail_Click;
             miCloseOrder.Click += miCloseOrder_Click;
@@ -87,7 +88,8 @@ namespace autotrade
             gvOrder.DataSource = OrderManager.getOrders();
             ConfigGridView(gvOrder, "PositionProfit");
 
-            gvOrderLog.DataSource = OrderManager.GetOrderLogs(tradeApi.TradingDay);
+            OrderManager.ChangeOrderLogs(tradeApi.TradingDay);
+            gvOrderLog.DataSource = OrderManager.GetOrderLogs();
             ConfigGridView(gvOrderLog, "CloseProfit");
 
             radGridView9.DataSource = OrderManager.GetTradeRecords();
@@ -99,6 +101,9 @@ namespace autotrade
             gvInstrument.MasterTemplate.Columns.Clear();
             gvInstrument.DataSource = MarketManager.marketDatas;
             gvInstrument.BestFitColumns();
+
+
+            IndicatorManager.Init(MarketManager.marketDatas);
 
             StrategyManager.Start();
         }
@@ -211,10 +216,9 @@ namespace autotrade
 
         private void dtTradingDay_ValueChanged(object sender, EventArgs e)
         {
-            gvOrderLog.DataSource = null;
+            
 
-            gvOrderLog.DataSource = OrderManager.GetOrderLogs(dtTradingDay.Value.ToString("yyyyMMdd"));
-            ConfigGridView(gvOrderLog, "CloseProfit");
+            OrderManager.ChangeOrderLogs(dtTradingDay.Value.ToString("yyyyMMdd"));                       
         }
     }
 }

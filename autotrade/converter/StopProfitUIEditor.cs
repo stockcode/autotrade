@@ -18,7 +18,7 @@ namespace autotrade.converter
         public StopProfitUIEditor(Type type)
             : base(type)
         {
-            types = new Type[] {typeof (PriceStopProfit), typeof (PercentStopProfit)};
+            types = new Type[] { typeof(PriceStopProfit), typeof(PercentStopProfit), typeof(FallBackStopProfit) };
         }
 
         protected override Type[] CreateNewItemTypes()

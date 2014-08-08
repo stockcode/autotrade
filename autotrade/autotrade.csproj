@@ -137,6 +137,7 @@
     <Compile Include="Stop\Loss\PriceStopLoss.cs" />
     <Compile Include="Stop\Loss\StopLoss.cs" />
     <Compile Include="Stop\Profit\PercentStopProfit.cs" />
+    <Compile Include="Stop\Profit\FallBackStopProfit.cs" />
     <Compile Include="Stop\Profit\PriceStopProfit.cs" />
     <Compile Include="Stop\Profit\StopProfit.cs" />
     <Compile Include="Strategies\RandomStrategy.cs" />

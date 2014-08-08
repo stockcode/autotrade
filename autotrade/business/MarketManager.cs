@@ -78,7 +78,7 @@ namespace autotrade.business
                 while (true)
                 {              
                     CThostFtdcDepthMarketDataField pDepthMarketData = marketQueue.Dequeue();
-                    log.Info("queuecount=" + marketQueue.Count());
+
                     MarketData marketData;
 
                     if (pDepthMarketData.InstrumentID == null) continue;

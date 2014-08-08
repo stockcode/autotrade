@@ -237,7 +237,7 @@ namespace autotrade.business
             }
 
             AccountManager.Accounts[0].PositionProfit = OrderRepository.getOrders().Sum(o => o.PositionProfit);
-            AccountManager.Accounts[0].CloseProfit = OrderRepository.getOrders().Sum(o => o.CloseProfit);
+            AccountManager.Accounts[0].CloseProfit = OrderRepository.GetOrderLogs().Sum(o => o.CloseProfit);
         }        
 
         public BindingList<Order> getOrders()
@@ -265,9 +265,9 @@ namespace autotrade.business
             return tradeRecords;
         }
 
-        public BindingList<OrderLog> GetOrderLogs(String tradingDay)
+        public BindingList<OrderLog> GetOrderLogs()
         {
-            return OrderRepository.GetOrderLogs(tradingDay);
+            return OrderRepository.GetOrderLogs();
         }
 
         public void Init()
@@ -291,6 +291,11 @@ namespace autotrade.business
             order.CloseOrder = neworder;
 
             OrderInsert(order);
+        }
+
+        public void ChangeOrderLogs(string tradingDay)
+        {
+            OrderRepository.ChangeOrderLogs(tradingDay);
         }
     }
 
