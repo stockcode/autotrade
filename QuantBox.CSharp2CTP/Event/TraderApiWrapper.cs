@@ -161,6 +161,10 @@ namespace QuantBox.CSharp2CTP.Event
         /// <param name="Volume">手数</param>
         public int OrderInsert(string InstrumentID, TThostFtdcOffsetFlagType OffsetFlag, TThostFtdcDirectionType Direction, double Price, int Volume)
         {
+            var priceType = TThostFtdcOrderPriceTypeType.LimitPrice;
+
+            if (Price < 0.01) priceType = TThostFtdcOrderPriceTypeType.AnyPrice;
+
             return m_Api.SendOrder(
                 ++this.MaxOrderRef,
                 InstrumentID,
@@ -169,7 +173,7 @@ namespace QuantBox.CSharp2CTP.Event
                 TThostFtdcHedgeFlagType.Speculation,
                 Volume,
                 Price,
-                TThostFtdcOrderPriceTypeType.LimitPrice,
+                priceType,
                 TThostFtdcTimeConditionType.GFD,
                 TThostFtdcContingentConditionType.Immediately,
                 0,

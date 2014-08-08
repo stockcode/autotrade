@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using autotrade.model;
+using autotrade.util;
 using log4net;
 using QuantBox.CSharp2CTP;
 using QuantBox.CSharp2CTP.Event;
@@ -18,7 +19,7 @@ namespace autotrade.business
         public delegate void MarketDataHandler(object sender, MarketDataEventArgs e);
 
         private readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        private readonly Queue<CThostFtdcDepthMarketDataField> marketQueue = new Queue<CThostFtdcDepthMarketDataField>();
+        private readonly BlockingQueue<CThostFtdcDepthMarketDataField> marketQueue = new BlockingQueue<CThostFtdcDepthMarketDataField>();
 
         public Dictionary<String, MarketData> instrumentDictionary = new Dictionary<string, MarketData>();
         public BindingList<MarketData> marketDatas = new BindingList<MarketData>();
@@ -75,16 +76,9 @@ namespace autotrade.business
             Task.Factory.StartNew(() =>
             {
                 while (true)
-                {
-                    if (!marketQueue.Any())
-                    {
-                        Thread.Sleep(100);
-                        continue;
-                    }
-
-                    log.Info("queueCount=" + marketQueue.Count);
-
+                {              
                     CThostFtdcDepthMarketDataField pDepthMarketData = marketQueue.Dequeue();
+                    log.Info("queuecount=" + marketQueue.Count());
                     MarketData marketData;
 
                     if (pDepthMarketData.InstrumentID == null) continue;

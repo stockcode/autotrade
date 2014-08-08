@@ -117,6 +117,7 @@
     <Compile Include="converter\StopProfitUIEditor.cs" />
     <Compile Include="converter\StopLossUIEditor.cs" />
     <Compile Include="converter\StrategyUIEditor.cs" />
+    <Compile Include="Indicators\Indicator_BOLL.cs" />
     <Compile Include="model\Account.cs" />
     <Compile Include="model\BarRecord.cs" />
     <Compile Include="model\DayAverageLog.cs" />
@@ -138,6 +139,7 @@
     <Compile Include="Stop\Profit\PercentStopProfit.cs" />
     <Compile Include="Stop\Profit\PriceStopProfit.cs" />
     <Compile Include="Stop\Profit\StopProfit.cs" />
+    <Compile Include="Strategies\RandomStrategy.cs" />
     <Compile Include="Strategies\DayAverageStrategy.cs" />
     <Compile Include="Strategies\Strategy.cs" />
     <Compile Include="ui\LoginForm.cs">

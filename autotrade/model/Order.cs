@@ -100,8 +100,10 @@ namespace autotrade.model
             }
         }
 
+        [Browsable(false)]
         public int SessionID { get; set; }
 
+        [Browsable(false)]
         public int FrontID { get; set; }
 
         [Browsable(false)]

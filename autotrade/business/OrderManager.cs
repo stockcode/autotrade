@@ -284,7 +284,7 @@ namespace autotrade.business
                 : TThostFtdcDirectionType.Buy;
             neworder.InstrumentId = order.InstrumentId;
             
-            neworder.Price = MarketManager.instrumentDictionary[order.InstrumentId].LastPrice;
+            neworder.Price = 0;
             neworder.Volume = order.Volume;
             neworder.StrategyType = "Close Order By User";
 

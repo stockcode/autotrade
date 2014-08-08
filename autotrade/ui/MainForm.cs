@@ -58,6 +58,8 @@ namespace autotrade
 
             //radGridView4.Columns["Direction"].DataTypeConverter = new DirectionConverter();
 
+            dtTradingDay.Value = DateTime.Today;
+
             miDetail.Click += miDetail_Click;
             miCloseOrder.Click += miCloseOrder_Click;
             miCancelOrder.Click += miCancelOrder_Click;
