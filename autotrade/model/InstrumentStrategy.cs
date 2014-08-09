@@ -20,9 +20,7 @@ namespace autotrade.model
     {
         public InstrumentStrategy()
         {
-            Strategies = new BindingList<Strategy>();
-            StopLosses = new BindingList<StopLoss>();
-            StopProfits = new BindingList<StopProfit>();
+            Strategies = new BindingList<UserStrategy>();            
         }
 
         public void BindEvent(IContainer container)
@@ -38,31 +36,32 @@ namespace autotrade.model
 
                 if (strategy.InstrumentStrategy == null)
                     strategy.InstrumentStrategy = this;
-            }
 
-            StopLosses.ListChanged += Strategies_ListChanged;
-            foreach (var stopLoss in StopLosses)
-            {
-                if (stopLoss.IndicatorManager == null)
-                    stopLoss.IndicatorManager = container.Resolve<IndicatorManager>();
 
-                if (stopLoss.OrderManager == null)
-                    stopLoss.OrderManager = container.Resolve<OrderManager>();
-            }
+                strategy.StopLosses.ListChanged += Strategies_ListChanged;
+                foreach (var stopLoss in strategy.StopLosses)
+                {
+                    if (stopLoss.IndicatorManager == null)
+                        stopLoss.IndicatorManager = container.Resolve<IndicatorManager>();
 
-            StopProfits.ListChanged += Strategies_ListChanged;
+                    if (stopLoss.OrderManager == null)
+                        stopLoss.OrderManager = container.Resolve<OrderManager>();
+                }
 
-            foreach (var stopProfit in StopProfits)
-            {
-                if (stopProfit.IndicatorManager == null)
-                    stopProfit.IndicatorManager = container.Resolve<IndicatorManager>();
+                strategy.StopProfits.ListChanged += Strategies_ListChanged;
 
-                if (stopProfit.OrderManager == null)
-                    stopProfit.OrderManager = container.Resolve<OrderManager>();
+                foreach (var stopProfit in strategy.StopProfits)
+                {
+                    if (stopProfit.IndicatorManager == null)
+                        stopProfit.IndicatorManager = container.Resolve<IndicatorManager>();
 
-                if (stopProfit.InstrumentStrategy == null)
-                    stopProfit.InstrumentStrategy = this;
-            }
+                    if (stopProfit.OrderManager == null)
+                        stopProfit.OrderManager = container.Resolve<OrderManager>();
+
+                    if (stopProfit.InstrumentStrategy == null)
+                        stopProfit.InstrumentStrategy = this;
+                }
+            }            
         }
 
         void Strategies_ListChanged(object sender, ListChangedEventArgs e)
@@ -98,15 +97,8 @@ namespace autotrade.model
 
         [DisplayName("策略列表")]
         [Editor(typeof(StrategyUIEditor), typeof(System.Drawing.Design.UITypeEditor))]
-        public BindingList<Strategy> Strategies { get; set; }
-
-        [DisplayName("止损列表")]
-        [Editor(typeof(StopLossUIEditor), typeof(System.Drawing.Design.UITypeEditor))]
-        public BindingList<StopLoss> StopLosses { get; set; }
-
-        [DisplayName("止盈列表")]
-        [Editor(typeof(StopProfitUIEditor), typeof(System.Drawing.Design.UITypeEditor))]
-        public BindingList<StopProfit> StopProfits { get; set; }
+        public BindingList<UserStrategy> Strategies { get; set; }
+        
 
         private bool _startTrade = true;
 
@@ -119,38 +111,6 @@ namespace autotrade.model
                 if (this._startTrade != value)
                 {
                     this._startTrade = value;
-                    NotifyPropertyChanged();
-                }
-            }
-        }
-
-        private bool _allowStopLoss = true;
-
-        [DisplayName("是否止损")]
-        public bool AllowStopLoss
-        {
-            get { return _allowStopLoss; }
-            set
-            {
-                if (this._allowStopLoss != value)
-                {
-                    this._allowStopLoss = value;
-                    NotifyPropertyChanged();
-                }
-            }
-        }
-
-        private bool _allowStopProfit = true;
-
-        [DisplayName("是否止盈")]
-        public bool AllowStopProfit
-        {
-            get { return _allowStopProfit; }
-            set
-            {
-                if (this._allowStopProfit != value)
-                {
-                    this._allowStopProfit = value;
                     NotifyPropertyChanged();
                 }
             }

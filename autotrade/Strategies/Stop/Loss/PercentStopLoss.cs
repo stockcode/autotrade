@@ -9,7 +9,7 @@ namespace autotrade.Stop.Loss
 {
     public class PercentStopLoss : StopLoss
     {
-        public override List<Order> Match(MarketData marketData, InstrumentStrategy instrumentStrategy)
+        public override List<Order> Match(MarketData marketData)
         {
             throw new NotImplementedException();
         }

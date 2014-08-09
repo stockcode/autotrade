@@ -13,9 +13,24 @@ namespace autotrade.Stop.Profit
     {
         private readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        private double _percent = 0.4;
-
         private double maxProfit = 0d;
+
+        private double _minProfit = 1000;
+
+        [DisplayName("最小激活阀值")]
+        public double MinProfit
+        {
+            get { return _minProfit; }
+            set
+            {
+                if (Math.Abs(this._minProfit - value) < TOLERANCE) return;
+
+                this._minProfit = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private double _percent = 0.2;
 
         [DisplayName("回落百分比阀值")]
         public double Percent
@@ -43,6 +58,8 @@ namespace autotrade.Stop.Profit
 
             foreach (var order in orders.FindAll(o => o.StatusType == EnumOrderStatus.已开仓))
             {
+                if (order.PositionProfit < 0 || order.PositionProfit < MinProfit) continue;
+
                 if (order.PositionProfit > maxProfit) maxProfit = order.PositionProfit;
 
                 if ((maxProfit - order.PositionProfit) / maxProfit > Percent)

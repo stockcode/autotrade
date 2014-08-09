@@ -23,7 +23,7 @@ namespace autotrade.Stop.Loss
             Price = 1000;
         }
 
-        public override List<Order> Match(MarketData marketData, InstrumentStrategy instrumentStrategy)
+        public override List<Order> Match(MarketData marketData)
         {
              var instrumentId = marketData.InstrumentId;
 
@@ -43,7 +43,7 @@ namespace autotrade.Stop.Loss
                     neworder.OffsetFlag = TThostFtdcOffsetFlagType.CloseToday;
                     neworder.Direction = order.Direction == TThostFtdcDirectionType.Buy ? TThostFtdcDirectionType.Sell : TThostFtdcDirectionType.Buy;
                     neworder.InstrumentId = marketData.InstrumentId;
-                    neworder.Price = GetAnyPrice(marketData, instrumentStrategy, neworder.Direction);
+                    neworder.Price = GetAnyPrice(marketData, neworder.Direction);
                     neworder.Volume = order.Volume;
                     neworder.StrategyType = GetType().ToString();
 

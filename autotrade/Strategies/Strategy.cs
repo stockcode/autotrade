@@ -6,7 +6,10 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using autotrade.business;
+using autotrade.converter;
 using autotrade.model;
+using autotrade.Stop.Loss;
+using autotrade.Stop.Profit;
 using MongoDB.Bson.Serialization.Attributes;
 using QuantBox.CSharp2CTP;
 
@@ -29,7 +32,10 @@ namespace autotrade.Strategies
         [Browsable(false)]
         public InstrumentStrategy InstrumentStrategy { get; set; }
 
+
         public abstract List<Order> Match(MarketData marketData);
+
+    
 
         protected double GetAnyPrice(MarketData marketData, TThostFtdcDirectionType direction)
         {

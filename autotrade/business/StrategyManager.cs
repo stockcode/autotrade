@@ -61,39 +61,7 @@ namespace autotrade.business
                     log.Info(order);
                     OrderManager.OrderInsert(order);
                 }
-            }
-
-            if (instrumentStrategy.AllowStopLoss)
-            {
-                foreach (StopLoss stopLoss in instrumentStrategy.StopLosses)
-                {
-                    List<Order> orders = stopLoss.Match(marketData, instrumentStrategy);
-                    if (orders != null)
-                    {
-                        foreach (Order order in orders)
-                        {
-                            log.Info(order);
-                            OrderManager.OrderInsert(order);
-                        }
-                    }
-                }
-            }
-
-            if (instrumentStrategy.AllowStopProfit)
-            {
-                foreach (StopProfit stopProfit in instrumentStrategy.StopProfits)
-                {
-                    List<Order> orders = stopProfit.Match(marketData);
-                    if (orders != null)
-                    {
-                        foreach (Order order in orders)
-                        {
-                            log.Info(order);
-                            OrderManager.OrderInsert(order);
-                        }
-                    }
-                }
-            }
+            }            
         }
 
         public void InitStrategies(Instrument instrument)
@@ -117,9 +85,9 @@ namespace autotrade.business
 
                 instrumentStrategy.Strategies.Add(Container.Resolve<DayAverageStrategy>());
 
-                instrumentStrategy.StopLosses.Add(Container.Resolve<PriceStopLoss>());
-
-                instrumentStrategy.StopProfits.Add(Container.Resolve<PriceStopProfit>());
+//                instrumentStrategy.StopLosses.Add(Container.Resolve<PriceStopLoss>());
+//
+//                instrumentStrategy.StopProfits.Add(Container.Resolve<PriceStopProfit>());
 
                 //Strategies.Add(new AboveMAStrategy(indicatorManager, 20));
                 //Strategies.Add(new BelowMAStrategy(indicatorManager, 20));

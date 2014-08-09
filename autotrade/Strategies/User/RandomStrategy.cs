@@ -11,7 +11,7 @@ using QuantBox.CSharp2CTP;
 
 namespace autotrade.Strategies
 {
-    public class RandomStrategy : Strategy
+    public class RandomStrategy : UserStrategy
     {
         private readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         
@@ -33,6 +33,8 @@ namespace autotrade.Strategies
 
         public override List<Order> Match(MarketData marketData)
         {
+            base.Match(marketData);
+
             newOrders.Clear();
 
             var instrumentId = marketData.InstrumentId;

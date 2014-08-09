@@ -1,4 +1,5 @@
-﻿using MongoRepository;
+﻿using autotrade.model;
+using MongoRepository;
 
 namespace autotrade
 {
@@ -23,6 +24,8 @@ namespace autotrade
         public double Amount { get; set; }
 
         public double Volume { get; set; }
+
+        public EnumRecordIntervalType IntervalType { get; set; }
 
         public override string ToString()
         {

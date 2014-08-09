@@ -121,6 +121,7 @@
     <Compile Include="model\Account.cs" />
     <Compile Include="model\BarRecord.cs" />
     <Compile Include="model\DayAverageLog.cs" />
+    <Compile Include="model\EnumRecordIntervalType.cs" />
     <Compile Include="model\EnumOrderStatus.cs" />
     <Compile Include="model\Instrument.cs" />
     <Compile Include="model\InstrumentStrategy.cs" />
@@ -133,24 +134,25 @@
     <Compile Include="model\ServerLine.cs" />
     <Compile Include="model\TradeRecord.cs" />
     <Compile Include="Repository\OrderRepository.cs" />
-    <Compile Include="Stop\Loss\PercentStopLoss.cs" />
-    <Compile Include="Stop\Loss\PriceStopLoss.cs" />
-    <Compile Include="Stop\Loss\StopLoss.cs" />
-    <Compile Include="Stop\Profit\PercentStopProfit.cs" />
-    <Compile Include="Stop\Profit\FallBackStopProfit.cs" />
-    <Compile Include="Stop\Profit\PriceStopProfit.cs" />
-    <Compile Include="Stop\Profit\StopProfit.cs" />
-    <Compile Include="Strategies\RandomStrategy.cs" />
-    <Compile Include="Strategies\DayAverageStrategy.cs" />
+    <Compile Include="Strategies\Stop\Loss\PercentStopLoss.cs" />
+    <Compile Include="Strategies\Stop\Loss\PriceStopLoss.cs" />
+    <Compile Include="Strategies\Stop\Loss\StopLoss.cs" />
+    <Compile Include="Strategies\Stop\Profit\PercentStopProfit.cs" />
+    <Compile Include="Strategies\Stop\Profit\FallBackStopProfit.cs" />
+    <Compile Include="Strategies\Stop\Profit\PriceStopProfit.cs" />
+    <Compile Include="Strategies\Stop\Profit\StopProfit.cs" />
+    <Compile Include="Strategies\User\RandomStrategy.cs" />
+    <Compile Include="Strategies\User\DayAverageStrategy.cs" />
     <Compile Include="Strategies\Strategy.cs" />
+    <Compile Include="Strategies\User\UserStrategy.cs" />
     <Compile Include="ui\LoginForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="ui\LoginForm.Designer.cs">
       <DependentUpon>LoginForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Strategies\BollStrategy.cs" />
-    <Compile Include="Strategies\BelowMAStrategy.cs" />
+    <Compile Include="Strategies\User\BollStrategy.cs" />
+    <Compile Include="Strategies\User\BelowMAStrategy.cs" />
     <Compile Include="ui\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -160,7 +162,7 @@
     <Compile Include="Indicators\Indicator_MA.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Strategies\AboveMAStrategy.cs" />
+    <Compile Include="Strategies\User\AboveMAStrategy.cs" />
     <Compile Include="ui\InstrumentForm.cs">
       <SubType>Form</SubType>
     </Compile>
