@@ -178,7 +178,8 @@ namespace autotrade
 
         private void miClose_Click(object sender, EventArgs e)
         {
-            Close();
+            throw new NullReferenceException("null for test");
+            //Close();
         }
 
         private void radMenuItem11_Click(object sender, EventArgs e)

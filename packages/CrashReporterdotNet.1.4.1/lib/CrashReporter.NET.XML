@@ -1,0 +1,159 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CrashReporter.NET</name>
+    </assembly>
+    <members>
+        <member name="F:CrashReporterDotNET.CrashReport.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:CrashReporterDotNET.CrashReport.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:CrashReporterDotNET.CrashReport.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="F:CrashReporterDotNET.ProgressDialog.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:CrashReporterDotNET.ProgressDialog.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:CrashReporterDotNET.ProgressDialog.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="T:CrashReporterDotNET.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:CrashReporterDotNET.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:CrashReporterDotNET.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:CrashReporterDotNET.Properties.Resources.ajax_loader">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:CrashReporterDotNET.Properties.Resources.email_go">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:CrashReporterDotNET.Properties.Resources.save_as">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:CrashReporterDotNET.Properties.Resources.stop">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:CrashReporterDotNET.Properties.Resources.warning_64">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="T:CrashReporterDotNET.ReportCrash">
+            <summary>
+            Set SMTP server details and receiver email fieds of this class instance to send crash reports directly in your inbox.
+            </summary>
+        </member>
+        <member name="F:CrashReporterDotNET.ReportCrash.SmtpHost">
+            <summary>
+            Gets or Sets name or IP address of the Host used for SMTP transactions.
+            </summary>
+        </member>
+        <member name="F:CrashReporterDotNET.ReportCrash.EnableSSL">
+            <summary>
+            Specify whether the SMTP client uses the Secure Socket Layer (SSL) to encrypt the connection.
+            </summary>
+        </member>
+        <member name="F:CrashReporterDotNET.ReportCrash.Port">
+            <summary>
+            Gets or Sets the port used for SMTP transactions.
+            </summary>
+        </member>
+        <member name="F:CrashReporterDotNET.ReportCrash.UserName">
+            <summary>
+            Gets or Sets the username used for SMTP transactions.
+            </summary>
+        </member>
+        <member name="F:CrashReporterDotNET.ReportCrash.Password">
+            <summary>
+            Gets or Sets the password used for SMTP transactions. 
+            </summary>
+        </member>
+        <member name="F:CrashReporterDotNET.ReportCrash.ToEmail">
+            <summary>
+            Gets or Sets email address where you want to receive crash reports.
+            </summary>
+        </member>
+        <member name="F:CrashReporterDotNET.ReportCrash.FromEmail">
+            <summary>
+            Gets or Sets email address used by crash reporter if user don't provide her email address.
+            </summary>
+        </member>
+        <member name="F:CrashReporterDotNET.ReportCrash.Exception">
+            <summary>
+            Gets or Sets exception that occur during application execution.
+            </summary>
+        </member>
+        <member name="F:CrashReporterDotNET.ReportCrash.CaptureScreen">
+            <summary>
+            Specify whether CrashReporter.NET should take screen shot of whole screen or not.
+            </summary>
+        </member>
+        <member name="F:CrashReporterDotNET.ReportCrash.DeveloperMessage">
+            <summary>
+            Gets or Sets custom message developer wants to send. It can be something like value of variables or other details you want to send.
+            </summary>
+        </member>
+        <member name="F:CrashReporterDotNET.ReportCrash.EmailRequired">
+            <summary>
+             Gets or Sets if email is required to send the crash report.
+            </summary>
+        </member>
+        <member name="F:CrashReporterDotNET.ReportCrash.CurrentCulture">
+            <summary>
+            Gets or Sets the current culture to use by the library.
+            </summary>
+        </member>
+        <member name="M:CrashReporterDotNET.ReportCrash.Send">
+            <summary>
+            Sends exception report directly to receiver email address provided in ToEmail.
+            </summary>
+        </member>
+        <member name="M:CrashReporterDotNET.ReportCrash.Send(System.Exception)">
+            <summary>
+            Sends exception report directly to receiver email address provided in ToEmail.
+            </summary>
+            <param name="exception">Exception object that contains details of the exception.</param>
+        </member>
+    </members>
+</doc>

@@ -58,7 +58,7 @@ namespace autotrade.Strategies
 
         private void OpenOrder()
         {
-            Indicator_BOLL boll = IndicatorManager.GetBoll(Day,currMarketData.InstrumentId);
+            Indicator_BOLL boll = IndicatorManager.GetBoll(Day,currMarketData.InstrumentId, EnumRecordIntervalType.Minute1);
 
             if (boll == null) return;
 
@@ -85,7 +85,7 @@ namespace autotrade.Strategies
 
         private void CloseOrder(List<Order> orders)
         {
-            Indicator_BOLL boll = IndicatorManager.GetBoll(Day, currMarketData.InstrumentId);
+            Indicator_BOLL boll = IndicatorManager.GetBoll(Day, currMarketData.InstrumentId, EnumRecordIntervalType.Minute1);
 
             if (boll == null) return;
 

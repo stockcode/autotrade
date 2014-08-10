@@ -23,12 +23,9 @@ namespace autotrade.business
         private Dictionary<String, double> maDictionary = new Dictionary<String, double>();        
         private Dictionary<String, MarketData> preMarketDataDictionary = new Dictionary<string, MarketData>();
 
-        private readonly Dictionary<String, BarRecord> record1MinuteDictionary = new Dictionary<string, BarRecord>();
-        private readonly Dictionary<String,List<BarRecord>> record1MinutesDictionary = new Dictionary<string, List<BarRecord>>();
 
-        private readonly Dictionary<String, BarRecord> record5MinuteDictionary = new Dictionary<string, BarRecord>();
-        private readonly Dictionary<String, List<BarRecord>> record5MinutesDictionary = new Dictionary<string, List<BarRecord>>();
-
+        private readonly Dictionary<string, Dictionary<EnumRecordIntervalType, BarRecord>> recordMinuteDictionary = new Dictionary<string, Dictionary<EnumRecordIntervalType, BarRecord>>();
+        private readonly Dictionary<string, Dictionary<EnumRecordIntervalType, List<BarRecord>>> recordMinutesDictionary = new Dictionary<string, Dictionary<EnumRecordIntervalType, List<BarRecord>>>();
 
         private MongoDatabase database;
         private string today = DateTime.Today.ToString("yyyyMMdd");
@@ -49,27 +46,24 @@ namespace autotrade.business
 
             foreach (var marketData in marketDatas)
             {
-                var collection = database.GetCollection<BarRecord>(marketData.InstrumentId+"Minute1");
+                var dict = new Dictionary<EnumRecordIntervalType, List<BarRecord>>();
 
-                var query =
-                (from e in collection.AsQueryable()
-                 orderby e.ActualDate descending
-                 select e).Take(20);
+                foreach (EnumRecordIntervalType intervalType in Enum.GetValues(typeof(EnumRecordIntervalType)))
+                {
+                    var collection = database.GetCollection<BarRecord>(marketData.InstrumentId + intervalType);
 
-                var barRecords = query.ToList();
+                    var query =
+                    (from e in collection.AsQueryable()
+                     orderby e.ActualDate descending
+                     select e).Take(20);
 
-                record1MinutesDictionary.Add(marketData.InstrumentId, barRecords);
+                    var barRecords = query.ToList();
 
-                collection = database.GetCollection<BarRecord>(marketData.InstrumentId + "Minute5");
+                    dict.Add(intervalType, barRecords);
+                    
+                }
 
-                query =
-                (from e in collection.AsQueryable()
-                 orderby e.ActualDate descending
-                 select e).Take(20);
-
-                barRecords = query.ToList();
-
-                record5MinutesDictionary.Add(marketData.InstrumentId, barRecords);
+                recordMinutesDictionary.Add(marketData.InstrumentId, dict);
             }
 
             Task.Factory.StartNew(() =>
@@ -88,22 +82,25 @@ namespace autotrade.business
         {
             var updateTime = DateTime.Parse(marketData.UpdateTime);
 
-            Record1Minute(marketData, updateTime);
+            
 
-            Record5Minute(marketData, updateTime);
+            foreach (EnumRecordIntervalType intervalType in Enum.GetValues(typeof(EnumRecordIntervalType)))
+            {
+                if (!recordMinuteDictionary.ContainsKey(marketData.InstrumentId)) recordMinuteDictionary.Add(marketData.InstrumentId, new Dictionary<EnumRecordIntervalType, BarRecord>());
+
+                ProcessBarRecord(marketData, updateTime, intervalType);
+            }
 
             RecordPreMarketData(marketData);
         }
 
-        private void Record5Minute(MarketData marketData, DateTime updateTime)
+        private void ProcessBarRecord(MarketData marketData, DateTime updateTime, EnumRecordIntervalType intervalType)
         {
             var instrumentId = marketData.InstrumentId;
 
-            if (updateTime.Minute % 5 == 0 && updateTime.Second == 0)
+            if (updateTime.Minute % (int)intervalType == 0 && updateTime.Second == 0)
             {
-
-
-                if (!record5MinuteDictionary.ContainsKey(instrumentId))
+                if (!recordMinuteDictionary[instrumentId].ContainsKey(intervalType))
                 {
                     var barRecord = new BarRecord
                     {
@@ -113,29 +110,32 @@ namespace autotrade.business
                         High = marketData.LastPrice,
                         Volume = marketData.Volume,
                         Amount = marketData.Turnover,
-                        IntervalType = EnumRecordIntervalType.Minute5
+                        IntervalType = intervalType
                     };
 
-                    record5MinuteDictionary.Add(instrumentId, barRecord);
+                    recordMinuteDictionary[instrumentId].Add(intervalType, barRecord);
                 }
                 else
                 {
-                    var preMarketData = preMarketDataDictionary[instrumentId];
+                    MarketData preMarketData = preMarketDataDictionary[instrumentId];
 
-                    var preUpdateTime = DateTime.Parse(preMarketData.UpdateTime);
+                    DateTime preUpdateTime = DateTime.Parse(preMarketData.UpdateTime);
+
 
                     if (preUpdateTime.Second == 59)
                     {
-                        var barRecord = record5MinuteDictionary[instrumentId];
+                        var barRecord = recordMinuteDictionary[instrumentId][intervalType];
 
                         barRecord.Close = preMarketData.LastPrice;
-                        barRecord.Date = marketData.UpdateTime;
                         barRecord.Volume = preMarketData.Volume - barRecord.Volume;
                         barRecord.Amount = preMarketData.Turnover = barRecord.Amount;
+                        barRecord.ActualDate = today;
+                        barRecord.Date = marketData.TradingDay;
+                        barRecord.Time = marketData.UpdateTime;
 
+                        InsertToList(recordMinutesDictionary[instrumentId][intervalType], barRecord);
 
-                        InsertToList(record5MinutesDictionary, barRecord);
-
+                        //log.Info(barRecord);
 
                         barRecordQueue.Enqueue(barRecord);
 
@@ -147,22 +147,23 @@ namespace autotrade.business
                             High = marketData.LastPrice,
                             Volume = marketData.Volume,
                             Amount = marketData.Turnover,
-                            IntervalType = EnumRecordIntervalType.Minute5
+                            IntervalType = intervalType
                         };
-                        record5MinuteDictionary[instrumentId] = barRecord;
+                        recordMinuteDictionary[instrumentId][intervalType] = barRecord;
                     }
                 }
             }
 
-            if (!record5MinuteDictionary.ContainsKey(instrumentId)) return;
+            if (recordMinuteDictionary[instrumentId].ContainsKey(intervalType))
+            {
+                BarRecord currentRecord = recordMinuteDictionary[instrumentId][intervalType];
 
-            var currentRecord = record5MinuteDictionary[instrumentId];
+                if (currentRecord.High < marketData.LastPrice)
+                    currentRecord.High = marketData.LastPrice;
 
-            if (currentRecord.High < marketData.LastPrice)
-                currentRecord.High = marketData.LastPrice;
-
-            if (currentRecord.Low > marketData.LastPrice)
-                currentRecord.Low = marketData.LastPrice;
+                if (currentRecord.Low > marketData.LastPrice)
+                    currentRecord.Low = marketData.LastPrice;
+            }
         }
 
         private void RecordPreMarketData(MarketData marketData)
@@ -178,85 +179,11 @@ namespace autotrade.business
             }
         }
 
-        private void Record1Minute(MarketData marketData, DateTime updateTime)
+        private void InsertToList(List<BarRecord> barRecords, BarRecord barRecord)
         {
-            var instrumentId = marketData.InstrumentId;
+            if (barRecords.Count == 20) barRecords.RemoveAt(0);
 
-            if (updateTime.Second == 0)
-            {
-                if (!record1MinuteDictionary.ContainsKey(instrumentId))
-                {
-                    var barRecord = new BarRecord
-                    {
-                        InstrumentID = instrumentId,
-                        Open = marketData.LastPrice,
-                        Low = marketData.LastPrice,
-                        High = marketData.LastPrice,
-                        Volume = marketData.Volume,
-                        Amount = marketData.Turnover,
-                        IntervalType = EnumRecordIntervalType.Minute1
-                    };
-
-                    record1MinuteDictionary.Add(instrumentId, barRecord);
-                }
-                else
-                {
-                    MarketData preMarketData = preMarketDataDictionary[instrumentId];
-
-                    DateTime preUpdateTime = DateTime.Parse(preMarketData.UpdateTime);
-
-
-                    if (preUpdateTime.Second == 59)
-                    {
-                        var barRecord = record1MinuteDictionary[instrumentId];
-
-                        barRecord.Close = preMarketData.LastPrice;
-                        barRecord.Volume = preMarketData.Volume - barRecord.Volume;
-                        barRecord.Amount = preMarketData.Turnover = barRecord.Amount;
-                        barRecord.ActualDate = today;
-                        barRecord.Date = marketData.TradingDay;
-                        barRecord.Time = marketData.UpdateTime;
-
-                        InsertToList(record1MinutesDictionary, barRecord);
-
-                        //log.Info(barRecord);
-
-                        barRecordQueue.Enqueue(barRecord);
-
-                        barRecord = new BarRecord
-                        {
-                            InstrumentID = instrumentId,
-                            Open = marketData.LastPrice,
-                            Low = marketData.LastPrice,
-                            High = marketData.LastPrice,
-                            Volume = marketData.Volume,
-                            Amount = marketData.Turnover,
-                            IntervalType = EnumRecordIntervalType.Minute1
-                        };
-                        record1MinuteDictionary[instrumentId] = barRecord;
-                    }
-                }
-            }
-
-            if (record1MinuteDictionary.ContainsKey(instrumentId))
-            {
-                BarRecord currentRecord = record1MinuteDictionary[instrumentId];
-
-                if (currentRecord.High < marketData.LastPrice)
-                    currentRecord.High = marketData.LastPrice;
-
-                if (currentRecord.Low > marketData.LastPrice)
-                    currentRecord.Low = marketData.LastPrice;
-            }
-        }
-
-        private void InsertToList(Dictionary<string, List<BarRecord>> dictionary, BarRecord barRecord)
-        {
-            List<BarRecord> oneMinuteRecord = dictionary[barRecord.InstrumentID];
-
-            if (oneMinuteRecord.Count == 20) oneMinuteRecord.RemoveAt(0);
-
-            oneMinuteRecord.Add(barRecord);            
+            barRecords.Add(barRecord);            
         }
 
         public MarketData GetPreMarketData(string instrumentId)
@@ -275,11 +202,12 @@ namespace autotrade.business
             return maDictionary[instrumentId];
         }
 
-        public Indicator_BOLL GetBoll(int day, string instrumentID)
+        public Indicator_BOLL GetBoll(int day, string instrumentID, EnumRecordIntervalType intervalType)
         {
-            if (day > record1MinutesDictionary[instrumentID].Count) return null;
+            return null;
+            if (day > recordMinutesDictionary[instrumentID][intervalType].Count) return null;
 
-            List<double> closePrices = record1MinutesDictionary[instrumentID].Select(barRecord => barRecord.Close).ToList();
+            var closePrices = recordMinutesDictionary[instrumentID][intervalType].Select(barRecord => barRecord.Close).ToList();
 
             return new Indicator_BOLL(closePrices);
         }
