@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using autotrade.model;
@@ -24,13 +25,13 @@ namespace autotrade.ui
         {
             if (OrderLog != null)
             {
-                radGridView1.DataSource = OrderLog.DayAverageLogs;
-                radGridView2.DataSource = OrderLog.CloseOrder.DayAverageLogs;
-                
+                radGridView1.DataSource = OrderLog.StrategyLogs.OfType<object>();
+                radGridView2.DataSource = OrderLog.CloseOrder.StrategyLogs.OfType<object>();
+                radGridView2.Show();
             }
             else
             {
-                radGridView1.DataSource = Order.DayAverageLogs;
+                radGridView1.DataSource = Order.StrategyLogs.OfType<object>();
                 radGridView2.Hide();
                 
             }

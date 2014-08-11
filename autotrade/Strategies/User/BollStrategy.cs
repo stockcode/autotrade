@@ -6,6 +6,7 @@ using System.Reflection;
 using autotrade.business;
 using autotrade.Indicators;
 using autotrade.model;
+using autotrade.model.Log;
 using log4net;
 using MongoDB.Bson.Serialization.Attributes;
 using QuantBox.CSharp2CTP;
@@ -62,7 +63,7 @@ namespace autotrade.Strategies
 
             if (boll == null) return;
 
-            //log.Info(boll);
+            log.Info(boll);
 
             TThostFtdcDirectionType direction;
 
@@ -77,8 +78,17 @@ namespace autotrade.Strategies
                 InstrumentId = currMarketData.InstrumentId,
                 Price = GetAnyPrice(currMarketData, direction),
                 Volume = InstrumentStrategy.Volume,
-                StrategyType = GetType().ToString()
+                StrategyType = GetType().ToString(),                
             };
+
+            var strategyLog = new BollStrategyLog();
+            strategyLog.Direction = direction.ToString();
+            strategyLog.UB = boll.UB;
+            strategyLog.LB = boll.LB;
+            strategyLog.LastPrice = currMarketData.LastPrice;
+            strategyLog.UpdateTime = currMarketData.UpdateTimeSec;
+
+            neworder.StrategyLogs.Add(strategyLog);
 
             newOrders.Add(neworder);
         }
@@ -89,7 +99,7 @@ namespace autotrade.Strategies
 
             if (boll == null) return;
 
-            //log.Info(boll);
+            log.Info(boll);
 
             foreach (var order in orders)
             {
@@ -97,15 +107,28 @@ namespace autotrade.Strategies
 
                 if (order.Direction == TThostFtdcDirectionType.Sell && currMarketData.LastPrice > boll.LB) continue;
 
-                var neworder = new Order();
-                neworder.OffsetFlag = TThostFtdcOffsetFlagType.CloseToday;
-                neworder.Direction = order.Direction == TThostFtdcDirectionType.Buy
-                    ? TThostFtdcDirectionType.Sell
-                    : TThostFtdcDirectionType.Buy;
-                neworder.InstrumentId = currMarketData.InstrumentId;
+                var neworder = new Order
+                {
+                    OffsetFlag = TThostFtdcOffsetFlagType.CloseToday,
+                    Direction = order.Direction == TThostFtdcDirectionType.Buy
+                        ? TThostFtdcDirectionType.Sell
+                        : TThostFtdcDirectionType.Buy,
+                    InstrumentId = currMarketData.InstrumentId,
+                    Volume = order.Volume,
+                    StrategyType = GetType().ToString()
+                };
                 neworder.Price = GetAnyPrice(currMarketData, neworder.Direction);
-                neworder.Volume = order.Volume;
-                neworder.StrategyType = GetType().ToString();
+
+                var strategyLog = new BollStrategyLog
+                {
+                    Direction = neworder.Direction.ToString(),
+                    UB = boll.UB,
+                    LB = boll.LB,
+                    LastPrice = currMarketData.LastPrice,
+                    UpdateTime = currMarketData.UpdateTimeSec
+                };
+
+                neworder.StrategyLogs.Add(strategyLog);
 
 
                 order.CloseOrder = neworder;

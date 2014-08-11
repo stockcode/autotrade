@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using autotrade.model;
+using autotrade.model.Log;
 using log4net;
 using QuantBox.CSharp2CTP;
 
@@ -72,6 +73,18 @@ namespace autotrade.Stop.Profit
                     neworder.Volume = order.Volume;
                     neworder.StrategyType = GetType().ToString();
 
+
+                    var strategyLog = new FallBackStopStrategyLog
+                    {
+                        MinProfit = MinProfit,
+                        Percent = Percent,
+                        MaxProfit = maxProfit,
+                        PositionProfit = order.PositionProfit,
+                        LastPrice = marketData.LastPrice,
+                        UpdateTime = marketData.UpdateTimeSec
+                    };
+
+                    neworder.StrategyLogs.Add(strategyLog);
 
                     order.CloseOrder = neworder;
 

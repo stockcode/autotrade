@@ -47,7 +47,12 @@
             // radGridView1
             // 
             this.radGridView1.Location = new System.Drawing.Point(12, 31);
+            // 
+            // radGridView1
+            // 
+            this.radGridView1.MasterTemplate.AllowAddNewRow = false;
             this.radGridView1.Name = "radGridView1";
+            this.radGridView1.ReadOnly = true;
             this.radGridView1.Size = new System.Drawing.Size(607, 255);
             this.radGridView1.TabIndex = 0;
             this.radGridView1.Text = "radGridView1";
@@ -55,7 +60,12 @@
             // radGridView2
             // 
             this.radGridView2.Location = new System.Drawing.Point(12, 347);
+            // 
+            // radGridView2
+            // 
+            this.radGridView2.MasterTemplate.AllowAddNewRow = false;
             this.radGridView2.Name = "radGridView2";
+            this.radGridView2.ReadOnly = true;
             this.radGridView2.Size = new System.Drawing.Size(607, 255);
             this.radGridView2.TabIndex = 1;
             this.radGridView2.Text = "radGridView2";

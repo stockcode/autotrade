@@ -4,10 +4,11 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using autotrade.model.Log;
 
 namespace autotrade.model
 {
-    public class DayAverageLog
+    public class DayAverageLog : OrderStrategyLog
     {
         [DisplayName("方向")]
         public string Direction { get; set; }

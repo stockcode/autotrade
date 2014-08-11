@@ -203,8 +203,7 @@ namespace autotrade.business
         }
 
         public Indicator_BOLL GetBoll(int day, string instrumentID, EnumRecordIntervalType intervalType)
-        {
-            return null;
+        {            
             if (day > recordMinutesDictionary[instrumentID][intervalType].Count) return null;
 
             var closePrices = recordMinutesDictionary[instrumentID][intervalType].Select(barRecord => barRecord.Close).ToList();

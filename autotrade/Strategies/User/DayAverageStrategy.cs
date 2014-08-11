@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 using autotrade.business;
 using autotrade.model;
+using autotrade.model.Log;
 using log4net;
 using MongoDB.Bson.Serialization.Attributes;
 using QuantBox.CSharp2CTP;
@@ -62,7 +63,7 @@ namespace autotrade.Strategies
 
         private TThostFtdcDirectionType openDirection;
 
-        private List<DayAverageLog> dayAverageLogs = new List<DayAverageLog>(); 
+        private List<OrderStrategyLog> dayAverageLogs = new List<OrderStrategyLog>(); 
 
         private List<Order> newOrders = new List<Order>();
 
@@ -138,7 +139,7 @@ namespace autotrade.Strategies
                         neworder.Price = GetAnyPrice(currMarketData, neworder.Direction);
                         neworder.Volume = InstrumentStrategy.Volume;
                         neworder.StrategyType = GetType().ToString();
-                        neworder.DayAverageLogs.AddRange(dayAverageLogs);
+                        neworder.StrategyLogs.AddRange(dayAverageLogs);
 
                         newOrders.Add(neworder);
 
@@ -192,7 +193,7 @@ namespace autotrade.Strategies
                                 neworder.Price = GetAnyPrice(currMarketData, neworder.Direction);
                                 neworder.Volume = order.Volume;
                                 neworder.StrategyType = GetType().ToString();
-                                neworder.DayAverageLogs.AddRange(dayAverageLogs);
+                                neworder.StrategyLogs.AddRange(dayAverageLogs);
 
                                 order.CloseOrder = neworder;
 
@@ -213,7 +214,7 @@ namespace autotrade.Strategies
                                 neworder.Price = GetAnyPrice(currMarketData, neworder.Direction);
                                 neworder.Volume = InstrumentStrategy.Volume;
                                 neworder.StrategyType = GetType().ToString();
-                                neworder.DayAverageLogs.AddRange(dayAverageLogs);
+                                neworder.StrategyLogs.AddRange(dayAverageLogs);
 
                                 newOrders.Add(neworder);
 
@@ -240,15 +241,17 @@ namespace autotrade.Strategies
 
         private void GetLog(String direction, MarketData preMarketData, MarketData marketData, int threshold)
         {
-            DayAverageLog dayAverageLog = new DayAverageLog();
-            dayAverageLog.Direction = direction;
-            dayAverageLog.Threshold = threshold;
-            dayAverageLog.PreLastPrice = preMarketData.LastPrice;
-            dayAverageLog.PreAveragePrice = preMarketData.AveragePrice;
-            dayAverageLog.PreUpdateTime = preMarketData.UpdateTimeSec;
-            dayAverageLog.LastPrice = marketData.LastPrice;
-            dayAverageLog.AveragePrice = marketData.AveragePrice;
-            dayAverageLog.UpdateTime = marketData.UpdateTimeSec;
+            var dayAverageLog = new DayAverageLog
+            {
+                Direction = direction,
+                Threshold = threshold,
+                PreLastPrice = preMarketData.LastPrice,
+                PreAveragePrice = preMarketData.AveragePrice,
+                PreUpdateTime = preMarketData.UpdateTimeSec,
+                LastPrice = marketData.LastPrice,
+                AveragePrice = marketData.AveragePrice,
+                UpdateTime = marketData.UpdateTimeSec
+            };
             dayAverageLogs.Add(dayAverageLog);   
          
             log.Info(dayAverageLog.Direction + ":" + dayAverageLog.Threshold);

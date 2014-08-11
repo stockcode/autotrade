@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using autotrade.model.Log;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoRepository;
 using QuantBox.CSharp2CTP;
@@ -15,7 +16,7 @@ namespace autotrade.model
     {
         public OrderLog()
         {
-            DayAverageLogs = new List<DayAverageLog>();
+            StrategyLogs = new List<OrderStrategyLog>();
         }
 
         [DisplayName("合约")]
@@ -82,7 +83,7 @@ namespace autotrade.model
         public String StrategyType { get; set; }
 
         [Browsable(false)]
-        public List<DayAverageLog> DayAverageLogs { get; set; }
+        public List<OrderStrategyLog> StrategyLogs { get; set; }
 
         [Browsable(false)]
         public Order CloseOrder { get; set; }

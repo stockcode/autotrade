@@ -46,6 +46,9 @@ namespace autotrade.model
 
                     if (stopLoss.OrderManager == null)
                         stopLoss.OrderManager = container.Resolve<OrderManager>();
+
+                    if (stopLoss.InstrumentStrategy == null)
+                        stopLoss.InstrumentStrategy = this;
                 }
 
                 strategy.StopProfits.ListChanged += Strategies_ListChanged;

@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using autotrade.business;
 using autotrade.model;
+using autotrade.model.Log;
 using log4net;
 using QuantBox.CSharp2CTP;
 
@@ -47,6 +48,15 @@ namespace autotrade.Stop.Loss
                     neworder.Volume = order.Volume;
                     neworder.StrategyType = GetType().ToString();
 
+                    var strategyLog = new PriceStopLossStrategyLog
+                    {
+                        Price = Price,
+                        PositionProfit = order.PositionProfit,
+                        LastPrice = marketData.LastPrice,
+                        UpdateTime = marketData.UpdateTimeSec
+                    };
+
+                    neworder.StrategyLogs.Add(strategyLog);
 
                     order.CloseOrder = neworder;
 
