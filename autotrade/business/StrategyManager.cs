@@ -95,7 +95,9 @@ namespace autotrade.business
                 strategyRepo.Add(instrumentStrategy);
             }
 
-            instrumentStrategy.BindEvent(Container);
+            instrumentStrategy.Configure(Container);
+            instrumentStrategy.BindEvent();
+            
 
             instrumentStrategies.Add(instrumentStrategy);
 
@@ -107,6 +109,7 @@ namespace autotrade.business
             switch (e.ListChangedType)
             {
                 case ListChangedType.ItemChanged:
+                    instrumentStrategies[e.NewIndex].Configure(Container);
                     strategyRepo.Update(instrumentStrategies[e.NewIndex]);
                     break;
             }

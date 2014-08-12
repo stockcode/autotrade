@@ -15,7 +15,7 @@ using QuantBox.CSharp2CTP;
 
 namespace autotrade.Strategies
 {
-    [BsonKnownTypes(typeof(BollStrategy), typeof(DayAverageStrategy))]
+    [BsonKnownTypes(typeof(StopLoss), typeof(StopProfit), typeof(UserStrategy))]
     public abstract class Strategy : INotifyPropertyChanged
     {
         protected readonly  double TOLERANCE = 0.01d;

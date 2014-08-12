@@ -166,21 +166,28 @@ namespace autotrade.business
                 var closeOrder = order.CloseOrder;
 
 
-                order.CloseOrder.OrderRef = tradeApi.MaxOrderRef++.ToString();
+                closeOrder.OrderRef = tradeApi.MaxOrderRef++.ToString();
 
-                order.CloseOrder.FrontID = tradeApi.FrontID;
+                closeOrder.FrontID = tradeApi.FrontID;
 
-                order.CloseOrder.SessionID = tradeApi.SessionID;
+                closeOrder.SessionID = tradeApi.SessionID;
 
-                order.CloseOrder.StatusType = EnumOrderStatus.已平仓;
+                closeOrder.StatusType = EnumOrderStatus.平仓中;
+                closeOrder.OrderSysID = tradeApi.MaxOrderRef++.ToString();
 
-                order.CloseOrder.TradePrice = order.CloseOrder.Price;
+                order.StatusType = EnumOrderStatus.平仓中;
 
-                order.CloseOrder.TradeDate = tradeApi.TradingDay;
+                var tradeField = new CThostFtdcTradeField();
 
-                order.CloseOrder.TradeTime = DateTime.Now.ToString("HH:mm:ss");
+                tradeField.OrderSysID = order.CloseOrder.OrderSysID;
+                
+                tradeField.Price = order.CloseOrder.Price;
 
-                order.StatusType = EnumOrderStatus.已平仓;
+                tradeField.TradeDate = tradeApi.TradingDay;
+
+                tradeField.TradeTime = DateTime.Now.ToString("HH:mm:ss");
+
+                OrderRepository.UpdateTradeID(tradeField);
 
                 OnRspQryOrder(this, new OrderEventArgs(new MethodInvoker(() => OrderRepository.Delete(order)))); 
 

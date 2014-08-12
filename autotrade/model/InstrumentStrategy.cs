@@ -11,6 +11,7 @@ using autotrade.converter;
 using autotrade.Stop.Loss;
 using autotrade.Stop.Profit;
 using autotrade.Strategies;
+using MongoDB.Bson.Serialization.Attributes;
 using MongoRepository;
 using IContainer = Autofac.IContainer;
 
@@ -23,9 +24,20 @@ namespace autotrade.model
             Strategies = new BindingList<UserStrategy>();            
         }
 
-        public void BindEvent(IContainer container)
+        public void BindEvent()
         {
             Strategies.ListChanged += Strategies_ListChanged;
+
+            foreach (var strategy in Strategies)
+            {
+                strategy.StopLosses.ListChanged += Strategies_ListChanged;
+
+                strategy.StopProfits.ListChanged += Strategies_ListChanged;
+            }
+        }
+
+        public void Configure(IContainer container)
+        {
             foreach (var strategy in Strategies)
             {
                 if (strategy.IndicatorManager == null)
@@ -38,7 +50,6 @@ namespace autotrade.model
                     strategy.InstrumentStrategy = this;
 
 
-                strategy.StopLosses.ListChanged += Strategies_ListChanged;
                 foreach (var stopLoss in strategy.StopLosses)
                 {
                     if (stopLoss.IndicatorManager == null)
@@ -51,8 +62,6 @@ namespace autotrade.model
                         stopLoss.InstrumentStrategy = this;
                 }
 
-                strategy.StopProfits.ListChanged += Strategies_ListChanged;
-
                 foreach (var stopProfit in strategy.StopProfits)
                 {
                     if (stopProfit.IndicatorManager == null)
@@ -64,12 +73,15 @@ namespace autotrade.model
                     if (stopProfit.InstrumentStrategy == null)
                         stopProfit.InstrumentStrategy = this;
                 }
-            }            
+            }
         }
 
         void Strategies_ListChanged(object sender, ListChangedEventArgs e)
         {
-            if (e.ListChangedType == ListChangedType.ItemAdded) NotifyPropertyChanged();
+            if (e.ListChangedType == ListChangedType.ItemAdded)
+            {
+                    NotifyPropertyChanged();
+            }
         }
 
         [DisplayName("合约")]
