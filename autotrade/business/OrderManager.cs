@@ -23,9 +23,7 @@ namespace autotrade.business
         private readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private TraderApiWrapper tradeApi;
 
-        private List<PositionDetail> positionDetails = new List<PositionDetail>();
         private BindingList<TradeRecord> tradeRecords = new BindingList<TradeRecord>();
-        private List<PositionRecord> positionRecords = new List<PositionRecord>();
         private BindingList<OrderRecord> orderRecords = new BindingList<OrderRecord>();
 
 
@@ -33,19 +31,6 @@ namespace autotrade.business
 
         public AccountManager AccountManager { get; set; }
 
-
-        public delegate void TradeRecordHandler(object sender, TradeRecordEventArgs e);
-
-        public event TradeRecordHandler OnRtnTradeRecord;
-
-        public delegate void PositionDetailHandler(object sender, PositionDetailEventArgs e);
-        public event PositionDetailHandler OnRspQryPositionDetail;
-
-        public delegate void PositionRecordHandler(object sender, PositionRecordEventArgs e);
-        public event PositionRecordHandler OnRspQryPositionRecord;
-
-        public delegate void OrderRecordHandler(object sender, OrderRecordEventArgs e);
-        public event OrderRecordHandler OnRspQryOrderRecord;
 
         public delegate void OrderHandler(object sender, OrderEventArgs e);
         public event OrderHandler OnRspQryOrder;
@@ -106,32 +91,6 @@ namespace autotrade.business
             log.Info(order);
         }
 
-        void tradeApi_OnRspQryInvestorPositionDetail(object sender, OnRspQryInvestorPositionDetailArgs e)
-        {
-            PositionDetail positionDetail = new PositionDetail();
-
-            ObjectUtils.CopyStruct(e.pInvestorPositionDetail, positionDetail);
-
-            positionDetails.Add(positionDetail);
-
-
-
-            if (e.bIsLast)
-            {
-                OnRspQryPositionDetail(this, new PositionDetailEventArgs(positionDetails));
-            }
-        }
-
-        void tradeApi_OnRspQryInvestorPosition(object sender, OnRspQryInvestorPositionArgs e)
-        {
-            PositionRecord positionRecord = new PositionRecord();
-
-            ObjectUtils.CopyStruct(e.pInvestorPosition, positionRecord);
-
-            positionRecords.Add(positionRecord);
-
-            if (e.bIsLast) OnRspQryPositionRecord(this, new PositionRecordEventArgs(positionRecords));
-        }
 
         void tradeApi_OnRspOrderInsert(object sender, OnRspOrderInsertArgs e)
         {
@@ -173,7 +132,62 @@ namespace autotrade.business
         }
 
 
-        public int OrderInsert(Order order)
+        public void OrderInsert(Order order)
+        {
+            InsertToMock(order);
+
+            //InsertToCTP(order);
+
+        }
+
+        private void InsertToMock(Order order)
+        {
+            if (order.CloseOrder == null)
+            {
+                OnRspQryOrder(this, new OrderEventArgs(new MethodInvoker(() => OrderRepository.Add(order))));
+
+
+                order.OrderRef = tradeApi.MaxOrderRef++.ToString();
+
+                order.FrontID = tradeApi.FrontID;
+
+                order.SessionID = tradeApi.SessionID;
+
+                order.TradePrice = order.Price;
+
+                order.TradeDate = tradeApi.TradingDay;
+
+                order.TradeTime = DateTime.Now.ToString("HH:mm:ss");
+
+                order.StatusType = EnumOrderStatus.已开仓;
+            }
+            else
+            {
+                var closeOrder = order.CloseOrder;
+
+
+                order.CloseOrder.OrderRef = tradeApi.MaxOrderRef++.ToString();
+
+                order.CloseOrder.FrontID = tradeApi.FrontID;
+
+                order.CloseOrder.SessionID = tradeApi.SessionID;
+
+                order.CloseOrder.StatusType = EnumOrderStatus.已平仓;
+
+                order.CloseOrder.TradePrice = order.CloseOrder.Price;
+
+                order.CloseOrder.TradeDate = tradeApi.TradingDay;
+
+                order.CloseOrder.TradeTime = DateTime.Now.ToString("HH:mm:ss");
+
+                order.StatusType = EnumOrderStatus.已平仓;
+
+                OnRspQryOrder(this, new OrderEventArgs(new MethodInvoker(() => OrderRepository.Delete(order)))); 
+
+            }
+        }
+
+        private void InsertToCTP(Order order)
         {
             if (order.CloseOrder == null)
             {
@@ -202,15 +216,12 @@ namespace autotrade.business
                 order.CloseOrder.FrontID = tradeApi.FrontID;
 
                 order.CloseOrder.SessionID = tradeApi.SessionID;
-                
+
                 order.CloseOrder.StatusType = EnumOrderStatus.平仓中;
 
                 order.StatusType = EnumOrderStatus.平仓中;
-                
+
             }
-
-
-            return 0;
         }
 
         public void CancelOrder(Order order)
@@ -296,45 +307,6 @@ namespace autotrade.business
         public void ChangeOrderLogs(string tradingDay)
         {
             OrderRepository.ChangeOrderLogs(tradingDay);
-        }
-    }
-
-    public class TradeRecordEventArgs : EventArgs
-    {
-        public BindingList<TradeRecord> tradeRecords { get; set; }
-        public TradeRecordEventArgs(BindingList<TradeRecord> tradeRecords)
-            : base()
-        {
-            this.tradeRecords = tradeRecords;
-        }
-    }
-
-    public class PositionDetailEventArgs : EventArgs
-    {
-        public List<PositionDetail> PositionDetails { get; set; }
-        public PositionDetailEventArgs(List<PositionDetail> positionDetails)            
-        {
-            this.PositionDetails = positionDetails;
-        }
-    }
-
-    public class PositionRecordEventArgs : EventArgs
-    {
-        public List<PositionRecord> PositionRecords { get; set; }
-        public PositionRecordEventArgs(List<PositionRecord> positionRecords)
-            : base()
-        {
-            this.PositionRecords = positionRecords;
-        }
-    }
-
-    public class OrderRecordEventArgs : EventArgs
-    {
-        public BindingList<OrderRecord> OrderRecords { get; set; }
-        public OrderRecordEventArgs(BindingList<OrderRecord> orderRecords)
-            : base()
-        {
-            this.OrderRecords = orderRecords;
         }
     }
 
