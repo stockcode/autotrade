@@ -15,7 +15,7 @@ using QuantBox.CSharp2CTP;
 
 namespace autotrade.Strategies
 {
-    [BsonKnownTypes(typeof(BollStrategy), typeof(DayAverageStrategy))]
+    [BsonKnownTypes(typeof(BollStrategy), typeof(DayAverageStrategy), typeof(RoundMAStrategy))]
     public abstract class UserStrategy : Strategy
     {
 
@@ -28,6 +28,9 @@ namespace autotrade.Strategies
         public BindingList<StopProfit> StopProfits { get; set; }
 
         private bool _allowStopLoss = true;
+
+        protected List<Order> newOrders = new List<Order>();
+        protected MarketData currMarketData;
 
         [DisplayName("是否止损")]
         public bool AllowStopLoss
@@ -67,6 +70,8 @@ namespace autotrade.Strategies
 
         public override List<Order> Match(MarketData marketData)
         {
+            currMarketData = marketData;
+
             if (AllowStopLoss)
             {
                 foreach (Order order in StopLosses.Select(stopLoss => stopLoss.Match(marketData)).Where(orders => orders != null).SelectMany(orders => orders))

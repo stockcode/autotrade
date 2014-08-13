@@ -162,7 +162,7 @@
       <DependentUpon>LoginForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Strategies\User\BollStrategy.cs" />
-    <Compile Include="Strategies\User\BelowMAStrategy.cs" />
+    <Compile Include="Strategies\User\RoundMAStrategy.cs" />
     <Compile Include="ui\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -172,7 +172,6 @@
     <Compile Include="Indicators\Indicator_MA.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Strategies\User\AboveMAStrategy.cs" />
     <Compile Include="ui\InstrumentForm.cs">
       <SubType>Form</SubType>
     </Compile>

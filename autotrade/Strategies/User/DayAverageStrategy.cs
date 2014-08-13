@@ -67,7 +67,7 @@ namespace autotrade.Strategies
 
         private List<Order> newOrders = new List<Order>();
 
-        private MarketData preMarketData, currMarketData;
+        private MarketData preMarketData;
         
 
         public DayAverageStrategy()
@@ -83,8 +83,6 @@ namespace autotrade.Strategies
             newOrders.Clear();
 
             var instrumentId = marketData.InstrumentId;
-
-            currMarketData = marketData;
 
             preMarketData = IndicatorManager.GetPreMarketData(instrumentId);
 

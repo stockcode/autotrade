@@ -191,15 +191,13 @@ namespace autotrade.business
             return preMarketDataDictionary.ContainsKey(instrumentId) ? preMarketDataDictionary[instrumentId] : null;
         }
 
-        public double GetMAPrice(String instrumentId, int days) 
+        public Indicator_MA GetMA(String instrumentID, int day, EnumRecordIntervalType intervalType) 
         {
-            if (!maDictionary.ContainsKey(instrumentId))
-            {
-                Indicator_MA ma = new Indicator_MA(instrumentId, days);
-                maDictionary.Add(instrumentId, ma.GetMA());
-            }
+            if (day > recordMinutesDictionary[instrumentID][intervalType].Count) return null;
 
-            return maDictionary[instrumentId];
+            var closePrices = recordMinutesDictionary[instrumentID][intervalType].Select(barRecord => barRecord.Close).ToList();
+
+            return new Indicator_MA(closePrices);
         }
 
         public Indicator_BOLL GetBoll(int day, string instrumentID, EnumRecordIntervalType intervalType)

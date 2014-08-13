@@ -31,9 +31,13 @@ namespace autotrade.business
 
         public AccountManager AccountManager { get; set; }
 
+        private BindingList<Order> stubOrders = new BindingList<Order>();
+
 
         public delegate void OrderHandler(object sender, OrderEventArgs e);
         public event OrderHandler OnRspQryOrder;
+
+        private bool cancelling = false;
 
         public OrderManager(TraderApiWrapper traderApi)
         {
@@ -56,7 +60,7 @@ namespace autotrade.business
 
         void traderApi_OnRspOrderAction(object sender, OnRspOrderActionArgs e)
         {
-            log.Info(e.pInputOrderAction);
+            log.Info(e.pRspInfo);
         }
 
         void tradeApi_OnRtnTrade(object sender, OnRtnTradeArgs e)
@@ -134,9 +138,9 @@ namespace autotrade.business
 
         public void OrderInsert(Order order)
         {
-            InsertToMock(order);
+            //InsertToMock(order);
 
-            //InsertToCTP(order);
+            InsertToCTP(order);
 
         }
 
@@ -234,7 +238,7 @@ namespace autotrade.business
         public void CancelOrder(Order order)
         {
             tradeApi.CancelOrder(order.OrderRef, order.FrontID, order.SessionID, order.InstrumentId);
-            OrderRepository.Delete(order);                
+            OnRspQryOrder(this, new OrderEventArgs(new MethodInvoker(() => OrderRepository.Delete(order))));                
         }
 
         public void ProcessData(MarketData marketData)
@@ -256,11 +260,12 @@ namespace autotrade.business
 
             AccountManager.Accounts[0].PositionProfit = OrderRepository.getOrders().Sum(o => o.PositionProfit);
             AccountManager.Accounts[0].CloseProfit = OrderRepository.GetOrderLogs().Sum(o => o.CloseProfit);
+            AccountManager.Accounts[0].CurrMargin = OrderRepository.getOrders().Sum(o => o.UseMargin);
         }        
 
         public BindingList<Order> getOrders()
         {
-            return OrderRepository.getOrders();
+            return cancelling ? stubOrders : OrderRepository.getOrders();
         }
 
         public void AddOrderRecord(OrderRecord orderRecord)
@@ -314,6 +319,18 @@ namespace autotrade.business
         public void ChangeOrderLogs(string tradingDay)
         {
             OrderRepository.ChangeOrderLogs(tradingDay);
+        }
+
+        public void CancelOrder(List<Order> orders)
+        {
+            cancelling = true;
+
+            for (var i = orders.Count - 1; i >= 0; i--)
+            {
+                CancelOrder(orders[i]);
+            }
+
+            cancelling = false;
         }
     }
 

@@ -16,7 +16,7 @@ namespace autotrade.converter
 
         public StrategyUIEditor(Type type) : base(type)
         {
-            types = new Type[] {typeof (BollStrategy), typeof (DayAverageStrategy)};
+            types = new Type[] { typeof(BollStrategy), typeof(DayAverageStrategy), typeof(RoundMAStrategy) };
         }
 
         protected override Type[] CreateNewItemTypes()

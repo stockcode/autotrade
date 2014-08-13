@@ -3238,6 +3238,11 @@ namespace QuantBox.CSharp2CTP
         /// </summary>
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 31)]
         public string InstrumentID;
+
+        public override string ToString()
+        {
+            return string.Format("BrokerId: {0}, InvestorId: {1}, OrderActionRef: {2}, OrderRef: {3}, RequestId: {4}, FrontId: {5}, SessionId: {6}, ExchangeId: {7}, OrderSysId: {8}, ActionFlag: {9}, LimitPrice: {10}, VolumeChange: {11}, UserId: {12}, InstrumentId: {13}", BrokerID, InvestorID, OrderActionRef, OrderRef, RequestID, FrontID, SessionID, ExchangeID, OrderSysID, ActionFlag, LimitPrice, VolumeChange, UserID, InstrumentID);
+        }
     }
 
     /// <summary>

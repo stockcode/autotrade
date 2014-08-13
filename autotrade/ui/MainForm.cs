@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Windows.Forms;
 using Autofac;
@@ -17,7 +18,6 @@ namespace autotrade
     public partial class MainForm : RadForm
     {
         private readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        private AboveMAStrategy maReverseStrategy;
 
         public MainForm()
         {
@@ -86,11 +86,11 @@ namespace autotrade
 
 
             gvOrder.DataSource = OrderManager.getOrders();
-            ConfigGridView(gvOrder, "PositionProfit");
+            ConfigGridView(gvOrder, new String[]{"PositionProfit", "UseMargin"});
 
             OrderManager.ChangeOrderLogs(tradeApi.TradingDay);
             gvOrderLog.DataSource = OrderManager.GetOrderLogs();
-            ConfigGridView(gvOrderLog, "CloseProfit");
+            ConfigGridView(gvOrderLog, new String[] { "CloseProfit", "UseMargin" });
 
             radGridView9.DataSource = OrderManager.GetTradeRecords();
 
@@ -122,9 +122,13 @@ namespace autotrade
             OrderManager.CloseOrder(order);
         }
 
-        private void ConfigGridView(RadGridView radGridView, string Column)
+        private void ConfigGridView(RadGridView radGridView, IEnumerable<string> columns)
         {
-            radGridView.Columns[Column].FormatString = "{0:F2}";
+            foreach (var column in columns)
+            {
+                radGridView.Columns[column].FormatString = "{0:F2}";    
+            }
+            
             radGridView.BestFitColumns();
         }
 

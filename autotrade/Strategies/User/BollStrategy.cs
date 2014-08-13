@@ -18,9 +18,6 @@ namespace autotrade.Strategies
         private readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         
 
-        private List<Order> newOrders = new List<Order>();
-
-        private int days, tick;
 
         public int Day { get; set; }
 
@@ -42,8 +39,6 @@ namespace autotrade.Strategies
             var instrumentId = marketData.InstrumentId;
             
             currMarketData = marketData;
-
-            tick++;
 
             List<Order> orders = GetStrategyOrders(instrumentId);
 
