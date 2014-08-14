@@ -260,7 +260,8 @@ namespace autotrade.business
 
             AccountManager.Accounts[0].PositionProfit = OrderRepository.getOrders().Sum(o => o.PositionProfit);
             AccountManager.Accounts[0].CloseProfit = OrderRepository.GetOrderLogs().Sum(o => o.CloseProfit);
-            AccountManager.Accounts[0].CurrMargin = OrderRepository.getOrders().Sum(o => o.UseMargin);
+            AccountManager.Accounts[0].CurrMargin = OrderRepository.getOrders().Where(o=>o.StatusType == EnumOrderStatus.已开仓).Sum(o => o.UseMargin);
+            AccountManager.Accounts[0].FrozenMargin = OrderRepository.getOrders().Where(o => o.StatusType == EnumOrderStatus.开仓中).Sum(o => o.UseMargin);
         }        
 
         public BindingList<Order> getOrders()
