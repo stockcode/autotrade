@@ -59,9 +59,11 @@ namespace autotrade.Stop.Profit
 
             foreach (var order in orders.FindAll(o => o.StatusType == EnumOrderStatus.已开仓))
             {
-                if (order.PositionProfit < 0 || order.PositionProfit < MinProfit) continue;
-
                 if (order.PositionProfit > maxProfit) maxProfit = order.PositionProfit;
+
+                if (order.PositionProfit < 0 || maxProfit < MinProfit) continue;
+
+                
 
                 if ((maxProfit - order.PositionProfit) / maxProfit > Percent)
                 {
@@ -69,6 +71,7 @@ namespace autotrade.Stop.Profit
                     neworder.OffsetFlag = TThostFtdcOffsetFlagType.CloseToday;
                     neworder.Direction = order.Direction == TThostFtdcDirectionType.Buy ? TThostFtdcDirectionType.Sell : TThostFtdcDirectionType.Buy;
                     neworder.InstrumentId = marketData.InstrumentId;
+                    neworder.LastPrice = marketData.LastPrice;
                     neworder.Price = GetAnyPrice(marketData, neworder.Direction);
                     neworder.Volume = order.Volume;
                     neworder.StrategyType = GetType().ToString();

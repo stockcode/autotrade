@@ -157,7 +157,7 @@ namespace autotrade.business
 
                 order.SessionID = tradeApi.SessionID;
 
-                order.TradePrice = order.Price;
+                order.TradePrice = order.LastPrice;
 
                 order.TradeDate = tradeApi.TradingDay;
 
@@ -185,7 +185,7 @@ namespace autotrade.business
 
                 tradeField.OrderSysID = order.CloseOrder.OrderSysID;
                 
-                tradeField.Price = order.CloseOrder.Price;
+                tradeField.Price = order.CloseOrder.LastPrice;
 
                 tradeField.TradeDate = tradeApi.TradingDay;
 
@@ -219,7 +219,7 @@ namespace autotrade.business
             {
                 var closeOrder = order.CloseOrder;
 
-                int orderRef = tradeApi.OrderInsert(closeOrder.InstrumentId, closeOrder.OffsetFlag, closeOrder.Direction, closeOrder.Price,
+                int orderRef = tradeApi.OrderInsert(closeOrder.InstrumentId, closeOrder.OffsetFlag, closeOrder.Direction,closeOrder.Price,
                         closeOrder.Volume);
 
                 order.CloseOrder.OrderRef = orderRef.ToString();
@@ -331,6 +331,20 @@ namespace autotrade.business
             }
 
             cancelling = false;
+        }
+
+        public void OpenOrder(string instrumentId, TThostFtdcDirectionType direction)
+        {
+            var order = new Order();
+            order.OffsetFlag = TThostFtdcOffsetFlagType.Open;
+            order.Direction = direction;
+            order.InstrumentId = instrumentId;
+
+            order.Price = 0;
+            order.Volume = 1;
+            order.StrategyType = "Open Order By User";
+
+            OrderInsert(order);
         }
     }
 

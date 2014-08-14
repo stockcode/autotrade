@@ -134,6 +134,7 @@ namespace autotrade.Strategies
                         neworder.OffsetFlag = TThostFtdcOffsetFlagType.Open;
                         neworder.Direction = openDirection;
                         neworder.InstrumentId = currMarketData.InstrumentId;
+                        neworder.LastPrice = currMarketData.LastPrice;
                         neworder.Price = GetAnyPrice(currMarketData, neworder.Direction);
                         neworder.Volume = InstrumentStrategy.Volume;
                         neworder.StrategyType = GetType().ToString();
@@ -188,6 +189,7 @@ namespace autotrade.Strategies
                                     ? TThostFtdcDirectionType.Sell
                                     : TThostFtdcDirectionType.Buy;
                                 neworder.InstrumentId = currMarketData.InstrumentId;
+                                neworder.LastPrice = currMarketData.LastPrice;
                                 neworder.Price = GetAnyPrice(currMarketData, neworder.Direction);
                                 neworder.Volume = order.Volume;
                                 neworder.StrategyType = GetType().ToString();
@@ -209,6 +211,7 @@ namespace autotrade.Strategies
                                     : TThostFtdcDirectionType.Buy;
 
                                 neworder.InstrumentId = currMarketData.InstrumentId;
+                                neworder.LastPrice = currMarketData.LastPrice;
                                 neworder.Price = GetAnyPrice(currMarketData, neworder.Direction);
                                 neworder.Volume = InstrumentStrategy.Volume;
                                 neworder.StrategyType = GetType().ToString();

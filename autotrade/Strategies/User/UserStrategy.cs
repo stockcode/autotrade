@@ -62,6 +62,22 @@ namespace autotrade.Strategies
             }
         }
 
+        private bool _autoTrade = true;
+
+        [DisplayName("是否交易")]
+        public bool AutoTrade
+        {
+            get { return _autoTrade; }
+            set
+            {
+                if (this._autoTrade != value)
+                {
+                    this._autoTrade = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
         protected UserStrategy()
         {
             StopLosses = new BindingList<StopLoss>();

@@ -45,8 +45,10 @@ namespace autotrade.business
 
             if (!instrumentStrategy.StartTrade) return;
 
-            foreach (Strategy strategy in instrumentStrategy.Strategies)
+            foreach (UserStrategy strategy in instrumentStrategy.Strategies)
             {
+                if (!strategy.AutoTrade) continue;
+                
                 List<Order> orders = strategy.Match(marketData);
 
                 foreach (Order order in orders)

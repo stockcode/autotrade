@@ -162,8 +162,12 @@ namespace QuantBox.CSharp2CTP.Event
         public int OrderInsert(string InstrumentID, TThostFtdcOffsetFlagType OffsetFlag, TThostFtdcDirectionType Direction, double Price, int Volume)
         {
             var priceType = TThostFtdcOrderPriceTypeType.LimitPrice;
-
-            if (Price < 0.01) priceType = TThostFtdcOrderPriceTypeType.AnyPrice;
+            var conditionType = TThostFtdcTimeConditionType.GFD;
+            if (Price < 0.01)
+            {
+                priceType = TThostFtdcOrderPriceTypeType.AnyPrice;
+                conditionType = TThostFtdcTimeConditionType.IOC;
+            }
 
             return m_Api.SendOrder(
                 ++this.MaxOrderRef,
@@ -174,7 +178,7 @@ namespace QuantBox.CSharp2CTP.Event
                 Volume,
                 Price,
                 priceType,
-                TThostFtdcTimeConditionType.GFD,
+                conditionType,
                 TThostFtdcContingentConditionType.Immediately,
                 0,
                 TThostFtdcVolumeConditionType.AV);
@@ -199,7 +203,7 @@ namespace QuantBox.CSharp2CTP.Event
                 Volume,
                 0,
                 TThostFtdcOrderPriceTypeType.AnyPrice,
-                TThostFtdcTimeConditionType.GFD,
+                TThostFtdcTimeConditionType.IOC,
                 TThostFtdcContingentConditionType.Immediately,
                 0,
                 TThostFtdcVolumeConditionType.AV);

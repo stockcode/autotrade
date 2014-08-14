@@ -61,6 +61,9 @@ namespace autotrade
 
             dtTradingDay.Text = tradeApi.TradingDay;
 
+            miBuyOrder.Click += miBuyOrder_Click;
+            miSellOrder.Click += miSellOrder_Click;
+
             miDetail.Click += miDetail_Click;
             miCloseOrder.Click += miCloseOrder_Click;
             miCancelOrder.Click += miCancelOrder_Click;
@@ -106,6 +109,18 @@ namespace autotrade
             IndicatorManager.Init(MarketManager.marketDatas);
 
             StrategyManager.Start();
+        }
+
+        void miSellOrder_Click(object sender, EventArgs e)
+        {
+            var marketData = (MarketData)gvInstrument.SelectedRows[0].DataBoundItem;
+            OrderManager.OpenOrder(marketData.InstrumentId, TThostFtdcDirectionType.Buy);
+        }
+
+        void miBuyOrder_Click(object sender, EventArgs e)
+        {
+            var marketData = (MarketData)gvInstrument.SelectedRows[0].DataBoundItem;
+            OrderManager.OpenOrder(marketData.InstrumentId, TThostFtdcDirectionType.Sell);
         }
 
         void miCancelOrder_Click(object sender, EventArgs e)
@@ -224,6 +239,11 @@ namespace autotrade
             
 
             OrderManager.ChangeOrderLogs(dtTradingDay.Value.ToString("yyyyMMdd"));                       
+        }
+
+        private void gvInstrument_ContextMenuOpening(object sender, ContextMenuOpeningEventArgs e)
+        {
+            e.ContextMenu = cmMarket.DropDown;
         }
     }
 }

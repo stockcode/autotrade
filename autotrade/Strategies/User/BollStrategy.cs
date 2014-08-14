@@ -32,9 +32,10 @@ namespace autotrade.Strategies
 
         public override List<Order> Match(MarketData marketData)
         {
-            base.Match(marketData);
-
             newOrders.Clear();
+
+            base.Match(marketData);
+            
 
             var instrumentId = marketData.InstrumentId;
             
@@ -71,6 +72,7 @@ namespace autotrade.Strategies
                 OffsetFlag = TThostFtdcOffsetFlagType.Open,
                 Direction = direction,
                 InstrumentId = currMarketData.InstrumentId,
+                LastPrice = currMarketData.LastPrice,
                 Price = GetAnyPrice(currMarketData, direction),
                 Volume = InstrumentStrategy.Volume,
                 StrategyType = GetType().ToString(),                
@@ -110,6 +112,7 @@ namespace autotrade.Strategies
                         : TThostFtdcDirectionType.Buy,
                     InstrumentId = currMarketData.InstrumentId,
                     Volume = order.Volume,
+                    LastPrice = currMarketData.LastPrice,
                     StrategyType = GetType().ToString()
                 };
                 neworder.Price = GetAnyPrice(currMarketData, neworder.Direction);
