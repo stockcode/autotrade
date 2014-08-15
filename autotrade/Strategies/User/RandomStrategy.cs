@@ -43,6 +43,9 @@ namespace autotrade.Strategies
 
             tick++;
 
+            if ((10+tick)/10 > 0) return newOrders;
+
+
             List<Order> orders = GetStrategyOrders(instrumentId);
 
 

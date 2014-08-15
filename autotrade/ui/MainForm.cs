@@ -114,13 +114,13 @@ namespace autotrade
         void miSellOrder_Click(object sender, EventArgs e)
         {
             var marketData = (MarketData)gvInstrument.SelectedRows[0].DataBoundItem;
-            OrderManager.OpenOrder(marketData.InstrumentId, TThostFtdcDirectionType.Buy);
+            OrderManager.OpenOrder(marketData.InstrumentId, TThostFtdcDirectionType.Sell);
         }
 
         void miBuyOrder_Click(object sender, EventArgs e)
         {
             var marketData = (MarketData)gvInstrument.SelectedRows[0].DataBoundItem;
-            OrderManager.OpenOrder(marketData.InstrumentId, TThostFtdcDirectionType.Sell);
+            OrderManager.OpenOrder(marketData.InstrumentId, TThostFtdcDirectionType.Buy);
         }
 
         void miCancelOrder_Click(object sender, EventArgs e)

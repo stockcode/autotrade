@@ -43,7 +43,7 @@ namespace autotrade.Repository
                     order.OrderSysID = pOrder.OrderSysID;
                     order.ExchangeID = pOrder.ExchangeID;
                     Update(order);
-                    return order; ;
+                    return order;
                 }
 
                 if (order.CloseOrder != null && order.CloseOrder.OrderRef == pOrder.OrderRef && order.CloseOrder.FrontID == pOrder.FrontID && order.CloseOrder.SessionID == pOrder.SessionID)

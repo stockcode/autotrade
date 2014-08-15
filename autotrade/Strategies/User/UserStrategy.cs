@@ -15,7 +15,7 @@ using QuantBox.CSharp2CTP;
 
 namespace autotrade.Strategies
 {
-    [BsonKnownTypes(typeof(BollStrategy), typeof(DayAverageStrategy), typeof(RoundMAStrategy))]
+    [BsonKnownTypes(typeof(BollStrategy), typeof(DayAverageStrategy), typeof(RoundMAStrategy), typeof(RandomStrategy))]
     public abstract class UserStrategy : Strategy
     {
 
