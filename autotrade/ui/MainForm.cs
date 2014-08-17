@@ -45,14 +45,6 @@ namespace autotrade
             log.Info(pInvestorPositionCombineDetail);
         }
 
-
-        private void tradeApi_OnRspQryContractBank(ref CThostFtdcContractBankField pcontractbank,
-            ref CThostFtdcRspInfoField prspinfo, int nrequestid, bool bislast)
-        {
-            log.Info(prspinfo);
-            log.Info(pcontractbank);
-        }
-
         private void MainForm_Load(object sender, EventArgs e)
         {
             StrategyManager.Container = Container;
@@ -197,8 +189,7 @@ namespace autotrade
 
         private void miClose_Click(object sender, EventArgs e)
         {
-            throw new NullReferenceException("null for test");
-            //Close();
+            Close();
         }
 
         private void radMenuItem11_Click(object sender, EventArgs e)

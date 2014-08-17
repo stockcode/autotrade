@@ -29,6 +29,8 @@ namespace autotrade.Repository
 
         public override Order Add(Order entity)
         {
+            entity.Id = null;
+
             orders.Add(entity);
             
             return base.Add(entity);

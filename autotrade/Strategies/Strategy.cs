@@ -56,6 +56,13 @@ namespace autotrade.Strategies
                     .ToList();
         }
 
+        protected List<Order> GetStrategyOrders(string instrumentId, string strategyType)
+        {
+            return OrderManager.getOrders()
+                    .Where(o => o.InstrumentId == instrumentId && o.StrategyType == strategyType)
+                    .ToList();
+        }
+
         protected List<Order> GetOrders(string instrumentId)
         {
             return OrderManager.getOrders()
