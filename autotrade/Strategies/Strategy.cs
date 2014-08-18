@@ -18,7 +18,7 @@ namespace autotrade.Strategies
     [BsonKnownTypes(typeof(StopLoss), typeof(StopProfit), typeof(UserStrategy))]
     public abstract class Strategy : INotifyPropertyChanged
     {
-        protected readonly  double TOLERANCE = 0.01d;
+        protected readonly  double TOLERANCE = 0.000000001d;
 
         [BsonIgnore]
         [Browsable(false)]

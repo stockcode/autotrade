@@ -132,8 +132,7 @@ namespace autotrade.Strategies
 
 
             if (StartHedging) CheckHeding();
-            
-            
+
             return newOrders;
         }
 
@@ -311,14 +310,28 @@ namespace autotrade.Strategies
                 InstrumentId = currMarketData.InstrumentId,
                 LastPrice = currMarketData.LastPrice,
                 Price = direction == TThostFtdcDirectionType.Buy
-                    ? currMarketData.AveragePrice - HedgingThreshold
-                    : currMarketData.AveragePrice + HedgingThreshold,
+                    ? GetAvgPrice() - HedgingThreshold
+                    : GetAvgPrice() + HedgingThreshold,
                 Volume = InstrumentStrategy.Volume,
                 StrategyType = hedgeType
             };
             //neworder.StrategyLogs.AddRange(dayAverageLogs);
 
             newOrders.Add(neworder);
+        }
+
+        private double GetAvgPrice()
+        {
+            int avg = (int) currMarketData.AveragePrice;
+            double f1 = currMarketData.AveragePrice - avg;
+            if (f1 < 0.01) return currMarketData.AveragePrice;
+
+            int d1 = (int) (f1*10);
+
+            if (d1 % 2 != 0) d1++;
+
+            f1 = avg + d1 * 0.1;
+            return f1;
         }
 
         private void CloseHedge()
