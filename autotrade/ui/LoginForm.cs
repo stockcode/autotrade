@@ -149,10 +149,16 @@ namespace autotrade
 
 
             tradeApi.OnConnect += tradeApi_OnConnect;
+            tradeApi.OnDisconnect += tradeApi_OnDisconnect;
             tradeApi.OnRspQryInstrument += tradeApi_OnRspQryInstrument;
             tradeApi.OnRspQryTradingAccount += tradeApi_OnRspQryTradingAccount;
             tradeApi.OnRspQryOrder += tradeApi_OnRspQryOrder;
             tradeApi.OnRspQryTrade += tradeApi_OnRspQryTrade;
+        }
+
+        void tradeApi_OnDisconnect(object sender, OnDisconnectArgs e)
+        {
+            ShowProgress(e.pRspInfo.ErrorMsg);
         }
 
         void tradeApi_OnRspQryTrade(object sender, OnRspQryTradeArgs e)

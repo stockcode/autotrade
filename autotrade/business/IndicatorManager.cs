@@ -55,7 +55,7 @@ namespace autotrade.business
                     var query =
                     (from e in collection.AsQueryable()
                      orderby e.ActualDate descending
-                     select e).Take(20);
+                     select e).Take(100);
 
                     var barRecords = query.ToList();
 
@@ -181,7 +181,7 @@ namespace autotrade.business
 
         private void InsertToList(List<BarRecord> barRecords, BarRecord barRecord)
         {
-            if (barRecords.Count == 20) barRecords.RemoveAt(0);
+            if (barRecords.Count == 100) barRecords.RemoveAt(0);
 
             barRecords.Add(barRecord);            
         }
