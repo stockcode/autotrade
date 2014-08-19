@@ -42,10 +42,9 @@
             // radGridView1
             // 
             this.radGridView1.MasterTemplate.AllowAddNewRow = false;
-            this.radGridView1.MasterTemplate.AllowEditRow = false;
+            this.radGridView1.MasterTemplate.AllowSearchRow = true;
             this.radGridView1.MasterTemplate.EnableAlternatingRowColor = true;
             this.radGridView1.Name = "radGridView1";
-            this.radGridView1.ReadOnly = true;
             this.radGridView1.Size = new System.Drawing.Size(1033, 542);
             this.radGridView1.TabIndex = 0;
             this.radGridView1.Text = "radGridView1";

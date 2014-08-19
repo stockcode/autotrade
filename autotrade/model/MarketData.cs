@@ -22,6 +22,10 @@ namespace autotrade.model
             this.InstrumentId = pDepthMarketData.InstrumentID;
             this.TradingDay = pDepthMarketData.TradingDay;
             this.LastPrice = pDepthMarketData.LastPrice;
+            this.BidPrice1 = pDepthMarketData.BidPrice1;
+            this.BidVolume1 = pDepthMarketData.BidVolume1;
+            this.AskPrice1 = pDepthMarketData.AskPrice1;
+            this.AskVolume1 = pDepthMarketData.AskVolume1;
             this.PreSettlementPrice = pDepthMarketData.PreSettlementPrice;
             this.PreClosePrice = pDepthMarketData.PreClosePrice;
             this.PreOpenInterest = pDepthMarketData.PreOpenInterest;

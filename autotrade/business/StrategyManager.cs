@@ -85,7 +85,7 @@ namespace autotrade.business
 
                 //instrumentStrategy.Strategies.Add(Container.Resolve<BollStrategy>());
 
-                instrumentStrategy.Strategies.Add(Container.Resolve<DayAverageStrategy>());
+                instrumentStrategy.Strategies.Add(Container.Resolve<RoundMAStrategy>());
 
 //                instrumentStrategy.StopLosses.Add(Container.Resolve<PriceStopLoss>());
 //
