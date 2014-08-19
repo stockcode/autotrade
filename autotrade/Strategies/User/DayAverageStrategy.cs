@@ -84,14 +84,29 @@ namespace autotrade.Strategies
             }
         }
 
+        private int _maxLossThreshold = 3;
+        [DisplayName("连亏阀值")]
+        [DefaultValue(3)]
+        public int MaxLossThreshold
+        {
+            get { return _maxLossThreshold; }
+            set
+            {
+                if (this._maxLossThreshold == value) return;
+
+                this._maxLossThreshold = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         private readonly Dictionary<String, MarketData> preMarketDataDictionary = new Dictionary<string, MarketData>();
 
         private readonly string hedgeType = "DayAverageHedge";
 
-        private int days;
+        private int tick = 0;
 
         private double maPrice = 0d;
-        private int  openThreshold = 0, closeThreshold = 0;
+        private int openThreshold = 0, closeThreshold = 0, lossThreshold = 0;
         private bool openCount, closeCount = false;
 
         private TThostFtdcDirectionType openDirection;
@@ -133,6 +148,16 @@ namespace autotrade.Strategies
 
             if (StartHedging) CheckHeding();
 
+            if (lossThreshold >= MaxLossThreshold)
+            {
+                tick++;
+                if (tick >= 600)
+                {
+                    lossThreshold = 0;
+                    tick = 0;
+                }
+            }
+
             return newOrders;
         }
 
@@ -148,6 +173,8 @@ namespace autotrade.Strategies
 
         private void OpenOrder()
         {
+            if (lossThreshold >= MaxLossThreshold) return;
+
                 var result = Cross(preMarketData, currMarketData);
 
                 if (result == TThostFtdcDirectionType.Buy)
@@ -180,7 +207,7 @@ namespace autotrade.Strategies
                             Direction = openDirection,
                             InstrumentId = currMarketData.InstrumentId,
                             LastPrice = currMarketData.LastPrice,
-                            Price = 0,
+                            Price = GetAnyPrice(currMarketData, openDirection),
                             Volume = InstrumentStrategy.Volume,
                             StrategyType = GetType().ToString()
                         };
@@ -236,6 +263,9 @@ namespace autotrade.Strategies
                         {
                             if (closeThreshold >= MaxCloseThreshold)
                             {
+                                if (order.PositionProfit < 0) lossThreshold++;
+                                else lossThreshold = 0;
+
                                 var neworder = new Order();
                                 neworder.OffsetFlag = TThostFtdcOffsetFlagType.CloseToday;
                                 neworder.Direction = order.Direction == TThostFtdcDirectionType.Buy
@@ -243,7 +273,7 @@ namespace autotrade.Strategies
                                     : TThostFtdcDirectionType.Buy;
                                 neworder.InstrumentId = currMarketData.InstrumentId;
                                 neworder.LastPrice = currMarketData.LastPrice;
-                                neworder.Price = 0;
+                                neworder.Price = GetAnyPrice(currMarketData, neworder.Direction);
                                 neworder.Volume = order.Volume;
                                 neworder.StrategyType = GetType().ToString();
                                 neworder.StrategyLogs.AddRange(dayAverageLogs);
@@ -258,21 +288,25 @@ namespace autotrade.Strategies
                                     currMarketData.LastPrice, maPrice,
                                     orders.Count()));
 
-                                //开反向新仓
-                                neworder = new Order();
-                                neworder.OffsetFlag = TThostFtdcOffsetFlagType.Open;
-                                neworder.Direction = order.Direction == TThostFtdcDirectionType.Buy
-                                    ? TThostFtdcDirectionType.Sell
-                                    : TThostFtdcDirectionType.Buy;
+                                if (lossThreshold < MaxCloseThreshold)
+                                {
 
-                                neworder.InstrumentId = currMarketData.InstrumentId;
-                                neworder.LastPrice = currMarketData.LastPrice;
-                                neworder.Price = 0;
-                                neworder.Volume = InstrumentStrategy.Volume;
-                                neworder.StrategyType = GetType().ToString();
-                                neworder.StrategyLogs.AddRange(dayAverageLogs);
+                                    //开反向新仓
+                                    neworder = new Order();
+                                    neworder.OffsetFlag = TThostFtdcOffsetFlagType.Open;
+                                    neworder.Direction = order.Direction == TThostFtdcDirectionType.Buy
+                                        ? TThostFtdcDirectionType.Sell
+                                        : TThostFtdcDirectionType.Buy;
 
-                                newOrders.Add(neworder);
+                                    neworder.InstrumentId = currMarketData.InstrumentId;
+                                    neworder.LastPrice = currMarketData.LastPrice;
+                                    neworder.Price = GetAnyPrice(currMarketData, neworder.Direction);
+                                    neworder.Volume = InstrumentStrategy.Volume;
+                                    neworder.StrategyType = GetType().ToString();
+                                    neworder.StrategyLogs.AddRange(dayAverageLogs);
+
+                                    newOrders.Add(neworder);
+                                }
 
                                 if (StartHedging)
                                 {
@@ -351,7 +385,7 @@ namespace autotrade.Strategies
                                     : TThostFtdcDirectionType.Buy;
                                 neworder.InstrumentId = currMarketData.InstrumentId;
                                 neworder.LastPrice = currMarketData.LastPrice;
-                                neworder.Price = 0;
+                                neworder.Price = GetAnyPrice(currMarketData, neworder.Direction);
                                 neworder.Volume = order.Volume;
                                 neworder.StrategyType = hedgeType;
 

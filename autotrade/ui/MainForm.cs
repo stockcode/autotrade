@@ -236,5 +236,10 @@ namespace autotrade
         {
             e.ContextMenu = cmMarket.DropDown;
         }
+
+        private void radMenuItem6_Click(object sender, EventArgs e)
+        {
+            
+        }
     }
 }

@@ -22,6 +22,18 @@
     <NetLine ip="qqfz-front1.ctp.shcifco.com" port="32305" type="TD" isHot="0" />
     <NetLine ip="qqfz-md1.ctp.shcifco.com" port="32313" type="MD" isHot="0" />
   </NetworkInfo>
+  <NetworkInfo name="安信期货—电信线路" type="CN" BrokerId="5090" isHot="0">
+    <NetLine ip="219.143.242.147" port="41205" type="TD" isHot="1" />
+    <NetLine ip="219.143.242.147" port="41213" type="MD" isHot="1" />
+    <NetLine ip="180.166.75.225" port="41205" type="TD" isHot="0" />
+    <NetLine ip="180.166.75.225" port="41213" type="MD" isHot="0" />
+  </NetworkInfo>
+  <NetworkInfo name="安信期货—联通线路" type="CN" BrokerId="5090" isHot="0">
+    <NetLine ip="123.127.201.162" port="41205" type="TD" isHot="1" />
+    <NetLine ip="123.127.201.162" port="41213" type="MD" isHot="1" />
+    <NetLine ip="27.115.57.57" port="41205" type="TD" isHot="0" />
+    <NetLine ip="27.115.57.57" port="41213" type="MD" isHot="0" />
+  </NetworkInfo>
   <NetworkInfo name="安信期货—模拟交易" type="CN" BrokerId="1061" isHot="1">
     <NetLine ip="219.143.242.155" port="21205" type="TD" isHot="1" />
     <NetLine ip="219.143.242.155" port="21213" type="MD" isHot="1" />
