@@ -89,6 +89,9 @@ namespace autotrade
             log.Info(info);
             radProgressBar1.Text = info;
             radProgressBar1.Value1++;
+
+            if (radProgressBar1.Value1 == radProgressBar1.Maximum) radProgressBar1.Value1 = 0;
+
         }
 
         private void mdApi_OnConnect(object sender, OnConnectArgs e)

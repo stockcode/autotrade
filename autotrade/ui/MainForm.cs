@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Windows.Forms;
 using Autofac;
 using autotrade.business;
+using autotrade.Job;
 using autotrade.model;
 using autotrade.Strategies;
 using autotrade.ui;
@@ -11,6 +12,8 @@ using log4net;
 using MongoDB.Driver.Linq;
 using QuantBox.CSharp2CTP;
 using QuantBox.CSharp2CTP.Event;
+using Quartz;
+using Quartz.Impl;
 using Telerik.WinControls.UI;
 
 namespace autotrade
@@ -36,6 +39,7 @@ namespace autotrade
         public StrategyManager StrategyManager { get; set; }
         public IndicatorManager IndicatorManager { get; set; }
 
+        private IScheduler scheduler;
 
         private void tradeApi_OnRspQryInvestorPositionCombineDetail(
             ref CThostFtdcInvestorPositionCombineDetailField pInvestorPositionCombineDetail,
@@ -47,6 +51,7 @@ namespace autotrade
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+
             StrategyManager.Container = Container;
 
             //radGridView4.Columns["Direction"].DataTypeConverter = new DirectionConverter();
@@ -101,6 +106,40 @@ namespace autotrade
             IndicatorManager.Init(MarketManager.marketDatas);
 
             StrategyManager.Start();
+
+            StartQuartz();
+        }
+
+        private void StartQuartz()
+        {
+            try
+            {
+                // Grab the Scheduler instance from the Factory 
+                scheduler = StdSchedulerFactory.GetDefaultScheduler();
+
+                // and start it off
+                scheduler.Start();
+
+                IJobDetail job = JobBuilder.Create<HelloJob>()
+                   .WithIdentity("job1", "group1")
+                   .Build();
+
+                // Trigger the job to run now, and then repeat every 10 seconds
+                ITrigger trigger = TriggerBuilder.Create()
+                    .WithIdentity("trigger1", "group1")
+                    .UsingJobData("AccountManager", AccountManager)
+                    .WithSchedule(CronScheduleBuilder.DailyAtHourAndMinute(15, 22))
+                    .Build();
+
+                // Tell quartz to schedule the job using our trigger
+                scheduler.ScheduleJob(job, trigger);
+
+
+            }
+            catch (SchedulerException se)
+            {
+                Console.WriteLine(se);
+            }
         }
 
         void miSellOrder_Click(object sender, EventArgs e)
@@ -159,6 +198,8 @@ namespace autotrade
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            scheduler.Shutdown();
+
             mdApi.Disconnect();
 
             tradeApi.Disconnect();

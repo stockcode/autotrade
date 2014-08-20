@@ -151,7 +151,7 @@ namespace autotrade.Strategies
             if (lossThreshold >= MaxLossThreshold)
             {
                 tick++;
-                if (tick >= 600)
+                if (tick >= 1200)
                 {
                     lossThreshold = 0;
                     tick = 0;
