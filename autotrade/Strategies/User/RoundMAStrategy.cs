@@ -117,7 +117,7 @@ namespace autotrade.Strategies
             if (lastPrice < ma.Average*(1 - Threshold))
             {
 
-                foreach (var order in orders.FindAll(o => o.Direction == TThostFtdcDirectionType.Sell))
+                foreach (var order in orders.FindAll(o => o.Direction == TThostFtdcDirectionType.Sell).OrderBy(o=>o.Price))
                 {
                     var neworder = new Order();
                     neworder.OffsetFlag = TThostFtdcOffsetFlagType.CloseToday;
