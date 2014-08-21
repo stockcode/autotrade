@@ -153,9 +153,6 @@ namespace autotrade.Strategies
             
             double lastPrice = currMarketData.LastPrice;
 
-             Order firstOrder = orders.OrderBy(o => o.Price).FirstOrDefault(o => o.Direction == TThostFtdcDirectionType.Sell);
-
-
 
                 foreach (var order in orders.FindAll(o => o.Direction == TThostFtdcDirectionType.Sell).OrderBy(o=>o.Price))
                 {
@@ -165,7 +162,7 @@ namespace autotrade.Strategies
                         ? TThostFtdcDirectionType.Sell
                         : TThostFtdcDirectionType.Buy;
                     neworder.InstrumentId = currMarketData.InstrumentId;
-                    neworder.Price = Math.Round(MALBPrice) - (order.Price - firstOrder.Price);
+                    neworder.Price = Math.Round(MALBPrice) - (order.Price - Math.Round(MAUBPrice));
                     neworder.Volume = order.Volume;
                     neworder.StrategyType = GetType().ToString();
                     //neworder.StrategyLogs.AddRange(dayAverageLogs);
@@ -207,57 +204,14 @@ namespace autotrade.Strategies
 
         private void OpenOrder(List<Order> orders)
         {
-            if (startReverse && orders.Count > 0)
-            {
-                OrderManager.CancelOrder(orders);
-
-                return;
-            }
-
-            startReverse = false;
-
-            if (orders.Count >= Count) return;
-
-            
-
             double lastPrice = currMarketData.LastPrice;
 
-            if (orders.Count > 0)
-            {
-                var lastOrder = orders[orders.Count - 1];
 
-                for (int i = 1; i <= Count - orders.Count; i++)
-                {
-                    Order order = new Order();
-                    order.OffsetFlag = TThostFtdcOffsetFlagType.Open;
-                    order.Direction = lastOrder.Direction;
-                    order.InstrumentId = currMarketData.InstrumentId;
-                    order.Price = lastOrder.Direction == TThostFtdcDirectionType.Buy ? lastOrder.Price - i * InstrumentStrategy.PriceTick : lastOrder.Price + i * InstrumentStrategy.PriceTick;
-                    order.Volume = InstrumentStrategy.Volume;
-                    order.StrategyType = GetType().ToString();
+            var sellOrders = orders.FindAll(o => o.Direction == TThostFtdcDirectionType.Sell);
 
-                    newOrders.Add(order);
-                }
+            var buyOrders = orders.FindAll(o => o.Direction == TThostFtdcDirectionType.Buy);
 
-                return;
-            }
-            if (lastPrice < ma.Average * (1 - Threshold))
-            {
-                for (int i = 1; i <= Count; i++)
-                {
-                    Order order = new Order();
-                    order.OffsetFlag = TThostFtdcOffsetFlagType.Open;
-                    order.Direction = TThostFtdcDirectionType.Buy;
-                    order.InstrumentId = currMarketData.InstrumentId;
-                    order.Price = lastPrice - i * InstrumentStrategy.PriceTick;
-                    order.Volume = InstrumentStrategy.Volume;
-                    order.StrategyType = GetType().ToString();
-
-                    newOrders.Add(order);
-                }
-            }
-
-            if (lastPrice > ma.Average*(1 + Threshold))
+            if (sellOrders.Count == 0)
             {
                 for (int i = 1; i <= Count; i++)
                 {
@@ -265,13 +219,97 @@ namespace autotrade.Strategies
                     order.OffsetFlag = TThostFtdcOffsetFlagType.Open;
                     order.Direction = TThostFtdcDirectionType.Sell;
                     order.InstrumentId = currMarketData.InstrumentId;
-                    order.Price = lastPrice + i * InstrumentStrategy.PriceTick;
+                    order.Price = Math.Round(MAUBPrice) + i * InstrumentStrategy.PriceTick;
                     order.Volume = InstrumentStrategy.Volume;
                     order.StrategyType = GetType().ToString();
 
                     newOrders.Add(order);
                 }
             }
+            else if (sellOrders.Count < Count)
+            {
+                var lastOrder = sellOrders[sellOrders.Count - 1];
+
+                for (int i = 1; i <= Count - sellOrders.Count; i++)
+                {
+                    Order order = new Order();
+                    order.OffsetFlag = TThostFtdcOffsetFlagType.Open;
+                    order.Direction = lastOrder.Direction;
+                    order.InstrumentId = currMarketData.InstrumentId;
+                    order.Price = lastOrder.Price + i * InstrumentStrategy.PriceTick;
+                    order.Volume = InstrumentStrategy.Volume;
+                    order.StrategyType = GetType().ToString();
+
+                    newOrders.Add(order);
+                }
+            }
+
+
+            if (buyOrders.Count == 0)
+            {
+                for (int i = 1; i <= Count; i++)
+                {
+                    Order order = new Order();
+                    order.OffsetFlag = TThostFtdcOffsetFlagType.Open;
+                    order.Direction = TThostFtdcDirectionType.Buy;
+                    order.InstrumentId = currMarketData.InstrumentId;
+                    order.Price = Math.Round(MALBPrice) - i * InstrumentStrategy.PriceTick;
+                    order.Volume = InstrumentStrategy.Volume;
+                    order.StrategyType = GetType().ToString();
+
+                    newOrders.Add(order);
+                }
+            }
+            else if (buyOrders.Count < Count)
+            {
+                var lastOrder = buyOrders[buyOrders.Count - 1];
+
+                for (int i = 1; i <= Count - buyOrders.Count; i++)
+                {
+                    Order order = new Order();
+                    order.OffsetFlag = TThostFtdcOffsetFlagType.Open;
+                    order.Direction = lastOrder.Direction;
+                    order.InstrumentId = currMarketData.InstrumentId;
+                    order.Price = lastOrder.Price - i * InstrumentStrategy.PriceTick;
+                    order.Volume = InstrumentStrategy.Volume;
+                    order.StrategyType = GetType().ToString();
+
+                    newOrders.Add(order);
+                }
+            }
+            else if (buyOrders.Count == Count)
+            {
+                if (currMarketData.LastPrice < MALBPrice)
+                {
+                    var lastOrder = buyOrders[buyOrders.Count - 1];
+
+                    var buyPrice = currMarketData.LastPrice - 2*InstrumentStrategy.PriceTick;
+
+                    if (!buyOrders.Exists(o => Math.Abs(o.Price - buyPrice) < TOLERANCE))
+                    {
+                        Order order = new Order();
+                        order.OffsetFlag = TThostFtdcOffsetFlagType.Open;
+                        order.Direction = lastOrder.Direction;
+                        order.InstrumentId = currMarketData.InstrumentId;
+                        order.Price = buyPrice;
+                        order.Volume = InstrumentStrategy.Volume;
+                        order.StrategyType = GetType().ToString();
+
+                        newOrders.Add(order);
+
+                        OrderManager.CancelOrder(lastOrder);
+                    }
+                }
+
+                var cancelOrders = buyOrders.FindAll(o=>o.Price > MALBPrice);
+
+                if (cancelOrders.Count > 0) OrderManager.CancelOrder(cancelOrders);
+            }
+
+            
+            
+
+         
         }
     }
 }

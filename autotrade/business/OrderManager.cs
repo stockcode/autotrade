@@ -33,13 +33,8 @@ namespace autotrade.business
 
         public AccountManager AccountManager { get; set; }
 
-        private BindingList<Order> stubOrders = new BindingList<Order>();
-
-
         public delegate void OrderHandler(object sender, OrderEventArgs e);
         public event OrderHandler OnRspQryOrder;
-
-        private bool cancelling = false;
 
         public OrderManager(TraderApiWrapper traderApi, ReaderWriterLockSlim sw)
         {
@@ -93,9 +88,7 @@ namespace autotrade.business
 
             //OnRspQryOrderRecord(this, new OrderRecordEventArgs(orderRecords));
 
-            Order order = OrderRepository.UpdateOrderRef(e.pOrder);
-
-            log.Info(order);
+            OrderRepository.UpdateOrderRef(e.pOrder);
         }
 
 
@@ -240,10 +233,8 @@ namespace autotrade.business
 
         public void CancelOrder(Order order)
         {
-            cancelling = true;
             tradeApi.CancelOrder(order.OrderRef, order.FrontID, order.SessionID, order.InstrumentId);
             OnRspQryOrder(this, new OrderEventArgs(new MethodInvoker(() => OrderRepository.Delete(order))));
-            cancelling = false;
         }
 
         public void ProcessData(MarketData marketData)
@@ -273,7 +264,7 @@ namespace autotrade.business
 
         public BindingList<Order> getOrders()
         {
-            return cancelling ? stubOrders : OrderRepository.getOrders();
+            return OrderRepository.getOrders();
         }
 
         public void AddOrderRecord(OrderRecord orderRecord)
@@ -331,14 +322,11 @@ namespace autotrade.business
 
         public void CancelOrder(List<Order> orders)
         {
-            cancelling = true;
 
             for (var i = orders.Count - 1; i >= 0; i--)
             {
                 CancelOrder(orders[i]);
             }
-
-            cancelling = false;
         }
 
         public void OpenOrder(string instrumentId, TThostFtdcDirectionType direction)

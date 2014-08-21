@@ -45,27 +45,33 @@ namespace autotrade.Repository
             return base.Add(entity);
         }
 
-        public Order UpdateOrderRef(CThostFtdcOrderField pOrder)
+        public void UpdateOrderRef(CThostFtdcOrderField pOrder)
         {
-            foreach (Order order in orders)
-            {
-                if (order.OrderRef == pOrder.OrderRef && order.FrontID == pOrder.FrontID && order.SessionID == pOrder.SessionID )
-                {
-                    order.OrderSysID = pOrder.OrderSysID;
-                    order.ExchangeID = pOrder.ExchangeID;
-                    Update(order);
-                    return order;
-                }
+            sw.EnterWriteLock();
 
-                if (order.CloseOrder != null && order.CloseOrder.OrderRef == pOrder.OrderRef && order.CloseOrder.FrontID == pOrder.FrontID && order.CloseOrder.SessionID == pOrder.SessionID)
-                {
-                    order.CloseOrder.OrderSysID = pOrder.OrderSysID;
-                    Update(order);
-                    return order.CloseOrder;
-                }
+            var order = orders.FirstOrDefault(
+                o => o.OrderRef == pOrder.OrderRef && o.FrontID == pOrder.FrontID && o.SessionID == pOrder.SessionID);
+
+            if (order != null)
+            {
+                order.OrderSysID = pOrder.OrderSysID;
+                order.ExchangeID = pOrder.ExchangeID;
+                Update(order);
             }
 
-            return null;
+            order = orders.FirstOrDefault(
+                o =>
+                    o.CloseOrder != null && o.CloseOrder.OrderRef == pOrder.OrderRef &&
+                    o.CloseOrder.FrontID == pOrder.FrontID && o.CloseOrder.SessionID == pOrder.SessionID);
+
+            if (order != null)
+            {
+
+                order.CloseOrder.OrderSysID = pOrder.OrderSysID;
+                Update(order);
+            }
+
+            sw.ExitWriteLock();
         }
 
         public Order UpdateTradeID(CThostFtdcTradeField pTrade)
