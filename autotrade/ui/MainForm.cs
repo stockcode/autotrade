@@ -51,6 +51,7 @@ namespace autotrade
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            scheduler = StdSchedulerFactory.GetDefaultScheduler();
 
             StrategyManager.Container = Container;
 
@@ -115,7 +116,7 @@ namespace autotrade
             try
             {
                 // Grab the Scheduler instance from the Factory 
-                scheduler = StdSchedulerFactory.GetDefaultScheduler();
+                
 
                 // and start it off
                 scheduler.Start();
@@ -127,7 +128,6 @@ namespace autotrade
                 // Trigger the job to run now, and then repeat every 10 seconds
                 ITrigger trigger = TriggerBuilder.Create()
                     .WithIdentity("trigger1", "group1")
-                    .UsingJobData("AccountManager", AccountManager)
                     .WithSchedule(CronScheduleBuilder.DailyAtHourAndMinute(15, 22))
                     .Build();
 
@@ -207,10 +207,10 @@ namespace autotrade
 
         private void _orderManager_OnRspQryOrder(object sender, OrderEventArgs e)
         {
-            if (InvokeRequired)
-            {
+            //if (InvokeRequired)
+            //{
                 Invoke(e.methodInvoker);
-            }
+            //}
         }
 
         private void radMenuItem2_Click(object sender, EventArgs e)

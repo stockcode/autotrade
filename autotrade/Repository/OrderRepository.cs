@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using autotrade.model;
 using autotrade.util;
 using log4net;
@@ -14,6 +16,8 @@ namespace autotrade.Repository
 {
     public class OrderRepository : MongoRepository<Order>
     {
+        private ReaderWriterLockSlim sw;
+
         private readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         private readonly BindingList<Order> orders = new BindingList<Order>();
@@ -22,17 +26,22 @@ namespace autotrade.Repository
 
         private MongoRepository<OrderLog> orderLogRepo = new MongoRepository<OrderLog>(); 
 
-        public OrderRepository()
+        public OrderRepository(ReaderWriterLockSlim sw)
         {
+            this.sw = sw;
         }
 
 
         public override Order Add(Order entity)
         {
-            entity.Id = null;
-
-            orders.Add(entity);
+            sw.EnterWriteLock();
             
+            entity.Id = null;            
+            orders.Add(entity);
+
+            sw.ExitWriteLock();
+            
+
             return base.Add(entity);
         }
 
@@ -100,14 +109,16 @@ namespace autotrade.Repository
 
         public override void Delete(Order entity)
         {
-            OrderLog orderLog = new OrderLog();
+            sw.EnterWriteLock();
 
+            OrderLog orderLog = new OrderLog();            
             ObjectUtils.Copy(entity, orderLog);
-
+            orderLog.Id = null;
+            
             orders.Remove(entity);
-
             orderlogs.Add(orderLog);
             orderLogRepo.Add(orderLog);
+            sw.ExitWriteLock();
 
             base.Delete(entity);
         }
@@ -118,6 +129,7 @@ namespace autotrade.Repository
 
             orders.RaiseListChangedEvents = false;
 
+            sw.EnterWriteLock();
             foreach (var order in orderdb)
             {
                 if (order.StatusType == EnumOrderStatus.已平仓) continue;
@@ -127,6 +139,7 @@ namespace autotrade.Repository
                     orders.Add(order);
                 }
             }
+            sw.ExitWriteLock();
 
             orders.RaiseListChangedEvents = true;
         }

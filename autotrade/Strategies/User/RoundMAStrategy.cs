@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using autotrade.Indicators;
 using autotrade.business;
 using autotrade.model;
+using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Driver.Linq;
 using QuantBox.CSharp2CTP;
 
@@ -87,6 +88,41 @@ namespace autotrade.Strategies
             }
         }
 
+        private double _maPrice = 0d;
+
+        [ReadOnly(true)]
+        [BsonIgnore]
+        [DisplayName("均线值")]
+        public double MAPrice
+        {
+            get { return _maPrice; }
+            set
+            {
+                if (!(Math.Abs(this._maPrice - value) > TOLERANCE)) return;
+
+                this._maPrice = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        [ReadOnly(true)]
+        [BsonIgnore]
+        [DisplayName("均线上限值")]
+        public double MAUBPrice
+        {
+            get { return MAPrice * (1 + Threshold); }
+        }
+
+        [ReadOnly(true)]
+        [BsonIgnore]
+        [DisplayName("均线下限值")]
+        public double MALBPrice
+        {
+            get { return MAPrice * (1 - Threshold); }
+        }
+
+        private Indicator_MA ma = null;
+
 
         public override List<Order> Match(MarketData marketData)
         {
@@ -94,7 +130,13 @@ namespace autotrade.Strategies
 
             newOrders.Clear();
 
-            List<Order> orders = GetStrategyOrders(marketData.InstrumentId);
+            ma = IndicatorManager.GetMA(currMarketData.InstrumentId, Day, Period);
+
+            if (ma == null) return newOrders;
+
+            MAPrice = ma.Average;
+
+            var orders = GetStrategyOrders(marketData.InstrumentId);
 
 
             CloseOrder(orders.FindAll(o => o.StatusType == EnumOrderStatus.已开仓));
@@ -108,24 +150,22 @@ namespace autotrade.Strategies
 
         private void CloseOrder(List<Order> orders)
         {
-            Indicator_MA ma = IndicatorManager.GetMA(currMarketData.InstrumentId, Day, Period);
-
-            if (ma == null) return;
-
+            
             double lastPrice = currMarketData.LastPrice;
 
-            if (lastPrice < ma.Average*(1 - Threshold))
-            {
+             Order firstOrder = orders.OrderBy(o => o.Price).FirstOrDefault(o => o.Direction == TThostFtdcDirectionType.Sell);
+
+
 
                 foreach (var order in orders.FindAll(o => o.Direction == TThostFtdcDirectionType.Sell).OrderBy(o=>o.Price))
                 {
                     var neworder = new Order();
-                    neworder.OffsetFlag = TThostFtdcOffsetFlagType.CloseToday;
+                    neworder.OffsetFlag = TThostFtdcOffsetFlagType.Close;
                     neworder.Direction = order.Direction == TThostFtdcDirectionType.Buy
                         ? TThostFtdcDirectionType.Sell
                         : TThostFtdcDirectionType.Buy;
                     neworder.InstrumentId = currMarketData.InstrumentId;
-                    neworder.Price = GetAnyPrice(currMarketData, neworder.Direction);
+                    neworder.Price = Math.Round(MALBPrice) - (order.Price - firstOrder.Price);
                     neworder.Volume = order.Volume;
                     neworder.StrategyType = GetType().ToString();
                     //neworder.StrategyLogs.AddRange(dayAverageLogs);
@@ -135,34 +175,34 @@ namespace autotrade.Strategies
                     newOrders.Add(order);
                 }
 
-            }
+            
 
 
 
-            if (lastPrice > ma.Average*(1 + Threshold)) {
+//            if (lastPrice > ma.Average*(1 + Threshold)) {
+//
+//                foreach (var order in orders.FindAll(o => o.Direction == TThostFtdcDirectionType.Buy))
+//                {
+//                
+//                    var neworder = new Order();
+//                    neworder.OffsetFlag = TThostFtdcOffsetFlagType.CloseToday;
+//                    neworder.Direction = order.Direction == TThostFtdcDirectionType.Buy
+//                        ? TThostFtdcDirectionType.Sell
+//                        : TThostFtdcDirectionType.Buy;
+//                    neworder.InstrumentId = currMarketData.InstrumentId;
+//                    neworder.Price = GetAnyPrice(currMarketData, neworder.Direction);
+//                    neworder.Volume = order.Volume;
+//                    neworder.StrategyType = GetType().ToString();
+//                    //neworder.StrategyLogs.AddRange(dayAverageLogs);
+//
+//                    order.CloseOrder = neworder;
+//
+//                    newOrders.Add(order);
+//                }
+//
+//            }
 
-                foreach (var order in orders.FindAll(o => o.Direction == TThostFtdcDirectionType.Buy))
-                {
-                
-                    var neworder = new Order();
-                    neworder.OffsetFlag = TThostFtdcOffsetFlagType.CloseToday;
-                    neworder.Direction = order.Direction == TThostFtdcDirectionType.Buy
-                        ? TThostFtdcDirectionType.Sell
-                        : TThostFtdcDirectionType.Buy;
-                    neworder.InstrumentId = currMarketData.InstrumentId;
-                    neworder.Price = GetAnyPrice(currMarketData, neworder.Direction);
-                    neworder.Volume = order.Volume;
-                    neworder.StrategyType = GetType().ToString();
-                    //neworder.StrategyLogs.AddRange(dayAverageLogs);
-
-                    order.CloseOrder = neworder;
-
-                    newOrders.Add(order);
-                }
-
-            }
-
-            if (newOrders.Count > 0) startReverse = true;
+//            if (newOrders.Count > 0) startReverse = true;
         }
 
         private void OpenOrder(List<Order> orders)
@@ -178,9 +218,7 @@ namespace autotrade.Strategies
 
             if (orders.Count >= Count) return;
 
-            Indicator_MA ma = IndicatorManager.GetMA(currMarketData.InstrumentId, Day, Period);
-
-            if (ma == null) return;
+            
 
             double lastPrice = currMarketData.LastPrice;
 

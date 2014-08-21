@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using MongoDB.Driver.Linq;
@@ -22,6 +23,7 @@ namespace autotrade.business
     {
         private readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private TraderApiWrapper tradeApi;
+        private ReaderWriterLockSlim sw;
 
         private BindingList<TradeRecord> tradeRecords = new BindingList<TradeRecord>();
         private BindingList<OrderRecord> orderRecords = new BindingList<OrderRecord>();
@@ -39,8 +41,9 @@ namespace autotrade.business
 
         private bool cancelling = false;
 
-        public OrderManager(TraderApiWrapper traderApi)
+        public OrderManager(TraderApiWrapper traderApi, ReaderWriterLockSlim sw)
         {
+            this.sw = sw;
             this.tradeApi = traderApi;
 
 //            this.tradeApi.OnRspQryOrder += tradeApi_OnRspQryOrder;
@@ -237,13 +240,15 @@ namespace autotrade.business
 
         public void CancelOrder(Order order)
         {
+            cancelling = true;
             tradeApi.CancelOrder(order.OrderRef, order.FrontID, order.SessionID, order.InstrumentId);
-            OnRspQryOrder(this, new OrderEventArgs(new MethodInvoker(() => OrderRepository.Delete(order))));                
+            OnRspQryOrder(this, new OrderEventArgs(new MethodInvoker(() => OrderRepository.Delete(order))));
+            cancelling = false;
         }
 
         public void ProcessData(MarketData marketData)
         {
-            
+            sw.EnterReadLock();
             foreach(var order in getOrders().Where(o=>o.InstrumentId == marketData.InstrumentId && o.StatusType != EnumOrderStatus.开仓中))
             {
 
@@ -262,6 +267,8 @@ namespace autotrade.business
             AccountManager.Accounts[0].CloseProfit = OrderRepository.GetOrderLogs().Sum(o => o.CloseProfit);
             AccountManager.Accounts[0].CurrMargin = OrderRepository.getOrders().Where(o=>o.StatusType == EnumOrderStatus.已开仓).Sum(o => o.UseMargin);
             AccountManager.Accounts[0].FrozenMargin = OrderRepository.getOrders().Where(o => o.StatusType == EnumOrderStatus.开仓中).Sum(o => o.UseMargin);
+
+            sw.ExitReadLock();
         }        
 
         public BindingList<Order> getOrders()

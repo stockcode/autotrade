@@ -12,7 +12,6 @@ namespace autotrade.Job
         public void Execute(IJobExecutionContext context)
         {
             Console.WriteLine("Greetings from HelloJob!");
-            context.
         }
     }
 }

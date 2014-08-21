@@ -29,6 +29,7 @@ namespace autotrade
 
             builder.RegisterType(typeof (TraderApiWrapper)).SingleInstance();
             builder.RegisterType(typeof(MdApiWrapper)).SingleInstance();
+            builder.RegisterType(typeof (ReaderWriterLockSlim)).SingleInstance();
 
             builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly())
                 .Where(t => t.Name.EndsWith("Manager") || t.Name.EndsWith("Repository") ).PropertiesAutowired().SingleInstance();
