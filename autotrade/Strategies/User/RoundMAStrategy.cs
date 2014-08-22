@@ -243,6 +243,34 @@ namespace autotrade.Strategies
                     newOrders.Add(order);
                 }
             }
+            else if (sellOrders.Count == Count)
+            {
+                if (currMarketData.LastPrice > MAUBPrice)
+                {
+                    var lastOrder = sellOrders[sellOrders.Count - 1];
+
+                    var sellPrice = currMarketData.LastPrice + 2 * InstrumentStrategy.PriceTick;
+
+                    if (!sellOrders.Exists(o => Math.Abs(o.Price - sellPrice) < TOLERANCE))
+                    {
+                        Order order = new Order();
+                        order.OffsetFlag = TThostFtdcOffsetFlagType.Open;
+                        order.Direction = lastOrder.Direction;
+                        order.InstrumentId = currMarketData.InstrumentId;
+                        order.Price = sellPrice;
+                        order.Volume = InstrumentStrategy.Volume;
+                        order.StrategyType = GetType().ToString();
+
+                        newOrders.Add(order);
+
+                        OrderManager.CancelOrder(lastOrder);
+                    }
+                }
+
+                var cancelOrders = sellOrders.FindAll(o => o.Price < MAUBPrice);
+
+                if (cancelOrders.Count > 0) OrderManager.CancelOrder(cancelOrders);
+            }
 
 
             if (buyOrders.Count == 0)
