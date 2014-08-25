@@ -207,9 +207,9 @@ namespace autotrade.Strategies
             double lastPrice = currMarketData.LastPrice;
 
 
-            var sellOrders = orders.FindAll(o => o.Direction == TThostFtdcDirectionType.Sell);
+            var sellOrders = orders.FindAll(o => o.Direction == TThostFtdcDirectionType.Sell).OrderBy(o=>o.Price).ToList();
 
-            var buyOrders = orders.FindAll(o => o.Direction == TThostFtdcDirectionType.Buy);
+            var buyOrders = orders.FindAll(o => o.Direction == TThostFtdcDirectionType.Buy).OrderByDescending(o=>o.Price).ToList();
 
             if (sellOrders.Count == 0)
             {
