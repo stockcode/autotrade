@@ -13,7 +13,6 @@ using QuantBox.CSharp2CTP;
 using QuantBox.CSharp2CTP.Event;
 using Telerik.WinControls.UI;
 using autotrade.model;
-using autotrade.Repository;
 using autotrade.util;
 using MongoRepository;
 
@@ -28,8 +27,14 @@ namespace autotrade.business
         private BindingList<TradeRecord> tradeRecords = new BindingList<TradeRecord>();
         private BindingList<OrderRecord> orderRecords = new BindingList<OrderRecord>();
 
+        private readonly BindingList<Order> orders = new BindingList<Order>();
 
-        public OrderRepository OrderRepository { get; set; }
+        private readonly BindingList<OrderLog> orderlogs = new BindingList<OrderLog>();
+
+        private MongoRepository<OrderLog> orderLogRepo = new MongoRepository<OrderLog>();
+
+
+        public MongoRepository<Order> OrderRepository = new MongoRepository<Order>();
 
         public AccountManager AccountManager { get; set; }
 
@@ -63,11 +68,18 @@ namespace autotrade.business
 
         void tradeApi_OnRtnTrade(object sender, OnRtnTradeArgs e)
         {             
-            Order order = OrderRepository.UpdateTradeID(e.pTrade);
+            Order order = UpdateTradeID(e.pTrade);
 
             if (order != null && order.StatusType == EnumOrderStatus.已平仓)
             {
-                OnRspQryOrder(this, new OrderEventArgs(new MethodInvoker(() => OrderRepository.Delete(order))));                
+                var orderLog = new OrderLog();
+                ObjectUtils.Copy(order, orderLog);
+                orderLog.Id = null;
+
+                orders.Remove(order);
+                orderlogs.Add(orderLog);
+                orderLogRepo.Add(orderLog);
+                OrderRepository.Delete(order);                
             }
 
             log.Info(e.pTrade);
@@ -88,7 +100,7 @@ namespace autotrade.business
 
             //OnRspQryOrderRecord(this, new OrderRecordEventArgs(orderRecords));
 
-            OrderRepository.UpdateOrderRef(e.pOrder);
+            UpdateOrderRef(e.pOrder);
         }
 
 
@@ -144,7 +156,7 @@ namespace autotrade.business
         {
             if (order.CloseOrder == null)
             {
-                OnRspQryOrder(this, new OrderEventArgs(new MethodInvoker(() => OrderRepository.Add(order))));
+                OnRspQryOrder(this, new OrderEventArgs(new MethodInvoker(() => Add(order))));
 
 
                 order.OrderRef = tradeApi.MaxOrderRef++.ToString();
@@ -187,18 +199,30 @@ namespace autotrade.business
 
                 tradeField.TradeTime = DateTime.Now.ToString("HH:mm:ss");
 
-                OrderRepository.UpdateTradeID(tradeField);
+                UpdateTradeID(tradeField);
 
                 OnRspQryOrder(this, new OrderEventArgs(new MethodInvoker(() => OrderRepository.Delete(order)))); 
 
             }
         }
 
+        private Order Add(Order order)
+        {
+            sw.EnterWriteLock();
+
+            order.Id = null;
+            orders.Add(order);
+
+            sw.ExitWriteLock();
+
+            return OrderRepository.Add(order);
+        }
+
         private void InsertToCTP(Order order)
         {
             if (order.CloseOrder == null)
             {
-                OnRspQryOrder(this, new OrderEventArgs(new MethodInvoker(() => OrderRepository.Add(order))));
+                OnRspQryOrder(this, new OrderEventArgs(new MethodInvoker(() => Add(order))));
 
                 int orderRef = tradeApi.OrderInsert(order.InstrumentId, order.OffsetFlag, order.Direction, order.Price,
                         order.Volume);
@@ -233,8 +257,27 @@ namespace autotrade.business
 
         public void CancelOrder(Order order)
         {
-            tradeApi.CancelOrder(order.OrderRef, order.FrontID, order.SessionID, order.InstrumentId);
-            OnRspQryOrder(this, new OrderEventArgs(new MethodInvoker(() => OrderRepository.Delete(order))));
+            var od = order;
+            if (order.CloseOrder != null) od = order.CloseOrder;
+
+            tradeApi.CancelOrder(od.OrderRef, od.FrontID, od.SessionID, od.InstrumentId);
+
+            sw.EnterWriteLock();
+
+            if (order.CloseOrder == null)
+            {
+                OnRspQryOrder(this, new OrderEventArgs(new MethodInvoker(() => orders.Remove(order))));                 
+
+                OrderRepository.Delete(order);          
+            }
+            else
+            {
+                order.CloseOrder = null;
+                order.StatusType = EnumOrderStatus.已开仓;
+                OrderRepository.Update(order);
+            }            
+
+            sw.ExitWriteLock();
         }
 
         public void ProcessData(MarketData marketData)
@@ -254,17 +297,17 @@ namespace autotrade.business
                         CultureInfo.InvariantCulture));
             }
 
-            AccountManager.Accounts[0].PositionProfit = OrderRepository.getOrders().Sum(o => o.PositionProfit);
-            AccountManager.Accounts[0].CloseProfit = OrderRepository.GetOrderLogs().Sum(o => o.CloseProfit);
-            AccountManager.Accounts[0].CurrMargin = OrderRepository.getOrders().Where(o=>o.StatusType == EnumOrderStatus.已开仓).Sum(o => o.UseMargin);
-            AccountManager.Accounts[0].FrozenMargin = OrderRepository.getOrders().Where(o => o.StatusType == EnumOrderStatus.开仓中).Sum(o => o.UseMargin);
+            AccountManager.Accounts[0].PositionProfit = orders.Sum(o => o.PositionProfit);
+            AccountManager.Accounts[0].CloseProfit = orderlogs.Sum(o => o.CloseProfit);
+            AccountManager.Accounts[0].CurrMargin = orders.Where(o=>o.StatusType == EnumOrderStatus.已开仓).Sum(o => o.UseMargin);
+            AccountManager.Accounts[0].FrozenMargin = orders.Where(o => o.StatusType == EnumOrderStatus.开仓中).Sum(o => o.UseMargin);
 
             sw.ExitReadLock();
         }        
 
         public BindingList<Order> getOrders()
         {
-            return OrderRepository.getOrders();
+            return orders;
         }
 
         public void AddOrderRecord(OrderRecord orderRecord)
@@ -289,12 +332,28 @@ namespace autotrade.business
 
         public BindingList<OrderLog> GetOrderLogs()
         {
-            return OrderRepository.GetOrderLogs();
+            return orderlogs;
         }
 
         public void Init()
         {
-            OrderRepository.Init(orderRecords);
+            List<Order> orderdb = OrderRepository.ToList();
+
+            orders.RaiseListChangedEvents = false;
+
+            sw.EnterWriteLock();
+            foreach (var order in orderdb)
+            {
+                if (order.StatusType == EnumOrderStatus.已平仓) continue;
+
+                if (order.TradeID != null || orderRecords.Any(record => record.OrderSysID.Trim() == order.OrderSysID))
+                {
+                    orders.Add(order);
+                }
+            }
+            sw.ExitWriteLock();
+
+            orders.RaiseListChangedEvents = true;
         }
 
         public void CloseOrder(Order order)
@@ -317,7 +376,16 @@ namespace autotrade.business
 
         public void ChangeOrderLogs(string tradingDay)
         {
-            OrderRepository.ChangeOrderLogs(tradingDay);
+            orderlogs.RaiseListChangedEvents = false;
+
+            orderlogs.Clear();
+            foreach (OrderLog orderLog in orderLogRepo.Where(ol => ol.TradeDate == tradingDay).ToList())
+            {
+                orderlogs.Add(orderLog);
+            }
+            orderlogs.RaiseListChangedEvents = true;
+
+            orderlogs.ResetBindings();
         }
 
         public void CancelOrder(List<Order> orders)
@@ -341,6 +409,81 @@ namespace autotrade.business
             order.StrategyType = "Open Order By User";
 
             OrderInsert(order);
+        }
+
+        public void UpdateOrderRef(CThostFtdcOrderField pOrder)
+        {
+            sw.EnterWriteLock();
+
+            var order = orders.FirstOrDefault(
+                o => o.OrderRef == pOrder.OrderRef && o.FrontID == pOrder.FrontID && o.SessionID == pOrder.SessionID);
+
+            if (order != null)
+            {
+                order.OrderSysID = pOrder.OrderSysID;
+                order.ExchangeID = pOrder.ExchangeID;
+                OrderRepository.Update(order);
+            }
+
+            order = orders.FirstOrDefault(
+                o =>
+                    o.CloseOrder != null && o.CloseOrder.OrderRef == pOrder.OrderRef &&
+                    o.CloseOrder.FrontID == pOrder.FrontID && o.CloseOrder.SessionID == pOrder.SessionID);
+
+            if (order != null)
+            {
+
+                order.CloseOrder.OrderSysID = pOrder.OrderSysID;
+                OrderRepository.Update(order);
+            }
+
+            sw.ExitWriteLock();
+        }
+
+        public Order UpdateTradeID(CThostFtdcTradeField pTrade)
+        {
+            string orderSysID = pTrade.OrderSysID.Trim();
+
+            sw.EnterWriteLock();
+
+            var order = orders.FirstOrDefault(
+                o => o.OrderSysID == orderSysID && o.TradeID == null);
+
+            if (order != null)
+            {
+                order.TradeID = pTrade.TradeID;
+                order.TradePrice = pTrade.Price;
+                order.TradeDate = pTrade.TradeDate;
+                order.TradeTime = pTrade.TradeTime;
+                order.StatusType = EnumOrderStatus.已开仓;
+                OrderRepository.Update(order);
+            }
+            else
+            {
+                order = orders.FirstOrDefault(
+                    o =>
+                        o.CloseOrder != null && o.CloseOrder.OrderSysID == orderSysID && o.CloseOrder.TradeID == null);
+
+                if (order != null)
+                {
+                    order.CloseOrder.TradeID = pTrade.TradeID;
+                    order.CloseOrder.TradePrice = pTrade.Price;
+                    order.CloseOrder.TradeDate = pTrade.TradeDate;
+                    order.CloseOrder.TradeTime = pTrade.TradeTime;
+                    order.StatusType = EnumOrderStatus.已平仓;
+
+                    double profit = (order.Direction == TThostFtdcDirectionType.Buy)
+                        ? order.CloseOrder.TradePrice - order.TradePrice
+                        : order.TradePrice - order.CloseOrder.TradePrice;
+                    order.CloseProfit = profit*order.Volume*order.Unit;
+                    order.PositionProfit = 0;
+                    OrderRepository.Update(order);
+                }
+            }
+
+            sw.ExitWriteLock();
+
+            return order;
         }
     }
 

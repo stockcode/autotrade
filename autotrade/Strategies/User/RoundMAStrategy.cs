@@ -17,6 +17,7 @@ namespace autotrade.Strategies
     {
         private readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
+        private static readonly TimeSpan _whenTimeIsOver = new TimeSpan(14, 59, 00);
 
         private int _day = 20;
 
@@ -138,6 +139,17 @@ namespace autotrade.Strategies
 
             var orders = GetStrategyOrders(marketData.InstrumentId);
 
+            if (DateTime.Now.TimeOfDay > _whenTimeIsOver)
+            {
+                var list = orders.FindAll(o => o.StatusType == EnumOrderStatus.开仓中);
+                if (list.Count > 0) OrderManager.CancelOrder(list);
+
+                list = orders.FindAll(o => o.StatusType == EnumOrderStatus.平仓中);
+                if (list.Count > 0) OrderManager.CancelOrder(list);
+
+                return newOrders;
+            }
+
 
             CloseOrder(orders.FindAll(o => o.StatusType == EnumOrderStatus.已开仓));
 
@@ -157,12 +169,30 @@ namespace autotrade.Strategies
                 foreach (var order in orders.FindAll(o => o.Direction == TThostFtdcDirectionType.Sell).OrderBy(o=>o.Price))
                 {
                     var neworder = new Order();
-                    neworder.OffsetFlag = TThostFtdcOffsetFlagType.Close;
+                    neworder.OffsetFlag = order.IsTodayOrder? TThostFtdcOffsetFlagType.CloseToday : TThostFtdcOffsetFlagType.Close;
                     neworder.Direction = order.Direction == TThostFtdcDirectionType.Buy
                         ? TThostFtdcDirectionType.Sell
                         : TThostFtdcDirectionType.Buy;
                     neworder.InstrumentId = currMarketData.InstrumentId;
                     neworder.Price = Math.Round(MALBPrice) - (order.Price - Math.Round(MAUBPrice));
+                    neworder.Volume = order.Volume;
+                    neworder.StrategyType = GetType().ToString();
+                    //neworder.StrategyLogs.AddRange(dayAverageLogs);
+
+                    order.CloseOrder = neworder;
+
+                    newOrders.Add(order);
+                }
+
+                foreach (var order in orders.FindAll(o => o.Direction == TThostFtdcDirectionType.Buy).OrderByDescending(o => o.Price))
+                {
+                    var neworder = new Order();
+                    neworder.OffsetFlag = order.IsTodayOrder ? TThostFtdcOffsetFlagType.CloseToday : TThostFtdcOffsetFlagType.Close;
+                    neworder.Direction = order.Direction == TThostFtdcDirectionType.Buy
+                        ? TThostFtdcDirectionType.Sell
+                        : TThostFtdcDirectionType.Buy;
+                    neworder.InstrumentId = currMarketData.InstrumentId;
+                    neworder.Price = Math.Round(MAUBPrice) + (Math.Round(MALBPrice) - order.Price);
                     neworder.Volume = order.Volume;
                     neworder.StrategyType = GetType().ToString();
                     //neworder.StrategyLogs.AddRange(dayAverageLogs);
@@ -312,6 +342,27 @@ namespace autotrade.Strategies
                     var lastOrder = buyOrders[buyOrders.Count - 1];
 
                     var buyPrice = currMarketData.LastPrice - 2*InstrumentStrategy.PriceTick;
+
+                    if (!buyOrders.Exists(o => Math.Abs(o.Price - buyPrice) < TOLERANCE))
+                    {
+                        Order order = new Order();
+                        order.OffsetFlag = TThostFtdcOffsetFlagType.Open;
+                        order.Direction = lastOrder.Direction;
+                        order.InstrumentId = currMarketData.InstrumentId;
+                        order.Price = buyPrice;
+                        order.Volume = InstrumentStrategy.Volume;
+                        order.StrategyType = GetType().ToString();
+
+                        newOrders.Add(order);
+
+                        OrderManager.CancelOrder(lastOrder);
+                    }
+                }
+                else
+                {
+                    var lastOrder = buyOrders[buyOrders.Count - 1];
+
+                    var buyPrice = Math.Round(MALBPrice) - InstrumentStrategy.PriceTick;
 
                     if (!buyOrders.Exists(o => Math.Abs(o.Price - buyPrice) < TOLERANCE))
                     {

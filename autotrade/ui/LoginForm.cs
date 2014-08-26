@@ -172,7 +172,7 @@ namespace autotrade
 
             OrderManager.AddTradeRecord(tradeRecord);
 
-            OrderManager.OrderRepository.UpdateTradeID(e.pTrade);
+            OrderManager.UpdateTradeID(e.pTrade);
 
             if (e.bIsLast)
             {

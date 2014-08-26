@@ -16,6 +16,8 @@ namespace autotrade.model
 {
     public class Order : Entity, INotifyPropertyChanged
     {
+        private static readonly TimeSpan _whenTimeIsOver = new TimeSpan(20, 00, 00);
+
         public Order()
         {            
             StrategyLogs = new List<OrderStrategyLog>();
@@ -155,6 +157,8 @@ namespace autotrade.model
         public string ActualTradeDate {
             get
             {
+                if (TradeDate == null) return null;
+
                 return (DateTime.Today.CompareTo(DateTime.ParseExact(TradeDate, "yyyyMMdd", CultureInfo.InvariantCulture)) ==
                        0
                         ? TradeDateTime
@@ -202,6 +206,41 @@ namespace autotrade.model
         public List<OrderStrategyLog> StrategyLogs { get; set; }
 
         public string ExchangeID { get; set; }
+
+        [Browsable(false)]
+        [BsonIgnore]
+        public bool IsTodayOrder
+        {
+            get
+            {
+                var today = DateTime.Today;
+                var now = DateTime.Now;
+
+                var closeTime = DateTime.ParseExact(today.ToString("yyyyMMdd") + " 20:00:00", "yyyyMMdd HH:mm:ss", CultureInfo.InvariantCulture);
+
+                var trade = DateTime.ParseExact(TradeDateTime, "yyyyMMdd HH:mm:ss", CultureInfo.InvariantCulture);
+
+                if (trade.Date == today)
+                {
+                    if (trade < closeTime && now < closeTime) return true;
+
+                    if (trade > closeTime && now > closeTime) return true;
+
+                    return false;
+                }
+                else if (today.Subtract(trade).Days == 0)
+                {
+                    if (trade.TimeOfDay > _whenTimeIsOver && now.TimeOfDay < _whenTimeIsOver) return true;
+
+                    return false;
+                }
+                else
+                {
+                    return false;
+                }
+                
+            }
+        }
 
         public override string ToString()
         {
