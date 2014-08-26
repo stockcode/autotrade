@@ -139,7 +139,7 @@ namespace autotrade.Strategies
 
             var orders = GetStrategyOrders(marketData.InstrumentId);
 
-            if (DateTime.Now.TimeOfDay > _whenTimeIsOver)
+            if (DateTime.Now.Hour == 14 && DateTime.Now.Minute == 59)
             {
                 var list = orders.FindAll(o => o.StatusType == EnumOrderStatus.开仓中);
                 if (list.Count > 0) OrderManager.CancelOrder(list);
