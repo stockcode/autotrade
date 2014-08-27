@@ -70,6 +70,7 @@ namespace autotrade.business
         {             
             Order order = UpdateTradeID(e.pTrade);
 
+            sw.EnterWriteLock();
             if (order != null && order.StatusType == EnumOrderStatus.已平仓)
             {
                 var orderLog = new OrderLog();
@@ -81,7 +82,8 @@ namespace autotrade.business
                 orderLogRepo.Add(orderLog);
                 OrderRepository.Delete(order);                
             }
-
+            sw.ExitWriteLock();
+            
             log.Info(e.pTrade);
         }
 
@@ -337,12 +339,11 @@ namespace autotrade.business
 
         public void Init()
         {
-            List<Order> orderdb = OrderRepository.ToList();
 
             orders.RaiseListChangedEvents = false;
 
             sw.EnterWriteLock();
-            foreach (var order in orderdb)
+            foreach (var order in OrderRepository)
             {
                 if (order.StatusType == EnumOrderStatus.已平仓) continue;
 
@@ -484,6 +485,24 @@ namespace autotrade.business
             sw.ExitWriteLock();
 
             return order;
+        }
+
+        public void CancelAllOrder()
+        {
+            var list = orders.Where(o => o.StatusType == EnumOrderStatus.开仓中).ToList();
+            CancelOrder(list);
+
+            list = orders.Where(o => o.StatusType == EnumOrderStatus.平仓中).ToList();
+            CancelOrder(list);
+        }
+
+        public void ChangeCloseOrder(Order lastOrder, Order closeorder)
+        {
+            CancelOrder(lastOrder);
+
+            lastOrder.CloseOrder = closeorder;
+
+            OrderInsert(lastOrder);
         }
     }
 

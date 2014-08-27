@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 using Autofac;
 using autotrade.business;
 using autotrade.Job;
@@ -65,6 +66,7 @@ namespace autotrade
             miDetail.Click += miDetail_Click;
             miCloseOrder.Click += miCloseOrder_Click;
             miCancelOrder.Click += miCancelOrder_Click;
+            miCancelAll.Click += miCancelAll_Click;
 
             miOrderLogDetail.Click += miOrderLogDetail_Click;
 
@@ -109,6 +111,14 @@ namespace autotrade
             StrategyManager.Start();
 
             StartQuartz();
+        }
+
+        void miCancelAll_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("你确定要撤销所有挂单吗？", "温馨提示", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                OrderManager.CancelAllOrder();
+            }
         }
 
         private void StartQuartz()
