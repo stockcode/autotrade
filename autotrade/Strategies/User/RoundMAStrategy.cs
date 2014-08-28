@@ -147,7 +147,7 @@ namespace autotrade.Strategies
 
             OpenOrder(orders.FindAll(o => o.StatusType == EnumOrderStatus.开仓中));
 
-            ChangeCloseOrder(orders.FindAll(o => o.StatusType == EnumOrderStatus.平仓中));
+            //ChangeCloseOrder(orders.FindAll(o => o.StatusType == EnumOrderStatus.平仓中));
 
             return newOrders;
         }

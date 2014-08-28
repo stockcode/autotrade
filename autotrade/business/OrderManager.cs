@@ -23,6 +23,7 @@ namespace autotrade.business
         private readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private TraderApiWrapper tradeApi;
         private ReaderWriterLockSlim sw;
+        private ReaderWriterLockSlim swRecord = new ReaderWriterLockSlim();
 
         private BindingList<TradeRecord> tradeRecords = new BindingList<TradeRecord>();
         private BindingList<OrderRecord> orderRecords = new BindingList<OrderRecord>();
@@ -91,17 +92,19 @@ namespace autotrade.business
         {
             OrderRecord orderRecord = GetOrderRecord(e.pOrder.RequestID);
 
+            swRecord.EnterWriteLock();
             if (orderRecord == null)
             {
                 orderRecord = new OrderRecord();
                 orderRecords.Add(orderRecord);
 
             }
+            swRecord.ExitWriteLock();
 
             ObjectUtils.CopyStruct(e.pOrder, orderRecord);
 
             //OnRspQryOrderRecord(this, new OrderRecordEventArgs(orderRecords));
-
+            
             UpdateOrderRef(e.pOrder);
         }
 
@@ -314,7 +317,9 @@ namespace autotrade.business
 
         public void AddOrderRecord(OrderRecord orderRecord)
         {
+            swRecord.EnterWriteLock();
             orderRecords.Add(orderRecord);
+            swRecord.ExitWriteLock();
         }
 
         public BindingList<OrderRecord> GetOrderRecords()
@@ -341,17 +346,22 @@ namespace autotrade.business
         {
 
             orders.RaiseListChangedEvents = false;
-
+            
             sw.EnterWriteLock();
+
+            swRecord.EnterReadLock();
             foreach (var order in OrderRepository)
             {
                 if (order.StatusType == EnumOrderStatus.已平仓) continue;
-
+                
                 if (order.TradeID != null || orderRecords.Any(record => record.OrderSysID.Trim() == order.OrderSysID))
                 {
                     orders.Add(order);
                 }
+                
             }
+
+            swRecord.ExitReadLock();
             sw.ExitWriteLock();
 
             orders.RaiseListChangedEvents = true;
