@@ -78,7 +78,8 @@ namespace autotrade.business
                 ObjectUtils.Copy(order, orderLog);
                 orderLog.Id = null;
 
-                orders.Remove(order);
+                OnRspQryOrder(this, new OrderEventArgs(new MethodInvoker(() => orders.Remove(order)))); 
+                
                 orderlogs.Add(orderLog);
                 orderLogRepo.Add(orderLog);
                 OrderRepository.Delete(order);                

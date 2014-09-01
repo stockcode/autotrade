@@ -69,7 +69,7 @@ namespace autotrade.Strategies
             }
         }
 
-        private int _hedgingThreshold = 2;
+        private int _hedgingThreshold = 3;
         [DisplayName("对冲阀值")]
         [DefaultValue(2)]
         public int HedgingThreshold
@@ -151,7 +151,7 @@ namespace autotrade.Strategies
             if (lossThreshold >= MaxLossThreshold)
             {
                 tick++;
-                if (tick >= 1200)
+                if (tick >= 2400)
                 {
                     lossThreshold = 0;
                     tick = 0;
@@ -207,7 +207,7 @@ namespace autotrade.Strategies
                             Direction = openDirection,
                             InstrumentId = currMarketData.InstrumentId,
                             LastPrice = currMarketData.LastPrice,
-                            Price = GetAnyPrice(currMarketData, openDirection),
+                            Price = GetAnyPrice(GetAvgPrice(), openDirection),
                             Volume = InstrumentStrategy.Volume,
                             StrategyType = GetType().ToString()
                         };

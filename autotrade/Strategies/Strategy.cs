@@ -49,6 +49,18 @@ namespace autotrade.Strategies
             }
         }
 
+        protected double GetAnyPrice(double price, TThostFtdcDirectionType direction)
+        {
+            if (direction == TThostFtdcDirectionType.Buy)
+            {
+                return price + InstrumentStrategy.PriceTick * 3;
+            }
+            else
+            {
+                return price - InstrumentStrategy.PriceTick * 3;
+            }
+        }
+
         protected List<Order> GetStrategyOrders(string instrumentId)
         {
             return OrderManager.getOrders()
