@@ -306,12 +306,14 @@ namespace autotrade.Strategies
                                     neworder.StrategyLogs.AddRange(dayAverageLogs);
 
                                     newOrders.Add(neworder);
+
+                                    if (StartHedging)
+                                    {
+                                        OpenHedge(order.Direction);
+                                    }
                                 }
 
-                                if (StartHedging)
-                                {
-                                    OpenHedge(order.Direction);
-                                }
+                                
 
                                 closeCount = false;
                                 closeThreshold = 0;

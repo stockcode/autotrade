@@ -53,11 +53,11 @@ namespace autotrade.Strategies
         {
             if (direction == TThostFtdcDirectionType.Buy)
             {
-                return price + InstrumentStrategy.PriceTick * 3;
+                return price + InstrumentStrategy.PriceTick * 2;
             }
             else
             {
-                return price - InstrumentStrategy.PriceTick * 3;
+                return price - InstrumentStrategy.PriceTick * 2;
             }
         }
 

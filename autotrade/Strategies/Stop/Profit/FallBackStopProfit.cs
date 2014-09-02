@@ -93,6 +93,8 @@ namespace autotrade.Stop.Profit
 
                     list.Add(order);
 
+                    maxProfit = 0d;
+
                     log.Info(String.Format("{0}:{1}:{2}:{3}", ToString(), marketData.InstrumentId, marketData.LastPrice,
                         orders.Count()));
                 }
