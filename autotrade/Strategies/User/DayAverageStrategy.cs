@@ -158,6 +158,8 @@ namespace autotrade.Strategies
                 }
             }
 
+            log.Info("lossThreshold=" + lossThreshold);
+
             return newOrders;
         }
 
@@ -259,72 +261,78 @@ namespace autotrade.Strategies
 
                     if (result == TThostFtdcDirectionType.Nothing)
                     {
-                        if (closeCount)
-                        {
-                            if (closeThreshold >= MaxCloseThreshold)
-                            {
-                                if (order.PositionProfit < 0) lossThreshold++;
-                                else lossThreshold = 0;
+                        if (currMarketData.LastPrice < currMarketData.AveragePrice &&
+                            order.Direction == TThostFtdcDirectionType.Buy) closeCount = true;
 
-                                var neworder = new Order();
-                                neworder.OffsetFlag = TThostFtdcOffsetFlagType.CloseToday;
+                        if (currMarketData.LastPrice > currMarketData.AveragePrice &&
+                            order.Direction == TThostFtdcDirectionType.Sell) closeCount = true;
+
+
+                        if (!closeCount) continue;
+
+                        if (closeThreshold >= MaxCloseThreshold)
+                        {
+                            if (order.PositionProfit < TOLERANCE) lossThreshold++;
+                            else lossThreshold = 0;
+
+                            var neworder = new Order();
+                            neworder.OffsetFlag = TThostFtdcOffsetFlagType.CloseToday;
+                            neworder.Direction = order.Direction == TThostFtdcDirectionType.Buy
+                                ? TThostFtdcDirectionType.Sell
+                                : TThostFtdcDirectionType.Buy;
+                            neworder.InstrumentId = currMarketData.InstrumentId;
+                            neworder.LastPrice = currMarketData.LastPrice;
+                            neworder.Price = GetAnyPrice(currMarketData, neworder.Direction);
+                            neworder.Volume = order.Volume;
+                            neworder.StrategyType = GetType().ToString();
+                            neworder.StrategyLogs.AddRange(dayAverageLogs);
+
+                            order.CloseOrder = neworder;
+
+                            newOrders.Add(order);
+
+                            if (StartHedging) CloseHedge();
+
+                            log.Info(String.Format("{0}:{1}:{2}:{3}:{4}", ToString(), currMarketData.InstrumentId,
+                                currMarketData.LastPrice, maPrice,
+                                orders.Count()));
+
+                            if (lossThreshold < MaxCloseThreshold)
+                            {
+
+                                //开反向新仓
+                                neworder = new Order();
+                                neworder.OffsetFlag = TThostFtdcOffsetFlagType.Open;
                                 neworder.Direction = order.Direction == TThostFtdcDirectionType.Buy
                                     ? TThostFtdcDirectionType.Sell
                                     : TThostFtdcDirectionType.Buy;
+
                                 neworder.InstrumentId = currMarketData.InstrumentId;
                                 neworder.LastPrice = currMarketData.LastPrice;
                                 neworder.Price = GetAnyPrice(currMarketData, neworder.Direction);
-                                neworder.Volume = order.Volume;
+                                neworder.Volume = InstrumentStrategy.Volume;
                                 neworder.StrategyType = GetType().ToString();
                                 neworder.StrategyLogs.AddRange(dayAverageLogs);
 
-                                order.CloseOrder = neworder;
+                                newOrders.Add(neworder);
 
-                                newOrders.Add(order);
-
-                                if (StartHedging) CloseHedge();
-
-                                log.Info(String.Format("{0}:{1}:{2}:{3}:{4}", ToString(), currMarketData.InstrumentId,
-                                    currMarketData.LastPrice, maPrice,
-                                    orders.Count()));
-
-                                if (lossThreshold < MaxCloseThreshold)
+                                if (StartHedging)
                                 {
-
-                                    //开反向新仓
-                                    neworder = new Order();
-                                    neworder.OffsetFlag = TThostFtdcOffsetFlagType.Open;
-                                    neworder.Direction = order.Direction == TThostFtdcDirectionType.Buy
-                                        ? TThostFtdcDirectionType.Sell
-                                        : TThostFtdcDirectionType.Buy;
-
-                                    neworder.InstrumentId = currMarketData.InstrumentId;
-                                    neworder.LastPrice = currMarketData.LastPrice;
-                                    neworder.Price = GetAnyPrice(currMarketData, neworder.Direction);
-                                    neworder.Volume = InstrumentStrategy.Volume;
-                                    neworder.StrategyType = GetType().ToString();
-                                    neworder.StrategyLogs.AddRange(dayAverageLogs);
-
-                                    newOrders.Add(neworder);
-
-                                    if (StartHedging)
-                                    {
-                                        OpenHedge(order.Direction);
-                                    }
+                                    OpenHedge(order.Direction);
                                 }
+                            }
 
                                 
 
-                                closeCount = false;
-                                closeThreshold = 0;
-                                dayAverageLogs.Clear();                                
+                            closeCount = false;
+                            closeThreshold = 0;
+                            dayAverageLogs.Clear();                                
 
-                            }
-                            else
-                            {
-                                closeThreshold++;
-                                GetLog(result.ToString(), preMarketData, currMarketData, closeThreshold);
-                            }
+                        }
+                        else
+                        {
+                            closeThreshold++;
+                            GetLog(result.ToString(), preMarketData, currMarketData, closeThreshold);
                         }
                     }
                     else
