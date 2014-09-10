@@ -167,7 +167,7 @@ namespace autotrade.Strategies
         {
             var orders = GetStrategyOrders(currMarketData.InstrumentId, hedgeType);
 
-            foreach (var order in orders.FindAll(o => o.StatusType == EnumOrderStatus.已开仓).Where(order => order.PositionProfit < -300))
+            foreach (var order in orders.FindAll(o => o.StatusType == EnumOrderStatus.已开仓).Where(order => order.PositionProfit < order.StopProfit))
             {
                 CloseHedge();
             }
@@ -210,6 +210,7 @@ namespace autotrade.Strategies
                             InstrumentId = currMarketData.InstrumentId,
                             LastPrice = currMarketData.LastPrice,
                             Price = GetAnyPrice(GetAvgPrice(), openDirection),
+                            StopProfit = -300,
                             Volume = InstrumentStrategy.Volume,
                             StrategyType = GetType().ToString()
                         };
@@ -248,6 +249,12 @@ namespace autotrade.Strategies
 
             foreach (var order in orders)
             {
+                if (order.PositionProfit < order.StopProfit)
+                {
+                    CloseOrder(order);
+                    continue;
+                }
+
                     var result = Cross(preMarketData, currMarketData);
 
                     if (result == order.Direction)
@@ -275,21 +282,7 @@ namespace autotrade.Strategies
                             if (order.PositionProfit < TOLERANCE) lossThreshold++;
                             else lossThreshold = 0;
 
-                            var neworder = new Order();
-                            neworder.OffsetFlag = TThostFtdcOffsetFlagType.CloseToday;
-                            neworder.Direction = order.Direction == TThostFtdcDirectionType.Buy
-                                ? TThostFtdcDirectionType.Sell
-                                : TThostFtdcDirectionType.Buy;
-                            neworder.InstrumentId = currMarketData.InstrumentId;
-                            neworder.LastPrice = currMarketData.LastPrice;
-                            neworder.Price = GetAnyPrice(currMarketData, neworder.Direction);
-                            neworder.Volume = order.Volume;
-                            neworder.StrategyType = GetType().ToString();
-                            neworder.StrategyLogs.AddRange(dayAverageLogs);
-
-                            order.CloseOrder = neworder;
-
-                            newOrders.Add(order);
+                            CloseOrder(order);
 
                             if (StartHedging) CloseHedge();
 
@@ -297,11 +290,11 @@ namespace autotrade.Strategies
                                 currMarketData.LastPrice, maPrice,
                                 orders.Count()));
 
-                            if (lossThreshold < MaxCloseThreshold)
+                            if (lossThreshold < MaxLossThreshold)
                             {
 
                                 //开反向新仓
-                                neworder = new Order();
+                                var neworder = new Order();
                                 neworder.OffsetFlag = TThostFtdcOffsetFlagType.Open;
                                 neworder.Direction = order.Direction == TThostFtdcDirectionType.Buy
                                     ? TThostFtdcDirectionType.Sell
@@ -310,6 +303,7 @@ namespace autotrade.Strategies
                                 neworder.InstrumentId = currMarketData.InstrumentId;
                                 neworder.LastPrice = currMarketData.LastPrice;
                                 neworder.Price = GetAnyPrice(currMarketData, neworder.Direction);
+                                neworder.StopProfit = -300;
                                 neworder.Volume = InstrumentStrategy.Volume;
                                 neworder.StrategyType = GetType().ToString();
                                 neworder.StrategyLogs.AddRange(dayAverageLogs);
@@ -345,6 +339,25 @@ namespace autotrade.Strategies
             }
         }
 
+        private void CloseOrder(Order order)
+        {
+            var neworder = new Order();
+            neworder.OffsetFlag = TThostFtdcOffsetFlagType.CloseToday;
+            neworder.Direction = order.Direction == TThostFtdcDirectionType.Buy
+                ? TThostFtdcDirectionType.Sell
+                : TThostFtdcDirectionType.Buy;
+            neworder.InstrumentId = currMarketData.InstrumentId;
+            neworder.LastPrice = currMarketData.LastPrice;
+            neworder.Price = GetAnyPrice(currMarketData, neworder.Direction);
+            neworder.Volume = order.Volume;
+            neworder.StrategyType = GetType().ToString();
+            neworder.StrategyLogs.AddRange(dayAverageLogs);
+
+            order.CloseOrder = neworder;
+
+            newOrders.Add(order);
+        }
+
         private void OpenHedge(TThostFtdcDirectionType direction)
         {
             var neworder = new Order
@@ -357,6 +370,7 @@ namespace autotrade.Strategies
                     ? GetAvgPrice() - HedgingThreshold
                     : GetAvgPrice() + HedgingThreshold,
                 Volume = InstrumentStrategy.Volume,
+                StopProfit = -600,
                 StrategyType = hedgeType
             };
             //neworder.StrategyLogs.AddRange(dayAverageLogs);

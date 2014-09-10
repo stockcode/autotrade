@@ -65,6 +65,9 @@ namespace autotrade.model
         [DisplayName("占用的保证金")]
         public double UseMargin { get; set; }
 
+        [DisplayName("止盈价格")]
+        public double StopProfit { get; set; }
+
         private EnumOrderStatus _statusType;
 
         [DisplayName("状态")]
