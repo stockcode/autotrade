@@ -38,4 +38,16 @@
     <NetLine ip="219.143.242.155" port="21205" type="TD" isHot="1" />
     <NetLine ip="219.143.242.155" port="21213" type="MD" isHot="1" />
   </NetworkInfo>
+  <NetworkInfo name="华鑫期货二席—电信线路" type="CN" BrokerId="10001" isHot="0">
+    <NetLine ip="180.169.70.179" port="41205" type="TD" isHot="1" />
+    <NetLine ip="180.169.70.179" port="41213" type="MD" isHot="1" />
+    <NetLine ip="180.169.70.180" port="41205" type="TD" isHot="0" />
+    <NetLine ip="180.169.70.180" port="41213" type="MD" isHot="0" />
+  </NetworkInfo>
+  <NetworkInfo name="华鑫期货二席—联通线路" type="CN" BrokerId="10001" isHot="0">
+    <NetLine ip="140.206.102.19" port="41205" type="TD" isHot="1" />
+    <NetLine ip="140.206.102.19" port="41213" type="MD" isHot="1" />
+    <NetLine ip="140.206.102.20" port="41205" type="TD" isHot="0" />
+    <NetLine ip="140.206.102.20" port="41213" type="MD" isHot="0" />
+  </NetworkInfo>
 </BrokerManager>
