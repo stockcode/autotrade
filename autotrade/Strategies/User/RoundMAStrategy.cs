@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data.Odbc;
 using System.Linq;
 using System.Reflection;
 using autotrade.Indicators;
@@ -143,9 +142,9 @@ namespace autotrade.Strategies
                 return newOrders;
             }
 
-            if (AllowCloseOrder)    CloseOrder(orders);
+            if (AllowCloseOrder) CloseOrder(orders);
 
-            if (AllowOpenOrder)     OpenOrder(orders);
+            if (AllowOpenOrder) OpenOrder(orders);
 
             //ChangeCloseOrder(orders.FindAll(o => o.StatusType == EnumOrderStatus.平仓中));
 
@@ -177,7 +176,7 @@ namespace autotrade.Strategies
                     sellPrice = Math.Round(MAUBPrice) + InstrumentStrategy.PriceTick;
                 }
 
-                var lastOrder = sellOrders[sellOrders.Count - 1];
+                Order lastOrder = sellOrders[sellOrders.Count - 1];
 
 
                 if (!sellOrders.Exists(o => Math.Abs(o.CloseOrder.Price - sellPrice) < TOLERANCE))
@@ -194,7 +193,7 @@ namespace autotrade.Strategies
                 }
 
 
-                var cancelOrders = sellOrders.FindAll(o => o.CloseOrder.Price < MAUBPrice);
+                List<Order> cancelOrders = sellOrders.FindAll(o => o.CloseOrder.Price < MAUBPrice);
 
                 if (cancelOrders.Count > 0) OrderManager.CancelOrder(cancelOrders);
             }
@@ -212,7 +211,7 @@ namespace autotrade.Strategies
                     buyPrice = Math.Round(MALBPrice) - InstrumentStrategy.PriceTick;
                 }
 
-                var lastOrder = buyOrders[buyOrders.Count - 1];
+                Order lastOrder = buyOrders[buyOrders.Count - 1];
 
 
                 if (!buyOrders.Exists(o => Math.Abs(o.CloseOrder.Price - buyPrice) < TOLERANCE))
@@ -229,7 +228,7 @@ namespace autotrade.Strategies
                 }
 
 
-                var cancelOrders = buyOrders.FindAll(o => o.CloseOrder.Price > MALBPrice);
+                List<Order> cancelOrders = buyOrders.FindAll(o => o.CloseOrder.Price > MALBPrice);
 
                 if (cancelOrders.Count > 0) OrderManager.CancelOrder(cancelOrders);
             }
@@ -237,10 +236,12 @@ namespace autotrade.Strategies
 
         private void CloseOrder(List<Order> orders)
         {
-            var closeOrders = orders.FindAll(o => o.StatusType == EnumOrderStatus.已开仓);
+            List<Order> closeOrders = orders.FindAll(o => o.StatusType == EnumOrderStatus.已开仓);
 
             List<Order> sellOrders =
-                orders.FindAll(o => o.Direction == TThostFtdcDirectionType.Sell).OrderByDescending(o => o.Price).ToList();
+                orders.FindAll(o => o.Direction == TThostFtdcDirectionType.Sell)
+                    .OrderByDescending(o => o.Price)
+                    .ToList();
 
             Order highSellOrder = null;
 
@@ -256,7 +257,8 @@ namespace autotrade.Strategies
             int index = 1;
 
             foreach (
-                var order in closeOrders.FindAll(o => o.Direction == TThostFtdcDirectionType.Sell).OrderBy(o => o.Price))
+                Order order in
+                    closeOrders.FindAll(o => o.Direction == TThostFtdcDirectionType.Sell && o.CloseOrder == null).OrderBy(o => o.Price))
             {
                 var neworder = new Order();
                 neworder.OffsetFlag = order.IsTodayOrder
@@ -274,7 +276,6 @@ namespace autotrade.Strategies
                 else
                 {
                     neworder.Price = lowBuyOrder.Price - index*InstrumentStrategy.PriceTick;
-
                 }
 
                 neworder.Volume = order.Volume;
@@ -290,7 +291,7 @@ namespace autotrade.Strategies
             index = 1;
             foreach (
                 Order order in
-                    orders.FindAll(o => o.Direction == TThostFtdcDirectionType.Buy).OrderByDescending(o => o.Price))
+                    closeOrders.FindAll(o => o.Direction == TThostFtdcDirectionType.Buy && o.CloseOrder == null).OrderByDescending(o => o.Price))
             {
                 var neworder = new Order();
                 neworder.OffsetFlag = order.IsTodayOrder
@@ -317,6 +318,7 @@ namespace autotrade.Strategies
                 order.CloseOrder = neworder;
 
                 newOrders.Add(order);
+                index++;
             }
         }
 
@@ -324,20 +326,33 @@ namespace autotrade.Strategies
         {
             double lastPrice = currMarketData.LastPrice;
 
-            
+
             List<Order> sellOpenOrders =
-                orders.FindAll(o => o.StatusType == EnumOrderStatus.开仓中 && o.Direction == TThostFtdcDirectionType.Sell).OrderBy(o => o.Price).ToList();
+                orders.FindAll(o => o.StatusType == EnumOrderStatus.开仓中 && o.Direction == TThostFtdcDirectionType.Sell)
+                    .OrderBy(o => o.Price)
+                    .ToList();
 
             List<Order> buyOpenOrders =
-                orders.FindAll(o => o.StatusType == EnumOrderStatus.开仓中 && o.Direction == TThostFtdcDirectionType.Buy).OrderByDescending(o => o.Price).ToList();
+                orders.FindAll(o => o.StatusType == EnumOrderStatus.开仓中 && o.Direction == TThostFtdcDirectionType.Buy)
+                    .OrderByDescending(o => o.Price)
+                    .ToList();
 
             List<Order> sellCloseOrders =
-                orders.FindAll(o => o.StatusType == EnumOrderStatus.已开仓 && o.CloseOrder.Direction == TThostFtdcDirectionType.Sell).OrderBy(o => o.CloseOrder.Price).ToList();
+                orders.FindAll(
+                    o => o.StatusType == EnumOrderStatus.平仓中 && o.CloseOrder != null && o.CloseOrder.Direction == TThostFtdcDirectionType.Sell)
+                    .OrderBy(o => o.CloseOrder.Price)
+                    .ToList();
 
             List<Order> buyCloseOrders =
-                orders.FindAll(o => o.StatusType == EnumOrderStatus.已开仓 && o.CloseOrder.Direction == TThostFtdcDirectionType.Buy).OrderByDescending(o => o.CloseOrder.Price).ToList();
+                orders.FindAll(
+                    o => o.StatusType == EnumOrderStatus.平仓中 && o.CloseOrder != null && o.CloseOrder.Direction == TThostFtdcDirectionType.Buy)
+                    .OrderByDescending(o => o.CloseOrder.Price)
+                    .ToList();
 
-            Order lastOrder = sellOpenOrders[sellOpenOrders.Count - 1];
+            Order lastOrder = null;
+
+            if (sellOpenOrders.Count > 0)
+                lastOrder = sellOpenOrders[sellOpenOrders.Count - 1];
 
             if (sellCloseOrders.Count > 0) lastOrder = sellCloseOrders[sellCloseOrders.Count - 1];
 
@@ -358,7 +373,6 @@ namespace autotrade.Strategies
             }
             else if (sellOpenOrders.Count + sellCloseOrders.Count < Count)
             {
-
                 for (int i = 1; i <= Count - sellOpenOrders.Count; i++)
                 {
                     var order = new Order();
@@ -374,35 +388,41 @@ namespace autotrade.Strategies
             }
             else if (sellOpenOrders.Count + sellCloseOrders.Count >= Count)
             {
+                double sellPrice = 0d;
+
                 if (currMarketData.LastPrice > MAUBPrice)
                 {
-                    
-                    double sellPrice = currMarketData.LastPrice + 2*InstrumentStrategy.PriceTick;
-
-                    if (!sellOpenOrders.Exists(o => Math.Abs(o.Price - sellPrice) < TOLERANCE))
-                    {
-                        var order = new Order();
-                        order.OffsetFlag = lastOrder.OffsetFlag;
-                        order.Direction = lastOrder.Direction;
-                        order.InstrumentId = lastOrder.InstrumentId;
-                        order.Price = sellPrice;
-                        order.Volume = lastOrder.Volume;
-                        order.StrategyType = GetType().ToString();
-
-                        OrderManager.CancelOrder(lastOrder);
-
-                        newOrders.Add(order);                        
-                    }
+                    sellPrice = currMarketData.LastPrice + 2*InstrumentStrategy.PriceTick;
                 }
+                else
+                {
+                    sellPrice = Math.Round(MAUBPrice) + InstrumentStrategy.PriceTick;
+                }
+
+
+                if (!sellOpenOrders.Exists(o => Math.Abs(o.Price - sellPrice) < TOLERANCE))
+                {
+                    var order = new Order();
+                    order.OffsetFlag = lastOrder.OffsetFlag;
+                    order.Direction = lastOrder.Direction;
+                    order.InstrumentId = lastOrder.InstrumentId;
+                    order.Price = sellPrice;
+                    order.Volume = lastOrder.Volume;
+                    order.StrategyType = GetType().ToString();
+
+                    OrderManager.CancelOrder(lastOrder);
+
+                    newOrders.Add(order);
+                }
+
 
                 List<Order> cancelOrders = sellOpenOrders.FindAll(o => o.Price < MAUBPrice);
 
                 if (cancelOrders.Count > 0) OrderManager.CancelOrder(cancelOrders);
             }
 
-
-
-            lastOrder = buyOpenOrders[buyOpenOrders.Count - 1];
+            if (buyOpenOrders.Count > 0)
+                lastOrder = buyOpenOrders[buyOpenOrders.Count - 1];
 
             if (buyCloseOrders.Count > 0) lastOrder = buyCloseOrders[buyCloseOrders.Count - 1];
 
@@ -424,7 +444,6 @@ namespace autotrade.Strategies
             }
             else if (buyOpenOrders.Count + buyCloseOrders.Count < Count)
             {
-
                 for (int i = 1; i <= Count - buyOpenOrders.Count; i++)
                 {
                     var order = new Order();
@@ -440,45 +459,29 @@ namespace autotrade.Strategies
             }
             else if (buyOpenOrders.Count + buyCloseOrders.Count >= Count)
             {
+                double buyPrice = Math.Round(MALBPrice) - InstrumentStrategy.PriceTick;
+
                 if (currMarketData.LastPrice < MALBPrice)
                 {
-                    double buyPrice = currMarketData.LastPrice - 2*InstrumentStrategy.PriceTick;
-
-                    if (!buyOpenOrders.Exists(o => Math.Abs(o.Price - buyPrice) < TOLERANCE))
-                    {
-                        var order = new Order();
-                        order.OffsetFlag = lastOrder.OffsetFlag;
-                        order.Direction = lastOrder.Direction;
-                        order.InstrumentId = lastOrder.InstrumentId;
-                        order.Price = buyPrice;
-                        order.Volume = lastOrder.Volume;
-                        order.StrategyType = GetType().ToString();
-
-                        OrderManager.CancelOrder(lastOrder);
-
-                        newOrders.Add(order);                        
-                    }
+                    buyPrice = currMarketData.LastPrice - 2*InstrumentStrategy.PriceTick;
                 }
-                else
+
+
+                if (!buyOpenOrders.Exists(o => Math.Abs(o.Price - buyPrice) < TOLERANCE))
                 {
+                    var order = new Order();
+                    order.OffsetFlag = lastOrder.OffsetFlag;
+                    order.Direction = lastOrder.Direction;
+                    order.InstrumentId = lastOrder.InstrumentId;
+                    order.Price = buyPrice;
+                    order.Volume = lastOrder.Volume;
+                    order.StrategyType = GetType().ToString();
 
-                    double buyPrice = Math.Round(MALBPrice) - InstrumentStrategy.PriceTick;
+                    OrderManager.CancelOrder(lastOrder);
 
-                    if (!buyOpenOrders.Exists(o => Math.Abs(o.Price - buyPrice) < TOLERANCE))
-                    {
-                        var order = new Order();
-                        order.OffsetFlag = lastOrder.OffsetFlag;
-                        order.Direction = lastOrder.Direction;
-                        order.InstrumentId = lastOrder.InstrumentId;
-                        order.Price = buyPrice;
-                        order.Volume = lastOrder.Volume;
-                        order.StrategyType = GetType().ToString();
-
-                        OrderManager.CancelOrder(lastOrder);
-
-                        newOrders.Add(order);                        
-                    }
+                    newOrders.Add(order);
                 }
+
 
                 List<Order> cancelOrders = buyOpenOrders.FindAll(o => o.Price > MALBPrice);
 

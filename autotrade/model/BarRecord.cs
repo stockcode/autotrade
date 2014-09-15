@@ -1,4 +1,5 @@
 ﻿using autotrade.model;
+using MongoDB.Bson.Serialization.Attributes;
 using MongoRepository;
 
 namespace autotrade
@@ -19,7 +20,7 @@ namespace autotrade
 
         public double Low { get; set; }
 
-        public double Close { get; set; }
+        public double Close { get; set; }        
 
         public double Amount { get; set; }
 

@@ -54,7 +54,7 @@ namespace autotrade.business
 
                     var query =
                     (from e in collection.AsQueryable()
-                     orderby e.ActualDate descending
+                     orderby e.Date descending, e.Time descending 
                      select e).Take(100);
 
                     var barRecords = query.ToList();
@@ -181,9 +181,9 @@ namespace autotrade.business
 
         private void InsertToList(List<BarRecord> barRecords, BarRecord barRecord)
         {
-            if (barRecords.Count == 100) barRecords.RemoveAt(0);
+            if (barRecords.Count == 100) barRecords.RemoveAt(barRecords.Count - 1);
 
-            barRecords.Add(barRecord);            
+            barRecords.Insert(0, barRecord);            
         }
 
         public MarketData GetPreMarketData(string instrumentId)
@@ -195,7 +195,7 @@ namespace autotrade.business
         {
             if (day > recordMinutesDictionary[instrumentID][intervalType].Count) return null;
 
-            var closePrices = recordMinutesDictionary[instrumentID][intervalType].Select(barRecord => barRecord.Close).ToList();
+            var closePrices = recordMinutesDictionary[instrumentID][intervalType].Select(barRecord => barRecord.Close).Take(day).ToList();
 
             return new Indicator_MA(closePrices);
         }
