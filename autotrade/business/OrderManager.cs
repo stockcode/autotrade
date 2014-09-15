@@ -375,7 +375,10 @@ namespace autotrade.business
         public void CloseOrder(Order order)
         {
             var neworder = new Order();
-            neworder.OffsetFlag = TThostFtdcOffsetFlagType.CloseToday;
+            neworder.OffsetFlag = order.IsTodayOrder
+                    ? TThostFtdcOffsetFlagType.CloseToday
+                    : TThostFtdcOffsetFlagType.Close;
+
             neworder.Direction = order.Direction == TThostFtdcDirectionType.Buy
                 ? TThostFtdcDirectionType.Sell
                 : TThostFtdcDirectionType.Buy;
@@ -518,6 +521,13 @@ namespace autotrade.business
             lastOrder.CloseOrder = closeorder;
 
             OrderInsert(lastOrder);
+        }
+
+        public void DeleteOrder(Order order)
+        {
+            sw.EnterWriteLock();
+            OnRspQryOrder(this, new OrderEventArgs(new MethodInvoker(() => HandleOrderClose(order)))); 
+            sw.ExitWriteLock();
         }
     }
 

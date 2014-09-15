@@ -67,6 +67,7 @@ namespace autotrade
             miCloseOrder.Click += miCloseOrder_Click;
             miCancelOrder.Click += miCancelOrder_Click;
             miCancelAll.Click += miCancelAll_Click;
+            miDeleteOrder.Click += miDeleteOrder_Click;
 
             miOrderLogDetail.Click += miOrderLogDetail_Click;
 
@@ -89,7 +90,8 @@ namespace autotrade
 
 
             gvOrder.DataSource = OrderManager.getOrders();
-            ConfigGridView(gvOrder, new String[]{"PositionProfit", "UseMargin"});
+            
+            ConfigGridView(gvOrder, new String[]{"PositionProfit", "UseMargin"});            
 
             OrderManager.ChangeOrderLogs(tradeApi.TradingDay);
             gvOrderLog.DataSource = OrderManager.GetOrderLogs();
@@ -111,6 +113,13 @@ namespace autotrade
             StrategyManager.Start();
 
             StartQuartz();
+        }
+
+        void miDeleteOrder_Click(object sender, EventArgs e)
+        {
+            var order = (Order)gvOrder.SelectedRows[0].DataBoundItem;
+
+            OrderManager.DeleteOrder(order);
         }
 
         void miCancelAll_Click(object sender, EventArgs e)

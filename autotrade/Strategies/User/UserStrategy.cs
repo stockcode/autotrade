@@ -78,6 +78,38 @@ namespace autotrade.Strategies
             }
         }
 
+        private bool _allowOpenOrder = true;
+
+        [DisplayName("是否开仓")]
+        public bool AllowOpenOrder
+        {
+            get { return _allowOpenOrder; }
+            set
+            {
+                if (this._allowOpenOrder != value)
+                {
+                    this._allowOpenOrder = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+        private bool _allowCloseOrder = true;
+
+        [DisplayName("是否平仓")]
+        public bool AllowCloseOrder
+        {
+            get { return _allowCloseOrder; }
+            set
+            {
+                if (this._allowCloseOrder != value)
+                {
+                    this._allowCloseOrder = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
         protected UserStrategy()
         {
             StopLosses = new BindingList<StopLoss>();
