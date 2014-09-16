@@ -54,7 +54,7 @@ namespace autotrade.business
 
                     var query =
                     (from e in collection.AsQueryable()
-                     orderby e.Date descending, e.Time descending 
+                     orderby e.ActualDate descending, e.Time descending 
                      select e).Take(100);
 
                     var barRecords = query.ToList();
