@@ -310,7 +310,7 @@ namespace autotrade.Strategies
                 }
 
 
-                if (!sellOpenOrders.Exists(o => Math.Abs(o.Price - sellPrice) < TOLERANCE))
+                if (!sellOpenOrders.Exists(o => Math.Abs(o.Price - sellPrice) < TOLERANCE) && !sellCloseOrders.Exists(o => Math.Abs(o.CloseOrder.Price - sellPrice) < TOLERANCE))
                 {
                     var order = new Order();
                     order.OffsetFlag = lastOrder.OffsetFlag;
@@ -318,11 +318,20 @@ namespace autotrade.Strategies
                     order.InstrumentId = lastOrder.InstrumentId;
                     order.Price = sellPrice;
                     order.Volume = lastOrder.Volume;
-                    order.StrategyType = GetType().ToString();
+                    order.StrategyType = GetType().ToString();                    
 
-                    OrderManager.CancelOrder(lastOrder);
+                    
 
-                    newOrders.Add(order);
+                    if (lastOrder.CloseOrder != null)                    
+                    {
+                        OrderManager.ChangeCloseOrder(lastOrder, order);
+                    }
+                    else
+                    {
+                        OrderManager.CancelOrder(lastOrder);
+
+                        newOrders.Add(order);
+                    }
                 }
 
 
@@ -376,7 +385,7 @@ namespace autotrade.Strategies
                 }
 
 
-                if (!buyOpenOrders.Exists(o => Math.Abs(o.Price - buyPrice) < TOLERANCE))
+                if (!buyOpenOrders.Exists(o => Math.Abs(o.Price - buyPrice) < TOLERANCE) && !buyCloseOrders.Exists(o => Math.Abs(o.CloseOrder.Price - buyPrice) < TOLERANCE))
                 {
                     var order = new Order();
                     order.OffsetFlag = lastOrder.OffsetFlag;
@@ -384,11 +393,18 @@ namespace autotrade.Strategies
                     order.InstrumentId = lastOrder.InstrumentId;
                     order.Price = buyPrice;
                     order.Volume = lastOrder.Volume;
-                    order.StrategyType = GetType().ToString();
+                    order.StrategyType = GetType().ToString();                    
 
-                    OrderManager.CancelOrder(lastOrder);
+                    if (lastOrder.CloseOrder != null)
+                    {
+                        OrderManager.ChangeCloseOrder(lastOrder, order);
+                    }
+                    else
+                    {
+                        OrderManager.CancelOrder(lastOrder);
 
-                    newOrders.Add(order);
+                        newOrders.Add(order);
+                    }
                 }
 
 
