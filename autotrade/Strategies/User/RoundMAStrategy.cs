@@ -13,7 +13,7 @@ namespace autotrade.Strategies
 {
     internal class RoundMAStrategy : UserStrategy
     {
-        private static readonly TimeSpan _whenTimeIsOver = new TimeSpan(14, 59, 00);
+        private static readonly TimeSpan _whenTimeIsOver = new TimeSpan(14, 59, 55);
         private readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private int _count = 20;
 
@@ -141,7 +141,6 @@ namespace autotrade.Strategies
                 return newOrders;
             }
 
-            //if (AllowCloseOrder) CloseOrder(orders);
 
             if (AllowOpenOrder)
             {
