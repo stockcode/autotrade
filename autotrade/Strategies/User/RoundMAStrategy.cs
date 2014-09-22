@@ -174,29 +174,16 @@ namespace autotrade.Strategies
             List<Order> buyClosingOrders =
                 orders.FindAll(
                     o => o.StatusType == EnumOrderStatus.平仓中 && o.Direction == TThostFtdcDirectionType.Sell)
+                    .OrderByDescending(o => o.CloseOrder.Price)
                     .ToList();
 
-            Order lastOpenOrder = null, unClosingOrder = null;
+            Order lastOpenOrder = null, unClosingOrder = null, lastClosingOrder = null;
 
             if (buyUnClosingOrders.Count > 0) unClosingOrder = buyUnClosingOrders[0];
 
             if (buyOpenOrders.Count > 0) lastOpenOrder = buyOpenOrders[buyOpenOrders.Count - 1];
 
-            if (buyOpenOrders.Count == 0 && AllowOpenOrder)
-            {
-                for (var i = 1; i <= Count; i++)
-                {
-                    var order = new Order();
-                    order.OffsetFlag = TThostFtdcOffsetFlagType.Open;
-                    order.Direction = TThostFtdcDirectionType.Buy;
-                    order.InstrumentId = currMarketData.InstrumentId;
-                    order.Price = Math.Round(MALBPrice) - i*InstrumentStrategy.PriceTick;
-                    order.Volume = InstrumentStrategy.Volume;
-                    order.StrategyType = GetType().ToString();
-
-                    newOrders.Add(order);
-                }
-            }
+            if (buyClosingOrders.Count > 0) lastClosingOrder = buyClosingOrders[buyClosingOrders.Count - 1];
 
             if (buyOpenOrders.Count + buyClosingOrders.Count < Count)
             {
@@ -214,12 +201,7 @@ namespace autotrade.Strategies
                     order.Volume = InstrumentStrategy.Volume;
                     order.StrategyType = GetType().ToString();
 
-                    if (AllowOpenOrder)
-                    {
-                        order.OffsetFlag = TThostFtdcOffsetFlagType.Open;
-                        newOrders.Add(order);
-                    }
-                    else if (AllowCloseOrder && buyUnClosingOrders.Count > i)
+                    if (AllowCloseOrder && buyUnClosingOrders.Count > i)
                     {
 
                         order.OffsetFlag = buyUnClosingOrders[i].IsTodayOrder
@@ -229,6 +211,11 @@ namespace autotrade.Strategies
 
                         buyUnClosingOrders[i].CloseOrder = order;
                         newOrders.Add(buyUnClosingOrders[i]);
+                    }
+                    else if (AllowOpenOrder)
+                    {
+                        order.OffsetFlag = TThostFtdcOffsetFlagType.Open;
+                        newOrders.Add(order);
                     }
                 }
             }
@@ -258,6 +245,15 @@ namespace autotrade.Strategies
 
                             unClosingOrder.CloseOrder = order;
                             newOrders.Add(unClosingOrder);
+                        }
+                    }
+                    else if (lastClosingOrder != null)
+                    {
+                        if (AllowCloseOrder)
+                        {
+                            order.OffsetFlag = lastClosingOrder.CloseOrder.OffsetFlag;
+
+                            OrderManager.ChangeCloseOrder(lastClosingOrder, order);
                         }
                     }
                     else if (AllowOpenOrder)
@@ -290,6 +286,7 @@ namespace autotrade.Strategies
                 orders.FindAll(
                     o =>
                         o.StatusType == EnumOrderStatus.平仓中 && o.Direction == TThostFtdcDirectionType.Buy)
+                    .OrderBy(o => o.CloseOrder.Price)
                     .ToList();
 
             List<Order> sellUnClosingOrders =
@@ -298,32 +295,18 @@ namespace autotrade.Strategies
                         o.StatusType == EnumOrderStatus.已开仓 && o.Direction == TThostFtdcDirectionType.Buy)
                     .ToList();
 
-            Order lastOpenOrder = null, unClosingOrder = null;
+            Order lastOpenOrder = null, unClosingOrder = null, lastClosingOrder = null;
 
             if (sellOpenOrders.Count > 0)
                 lastOpenOrder = sellOpenOrders[sellOpenOrders.Count - 1];
 
             if (sellUnClosingOrders.Count > 0) unClosingOrder = sellUnClosingOrders[0];
 
-            if (sellOpenOrders.Count == 0 && AllowOpenOrder)
-            {
-                for (int i = 1; i <= Count; i++)
-                {
-                    var order = new Order();
-                    order.OffsetFlag = TThostFtdcOffsetFlagType.Open;
-                    order.Direction = TThostFtdcDirectionType.Sell;
-                    order.InstrumentId = currMarketData.InstrumentId;
-                    order.Price = Math.Round(MAUBPrice) + i*InstrumentStrategy.PriceTick;
-                    order.Volume = InstrumentStrategy.Volume;
-                    order.StrategyType = GetType().ToString();
+            if (sellClosingOrders.Count > 0) lastClosingOrder = sellClosingOrders[sellClosingOrders.Count - 1];
 
-                    newOrders.Add(order);
-                }
-            }
-            
             if (sellOpenOrders.Count + sellClosingOrders.Count < Count)
             {
-                for (int i = 0; i < Count - sellOpenOrders.Count; i++)
+                for (var i = 0; i < Count - sellOpenOrders.Count - sellClosingOrders.Count; i++)
                 {
                     var order = new Order();
                     order.OffsetFlag = TThostFtdcOffsetFlagType.Open;
@@ -338,12 +321,7 @@ namespace autotrade.Strategies
                     order.Volume = InstrumentStrategy.Volume;
                     order.StrategyType = GetType().ToString();
 
-                    if (AllowOpenOrder)
-                    {
-                        order.OffsetFlag = TThostFtdcOffsetFlagType.Open;
-                        newOrders.Add(order);
-                    }
-                    else if (AllowCloseOrder && sellUnClosingOrders.Count > i)
+                    if (AllowCloseOrder && sellUnClosingOrders.Count > i)
                     {
 
                         order.OffsetFlag = sellUnClosingOrders[i].IsTodayOrder
@@ -353,6 +331,11 @@ namespace autotrade.Strategies
 
                         sellUnClosingOrders[i].CloseOrder = order;
                         newOrders.Add(sellUnClosingOrders[i]);
+
+                    } else if (AllowOpenOrder)
+                    {
+                        order.OffsetFlag = TThostFtdcOffsetFlagType.Open;
+                        newOrders.Add(order);
                     }
                 }
             }
@@ -393,6 +376,15 @@ namespace autotrade.Strategies
 
                             unClosingOrder.CloseOrder = order;
                             newOrders.Add(unClosingOrder);
+                        }
+                    }
+                    else if (lastClosingOrder != null)
+                    {
+                        if (AllowCloseOrder)
+                        {
+                            order.OffsetFlag = lastClosingOrder.CloseOrder.OffsetFlag;
+
+                            OrderManager.ChangeCloseOrder(lastClosingOrder, order);
                         }
                     }
                     else if (AllowOpenOrder)

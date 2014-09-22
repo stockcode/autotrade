@@ -267,6 +267,8 @@ namespace autotrade.business
 
         public void CancelOrder(Order order)
         {
+            if (order == null) return;
+
             var od = order;
             if (order.CloseOrder != null) od = order.CloseOrder;
 
