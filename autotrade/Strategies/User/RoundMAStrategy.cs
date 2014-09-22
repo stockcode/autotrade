@@ -194,9 +194,9 @@ namespace autotrade.Strategies
                     order.InstrumentId = currMarketData.InstrumentId;
 
                     if (lastOpenOrder == null)
-                        order.Price = Math.Round(MALBPrice) - i * InstrumentStrategy.PriceTick;
+                        order.Price = Math.Round(MALBPrice) - (i+1) * InstrumentStrategy.PriceTick;
                     else
-                        order.Price = lastOpenOrder.Price - i*InstrumentStrategy.PriceTick;
+                        order.Price = lastOpenOrder.Price - (i + 1) * InstrumentStrategy.PriceTick;
                     
                     order.Volume = InstrumentStrategy.Volume;
                     order.StrategyType = GetType().ToString();
@@ -265,11 +265,11 @@ namespace autotrade.Strategies
                 }
 
 
-                List<Order> cancelOrders = buyOpenOrders.FindAll(o => o.Price > MALBPrice);
+                List<Order> cancelOrders = buyOpenOrders.FindAll(o => o.Price > Math.Round(MALBPrice));
 
                 if (cancelOrders.Count > 0) OrderManager.CancelOrder(cancelOrders);
 
-                cancelOrders = buyClosingOrders.FindAll(o => o.CloseOrder.Price > MALBPrice);
+                cancelOrders = buyClosingOrders.FindAll(o => o.CloseOrder.Price > Math.Round(MALBPrice));
 
                 if (cancelOrders.Count > 0) OrderManager.CancelOrder(cancelOrders);
             }
@@ -314,9 +314,9 @@ namespace autotrade.Strategies
                     order.InstrumentId = currMarketData.InstrumentId;
                     
                     if (lastOpenOrder == null)
-                        order.Price = Math.Round(MAUBPrice) + i * InstrumentStrategy.PriceTick;
+                        order.Price = Math.Round(MAUBPrice) + (i + 1) * InstrumentStrategy.PriceTick;
                     else
-                        order.Price = lastOpenOrder.Price + i*InstrumentStrategy.PriceTick;
+                        order.Price = lastOpenOrder.Price + (i + 1) * InstrumentStrategy.PriceTick;
 
                     order.Volume = InstrumentStrategy.Volume;
                     order.StrategyType = GetType().ToString();
@@ -396,11 +396,11 @@ namespace autotrade.Strategies
                 }
 
 
-                List<Order> cancelOrders = sellOpenOrders.FindAll(o => o.Price < MAUBPrice);
+                List<Order> cancelOrders = sellOpenOrders.FindAll(o => o.Price < Math.Round(MAUBPrice));
 
                 if (cancelOrders.Count > 0) OrderManager.CancelOrder(cancelOrders);
 
-                cancelOrders = sellClosingOrders.FindAll(o => o.CloseOrder.Price < MAUBPrice);
+                cancelOrders = sellClosingOrders.FindAll(o => o.CloseOrder.Price < Math.Round(MAUBPrice));
 
                 if (cancelOrders.Count > 0) OrderManager.CancelOrder(cancelOrders);
             }
