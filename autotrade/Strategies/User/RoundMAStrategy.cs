@@ -153,12 +153,7 @@ namespace autotrade.Strategies
 
         private void OpenBuyOrder(List<Order> orders)
         {
-            var buyPrice = Math.Round(MALBPrice) - InstrumentStrategy.PriceTick;
-
-            if (currMarketData.LastPrice < MALBPrice)
-            {
-                buyPrice = currMarketData.LastPrice - 2 * InstrumentStrategy.PriceTick;
-            }
+            
 
             List<Order> buyOpenOrders =
                 orders.FindAll(o => o.StatusType == EnumOrderStatus.开仓中 && o.Direction == TThostFtdcDirectionType.Buy)
@@ -187,16 +182,19 @@ namespace autotrade.Strategies
 
             if (buyOpenOrders.Count + buyClosingOrders.Count < Count)
             {
+                var buyPrice = Math.Round(MALBPrice);
+
+                if (lastOpenOrder != null) buyPrice = Math.Min(buyPrice, lastOpenOrder.Price);
+
+                if (lastClosingOrder != null) buyPrice = Math.Min(buyPrice, lastClosingOrder.CloseOrder.Price);
+
                 for (var i = 0; i < Count - buyOpenOrders.Count - buyClosingOrders.Count; i++)
-                {
+                {                    
                     var order = new Order();                    
                     order.Direction = TThostFtdcDirectionType.Buy;
                     order.InstrumentId = currMarketData.InstrumentId;
 
-                    if (lastOpenOrder == null)
-                        order.Price = Math.Round(MALBPrice) - (i+1) * InstrumentStrategy.PriceTick;
-                    else
-                        order.Price = lastOpenOrder.Price - (i + 1) * InstrumentStrategy.PriceTick;
+                    order.Price = buyPrice - (i + 1) * InstrumentStrategy.PriceTick;
                     
                     order.Volume = InstrumentStrategy.Volume;
                     order.StrategyType = GetType().ToString();
@@ -221,6 +219,12 @@ namespace autotrade.Strategies
             }
             else if (buyOpenOrders.Count + buyClosingOrders.Count >= Count)
             {
+                var buyPrice = Math.Round(MALBPrice) - InstrumentStrategy.PriceTick;
+
+                if (currMarketData.LastPrice < MALBPrice)
+                {
+                    buyPrice = currMarketData.LastPrice - 2 * InstrumentStrategy.PriceTick;
+                }
 
                 if (!buyOpenOrders.Exists(o => Math.Abs(o.Price - buyPrice) < TOLERANCE) &&
                     !buyClosingOrders.Exists(o => Math.Abs(o.CloseOrder.Price - buyPrice) < TOLERANCE))
@@ -306,6 +310,12 @@ namespace autotrade.Strategies
 
             if (sellOpenOrders.Count + sellClosingOrders.Count < Count)
             {
+                var sellPrice = Math.Round(MAUBPrice);
+
+                if (lastOpenOrder != null) sellPrice = Math.Max(sellPrice, lastOpenOrder.Price);
+
+                if (lastClosingOrder != null) sellPrice = Math.Max(sellPrice, lastClosingOrder.CloseOrder.Price);
+
                 for (var i = 0; i < Count - sellOpenOrders.Count - sellClosingOrders.Count; i++)
                 {
                     var order = new Order();
@@ -313,10 +323,7 @@ namespace autotrade.Strategies
                     order.Direction = TThostFtdcDirectionType.Sell;
                     order.InstrumentId = currMarketData.InstrumentId;
                     
-                    if (lastOpenOrder == null)
-                        order.Price = Math.Round(MAUBPrice) + (i + 1) * InstrumentStrategy.PriceTick;
-                    else
-                        order.Price = lastOpenOrder.Price + (i + 1) * InstrumentStrategy.PriceTick;
+                    order.Price = sellPrice + (i + 1) * InstrumentStrategy.PriceTick;
 
                     order.Volume = InstrumentStrategy.Volume;
                     order.StrategyType = GetType().ToString();
