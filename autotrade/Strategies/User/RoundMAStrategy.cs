@@ -235,11 +235,7 @@ namespace autotrade.Strategies
                     {
                         newOrders.Add(order);
                     }
-                }
-                else
-                {
-                    break;
-                }
+                }                
             }
 
             List<Order> cancelOrders = buyOpenOrders.FindAll(o => o.Price > Math.Round(MALBPrice));
@@ -337,10 +333,6 @@ namespace autotrade.Strategies
 
                         newOrders.Add(order);
                     }
-                }
-                else
-                {
-                    break;
                 }
             }
 
