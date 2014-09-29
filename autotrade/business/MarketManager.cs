@@ -62,7 +62,8 @@ namespace autotrade.business
                 string instrumentID = instrument.InstrumentID;
 
                 var marketData = new MarketData(instrumentID);
-                marketData.Unit = GetInstrument(instrumentID).VolumeMultiple;
+                marketData.Unit = instrument.VolumeMultiple;
+                marketData.ExchangeID = instrument.ExchangeID;
 
                 marketDatas.Add(marketData);
                 instrumentDictionary.Add(instrumentID, marketData);
@@ -90,8 +91,11 @@ namespace autotrade.business
                     }
                     else
                     {
+                        var instrument = GetInstrument(pDepthMarketData.InstrumentID);
+
                         marketData = new MarketData(pDepthMarketData);
-                        marketData.Unit = GetInstrument(pDepthMarketData.InstrumentID).VolumeMultiple;
+                        marketData.Unit = instrument.VolumeMultiple;
+                        marketData.ExchangeID = instrument.ExchangeID;
                         marketDatas.Add(marketData);
                         instrumentDictionary.Add(pDepthMarketData.InstrumentID, marketData);
                     }

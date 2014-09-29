@@ -112,16 +112,16 @@ namespace autotrade
 
         void tradeApi_OnRspQryInstrument(object sender, OnRspQryInstrumentArgs e)
         {
-//            Instrument instrument = new Instrument();
-//            ObjectUtils.CopyStruct(e.pInstrument, instrument);
-//            if (instrument.InstrumentID.Contains(" ")) return;
-            
-//            if (!InstrumentManager.instruments.Any(o => o.InstrumentID == instrument.InstrumentID))
-//            {
-//                InstrumentManager.instruments.Add(instrument);
-//                log.Info(e.pInstrument.InstrumentID + ":" + e.pInstrument.LongMarginRatio + ":" +
-//                         e.pInstrument.ShortMarginRatio);
-//            }
+            Instrument instrument = new Instrument();
+            ObjectUtils.CopyStruct(e.pInstrument, instrument);
+            if (instrument.InstrumentID.Contains(" ")) return;
+
+            if (!MarketManager.instruments.Any(o => o.InstrumentID == instrument.InstrumentID))
+            {
+                MarketManager.instruments.Add(instrument);
+                log.Info(e.pInstrument.InstrumentID + ":" + e.pInstrument.LongMarginRatio + ":" +
+                         e.pInstrument.ShortMarginRatio);
+            }
 
             if (e.bIsLast)
             {

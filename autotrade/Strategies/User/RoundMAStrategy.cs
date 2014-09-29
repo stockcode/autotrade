@@ -211,14 +211,14 @@ namespace autotrade.Strategies
 
                             unClosingOrder.CloseOrder = order;
                             newOrders.Add(unClosingOrder);
-                            continue;                            
+                            continue;
                         }
                     }
 
                     lastClosingOrder = null;
 
                     if (buyClosingOrders.Count > i) lastClosingOrder = buyClosingOrders[buyClosingOrders.Count - i - 1];
-                    
+
                     if (lastClosingOrder != null)
                     {
                         if (AllowCloseOrder)
@@ -230,11 +230,15 @@ namespace autotrade.Strategies
                             continue;
                         }
                     }
-                    
+
                     if (AllowOpenOrder)
                     {
                         newOrders.Add(order);
                     }
+                }
+                else
+                {
+                    break;
                 }
             }
 
@@ -313,7 +317,8 @@ namespace autotrade.Strategies
 
                     lastClosingOrder = null;
 
-                    if (sellClosingOrders.Count > i) lastClosingOrder = sellClosingOrders[sellClosingOrders.Count - i - 1];
+                    if (sellClosingOrders.Count > i)
+                        lastClosingOrder = sellClosingOrders[sellClosingOrders.Count - i - 1];
 
                     if (lastClosingOrder != null)
                     {
@@ -332,6 +337,10 @@ namespace autotrade.Strategies
 
                         newOrders.Add(order);
                     }
+                }
+                else
+                {
+                    break;
                 }
             }
 

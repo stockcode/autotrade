@@ -1,53 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using QuantBox.CSharp2CTP;
 
 namespace autotrade.model
 {
     public class MarketData : INotifyPropertyChanged
     {
+        private string _updateTime;
+        private double averagePrice;
 
-        public MarketData(CThostFtdcDepthMarketDataField pDepthMarketData) 
+        public MarketData(CThostFtdcDepthMarketDataField pDepthMarketData)
         {
             CopyFrom(pDepthMarketData);
-        }
-
-        public void CopyFrom(CThostFtdcDepthMarketDataField pDepthMarketData)
-        {
-            this.InstrumentId = pDepthMarketData.InstrumentID;
-            this.TradingDay = pDepthMarketData.TradingDay;
-            this.LastPrice = pDepthMarketData.LastPrice;
-            this.BidPrice1 = pDepthMarketData.BidPrice1;
-            this.BidVolume1 = pDepthMarketData.BidVolume1;
-            this.AskPrice1 = pDepthMarketData.AskPrice1;
-            this.AskVolume1 = pDepthMarketData.AskVolume1;
-            this.PreSettlementPrice = pDepthMarketData.PreSettlementPrice;
-            this.PreClosePrice = pDepthMarketData.PreClosePrice;
-            this.PreOpenInterest = pDepthMarketData.PreOpenInterest;
-            this.OpenPrice = pDepthMarketData.OpenPrice;
-            this.HighestPrice = pDepthMarketData.HighestPrice;
-            this.LowestPrice = pDepthMarketData.LowestPrice;
-            this.Volume = pDepthMarketData.Volume;
-            this.Turnover = pDepthMarketData.Turnover;
-            this.OpenInterest = pDepthMarketData.OpenInterest;
-            this.ClosePrice = pDepthMarketData.ClosePrice;
-            this.SettlementPrice = pDepthMarketData.SettlementPrice;
-            this.UpperLimitPrice = pDepthMarketData.UpperLimitPrice;
-            this.LowerLimitPrice = pDepthMarketData.LowerLimitPrice;            
-            this.UpdateMillisec = pDepthMarketData.UpdateMillisec;
-            this.AveragePrice = pDepthMarketData.AveragePrice;
-            this.ExchangeID = pDepthMarketData.ExchangeID;
-            this.UpdateTime = pDepthMarketData.UpdateTime;
-        }
-
-        public MarketData Copy()
-        {
-            return (MarketData)this.MemberwiseClone();
         }
 
         public MarketData()
@@ -60,14 +25,11 @@ namespace autotrade.model
         }
 
 
-
         [DisplayName("合约")]
         public string InstrumentId { get; set; }
 
         [DisplayName("最新价")]
         public double LastPrice { get; set; }
-
-        private double averagePrice;
 
         [DisplayName("当日均价")]
         public double AveragePrice
@@ -75,14 +37,11 @@ namespace autotrade.model
             get { return averagePrice; }
             set
             {
-                if (this.averagePrice != value)
-                {
-                    this.averagePrice = Math.Round(value / Unit, 2, MidpointRounding.AwayFromZero);
-                }
+                averagePrice = ExchangeID == "CZCE"
+                    ? value
+                    : Math.Round(value/Unit, 2, MidpointRounding.AwayFromZero);
             }
         }
-
-        private string _updateTime;
 
         [DisplayName("更新时间")]
         public string UpdateTime
@@ -90,15 +49,15 @@ namespace autotrade.model
             get { return _updateTime; }
             set
             {
-                if (this._updateTime != value)
+                if (_updateTime != value)
                 {
-                    this._updateTime = value;
+                    _updateTime = value;
                     NotifyPropertyChanged();
                 }
             }
         }
 
-       [DisplayName("买价")]
+        [DisplayName("买价")]
         public double BidPrice1 { get; set; }
 
         [DisplayName("买量")]
@@ -144,49 +103,42 @@ namespace autotrade.model
         [Browsable(false)]
         public int Unit { get; set; }
 
-        
-        
+
         /// <summary>
-        /// 昨持仓量
+        ///     昨持仓量
         /// </summary>
         [Browsable(false)]
         public double PreOpenInterest { get; set; }
-        
-        
-        
-        
+
+
         /// <summary>
-        /// 今收盘
+        ///     今收盘
         /// </summary>
         [Browsable(false)]
         public double ClosePrice { get; set; }
 
         /// <summary>
-        /// 本次结算价
+        ///     本次结算价
         /// </summary>
         [Browsable(false)]
         public double SettlementPrice { get; set; }
-        
 
-
-        
 
         /// <summary>
-        /// 最后修改毫秒
+        ///     最后修改毫秒
         /// </summary>
         [Browsable(false)]
         public int UpdateMillisec { get; set; }
-        
 
 
         /// <summary>
-        /// 交易日
+        ///     交易日
         /// </summary>
         [Browsable(false)]
         public string TradingDay { get; set; }
 
         /// <summary>
-        /// 交易所代码
+        ///     交易所代码
         /// </summary>
         [Browsable(false)]
         public string ExchangeID { get; set; }
@@ -197,16 +149,51 @@ namespace autotrade.model
             get { return UpdateTime + ":" + UpdateMillisec; }
         }
 
+        public event PropertyChangedEventHandler PropertyChanged = delegate { };
+
+        public void CopyFrom(CThostFtdcDepthMarketDataField pDepthMarketData)
+        {
+            InstrumentId = pDepthMarketData.InstrumentID;
+            TradingDay = pDepthMarketData.TradingDay;
+            LastPrice = pDepthMarketData.LastPrice;
+            BidPrice1 = pDepthMarketData.BidPrice1;
+            BidVolume1 = pDepthMarketData.BidVolume1;
+            AskPrice1 = pDepthMarketData.AskPrice1;
+            AskVolume1 = pDepthMarketData.AskVolume1;
+            PreSettlementPrice = pDepthMarketData.PreSettlementPrice;
+            PreClosePrice = pDepthMarketData.PreClosePrice;
+            PreOpenInterest = pDepthMarketData.PreOpenInterest;
+            OpenPrice = pDepthMarketData.OpenPrice;
+            HighestPrice = pDepthMarketData.HighestPrice;
+            LowestPrice = pDepthMarketData.LowestPrice;
+            Volume = pDepthMarketData.Volume;
+            Turnover = pDepthMarketData.Turnover;
+            OpenInterest = pDepthMarketData.OpenInterest;
+            ClosePrice = pDepthMarketData.ClosePrice;
+            SettlementPrice = pDepthMarketData.SettlementPrice;
+            UpperLimitPrice = pDepthMarketData.UpperLimitPrice;
+            LowerLimitPrice = pDepthMarketData.LowerLimitPrice;
+            UpdateMillisec = pDepthMarketData.UpdateMillisec;
+            AveragePrice = pDepthMarketData.AveragePrice;
+            //ExchangeID = pDepthMarketData.ExchangeID;
+            UpdateTime = pDepthMarketData.UpdateTime;
+        }
+
+        public MarketData Copy()
+        {
+            return (MarketData) MemberwiseClone();
+        }
+
         public override string ToString()
         {
             return String.Format("MarketData(交易日={0},合约代码={1},最新价={2},上次结算价={3},昨收盘={4},昨持仓量={5},今开盘={6}" +
                                  ",最高价={7},最低价={8},数量={9},成交金额={10},持仓量={11},今收盘={12},本次结算价={13},涨停板价={14},跌停板价={15}" +
                                  ",最后修改时间={16},最后修改毫秒={17},申买价一={18},申买量一={19},申卖价一={20},申卖量一={21},当日均价={22})"
-                , TradingDay, InstrumentId, LastPrice, PreSettlementPrice, PreClosePrice, PreOpenInterest, OpenPrice, HighestPrice, LowestPrice, Volume, Turnover, OpenInterest, ClosePrice, SettlementPrice
-                , UpperLimitPrice, LowerLimitPrice, UpdateTime, UpdateMillisec, BidPrice1, BidVolume1, AskPrice1, AskVolume1, AveragePrice);
+                , TradingDay, InstrumentId, LastPrice, PreSettlementPrice, PreClosePrice, PreOpenInterest, OpenPrice,
+                HighestPrice, LowestPrice, Volume, Turnover, OpenInterest, ClosePrice, SettlementPrice
+                , UpperLimitPrice, LowerLimitPrice, UpdateTime, UpdateMillisec, BidPrice1, BidVolume1, AskPrice1,
+                AskVolume1, AveragePrice);
         }
-
-        public event PropertyChangedEventHandler PropertyChanged = delegate { };
 
         // This method is called by the Set accessor of each property.
         // The CallerMemberName attribute that is applied to the optional propertyName

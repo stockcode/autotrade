@@ -130,6 +130,9 @@ namespace autotrade.Strategies
 
             newOrders.Clear();
 
+
+            log.Info("AVGPrice=" + GetAvgPrice());
+
             var instrumentId = marketData.InstrumentId;
 
             preMarketData = IndicatorManager.GetPreMarketData(instrumentId);
@@ -380,16 +383,13 @@ namespace autotrade.Strategies
 
         private double GetAvgPrice()
         {
-            int avg = (int) currMarketData.AveragePrice;
-            double f1 = currMarketData.AveragePrice - avg;
-            if (f1 < 0.01) return currMarketData.AveragePrice;
+            double avg = currMarketData.AveragePrice;
+            double f1 = avg % InstrumentStrategy.PriceTick;
+            if (f1 < TOLERANCE) return avg;
 
-            int d1 = (int) (f1*10);
+            avg += InstrumentStrategy.PriceTick - f1;
 
-            if (d1 % 2 != 0) d1++;
-
-            f1 = avg + d1 * 0.1;
-            return f1;
+            return avg;
         }
 
         private void CloseHedge()
