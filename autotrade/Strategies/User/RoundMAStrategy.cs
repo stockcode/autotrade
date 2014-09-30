@@ -235,7 +235,11 @@ namespace autotrade.Strategies
                     {
                         newOrders.Add(order);
                     }
-                }                
+                }
+                else if (buyOpenOrders.Count() + buyClosingOrders.Count >= Count)
+                {
+                    break;
+                }
             }
 
             List<Order> cancelOrders = buyOpenOrders.FindAll(o => o.Price > Math.Round(MALBPrice));
@@ -333,6 +337,10 @@ namespace autotrade.Strategies
 
                         newOrders.Add(order);
                     }
+                }
+                else if (sellOpenOrders.Count() + sellClosingOrders.Count >= Count)
+                {
+                    break;
                 }
             }
 
