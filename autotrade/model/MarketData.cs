@@ -28,6 +28,11 @@ namespace autotrade.model
         [DisplayName("合约")]
         public string InstrumentId { get; set; }
 
+        public string Code
+        {
+            get { return Char.IsNumber(InstrumentId[1]) ? InstrumentId.Substring(0, 1) : InstrumentId.Substring(0, 2); }
+        }
+
         [DisplayName("最新价")]
         public double LastPrice { get; set; }
 

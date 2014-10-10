@@ -6,7 +6,12 @@
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="ag" Type="System.Collections.Specialized.StringCollection" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;string&gt;2:30&lt;/string&gt;
+  &lt;string&gt;11:30&lt;/string&gt;
+  &lt;string&gt;15:00&lt;/string&gt;
+&lt;/ArrayOfString&gt;</Value>
     </Setting>
     <Setting Name="al" Type="System.Collections.Specialized.StringCollection" Scope="User">
       <Value Profile="(Default)" />

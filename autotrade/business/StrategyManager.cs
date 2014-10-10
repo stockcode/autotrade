@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using Autofac;
 using autotrade.model;
+using autotrade.Properties;
 using autotrade.Stop.Loss;
 using autotrade.Stop.Profit;
 using autotrade.Strategies;
@@ -49,6 +51,17 @@ namespace autotrade.business
             {
                 if (!strategy.AutoTrade) continue;
                 
+                
+
+                var sc = (StringCollection) InstrumentType.Default[marketData.Code];
+
+                foreach (var time in sc)
+                {
+                    TimeSpan endSpan = new TimeSpan(Convert.ToInt32(time.Split(':')[0]), Convert.ToInt32(time.Split(':')[1]), 0);                        
+                }
+
+
+
                 List<Order> orders = strategy.Match(marketData);
 
                 foreach (Order order in orders)
