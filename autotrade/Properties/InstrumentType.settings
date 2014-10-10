@@ -11,6 +11,7 @@
   &lt;string&gt;2:30&lt;/string&gt;
   &lt;string&gt;11:30&lt;/string&gt;
   &lt;string&gt;15:00&lt;/string&gt;
+  &lt;string&gt;23:17&lt;/string&gt;
 &lt;/ArrayOfString&gt;</Value>
     </Setting>
     <Setting Name="al" Type="System.Collections.Specialized.StringCollection" Scope="User">

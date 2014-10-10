@@ -26,7 +26,7 @@ namespace autotrade.business
         private readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         private readonly MongoRepository<InstrumentStrategy> strategyRepo = new MongoRepository<InstrumentStrategy>();
-        private bool isStart;
+        private bool isStart, isCancelOrders = false;
 
         public StrategyManager()
         {
@@ -50,19 +50,38 @@ namespace autotrade.business
             foreach (UserStrategy strategy in instrumentStrategy.Strategies)
             {
                 if (!strategy.AutoTrade) continue;
-                
-                
+
+
 
                 var sc = (StringCollection) InstrumentType.Default[marketData.Code];
 
                 foreach (var time in sc)
                 {
-                    TimeSpan endSpan = new TimeSpan(Convert.ToInt32(time.Split(':')[0]), Convert.ToInt32(time.Split(':')[1]), 0);                        
+                    int hour = Convert.ToInt32(time.Split(':')[0]);
+                    int minute = Convert.ToInt32(time.Split(':')[1]);
+
+                    DateTime today = DateTime.Today;
+
+                    DateTime endTime = new DateTime(today.Year, today.Month, today.Day, hour, minute, 0);
+
+                    if (endTime > DateTime.Now && DateTime.Now > endTime.AddMinutes(-1))
+                    {
+                        if (!isCancelOrders)
+                        {
+                            //OrderManager.CancelAllOrder();
+                            isCancelOrders = true;
+                            log.Info("canceling order");
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        isCancelOrders = false;
+                    }
                 }
+            
 
-
-
-                List<Order> orders = strategy.Match(marketData);
+            List<Order> orders = strategy.Match(marketData);
 
                 foreach (Order order in orders)
                 {

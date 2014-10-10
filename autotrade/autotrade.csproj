@@ -170,7 +170,6 @@
       <DependentUpon>InstrumentType.settings</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
     <Compile Include="Strategies\Stop\Loss\PercentStopLoss.cs" />
     <Compile Include="Strategies\Stop\Loss\PriceStopLoss.cs" />
@@ -262,7 +261,6 @@
     <None Include="Properties\InstrumentType.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>InstrumentType.Designer.cs</LastGenOutput>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
