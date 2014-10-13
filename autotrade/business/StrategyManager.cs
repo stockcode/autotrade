@@ -26,7 +26,7 @@ namespace autotrade.business
         private readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         private readonly MongoRepository<InstrumentStrategy> strategyRepo = new MongoRepository<InstrumentStrategy>();
-        private bool isStart, isCancelOrders = false;
+        private bool isStart, needWait = false;
 
         public StrategyManager()
         {
@@ -38,6 +38,8 @@ namespace autotrade.business
         public OrderManager OrderManager { get; set; }
 
         public IContainer Container { get; set; }
+
+        private int tick = 0;
 
         public void PrcessData(MarketData marketData)
         {
@@ -51,33 +53,38 @@ namespace autotrade.business
             {
                 if (!strategy.AutoTrade) continue;
 
-
+                if (needWait)
+                {
+                    tick++;
+                    if (tick >= 240)
+                    {
+                        needWait = false;
+                        tick = 0;
+                    }
+                    return;
+                }
 
                 var sc = (StringCollection) InstrumentType.Default[marketData.Code];
+
+                var today = DateTime.Today;
 
                 foreach (var time in sc)
                 {
                     int hour = Convert.ToInt32(time.Split(':')[0]);
                     int minute = Convert.ToInt32(time.Split(':')[1]);
 
-                    DateTime today = DateTime.Today;
+                    
 
-                    DateTime endTime = new DateTime(today.Year, today.Month, today.Day, hour, minute, 0);
+                    var endTime = new DateTime(today.Year, today.Month, today.Day, hour, minute, 0);
 
                     if (endTime > DateTime.Now && DateTime.Now > endTime.AddMinutes(-1))
                     {
-                        if (!isCancelOrders)
-                        {
-                            //OrderManager.CancelAllOrder();
-                            isCancelOrders = true;
-                            log.Info("canceling order");
-                            return;
-                        }
-                    }
-                    else
-                    {
-                        isCancelOrders = false;
-                    }
+                        OrderManager.CancelAllOrder();
+                        needWait = true;
+                        log.Info("canceling order");
+                        return;
+                        
+                    }                    
                 }
             
 

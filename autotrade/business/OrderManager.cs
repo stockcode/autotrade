@@ -71,26 +71,30 @@ namespace autotrade.business
         {             
             Order order = UpdateTradeID(e.pTrade);
 
-            sw.EnterWriteLock();
+            
             if (order != null && order.StatusType == EnumOrderStatus.已平仓)
             {
                 OnRspQryOrder(this, new OrderEventArgs(new MethodInvoker(() => HandleOrderClose(order)))); 
-            }
-            sw.ExitWriteLock();
+            }            
             
             log.Info(e.pTrade);
         }
 
         void HandleOrderClose(Order order)
         {
+
             var orderLog = new OrderLog();
             ObjectUtils.Copy(order, orderLog);
             orderLog.Id = null;
 
+            sw.EnterWriteLock();            
+
             orders.Remove(order);
             orderlogs.Add(orderLog);
             orderLogRepo.Add(orderLog);
-            OrderRepository.Delete(order);             
+            OrderRepository.Delete(order);
+            
+            sw.ExitWriteLock();
         }
 
         void tradeApi_OnRtnOrder(object sender, OnRtnOrderArgs e)
@@ -526,10 +530,8 @@ namespace autotrade.business
         }
 
         public void DeleteOrder(Order order)
-        {
-            sw.EnterWriteLock();
+        {            
             OnRspQryOrder(this, new OrderEventArgs(new MethodInvoker(() => HandleOrderClose(order)))); 
-            sw.ExitWriteLock();
         }
     }
 

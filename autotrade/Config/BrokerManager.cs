@@ -93,7 +93,7 @@ namespace autotrade.Config
 
         private string typeField;
 
-        private ushort brokerIdField;
+        private string brokerIdField;
 
         private int isHotField;
 
@@ -141,7 +141,7 @@ namespace autotrade.Config
 
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public ushort BrokerId
+        public string BrokerId
         {
             get
             {
