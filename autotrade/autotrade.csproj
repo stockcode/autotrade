@@ -290,7 +290,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Config\Broker.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>

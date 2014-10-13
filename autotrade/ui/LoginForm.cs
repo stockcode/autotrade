@@ -133,7 +133,7 @@ namespace autotrade
 
         private void LoginForm_Load(object sender, EventArgs e)
         {
-            brokerFile = Application.StartupPath + @"\Broker.xml";
+            brokerFile = Application.StartupPath + @"\Config\Broker.xml";
             string xml = File.ReadAllText(brokerFile);
             brokerManager = xml.ParseXML<BrokerManager>();
 
@@ -149,6 +149,8 @@ namespace autotrade
             tbPasswd.Text = settings.Passwd;
 
             mdApi.OnConnect += mdApi_OnConnect;
+            mdApi.OnDisconnect += tradeApi_OnDisconnect;
+            mdApi.OnRspError += mdApi_OnRspError;
 
 
             tradeApi.OnConnect += tradeApi_OnConnect;
@@ -157,6 +159,11 @@ namespace autotrade
             tradeApi.OnRspQryTradingAccount += tradeApi_OnRspQryTradingAccount;
             tradeApi.OnRspQryOrder += tradeApi_OnRspQryOrder;
             tradeApi.OnRspQryTrade += tradeApi_OnRspQryTrade;
+        }
+
+        void mdApi_OnRspError(object sender, OnRspErrorArgs e)
+        {
+            ShowProgress(e.pRspInfo.ErrorMsg);
         }
 
         void tradeApi_OnDisconnect(object sender, OnDisconnectArgs e)

@@ -50,8 +50,8 @@
     <NetLine ip="140.206.102.20" port="41205" type="TD" isHot="0" />
     <NetLine ip="140.206.102.20" port="41213" type="MD" isHot="0" />
   </NetworkInfo>
-  <NetworkInfo name="金鹏期货—联通线路" type="CN" BrokerId="4040" isHot="0">
-    <NetLine ip="125.46.92.38" port="8803" type="TD" isHot="1" />
-    <NetLine ip="125.46.92.156" port="8803" type="MD" isHot="1" />
+  <NetworkInfo name="金鹏期货—联通线路" type="CN" BrokerId="0998E295" isHot="0">
+    <NetLine ip="125.46.92.130" port="8803" type="TD" isHot="1" />
+    <NetLine ip="125.46.92.156" port="8200" type="MD" isHot="1" />
   </NetworkInfo>
 </BrokerManager>
