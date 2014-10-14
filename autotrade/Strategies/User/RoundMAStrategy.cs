@@ -170,14 +170,9 @@ namespace autotrade.Strategies
                     .OrderByDescending(o => o.CloseOrder.Price)
                     .ToList();
 
-            Order lastOpenOrder = null, unClosingOrder = null, lastClosingOrder = null;
+            Order unClosingOrder = null, lastClosingOrder = null;
 
             
-
-            if (buyOpenOrders.Count > 0) lastOpenOrder = buyOpenOrders[buyOpenOrders.Count - 1];
-
-            
-
             for (int i = 0; i < Count; i++)
             {
                 double buyPrice = Math.Min(currMarketData.LastPrice, Math.Round(MALBPrice)) -
@@ -271,10 +266,8 @@ namespace autotrade.Strategies
                         o.StatusType == EnumOrderStatus.已开仓 && o.Direction == TThostFtdcDirectionType.Buy)
                     .ToList();
 
-            Order lastOpenOrder = null, unClosingOrder = null, lastClosingOrder = null;
+            Order unClosingOrder = null, lastClosingOrder = null;
 
-            if (sellOpenOrders.Count > 0)
-                lastOpenOrder = sellOpenOrders[sellOpenOrders.Count - 1];
 
             
 
