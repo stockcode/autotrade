@@ -8,6 +8,7 @@ using autotrade.model;
 using log4net;
 using MongoDB.Bson.Serialization.Attributes;
 using QuantBox.CSharp2CTP;
+using Telerik.WinControls;
 
 namespace autotrade.Strategies
 {
@@ -170,7 +171,7 @@ namespace autotrade.Strategies
                     .OrderByDescending(o => o.CloseOrder.Price)
                     .ToList();
 
-            Order unClosingOrder = null, lastClosingOrder = null;
+            Order lastOpenOrder, unClosingOrder = null, lastClosingOrder = null;
 
             
             for (int i = 0; i < Count; i++)
@@ -237,11 +238,40 @@ namespace autotrade.Strategies
                 }
             }
 
+            if (buyOpenOrders.Count() + buyClosingOrders.Count > Count)
+            {
+                Order closeOrder = null;
+
+                if (buyOpenOrders.Count > 0)
+                {
+                    lastOpenOrder = buyOpenOrders[buyOpenOrders.Count - 1];
+
+                    if (buyClosingOrders.Count == 0)
+                    {
+                        closeOrder = lastOpenOrder;
+                    }
+                    else
+                    {
+                        lastClosingOrder = buyClosingOrders[buyClosingOrders.Count - 1];
+                        closeOrder = lastOpenOrder.Price < lastClosingOrder.CloseOrder.Price
+                            ? lastOpenOrder
+                            : lastClosingOrder;
+                    }
+                }
+                else
+                {
+                    closeOrder = buyClosingOrders[buyClosingOrders.Count - 1];
+                }
+
+                OrderManager.CancelOrder(closeOrder);
+            }
+
+
             List<Order> cancelOrders = buyOpenOrders.FindAll(o => o.Price > Math.Round(MALBPrice));
 
             if (cancelOrders.Count > 0) OrderManager.CancelOrder(cancelOrders);
 
-            cancelOrders = buyClosingOrders.FindAll(o => o.CloseOrder.Price > Math.Round(MALBPrice));
+            cancelOrders = buyClosingOrders.FindAll(o => o.CloseOrder != null && o.CloseOrder.Price > Math.Round(MALBPrice));
 
             if (cancelOrders.Count > 0) OrderManager.CancelOrder(cancelOrders);
         }
@@ -266,7 +296,7 @@ namespace autotrade.Strategies
                         o.StatusType == EnumOrderStatus.已开仓 && o.Direction == TThostFtdcDirectionType.Buy)
                     .ToList();
 
-            Order unClosingOrder = null, lastClosingOrder = null;
+            Order lastOpenOrder = null, unClosingOrder = null, lastClosingOrder = null;
 
 
             
@@ -337,11 +367,39 @@ namespace autotrade.Strategies
                 }
             }
 
-            List<Order> cancelOrders = sellOpenOrders.FindAll(o => o.Price < Math.Round(MAUBPrice));
+            if (sellOpenOrders.Count() + sellClosingOrders.Count > Count)
+            {
+                Order closeOrder = null;
+
+                if (sellOpenOrders.Count > 0)
+                {
+                    lastOpenOrder = sellOpenOrders[sellOpenOrders.Count - 1];
+
+                    if (sellClosingOrders.Count == 0)
+                    {
+                        closeOrder = lastOpenOrder;
+                    }
+                    else
+                    {
+                        lastClosingOrder = sellClosingOrders[sellClosingOrders.Count - 1];
+                        closeOrder = lastOpenOrder.Price > lastClosingOrder.CloseOrder.Price
+                            ? lastOpenOrder
+                            : lastClosingOrder;
+                    }
+                }
+                else
+                {
+                    closeOrder = sellClosingOrders[sellClosingOrders.Count - 1];
+                }
+
+                OrderManager.CancelOrder(closeOrder);
+            }
+
+            var cancelOrders = sellOpenOrders.FindAll(o => o.Price < Math.Round(MAUBPrice));
 
             if (cancelOrders.Count > 0) OrderManager.CancelOrder(cancelOrders);
 
-            cancelOrders = sellClosingOrders.FindAll(o => o.CloseOrder.Price < Math.Round(MAUBPrice));
+            cancelOrders = sellClosingOrders.FindAll(o => o.CloseOrder != null && o.CloseOrder.Price < Math.Round(MAUBPrice));
 
             if (cancelOrders.Count > 0) OrderManager.CancelOrder(cancelOrders);
         }
