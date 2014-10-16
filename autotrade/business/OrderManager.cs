@@ -1,103 +1,93 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
-using System.Text;
+using System.Reflection;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using MongoDB.Driver.Linq;
-using QuantBox.CSharp2CTP;
-using QuantBox.CSharp2CTP.Event;
-using Telerik.WinControls.UI;
 using autotrade.model;
 using autotrade.util;
+using log4net;
 using MongoRepository;
+using QuantBox.CSharp2CTP;
+using QuantBox.CSharp2CTP.Event;
 
 namespace autotrade.business
 {
     public class OrderManager
     {
-        private readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        private TraderApiWrapper tradeApi;
-        private ReaderWriterLockSlim sw;
-        private ReaderWriterLockSlim swRecord = new ReaderWriterLockSlim();
+        public delegate void OrderHandler(object sender, OrderEventArgs e);
 
-        private BindingList<TradeRecord> tradeRecords = new BindingList<TradeRecord>();
-        private BindingList<OrderRecord> orderRecords = new BindingList<OrderRecord>();
-
-        private readonly BindingList<Order> orders = new BindingList<Order>();
-
+        private readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private readonly MongoRepository<OrderLog> orderLogRepo = new MongoRepository<OrderLog>();
+        private readonly BindingList<OrderRecord> orderRecords = new BindingList<OrderRecord>();
         private readonly BindingList<OrderLog> orderlogs = new BindingList<OrderLog>();
+        private readonly BindingList<Order> orders = new BindingList<Order>();
+        private readonly ReaderWriterLockSlim sw;
+        private readonly ReaderWriterLockSlim swRecord = new ReaderWriterLockSlim();
+        private readonly TraderApiWrapper tradeApi;
 
-        private MongoRepository<OrderLog> orderLogRepo = new MongoRepository<OrderLog>();
+        private readonly BindingList<TradeRecord> tradeRecords = new BindingList<TradeRecord>();
 
 
         public MongoRepository<Order> OrderRepository = new MongoRepository<Order>();
 
-        public AccountManager AccountManager { get; set; }
-
-        public delegate void OrderHandler(object sender, OrderEventArgs e);
-        public event OrderHandler OnRspQryOrder;
-
         public OrderManager(TraderApiWrapper traderApi, ReaderWriterLockSlim sw)
         {
             this.sw = sw;
-            this.tradeApi = traderApi;
+            HasMoney = true;
+            tradeApi = traderApi;
 
-//            this.tradeApi.OnRspQryOrder += tradeApi_OnRspQryOrder;
-
-//            this.tradeApi.OnRspQryTrade += tradeApi_OnRspQryTrade;
-//            this.tradeApi.OnRspQryInvestorPosition += tradeApi_OnRspQryInvestorPosition;
-//            this.tradeApi.OnRspQryInvestorPositionDetail += tradeApi_OnRspQryInvestorPositionDetail;
-//
-//
             traderApi.OnRspOrderAction += traderApi_OnRspOrderAction;
-            this.tradeApi.OnRtnOrder += tradeApi_OnRtnOrder;
-            this.tradeApi.OnRtnTrade += tradeApi_OnRtnTrade;
-                        this.tradeApi.OnErrRtnOrderInsert += tradeApi_OnErrRtnOrderInsert;
-                        this.tradeApi.OnErrRtnOrderAction += tradeApi_OnErrRtnOrderAction;
-                        this.tradeApi.OnRspOrderInsert += tradeApi_OnRspOrderInsert;
+            tradeApi.OnRtnOrder += tradeApi_OnRtnOrder;
+            tradeApi.OnRtnTrade += tradeApi_OnRtnTrade;
+            tradeApi.OnErrRtnOrderInsert += tradeApi_OnErrRtnOrderInsert;
+            tradeApi.OnErrRtnOrderAction += tradeApi_OnErrRtnOrderAction;
+            tradeApi.OnRspOrderInsert += tradeApi_OnRspOrderInsert;
         }
 
-        void traderApi_OnRspOrderAction(object sender, OnRspOrderActionArgs e)
+        public AccountManager AccountManager { get; set; }
+
+        public bool HasMoney { get; set; }
+        public event OrderHandler OnRspQryOrder;
+
+        private void traderApi_OnRspOrderAction(object sender, OnRspOrderActionArgs e)
         {
             log.Info(e.pRspInfo);
         }
 
-        void tradeApi_OnRtnTrade(object sender, OnRtnTradeArgs e)
-        {             
-            Order order = UpdateTradeID(e.pTrade);
+        private void tradeApi_OnRtnTrade(object sender, OnRtnTradeArgs e)
+        {
+            var order = UpdateTradeID(e.pTrade);
 
-            
+
             if (order != null && order.StatusType == EnumOrderStatus.已平仓)
             {
-                OnRspQryOrder(this, new OrderEventArgs(new MethodInvoker(() => HandleOrderClose(order)))); 
-            }            
-            
+                OnRspQryOrder(this, new OrderEventArgs(() => HandleOrderClose(order)));
+                if (!HasMoney) HasMoney = true;
+            }
+
             log.Info(e.pTrade);
         }
 
-        void HandleOrderClose(Order order)
+        private void HandleOrderClose(Order order)
         {
-
             var orderLog = new OrderLog();
             ObjectUtils.Copy(order, orderLog);
             orderLog.Id = null;
 
-            sw.EnterWriteLock();            
+            sw.EnterWriteLock();
 
             orders.Remove(order);
             orderlogs.Add(orderLog);
             orderLogRepo.Add(orderLog);
             OrderRepository.Delete(order);
-            
+
             sw.ExitWriteLock();
         }
 
-        void tradeApi_OnRtnOrder(object sender, OnRtnOrderArgs e)
+        private void tradeApi_OnRtnOrder(object sender, OnRtnOrderArgs e)
         {
             OrderRecord orderRecord = GetOrderRecord(e.pOrder.RequestID);
 
@@ -106,50 +96,56 @@ namespace autotrade.business
             {
                 orderRecord = new OrderRecord();
                 orderRecords.Add(orderRecord);
-
             }
             swRecord.ExitWriteLock();
 
             ObjectUtils.CopyStruct(e.pOrder, orderRecord);
 
             //OnRspQryOrderRecord(this, new OrderRecordEventArgs(orderRecords));
-            
+
             UpdateOrderRef(e.pOrder);
         }
 
 
-        void tradeApi_OnRspOrderInsert(object sender, OnRspOrderInsertArgs e)
+        private void tradeApi_OnRspOrderInsert(object sender, OnRspOrderInsertArgs e)
         {
             log.Info(e.pRspInfo);
             log.Info(e.pInputOrder);
-        }        
+        }
 
-        void tradeApi_OnErrRtnOrderAction(object sender, OnErrRtnOrderActionArgs e)
+        private void tradeApi_OnErrRtnOrderAction(object sender, OnErrRtnOrderActionArgs e)
         {
             log.Info(e.pOrderAction.StatusMsg);
         }
 
-        void tradeApi_OnErrRtnOrderInsert(object sender, OnErrRtnOrderInsertArgs e)
+        private void tradeApi_OnErrRtnOrderInsert(object sender, OnErrRtnOrderInsertArgs e)
         {
             log.Info(e.pRspInfo);
             log.Info(e.pInputOrder);
+
+            if (e.pRspInfo.ErrorID == 31) //资金不足
+            {
+                HasMoney = false;
+                OnRspQryOrder(this, new OrderEventArgs(() => DeleteErrOrder(e.pInputOrder)));
+                
+            }
         }
 
 
         public void QryInvestorPosition()
         {
-            this.tradeApi.ReqQryInvestorPosition("");
+            tradeApi.ReqQryInvestorPosition("");
         }
 
         public void QryInvestorPositionDetail()
         {
-            this.tradeApi.ReqQryInvestorPositionDetail("");
+            tradeApi.ReqQryInvestorPositionDetail("");
         }
 
- 
+
         private OrderRecord GetOrderRecord(int requestID)
         {
-            foreach (var orderRecord in orderRecords)
+            foreach (OrderRecord orderRecord in orderRecords)
             {
                 if (orderRecord.RequestID == requestID) return orderRecord;
             }
@@ -163,14 +159,13 @@ namespace autotrade.business
             //InsertToMock(order);
 
             InsertToCTP(order);
-
         }
 
         private void InsertToMock(Order order)
         {
             if (order.CloseOrder == null)
             {
-                OnRspQryOrder(this, new OrderEventArgs(new MethodInvoker(() => Add(order))));
+                OnRspQryOrder(this, new OrderEventArgs(() => Add(order)));
 
 
                 order.OrderRef = tradeApi.MaxOrderRef++.ToString();
@@ -189,7 +184,7 @@ namespace autotrade.business
             }
             else
             {
-                var closeOrder = order.CloseOrder;
+                Order closeOrder = order.CloseOrder;
 
 
                 closeOrder.OrderRef = tradeApi.MaxOrderRef++.ToString();
@@ -206,7 +201,7 @@ namespace autotrade.business
                 var tradeField = new CThostFtdcTradeField();
 
                 tradeField.OrderSysID = order.CloseOrder.OrderSysID;
-                
+
                 tradeField.Price = order.CloseOrder.LastPrice;
 
                 tradeField.TradeDate = tradeApi.TradingDay;
@@ -215,8 +210,7 @@ namespace autotrade.business
 
                 UpdateTradeID(tradeField);
 
-                OnRspQryOrder(this, new OrderEventArgs(new MethodInvoker(() => OrderRepository.Delete(order)))); 
-
+                OnRspQryOrder(this, new OrderEventArgs(() => OrderRepository.Delete(order)));
             }
         }
 
@@ -236,10 +230,10 @@ namespace autotrade.business
         {
             if (order.CloseOrder == null)
             {
-                OnRspQryOrder(this, new OrderEventArgs(new MethodInvoker(() => Add(order))));
+                OnRspQryOrder(this, new OrderEventArgs(() => Add(order)));
 
                 int orderRef = tradeApi.OrderInsert(order.InstrumentId, order.OffsetFlag, order.Direction, order.Price,
-                        order.Volume);
+                    order.Volume);
 
                 order.OrderRef = orderRef.ToString();
 
@@ -251,10 +245,11 @@ namespace autotrade.business
             }
             else
             {
-                var closeOrder = order.CloseOrder;
+                Order closeOrder = order.CloseOrder;
 
-                int orderRef = tradeApi.OrderInsert(closeOrder.InstrumentId, closeOrder.OffsetFlag, closeOrder.Direction,closeOrder.Price,
-                        closeOrder.Volume);
+                int orderRef = tradeApi.OrderInsert(closeOrder.InstrumentId, closeOrder.OffsetFlag, closeOrder.Direction,
+                    closeOrder.Price,
+                    closeOrder.Volume);
 
                 order.CloseOrder.OrderRef = orderRef.ToString();
 
@@ -265,7 +260,6 @@ namespace autotrade.business
                 order.CloseOrder.StatusType = EnumOrderStatus.平仓中;
 
                 order.StatusType = EnumOrderStatus.平仓中;
-
             }
         }
 
@@ -273,7 +267,7 @@ namespace autotrade.business
         {
             if (order == null) return;
 
-            var od = order;
+            Order od = order;
             if (order.CloseOrder != null) od = order.CloseOrder;
 
             tradeApi.CancelOrder(od.OrderRef, od.FrontID, od.SessionID, od.InstrumentId);
@@ -282,16 +276,16 @@ namespace autotrade.business
 
             if (order.CloseOrder == null)
             {
-                OnRspQryOrder(this, new OrderEventArgs(new MethodInvoker(() => orders.Remove(order))));                 
+                OnRspQryOrder(this, new OrderEventArgs(() => orders.Remove(order)));
 
-                OrderRepository.Delete(order);          
+                OrderRepository.Delete(order);
             }
             else
             {
                 order.CloseOrder = null;
                 order.StatusType = EnumOrderStatus.已开仓;
                 OrderRepository.Update(order);
-            }            
+            }
 
             sw.ExitWriteLock();
         }
@@ -299,15 +293,17 @@ namespace autotrade.business
         public void ProcessData(MarketData marketData)
         {
             sw.EnterReadLock();
-            foreach(var order in getOrders().Where(o=>o.InstrumentId == marketData.InstrumentId && o.StatusType != EnumOrderStatus.开仓中))
+            foreach (
+                Order order in
+                    getOrders()
+                        .Where(o => o.InstrumentId == marketData.InstrumentId && o.StatusType != EnumOrderStatus.开仓中))
             {
-
                 double profit = (order.Direction == TThostFtdcDirectionType.Buy)
                     ? marketData.LastPrice - order.TradePrice
                     : order.TradePrice - marketData.LastPrice;
 
                 order.LastPrice = marketData.LastPrice;
-                order.PositionProfit = profit * order.Unit * order.Volume;
+                order.PositionProfit = profit*order.Unit*order.Volume;
                 order.PositionTimeSpan =
                     DateTime.Now.Subtract(DateTime.ParseExact(order.ActualTradeDate, "yyyyMMdd HH:mm:ss",
                         CultureInfo.InvariantCulture));
@@ -315,11 +311,13 @@ namespace autotrade.business
 
             AccountManager.Accounts[0].PositionProfit = orders.Sum(o => o.PositionProfit);
             AccountManager.Accounts[0].CloseProfit = orderlogs.Sum(o => o.CloseProfit);
-            AccountManager.Accounts[0].CurrMargin = orders.Where(o=>o.StatusType == EnumOrderStatus.已开仓).Sum(o => o.UseMargin);
-            AccountManager.Accounts[0].FrozenMargin = orders.Where(o => o.StatusType == EnumOrderStatus.开仓中).Sum(o => o.UseMargin);
+            AccountManager.Accounts[0].CurrMargin =
+                orders.Where(o => o.StatusType == EnumOrderStatus.已开仓).Sum(o => o.UseMargin);
+            AccountManager.Accounts[0].FrozenMargin =
+                orders.Where(o => o.StatusType == EnumOrderStatus.开仓中).Sum(o => o.UseMargin);
 
             sw.ExitReadLock();
-        }        
+        }
 
         public BindingList<Order> getOrders()
         {
@@ -355,21 +353,19 @@ namespace autotrade.business
 
         public void Init()
         {
-
             orders.RaiseListChangedEvents = false;
-            
+
             sw.EnterWriteLock();
 
             swRecord.EnterReadLock();
-            foreach (var order in OrderRepository)
+            foreach (Order order in OrderRepository)
             {
                 if (order.StatusType == EnumOrderStatus.已平仓) continue;
-                
+
                 if (order.TradeID != null || orderRecords.Any(record => record.OrderSysID.Trim() == order.OrderSysID))
                 {
                     orders.Add(order);
                 }
-                
             }
 
             swRecord.ExitReadLock();
@@ -382,14 +378,14 @@ namespace autotrade.business
         {
             var neworder = new Order();
             neworder.OffsetFlag = order.IsTodayOrder
-                    ? TThostFtdcOffsetFlagType.CloseToday
-                    : TThostFtdcOffsetFlagType.Close;
+                ? TThostFtdcOffsetFlagType.CloseToday
+                : TThostFtdcOffsetFlagType.Close;
 
             neworder.Direction = order.Direction == TThostFtdcDirectionType.Buy
                 ? TThostFtdcDirectionType.Sell
                 : TThostFtdcDirectionType.Buy;
             neworder.InstrumentId = order.InstrumentId;
-            
+
             neworder.Price = 0;
             neworder.Volume = order.Volume;
             neworder.StrategyType = "Close Order By User";
@@ -415,8 +411,7 @@ namespace autotrade.business
 
         public void CancelOrder(List<Order> orders)
         {
-
-            for (var i = orders.Count - 1; i >= 0; i--)
+            for (int i = orders.Count - 1; i >= 0; i--)
             {
                 CancelOrder(orders[i]);
             }
@@ -436,11 +431,29 @@ namespace autotrade.business
             OrderInsert(order);
         }
 
+        public void DeleteErrOrder(CThostFtdcInputOrderField pOrder)
+        {
+            sw.EnterWriteLock();
+            
+
+            Order order = orders.FirstOrDefault(
+                o => o.OrderRef == pOrder.OrderRef);
+
+            if (order != null)
+            {
+                orders.Remove(order);
+
+                OrderRepository.Delete(order);
+            }
+
+            sw.ExitWriteLock();
+        }
+
         public void UpdateOrderRef(CThostFtdcOrderField pOrder)
         {
             sw.EnterWriteLock();
 
-            var order = orders.FirstOrDefault(
+            Order order = orders.FirstOrDefault(
                 o => o.OrderRef == pOrder.OrderRef && o.FrontID == pOrder.FrontID && o.SessionID == pOrder.SessionID);
 
             if (order != null)
@@ -457,7 +470,6 @@ namespace autotrade.business
 
             if (order != null)
             {
-
                 order.CloseOrder.OrderSysID = pOrder.OrderSysID;
                 OrderRepository.Update(order);
             }
@@ -471,7 +483,7 @@ namespace autotrade.business
 
             sw.EnterWriteLock();
 
-            var order = orders.FirstOrDefault(
+            Order order = orders.FirstOrDefault(
                 o => o.OrderSysID == orderSysID && o.TradeID == null);
 
             if (order != null)
@@ -513,8 +525,12 @@ namespace autotrade.business
 
         public void CancelAllOrder()
         {
-            var list = orders.Where(o => o.StatusType == EnumOrderStatus.开仓中).ToList();
-            CancelOrder(list);
+            List<Order> list = orders.Where(o => o.StatusType == EnumOrderStatus.开仓中).ToList();
+            if (list.Count > 0)
+            {
+                CancelOrder(list);
+                HasMoney = true;
+            }
 
             list = orders.Where(o => o.StatusType == EnumOrderStatus.平仓中).ToList();
             CancelOrder(list);
@@ -530,21 +546,18 @@ namespace autotrade.business
         }
 
         public void DeleteOrder(Order order)
-        {            
-            OnRspQryOrder(this, new OrderEventArgs(new MethodInvoker(() => HandleOrderClose(order)))); 
+        {
+            OnRspQryOrder(this, new OrderEventArgs(() => HandleOrderClose(order)));
         }
     }
 
     public class OrderEventArgs : EventArgs
     {
-        public MethodInvoker methodInvoker { get; set; }
         public OrderEventArgs(MethodInvoker methodInvoker)
-            : base()
         {
             this.methodInvoker = methodInvoker;
         }
+
+        public MethodInvoker methodInvoker { get; set; }
     }
-
-
-    
 }

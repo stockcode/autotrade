@@ -125,23 +125,11 @@ namespace autotrade.Strategies
 
             ma = IndicatorManager.GetMA(currMarketData.InstrumentId, Day, Period);
 
-            if (ma == null) return newOrders;
+            if (ma == null) return newOrders;                       
 
             MAPrice = ma.Average;
 
-            List<Order> orders = GetStrategyOrders(marketData.InstrumentId);
-
-            if (DateTime.Now.Hour == 14 && DateTime.Now.Minute == 59)
-            {
-                List<Order> list = orders.FindAll(o => o.StatusType == EnumOrderStatus.开仓中);
-                if (list.Count > 0) OrderManager.CancelOrder(list);
-
-                list = orders.FindAll(o => o.StatusType == EnumOrderStatus.平仓中);
-                if (list.Count > 0) OrderManager.CancelOrder(list);
-
-                return newOrders;
-            }
-
+            var orders = GetStrategyOrders(marketData.InstrumentId);
 
             OpenBuyOrder(orders);
 
@@ -227,7 +215,7 @@ namespace autotrade.Strategies
                         }
                     }
 
-                    if (AllowOpenOrder)
+                    if (AllowOpenOrder && OrderManager.HasMoney)
                     {
                         newOrders.Add(order);
                     }
@@ -354,10 +342,8 @@ namespace autotrade.Strategies
                         }
                     }
 
-                    if (AllowOpenOrder)
+                    if (AllowOpenOrder && OrderManager.HasMoney)
                     {
-                        //OrderManager.CancelOrder(lastOpenOrder);
-
                         newOrders.Add(order);
                     }
                 }
