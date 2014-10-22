@@ -54,4 +54,16 @@
     <NetLine ip="125.46.92.130" port="8803" type="TD" isHot="1" />
     <NetLine ip="125.46.92.156" port="8200" type="MD" isHot="1" />
   </NetworkInfo>
+  <NetworkInfo name="方正中期—北京联通" type="CN" BrokerId="0034" isHot="0">
+    <NetLine ip="123.127.45.181" port="28205" type="TD" isHot="1" />
+    <NetLine ip="123.127.45.181" port="28213" type="MD" isHot="1" />
+    <NetLine ip="123.127.45.182" port="28205" type="TD" isHot="0" />
+    <NetLine ip="123.127.45.182" port="28213" type="MD" isHot="0" />
+  </NetworkInfo>
+  <NetworkInfo name="方正中期—上海电信" type="CN" BrokerId="0034" isHot="0">
+    <NetLine ip="180.166.0.225" port="28205" type="TD" isHot="1" />
+    <NetLine ip="180.166.0.225" port="28213" type="MD" isHot="1" />
+    <NetLine ip="180.166.0.226" port="28205" type="TD" isHot="0" />
+    <NetLine ip="180.166.0.226" port="28213" type="MD" isHot="0" />
+  </NetworkInfo>
 </BrokerManager>
