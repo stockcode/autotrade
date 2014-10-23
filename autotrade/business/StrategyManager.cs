@@ -68,27 +68,30 @@ namespace autotrade.business
 
                 var today = DateTime.Today;
 
-                foreach (var time in sc)
+                if (sc != null)
                 {
-                    int hour = Convert.ToInt32(time.Split(':')[0]);
-                    int minute = Convert.ToInt32(time.Split(':')[1]);
-
-                    
-
-                    var endTime = new DateTime(today.Year, today.Month, today.Day, hour, minute, 0);
-
-                    if (endTime > DateTime.Now && DateTime.Now > endTime.AddMinutes(-1))
+                    foreach (var time in sc)
                     {
-                        OrderManager.CancelAllOrder();
-                        needWait = true;
-                        log.Info("canceling order");
-                        return;
-                        
-                    }                    
-                }
-            
+                        int hour = Convert.ToInt32(time.Split(':')[0]);
+                        int minute = Convert.ToInt32(time.Split(':')[1]);
 
-            List<Order> orders = strategy.Match(marketData);
+
+
+                        var endTime = new DateTime(today.Year, today.Month, today.Day, hour, minute, 0);
+
+                        if (endTime > DateTime.Now && DateTime.Now > endTime.AddMinutes(-1))
+                        {
+                            OrderManager.CancelAllOrder();
+                            needWait = true;
+                            log.Info("canceling order");
+                            return;
+
+                        }
+                    }
+                }
+
+
+                List<Order> orders = strategy.Match(marketData);
 
                 foreach (Order order in orders)
                 {
