@@ -84,6 +84,24 @@ namespace autotrade.Strategies
             }
         }
 
+        private bool _maxLossStop = true;
+        [DisplayName("连亏暂停")]
+        [DefaultValue(true)]
+        public bool MaxLossStop
+        {
+            get { return _maxLossStop; }
+            set
+            {
+                if (this._maxLossStop == value) return;
+
+                this._maxLossStop = value;
+
+                this.lossThreshold = 0;
+
+                NotifyPropertyChanged();
+            }
+        }
+
         private int _maxLossThreshold = 3;
         [DisplayName("连亏阀值")]
         [DefaultValue(3)]
@@ -178,7 +196,7 @@ namespace autotrade.Strategies
 
         private void OpenOrder()
         {
-            if (lossThreshold >= MaxLossThreshold) return;
+            if (MaxLossStop && lossThreshold >= MaxLossThreshold) return;
 
                 var result = Cross(preMarketData, currMarketData);
 
@@ -282,7 +300,7 @@ namespace autotrade.Strategies
 
                         if (closeThreshold >= MaxCloseThreshold)
                         {
-                            if (order.PositionProfit < TOLERANCE) lossThreshold++;
+                            if (MaxLossStop && order.PositionProfit < TOLERANCE) lossThreshold++;
                             else lossThreshold = 0;
 
                             CloseOrder(order);
