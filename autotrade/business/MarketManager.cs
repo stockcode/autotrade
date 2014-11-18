@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms.VisualStyles;
 using autotrade.model;
 using autotrade.util;
 using log4net;
@@ -23,6 +25,8 @@ namespace autotrade.business
 
         public Dictionary<String, MarketData> instrumentDictionary = new Dictionary<string, MarketData>();
         public BindingList<MarketData> marketDatas = new BindingList<MarketData>();
+
+        public Dictionary<String, List<String>> RecorDictionary = new Dictionary<string, List<String>>();
 
         public BindingList<Instrument> instruments = new BindingList<Instrument>();
 
@@ -99,6 +103,14 @@ namespace autotrade.business
                         marketDatas.Add(marketData);
                         instrumentDictionary.Add(pDepthMarketData.InstrumentID, marketData);
                     }
+
+                    if (!RecorDictionary.ContainsKey(marketData.InstrumentId))
+                    {
+                        var datas = new List<String>();
+                        RecorDictionary.Add(marketData.InstrumentId, datas);
+                    }
+
+                    RecorDictionary[marketData.InstrumentId].Add(marketData.SimpleFormat());
 
                     //Task.Factory.StartNew(() =>
                     //{
@@ -194,6 +206,21 @@ namespace autotrade.business
                     instrumentRepo.Delete(instruments[e.NewIndex]);
                     break;
             }
+        }
+
+        public void Export(string tickDir)
+        {
+            
+            foreach (var record in RecorDictionary)
+            {
+                var path = tickDir + record.Key;
+
+                Directory.CreateDirectory(path);
+                
+                File.WriteAllLines(path + "\\" + DateTime.Today.ToString("yyyyMMdd") + ".csv", record.Value);
+            }
+
+            RecorDictionary.Clear();
         }
     }
 

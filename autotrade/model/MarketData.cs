@@ -211,5 +211,10 @@ namespace autotrade.model
                 handler(this, new PropertyChangedEventArgs(propertyName));
             }
         }
+
+        public string SimpleFormat()
+        {
+            return String.Format("{0},{1},{2},{3},{4}", InstrumentId, LastPrice, AveragePrice, UpdateTime, UpdateMillisec);
+        }
     }
 }

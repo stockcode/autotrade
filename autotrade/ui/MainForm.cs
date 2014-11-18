@@ -5,7 +5,6 @@ using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 using Autofac;
 using autotrade.business;
-using autotrade.Job;
 using autotrade.model;
 using autotrade.Strategies;
 using autotrade.ui;
@@ -13,8 +12,7 @@ using log4net;
 using MongoDB.Driver.Linq;
 using QuantBox.CSharp2CTP;
 using QuantBox.CSharp2CTP.Event;
-using Quartz;
-using Quartz.Impl;
+using Schedule;
 using Telerik.WinControls.UI;
 
 namespace autotrade
@@ -28,6 +26,7 @@ namespace autotrade
             InitializeComponent();
         }
 
+        ReportTimer _Timer = new ReportTimer();
 
         public MdApiWrapper mdApi { get; set; }
         public TraderApiWrapper tradeApi { get; set; }
@@ -40,8 +39,6 @@ namespace autotrade
         public StrategyManager StrategyManager { get; set; }
         public IndicatorManager IndicatorManager { get; set; }
 
-        private IScheduler scheduler;
-
         private void tradeApi_OnRspQryInvestorPositionCombineDetail(
             ref CThostFtdcInvestorPositionCombineDetailField pInvestorPositionCombineDetail,
             ref CThostFtdcRspInfoField pRspInfo, int nRequestID, bool bIsLast)
@@ -52,8 +49,6 @@ namespace autotrade
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            scheduler = StdSchedulerFactory.GetDefaultScheduler();
-
             StrategyManager.Container = Container;
 
             //radGridView4.Columns["Direction"].DataTypeConverter = new DirectionConverter();
@@ -112,7 +107,11 @@ namespace autotrade
 
             StrategyManager.Start();
 
-            StartQuartz();
+            _Timer.Elapsed += new ReportEventHandler(_Timer_Elapsed);
+
+            _Timer.AddReportEvent(new ScheduledTime("Daily", "15:30:00"), 1);
+
+            _Timer.Start();
         }
 
         void miDeleteOrder_Click(object sender, EventArgs e)
@@ -127,37 +126,6 @@ namespace autotrade
             if (MessageBox.Show("你确定要撤销所有挂单吗？", "温馨提示", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
                 OrderManager.CancelAllOrder();
-            }
-        }
-
-        private void StartQuartz()
-        {
-            try
-            {
-                // Grab the Scheduler instance from the Factory 
-                
-
-                // and start it off
-                scheduler.Start();
-
-                IJobDetail job = JobBuilder.Create<HelloJob>()
-                   .WithIdentity("job1", "group1")
-                   .Build();
-
-                // Trigger the job to run now, and then repeat every 10 seconds
-                ITrigger trigger = TriggerBuilder.Create()
-                    .WithIdentity("trigger1", "group1")
-                    .WithSchedule(CronScheduleBuilder.DailyAtHourAndMinute(15, 22))
-                    .Build();
-
-                // Tell quartz to schedule the job using our trigger
-                scheduler.ScheduleJob(job, trigger);
-
-
-            }
-            catch (SchedulerException se)
-            {
-                Console.WriteLine(se);
             }
         }
 
@@ -217,11 +185,11 @@ namespace autotrade
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            scheduler.Shutdown();
-
             mdApi.Disconnect();
 
             tradeApi.Disconnect();
+
+            _Timer.Stop();
         }
 
         private void _orderManager_OnRspQryOrder(object sender, OrderEventArgs e)
@@ -298,6 +266,17 @@ namespace autotrade
         }
 
         private void radMenuItem6_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void _Timer_Elapsed(object sender, ReportEventArgs e)
+        {
+            var tickDir = Application.StartupPath + @"\Tick\";
+            MarketManager.Export(tickDir);
+        }
+
+        private void radMenuItem8_Click(object sender, EventArgs e)
         {
             
         }

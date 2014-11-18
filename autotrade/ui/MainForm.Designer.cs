@@ -171,6 +171,7 @@ namespace autotrade
             this.radMenu2 = new Telerik.WinControls.UI.RadMenu();
             this.radMenuItem5 = new Telerik.WinControls.UI.RadMenuItem();
             this.radMenuItem6 = new Telerik.WinControls.UI.RadMenuItem();
+            this.radMenuItem8 = new Telerik.WinControls.UI.RadMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.accountBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.positionDetailBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.radStatusStrip1)).BeginInit();
@@ -1228,7 +1229,8 @@ namespace autotrade
             this.radMenuItem4.AccessibleDescription = "系统";
             this.radMenuItem4.AccessibleName = "系统";
             this.radMenuItem4.Items.AddRange(new Telerik.WinControls.RadItem[] {
-            this.radMenuItem12});
+            this.radMenuItem12,
+            this.radMenuItem8});
             this.radMenuItem4.Name = "radMenuItem4";
             this.radMenuItem4.Text = "系统";
             this.radMenuItem4.Visibility = Telerik.WinControls.ElementVisibility.Visible;
@@ -1395,6 +1397,15 @@ namespace autotrade
             this.radMenuItem6.Visibility = Telerik.WinControls.ElementVisibility.Visible;
             this.radMenuItem6.Click += new System.EventHandler(this.radMenuItem6_Click);
             // 
+            // radMenuItem8
+            // 
+            this.radMenuItem8.AccessibleDescription = "导出Tick";
+            this.radMenuItem8.AccessibleName = "导出Tick";
+            this.radMenuItem8.Name = "radMenuItem8";
+            this.radMenuItem8.Text = "导出Tick";
+            this.radMenuItem8.Visibility = Telerik.WinControls.ElementVisibility.Visible;
+            this.radMenuItem8.Click += new System.EventHandler(this.radMenuItem8_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -1547,6 +1558,7 @@ namespace autotrade
         private Telerik.WinControls.UI.RadMenuItem radMenuItem6;
         private Telerik.WinControls.UI.RadMenuItem miCancelAll;
         private Telerik.WinControls.UI.RadMenuItem miDeleteOrder;
+        private Telerik.WinControls.UI.RadMenuItem radMenuItem8;
     }
 }
 
