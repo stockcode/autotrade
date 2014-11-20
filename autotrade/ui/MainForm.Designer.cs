@@ -153,6 +153,7 @@ namespace autotrade
             this.telerikMetroTheme1 = new Telerik.WinControls.Themes.TelerikMetroTheme();
             this.radMenuItem4 = new Telerik.WinControls.UI.RadMenuItem();
             this.radMenuItem12 = new Telerik.WinControls.UI.RadMenuItem();
+            this.radMenuItem8 = new Telerik.WinControls.UI.RadMenuItem();
             this.radMenuItem7 = new Telerik.WinControls.UI.RadMenuItem();
             this.radMenuItem9 = new Telerik.WinControls.UI.RadMenuItem();
             this.miClose = new Telerik.WinControls.UI.RadMenuItem();
@@ -171,7 +172,7 @@ namespace autotrade
             this.radMenu2 = new Telerik.WinControls.UI.RadMenu();
             this.radMenuItem5 = new Telerik.WinControls.UI.RadMenuItem();
             this.radMenuItem6 = new Telerik.WinControls.UI.RadMenuItem();
-            this.radMenuItem8 = new Telerik.WinControls.UI.RadMenuItem();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.accountBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.positionDetailBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.radStatusStrip1)).BeginInit();
@@ -1244,6 +1245,15 @@ namespace autotrade
             this.radMenuItem12.Visibility = Telerik.WinControls.ElementVisibility.Visible;
             this.radMenuItem12.Click += new System.EventHandler(this.miClose_Click);
             // 
+            // radMenuItem8
+            // 
+            this.radMenuItem8.AccessibleDescription = "导出Tick";
+            this.radMenuItem8.AccessibleName = "导出Tick";
+            this.radMenuItem8.Name = "radMenuItem8";
+            this.radMenuItem8.Text = "导入Tick";
+            this.radMenuItem8.Visibility = Telerik.WinControls.ElementVisibility.Visible;
+            this.radMenuItem8.Click += new System.EventHandler(this.radMenuItem8_Click);
+            // 
             // radMenuItem7
             // 
             this.radMenuItem7.AccessibleDescription = "选项";
@@ -1397,14 +1407,9 @@ namespace autotrade
             this.radMenuItem6.Visibility = Telerik.WinControls.ElementVisibility.Visible;
             this.radMenuItem6.Click += new System.EventHandler(this.radMenuItem6_Click);
             // 
-            // radMenuItem8
+            // openFileDialog1
             // 
-            this.radMenuItem8.AccessibleDescription = "导出Tick";
-            this.radMenuItem8.AccessibleName = "导出Tick";
-            this.radMenuItem8.Name = "radMenuItem8";
-            this.radMenuItem8.Text = "导出Tick";
-            this.radMenuItem8.Visibility = Telerik.WinControls.ElementVisibility.Visible;
-            this.radMenuItem8.Click += new System.EventHandler(this.radMenuItem8_Click);
+            this.openFileDialog1.FileName = "openFileDialog1";
             // 
             // MainForm
             // 
@@ -1559,6 +1564,7 @@ namespace autotrade
         private Telerik.WinControls.UI.RadMenuItem miCancelAll;
         private Telerik.WinControls.UI.RadMenuItem miDeleteOrder;
         private Telerik.WinControls.UI.RadMenuItem radMenuItem8;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
     }
 }
 

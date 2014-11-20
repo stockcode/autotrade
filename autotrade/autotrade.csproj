@@ -185,7 +185,6 @@
       <DependentUpon>LoginForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Strategies\User\BollStrategy.cs" />
-    <Compile Include="Strategies\User\RoundMAStrategy.cs" />
     <Compile Include="ui\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>

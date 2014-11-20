@@ -89,7 +89,7 @@ namespace autotrade.Stop.Profit
 
                     neworder.StrategyLogs.Add(strategyLog);
 
-                    order.CloseOrder = neworder;
+                    order.CloseOrders.Add(neworder);
 
                     list.Add(order);
 

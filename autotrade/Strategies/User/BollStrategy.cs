@@ -129,7 +129,7 @@ namespace autotrade.Strategies
                 neworder.StrategyLogs.Add(strategyLog);
 
 
-                order.CloseOrder = neworder;
+                order.CloseOrders.Add(neworder);
 
                 newOrders.Add(order);
 

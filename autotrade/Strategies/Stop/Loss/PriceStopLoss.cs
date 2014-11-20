@@ -58,7 +58,7 @@ namespace autotrade.Stop.Loss
 
                     neworder.StrategyLogs.Add(strategyLog);
 
-                    order.CloseOrder = neworder;
+                    order.CloseOrders.Add(neworder);
 
                     list.Add(order);
 

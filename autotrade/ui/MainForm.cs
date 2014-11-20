@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
+using System.Threading;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 using Autofac;
@@ -278,7 +280,25 @@ namespace autotrade
 
         private void radMenuItem8_Click(object sender, EventArgs e)
         {
-            
+            if (openFileDialog1.ShowDialog() != DialogResult.OK) return;
+
+
+            var filename = openFileDialog1.FileName;
+
+            foreach (var line in File.ReadAllLines(filename))
+            {
+                string[] datas = line.Split(',');
+
+                var data = new CThostFtdcDepthMarketDataField();
+                data.InstrumentID = datas[0];
+                data.LastPrice = Double.Parse(datas[1]);
+                data.AveragePrice = Double.Parse(datas[2]);
+                data.UpdateTime = datas[3];
+                data.UpdateMillisec = Convert.ToInt32(datas[4]);
+
+                MarketManager.AddSimData(data);
+                Thread.Sleep(100);
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.ComponentModel;
 using System.Collections.Generic;
 using System.Globalization;
@@ -21,6 +22,7 @@ namespace autotrade.model
         public Order()
         {            
             StrategyLogs = new List<OrderStrategyLog>();
+            CloseOrders = new List<Order>();
         }
 
         [DisplayName("合约")]
@@ -61,6 +63,22 @@ namespace autotrade.model
 
         [DisplayName("持仓手数")]
         public int Volume { get; set; }
+
+        private int _remainVolume;
+
+        [DisplayName("剩余手数")]
+        public int RemainVolume
+        {
+            get { return _remainVolume; }
+            set
+            {
+                if (this._remainVolume != value)
+                {
+                    this._remainVolume = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
 
         [DisplayName("占用的保证金")]
         public double UseMargin { get; set; }
@@ -187,23 +205,8 @@ namespace autotrade.model
         [DisplayName("开仓策略")]
         public String StrategyType { get; set; }
 
-        [BsonIgnore]
-        [DisplayName("平仓挂单价")]
-        public double ClosePrice {
-            get {
-                return CloseOrder != null ? CloseOrder.Price : 0;
-            }
-        }
-
-        [BsonIgnore]
-        [DisplayName("平仓策略")]
-        public String CloseStrategyType
-        {
-            get { return CloseOrder != null ? CloseOrder.StrategyType : ""; }
-        }
-
         [Browsable(false)]        
-        public Order CloseOrder { get; set; }
+        public List<Order> CloseOrders { get; set; }
 
         [Browsable(false)]
         public List<OrderStrategyLog> StrategyLogs { get; set; }
@@ -263,6 +266,16 @@ namespace autotrade.model
             {
                 handler(this, new PropertyChangedEventArgs(propertyName));
             }
+        }
+
+        public List<Order> GetClosingOrders()
+        {
+            return CloseOrders.FindAll(o => o.StatusType == EnumOrderStatus.开仓中);
+        }
+
+        public bool IsClosed()
+        {
+            return RemainVolume <= 0;
         }
     }
 }

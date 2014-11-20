@@ -168,6 +168,11 @@ namespace autotrade.business
             marketQueue.Enqueue(e.pDepthMarketData);
         }
 
+        public void AddSimData(CThostFtdcDepthMarketDataField pDepthMarketData)
+        {
+            marketQueue.Enqueue(pDepthMarketData);
+        }
+
         public int GetIndex(string instrumentId)
         {
             try

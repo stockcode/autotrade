@@ -110,9 +110,7 @@ namespace autotrade.business
 
         public void InitStrategies(Instrument instrument)
         {
-            InstrumentStrategy instrumentStrategy;
-
-            instrumentStrategy = strategyRepo.FirstOrDefault(strat => strat.InstrumentID == instrument.InstrumentID);
+            var instrumentStrategy = strategyRepo.FirstOrDefault(strat => strat.InstrumentID == instrument.InstrumentID);
 
             if (instrumentStrategy == null)
             {

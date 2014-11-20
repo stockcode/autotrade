@@ -13,7 +13,7 @@ namespace autotrade.Stop.Profit
     {
         private readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        private double _price = 5000;
+        private double _price = 2, tmpPrice = 0d;
 
         [DisplayName("止盈收益阀值")]
         public double Price
@@ -41,23 +41,29 @@ namespace autotrade.Stop.Profit
 
             foreach (var order in orders)
             {
-                if (order.StatusType == EnumOrderStatus.已开仓 && Price - order.PositionProfit <= 0)
+                if (order.Volume == order.RemainVolume) tmpPrice = Price;
+
+                if (order.RemainVolume == order.Volume/4) break;
+
+                if (order.StatusType == EnumOrderStatus.已开仓 && order.PositionProfit/(InstrumentStrategy.VolumeMultiple*order.Volume) >= tmpPrice)
                 {
                     var neworder = new Order();
                     neworder.OffsetFlag = TThostFtdcOffsetFlagType.CloseToday;
                     neworder.Direction = order.Direction == TThostFtdcDirectionType.Buy ? TThostFtdcDirectionType.Sell : TThostFtdcDirectionType.Buy;
                     neworder.InstrumentId = marketData.InstrumentId;
                     neworder.Price = GetAnyPrice(marketData, neworder.Direction);
-                    neworder.Volume = order.Volume;
+                    neworder.Volume = order.Volume / 4;
                     neworder.StrategyType = GetType().ToString();
 
 
-                    order.CloseOrder = neworder;
+                    order.CloseOrders.Add(neworder);
 
                     list.Add(order);
 
                     log.Info(String.Format("{0}:{1}:{2}:{3}", ToString(), marketData.InstrumentId, marketData.LastPrice,
                         orders.Count()));
+
+                    tmpPrice += 1;
                 }
             }
 

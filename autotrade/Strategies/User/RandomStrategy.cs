@@ -43,19 +43,26 @@ namespace autotrade.Strategies
 
             tick++;
 
-            if ((10+tick)/10 > 0) return newOrders;
+            if (tick < 10) return newOrders;
 
+            tick = 0;
 
             List<Order> orders = GetStrategyOrders(instrumentId);
 
 
-            //CloseOrder(orders.FindAll(o => o.StatusType == EnumOrderStatus.已开仓));
+
 
             if (!orders.Exists(o => o.StatusType != EnumOrderStatus.已平仓))
+            {
                 OpenOrder();
+                return newOrders;
+            }
 
 
+            //CloseOrder(orders.FindAll(o => o.StatusType == EnumOrderStatus.已开仓));
             return newOrders;
+            
+            
         }
 
         private void OpenOrder()
@@ -64,7 +71,7 @@ namespace autotrade.Strategies
             neworder.OffsetFlag = TThostFtdcOffsetFlagType.Open;
             neworder.Direction = TThostFtdcDirectionType.Buy;
             neworder.InstrumentId = currMarketData.InstrumentId;
-            neworder.Price = GetAnyPrice(currMarketData, neworder.Direction);            
+            neworder.Price = currMarketData.LastPrice;            
             neworder.Volume = InstrumentStrategy.Volume;
             neworder.StrategyType = GetType().ToString();
 
@@ -86,7 +93,7 @@ namespace autotrade.Strategies
                 neworder.StrategyType = GetType().ToString();
 
 
-                order.CloseOrder = neworder;
+                order.CloseOrders.Add(neworder);
 
                 newOrders.Add(order);
 

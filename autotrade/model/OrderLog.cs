@@ -86,48 +86,8 @@ namespace autotrade.model
         public List<OrderStrategyLog> StrategyLogs { get; set; }
 
         [Browsable(false)]
-        public Order CloseOrder { get; set; }
-
-
-        [BsonIgnore]
-        [DisplayName("平仓挂单价")]
-        public double ClosePrice
-        {
-            get
-            {
-                return CloseOrder != null ? CloseOrder.Price : 0;
-            }
-            set
-            {
-                
-            }
-        }
-
-        [BsonIgnore]
-        [DisplayName("平仓成交价")]
-        public double CloseTradePrice
-        {
-            get
-            {
-                return CloseOrder != null ? CloseOrder.TradePrice : 0;
-            }
-            set
-            {
-
-            }
-        }
-
-        [BsonIgnore]
-        [DisplayName("平仓策略")]
-        public String CloseStrategyType
-        {
-            get { return CloseOrder != null ? CloseOrder.StrategyType : ""; }
-            set
-            {
-
-            }
-        }
-
+        public List<Order> CloseOrders { get; set; }
+        
 
         public override string ToString()
         {

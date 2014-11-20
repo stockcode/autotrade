@@ -163,18 +163,20 @@ namespace autotrade.business
 
         private void InsertToMock(Order order)
         {
-            if (order.CloseOrder == null)
+            if (order.CloseOrders.Count == 0)
             {
                 OnRspQryOrder(this, new OrderEventArgs(() => Add(order)));
 
 
-                order.OrderRef = tradeApi.MaxOrderRef++.ToString();
+                order.RemainVolume = order.Volume;
 
+                order.OrderRef = tradeApi.MaxOrderRef++.ToString();
+                
                 order.FrontID = tradeApi.FrontID;
 
                 order.SessionID = tradeApi.SessionID;
 
-                order.TradePrice = order.LastPrice;
+                order.TradePrice = order.Price;
 
                 order.TradeDate = tradeApi.TradingDay;
 
@@ -184,33 +186,38 @@ namespace autotrade.business
             }
             else
             {
-                Order closeOrder = order.CloseOrder;
+
+                foreach (var closeOrder in order.GetClosingOrders())
+                {
+                    closeOrder.OrderRef = tradeApi.MaxOrderRef++.ToString();                    
+                    
+                    closeOrder.FrontID = tradeApi.FrontID;
+
+                    closeOrder.SessionID = tradeApi.SessionID;
+
+                    closeOrder.StatusType = EnumOrderStatus.平仓中;
+                    closeOrder.OrderSysID = tradeApi.MaxOrderRef++.ToString();
 
 
-                closeOrder.OrderRef = tradeApi.MaxOrderRef++.ToString();
+                    var tradeField = new CThostFtdcTradeField();
 
-                closeOrder.FrontID = tradeApi.FrontID;
+                    tradeField.TradeID = tradeApi.MaxOrderRef++.ToString();
 
-                closeOrder.SessionID = tradeApi.SessionID;
+                    tradeField.OrderSysID = closeOrder.OrderSysID;
 
-                closeOrder.StatusType = EnumOrderStatus.平仓中;
-                closeOrder.OrderSysID = tradeApi.MaxOrderRef++.ToString();
+                    tradeField.Price = closeOrder.Price;
 
-                order.StatusType = EnumOrderStatus.平仓中;
+                    tradeField.TradeDate = tradeApi.TradingDay;
 
-                var tradeField = new CThostFtdcTradeField();
+                    tradeField.TradeTime = DateTime.Now.ToString("HH:mm:ss");
 
-                tradeField.OrderSysID = order.CloseOrder.OrderSysID;
+                    var o = UpdateTradeID(tradeField);
 
-                tradeField.Price = order.CloseOrder.LastPrice;
+                    if (o == null || o.StatusType != EnumOrderStatus.已平仓) continue;
 
-                tradeField.TradeDate = tradeApi.TradingDay;
-
-                tradeField.TradeTime = DateTime.Now.ToString("HH:mm:ss");
-
-                UpdateTradeID(tradeField);
-
-                OnRspQryOrder(this, new OrderEventArgs(() => OrderRepository.Delete(order)));
+                    OnRspQryOrder(this, new OrderEventArgs(() => HandleOrderClose(o)));
+                    if (!HasMoney) HasMoney = true;
+                }
             }
         }
 
@@ -228,12 +235,14 @@ namespace autotrade.business
 
         private void InsertToCTP(Order order)
         {
-            if (order.CloseOrder == null)
+            if (order.CloseOrders.Count == 0)
             {
                 OnRspQryOrder(this, new OrderEventArgs(() => Add(order)));
 
                 int orderRef = tradeApi.OrderInsert(order.InstrumentId, order.OffsetFlag, order.Direction, order.Price,
                     order.Volume);
+
+                order.RemainVolume = order.Volume;
 
                 order.OrderRef = orderRef.ToString();
 
@@ -245,21 +254,25 @@ namespace autotrade.business
             }
             else
             {
-                Order closeOrder = order.CloseOrder;
+                foreach (var closeOrder in order.GetClosingOrders())
+                {
 
-                int orderRef = tradeApi.OrderInsert(closeOrder.InstrumentId, closeOrder.OffsetFlag, closeOrder.Direction,
-                    closeOrder.Price,
-                    closeOrder.Volume);
 
-                order.CloseOrder.OrderRef = orderRef.ToString();
+                    var orderRef = tradeApi.OrderInsert(closeOrder.InstrumentId, closeOrder.OffsetFlag,
+                        closeOrder.Direction,
+                        closeOrder.Price,
+                        closeOrder.Volume);
 
-                order.CloseOrder.FrontID = tradeApi.FrontID;
+                    closeOrder.OrderRef = orderRef.ToString();
 
-                order.CloseOrder.SessionID = tradeApi.SessionID;
+                    closeOrder.FrontID = tradeApi.FrontID;
 
-                order.CloseOrder.StatusType = EnumOrderStatus.平仓中;
+                    closeOrder.SessionID = tradeApi.SessionID;
 
-                order.StatusType = EnumOrderStatus.平仓中;
+                    closeOrder.StatusType = EnumOrderStatus.平仓中;
+                }
+
+                //order.StatusType = EnumOrderStatus.平仓中;
             }
         }
 
@@ -267,22 +280,24 @@ namespace autotrade.business
         {
             if (order == null) return;
 
-            Order od = order;
-            if (order.CloseOrder != null) od = order.CloseOrder;
-
-            tradeApi.CancelOrder(od.OrderRef, od.FrontID, od.SessionID, od.InstrumentId);
-
             sw.EnterWriteLock();
 
-            if (order.CloseOrder == null)
+            if (order.CloseOrders.Count == 0)
             {
+                tradeApi.CancelOrder(order.OrderRef, order.FrontID, order.SessionID, order.InstrumentId);
+
                 OnRspQryOrder(this, new OrderEventArgs(() => orders.Remove(order)));
 
                 OrderRepository.Delete(order);
             }
             else
             {
-                order.CloseOrder = null;
+                foreach (var item in order.GetClosingOrders())
+                {
+                    tradeApi.CancelOrder(item.OrderRef, item.FrontID, item.SessionID, item.InstrumentId);
+                    item.CloseOrders.Remove(item);
+                }
+
                 order.StatusType = EnumOrderStatus.已开仓;
                 OrderRepository.Update(order);
             }
@@ -376,21 +391,21 @@ namespace autotrade.business
 
         public void CloseOrder(Order order)
         {
-            var neworder = new Order();
-            neworder.OffsetFlag = order.IsTodayOrder
-                ? TThostFtdcOffsetFlagType.CloseToday
-                : TThostFtdcOffsetFlagType.Close;
+            var neworder = new Order
+            {
+                OffsetFlag = order.IsTodayOrder
+                    ? TThostFtdcOffsetFlagType.CloseToday
+                    : TThostFtdcOffsetFlagType.Close,
+                Direction = order.Direction == TThostFtdcDirectionType.Buy
+                    ? TThostFtdcDirectionType.Sell
+                    : TThostFtdcDirectionType.Buy,
+                InstrumentId = order.InstrumentId,
+                Price = 0,
+                Volume = order.RemainVolume,
+                StrategyType = "Close Order By User"
+            };
 
-            neworder.Direction = order.Direction == TThostFtdcDirectionType.Buy
-                ? TThostFtdcDirectionType.Sell
-                : TThostFtdcDirectionType.Buy;
-            neworder.InstrumentId = order.InstrumentId;
-
-            neworder.Price = 0;
-            neworder.Volume = order.Volume;
-            neworder.StrategyType = "Close Order By User";
-
-            order.CloseOrder = neworder;
+            order.CloseOrders.Add(neworder);
 
             OrderInsert(order);
         }
@@ -453,7 +468,7 @@ namespace autotrade.business
         {
             sw.EnterWriteLock();
 
-            Order order = orders.FirstOrDefault(
+            var order = orders.FirstOrDefault(
                 o => o.OrderRef == pOrder.OrderRef && o.FrontID == pOrder.FrontID && o.SessionID == pOrder.SessionID);
 
             if (order != null)
@@ -462,16 +477,19 @@ namespace autotrade.business
                 order.ExchangeID = pOrder.ExchangeID;
                 OrderRepository.Update(order);
             }
-
-            order = orders.FirstOrDefault(
-                o =>
-                    o.CloseOrder != null && o.CloseOrder.OrderRef == pOrder.OrderRef &&
-                    o.CloseOrder.FrontID == pOrder.FrontID && o.CloseOrder.SessionID == pOrder.SessionID);
-
-            if (order != null)
+            else
             {
-                order.CloseOrder.OrderSysID = pOrder.OrderSysID;
-                OrderRepository.Update(order);
+                foreach (var o in orders)
+                {
+                    var closeorder = o.CloseOrders.FirstOrDefault(c => c.OrderRef == pOrder.OrderRef &&
+                                                      c.FrontID == pOrder.FrontID && c.SessionID == pOrder.SessionID);
+                    
+                    if (closeorder == null) continue;
+
+                    closeorder.OrderSysID = pOrder.OrderSysID;
+                    OrderRepository.Update(o);
+                    break;
+                }                
             }
 
             sw.ExitWriteLock();
@@ -497,25 +515,39 @@ namespace autotrade.business
             }
             else
             {
-                order = orders.FirstOrDefault(
-                    o =>
-                        o.CloseOrder != null && o.CloseOrder.OrderSysID == orderSysID && o.CloseOrder.TradeID == null);
 
-                if (order != null)
+                foreach (var o in orders)
                 {
-                    order.CloseOrder.TradeID = pTrade.TradeID;
-                    order.CloseOrder.TradePrice = pTrade.Price;
-                    order.CloseOrder.TradeDate = pTrade.TradeDate;
-                    order.CloseOrder.TradeTime = pTrade.TradeTime;
-                    order.StatusType = EnumOrderStatus.已平仓;
+                    var closeorder = o.CloseOrders.FirstOrDefault(c => c.OrderSysID == orderSysID && c.TradeID == null);
 
-                    double profit = (order.Direction == TThostFtdcDirectionType.Buy)
-                        ? order.CloseOrder.TradePrice - order.TradePrice
-                        : order.TradePrice - order.CloseOrder.TradePrice;
-                    order.CloseProfit = profit*order.Volume*order.Unit;
-                    order.PositionProfit = 0;
-                    OrderRepository.Update(order);
-                }
+                    if (closeorder == null) continue;
+
+                    closeorder.TradeID = pTrade.TradeID;
+                    closeorder.TradePrice = pTrade.Price;
+                    closeorder.TradeDate = pTrade.TradeDate;
+                    closeorder.TradeTime = pTrade.TradeTime;
+                    closeorder.StatusType = EnumOrderStatus.已平仓;
+
+                    o.RemainVolume -= closeorder.Volume;
+
+                    o.StatusType = o.IsClosed() ? EnumOrderStatus.已平仓 : EnumOrderStatus.已开仓;
+
+                    var profit = (o.Direction == TThostFtdcDirectionType.Buy)
+                        ? closeorder.TradePrice - o.TradePrice
+                        : o.TradePrice - closeorder.TradePrice;
+
+                    o.CloseProfit += profit * o.Volume * o.Unit;
+                    
+                    o.PositionProfit -= o.CloseProfit;
+
+                    
+
+                    OrderRepository.Update(o);
+
+                    order = o;
+
+                    break;
+                }                     
             }
 
             sw.ExitWriteLock();
@@ -540,7 +572,7 @@ namespace autotrade.business
         {
             CancelOrder(lastOrder);
 
-            lastOrder.CloseOrder = closeorder;
+            lastOrder.CloseOrders[0] = closeorder;
 
             OrderInsert(lastOrder);
         }
