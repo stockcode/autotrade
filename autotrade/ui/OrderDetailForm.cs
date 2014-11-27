@@ -26,12 +26,12 @@ namespace autotrade.ui
             if (OrderLog != null)
             {
                 radGridView1.DataSource = OrderLog.StrategyLogs.OfType<object>();
-                radGridView2.DataSource = OrderLog.CloseOrders.OfType<object>();
+                radGridView2.DataSource = OrderLog.CloseOrders;
                 radGridView2.Show();
             }
             else
             {
-                radGridView1.DataSource = Order.StrategyLogs.OfType<object>();
+                radGridView1.DataSource = Order.StrategyLogs;
                 radGridView2.DataSource = Order.CloseOrders;
                 radGridView2.Show();
                 

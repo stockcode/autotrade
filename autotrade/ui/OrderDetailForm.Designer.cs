@@ -59,6 +59,7 @@
             // 
             // radGridView2
             // 
+            this.radGridView2.AutoGenerateHierarchy = true;
             this.radGridView2.Location = new System.Drawing.Point(12, 347);
             // 
             // radGridView2

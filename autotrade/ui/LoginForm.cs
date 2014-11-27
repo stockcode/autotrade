@@ -213,7 +213,9 @@ namespace autotrade
         {
             if (e.pRspInfo.ErrorID == 0)
             {
-                ObjectUtils.CopyStruct(e.pTradingAccount, AccountManager.Accounts[0]);
+                AccountManager.Init(e.pTradingAccount);
+
+                
 
                 ShowProgress("查询账户成功");
 

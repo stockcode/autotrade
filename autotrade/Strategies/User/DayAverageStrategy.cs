@@ -193,7 +193,7 @@ namespace autotrade.Strategies
                         InstrumentId = currMarketData.InstrumentId,
                         LastPrice = currMarketData.LastPrice,
                         Price = GetAnyPrice(GetAvgPrice(), openDirection),
-                        StopProfit = -300,
+                        StopProfit = -300 * InstrumentStrategy.Volume,
                         Volume = InstrumentStrategy.Volume,
                         StrategyType = GetType().ToString()
                     };
@@ -222,11 +222,11 @@ namespace autotrade.Strategies
         {
             foreach (Order order in orders)
             {
-                if (order.PositionProfit < order.StopProfit)
-                {
-                    CloseOrder(order);
-                    continue;
-                }
+//                if (order.PositionProfit < order.StopProfit)
+//                {
+//                    CloseOrder(order);
+//                    continue;
+//                }
 
                 var result = Cross(preMarketData, currMarketData);
 

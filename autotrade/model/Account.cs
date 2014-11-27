@@ -6,65 +6,121 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MongoDB.Bson.Serialization.Attributes;
+using MongoRepository;
 
 namespace autotrade.model
 {
-    public class Account : INotifyPropertyChanged
+    public class Account : Entity, INotifyPropertyChanged
     {
-        /// <summary>
-        /// 投资者帐号
-        /// </summary>
+        public Account()
+        {
+            UseStopPercent = true;
+            UseStopLoss = true;
+            StopPercent = 2;
+            StopLoss = 10000;
+        }
+
+        [DisplayName("投资者帐号")]
         public string AccountID { get; set; }
 
         private double closeProfit;
-        /// <summary>
-        /// 平仓盈亏
-        /// </summary>
+
+        [DisplayName("平仓盈亏")]
+        [BsonIgnore]
         public double CloseProfit
         {
             get { return closeProfit; }
             set
             {
-                if (this.closeProfit != value)
-                {
                     this.closeProfit = value;
                     NotifyPropertyChanged();
-                }
             }
         }
 
         private double positionProfit;
 
-        /// <summary>
-        /// 持仓盈亏
-        /// </summary>
+        [DisplayName("持仓盈亏")]
+        [BsonIgnore]
         public double PositionProfit
         {
             get { return positionProfit; }
             set
             {
-                if (this.positionProfit != value)
-                {
                     this.positionProfit = value;
                     NotifyPropertyChanged();
-                }
             }
         }
 
-        /// <summary>
-        /// 可用资金
-        /// </summary>
+        [DisplayName("可用资金")]
+        [BsonIgnore]
         public double Available { get; set; }
 
-        /// <summary>
-        /// 冻结的保证金
-        /// </summary>
+        [DisplayName("冻结的保证金")]
+        [BsonIgnore]
         public double FrozenMargin { get; set; }
 
-        /// <summary>
-        /// 当前保证金总额
-        /// </summary>
+        [DisplayName("当前保证金总额")]
+        [BsonIgnore]
         public double CurrMargin { get; set; }
+
+        private bool useStopPercent;
+
+        [DisplayName("使用止损百分比")]
+        public bool UseStopPercent 
+        {
+            get { return useStopPercent; }
+            set
+            {
+                if (this.useStopPercent == value) return;
+
+                this.useStopPercent = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private int stopPercent;
+
+        [DisplayName("止损百分比")]
+        public int StopPercent
+        {
+            get { return stopPercent; }
+            set
+            {
+                if (this.stopPercent == value) return;
+
+                this.stopPercent = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private bool useStopLoss;
+
+        [DisplayName("使用止损金额")]
+        public bool UseStopLoss
+        {
+            get { return useStopLoss; }
+            set
+            {
+                if (this.useStopLoss == value) return;
+
+                this.useStopLoss = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private double stopLoss;
+
+        [DisplayName("止损金额")]
+        public double StopLoss
+        {
+            get { return stopLoss; }
+            set
+            {
+                this.stopLoss = value;
+                NotifyPropertyChanged();
+            }
+        }
 
         public override string ToString()
         {

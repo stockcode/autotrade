@@ -178,6 +178,8 @@
     <Compile Include="Strategies\User\DayAverageStrategy.cs" />
     <Compile Include="Strategies\Strategy.cs" />
     <Compile Include="Strategies\User\UserStrategy.cs" />
+    <Compile Include="ui\Editor\TrackBarEditor.cs" />
+    <Compile Include="ui\Editor\TrackBarEditorElement.cs" />
     <Compile Include="ui\LoginForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -212,6 +214,12 @@
     <Compile Include="ui\ServerLineForm.Designer.cs">
       <DependentUpon>ServerLineForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="ui\SettingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ui\SettingForm.Designer.cs">
+      <DependentUpon>SettingForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="util\BlockingQueue.cs" />
     <Compile Include="util\Enumerations.cs" />
     <Compile Include="util\ObjectUtils.cs" />
@@ -240,6 +248,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ui\ServerLineForm.resx">
       <DependentUpon>ServerLineForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ui\SettingForm.resx">
+      <DependentUpon>SettingForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="MongoRepository.chm" />
     <None Include="packages.config" />

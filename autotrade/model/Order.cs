@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections;
-using System.ComponentModel;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Runtime.Remoting.Messaging;
-using System.Text;
-using System.Threading.Tasks;
 using autotrade.model.Log;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoRepository;
@@ -19,8 +14,24 @@ namespace autotrade.model
     {
         private static readonly TimeSpan _whenTimeIsOver = new TimeSpan(20, 00, 00);
 
+        /// <summary>
+        ///     报单编号
+        /// </summary>
+        private string _orderSysID;
+
+        private int _remainVolume;
+        private EnumOrderStatus _statusType;
+
+        /// <summary>
+        ///     成交编号
+        /// </summary>
+        private string _tradeID;
+
+        private double closeProfit;
+        private double positionProfit;
+
         public Order()
-        {            
+        {
             StrategyLogs = new List<OrderStrategyLog>();
             CloseOrders = new List<Order>();
         }
@@ -44,8 +55,6 @@ namespace autotrade.model
         [BsonIgnore]
         public double LastPrice { get; set; }
 
-        private double positionProfit;
-
         [DisplayName("持仓盈亏")]
         [BsonIgnore]
         public double PositionProfit
@@ -54,17 +63,25 @@ namespace autotrade.model
 
             set
             {
-                
-                    this.positionProfit = value;
-                    NotifyPropertyChanged();
-                
+                positionProfit = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        [DisplayName("平仓盈亏")]
+        public double CloseProfit
+        {
+            get { return closeProfit; }
+
+            set
+            {
+                closeProfit = value;
+                NotifyPropertyChanged();
             }
         }
 
         [DisplayName("持仓手数")]
         public int Volume { get; set; }
-
-        private int _remainVolume;
 
         [DisplayName("剩余手数")]
         public int RemainVolume
@@ -72,9 +89,9 @@ namespace autotrade.model
             get { return _remainVolume; }
             set
             {
-                if (this._remainVolume != value)
+                if (_remainVolume != value)
                 {
-                    this._remainVolume = value;
+                    _remainVolume = value;
                     NotifyPropertyChanged();
                 }
             }
@@ -86,17 +103,15 @@ namespace autotrade.model
         [DisplayName("止盈价格")]
         public double StopProfit { get; set; }
 
-        private EnumOrderStatus _statusType;
-
         [DisplayName("状态")]
         public EnumOrderStatus StatusType
         {
             get { return _statusType; }
             set
             {
-                if (this._statusType != value)
+                if (_statusType != value)
                 {
-                    this._statusType = value;
+                    _statusType = value;
                     NotifyPropertyChanged();
                 }
             }
@@ -105,20 +120,15 @@ namespace autotrade.model
         [Browsable(false)]
         public string OrderRef { get; set; }
 
-        /// <summary>
-        /// 报单编号
-        /// </summary>        
-        private string _orderSysID;
-
         [Browsable(false)]
         public string OrderSysID
         {
             get { return _orderSysID; }
             set
             {
-                if (value != null && this._orderSysID != value.Trim())
+                if (value != null && _orderSysID != value.Trim())
                 {
-                    this._orderSysID = value.Trim();
+                    _orderSysID = value.Trim();
                     NotifyPropertyChanged();
                 }
             }
@@ -133,29 +143,6 @@ namespace autotrade.model
         [Browsable(false)]
         public int Unit { get; set; }
 
-        
-
-        private double closeProfit;
-
-        [Browsable(false)]
-        public double CloseProfit
-        {
-            get { return closeProfit; }
-
-            set
-            {
-                if (this.closeProfit != value)
-                {
-                    this.closeProfit = value;
-                    NotifyPropertyChanged();
-                }
-            }
-        }
-        
-        /// <summary>
-        /// 成交编号
-        /// </summary>
-        private string _tradeID;
 
         [Browsable(false)]
         public string TradeID
@@ -163,9 +150,9 @@ namespace autotrade.model
             get { return _tradeID; }
             set
             {
-                if (value != null && this._tradeID != value.Trim())
+                if (value != null && _tradeID != value.Trim())
                 {
-                    this._tradeID = value.Trim();
+                    _tradeID = value.Trim();
                     NotifyPropertyChanged();
                 }
             }
@@ -175,13 +162,15 @@ namespace autotrade.model
         public string TradeDate { get; set; }
 
         [Browsable(false)]
-        public string ActualTradeDate {
+        public string ActualTradeDate
+        {
             get
             {
                 if (TradeDate == null) return null;
 
-                return (DateTime.Today.CompareTo(DateTime.ParseExact(TradeDate, "yyyyMMdd", CultureInfo.InvariantCulture)) ==
-                       0
+                return
+                    (DateTime.Today.CompareTo(DateTime.ParseExact(TradeDate, "yyyyMMdd", CultureInfo.InvariantCulture)) ==
+                     0
                         ? TradeDateTime
                         : DateTime.Today.ToString("yyyyMMdd") + " " + TradeTime);
             }
@@ -192,20 +181,20 @@ namespace autotrade.model
 
         [BsonIgnore]
         [DisplayName("成交时间")]
-        public string TradeDateTime {
+        public string TradeDateTime
+        {
             get { return TradeDate + " " + TradeTime; }
         }
 
         [BsonIgnore]
         [DisplayName("持仓时间")]
         public TimeSpan PositionTimeSpan { get; set; }
-        
 
 
         [DisplayName("开仓策略")]
         public String StrategyType { get; set; }
 
-        [Browsable(false)]        
+        [Browsable(false)]
         public List<Order> CloseOrders { get; set; }
 
         [Browsable(false)]
@@ -219,12 +208,13 @@ namespace autotrade.model
         {
             get
             {
-                var today = DateTime.Today;
-                var now = DateTime.Now;
+                DateTime today = DateTime.Today;
+                DateTime now = DateTime.Now;
 
-                var closeTime = DateTime.ParseExact(today.ToString("yyyyMMdd") + " 20:00:00", "yyyyMMdd HH:mm:ss", CultureInfo.InvariantCulture);
+                DateTime closeTime = DateTime.ParseExact(today.ToString("yyyyMMdd") + " 20:00:00", "yyyyMMdd HH:mm:ss",
+                    CultureInfo.InvariantCulture);
 
-                var trade = DateTime.ParseExact(TradeDateTime, "yyyyMMdd HH:mm:ss", CultureInfo.InvariantCulture);
+                DateTime trade = DateTime.ParseExact(TradeDateTime, "yyyyMMdd HH:mm:ss", CultureInfo.InvariantCulture);
 
                 if (trade.Date == today)
                 {
@@ -234,27 +224,23 @@ namespace autotrade.model
 
                     return false;
                 }
-                else if (today.Subtract(trade).Days == 0)
+                if (today.Subtract(trade).Days == 0)
                 {
                     if (trade.TimeOfDay > _whenTimeIsOver && now.TimeOfDay < _whenTimeIsOver) return true;
 
                     return false;
                 }
-                else
-                {
-                    return false;
-                }
-                
+                return false;
             }
         }
+
+        public event PropertyChangedEventHandler PropertyChanged = delegate { };
 
         public override string ToString()
         {
             return string.Format("Order(合约代码={0},开平标志={1},买卖方向={2},价格={3},手数={4},状态={5},报单引用={6},报单编号={7})"
-                ,InstrumentId, OffsetFlag, Direction, Price, Volume, StatusType, OrderRef, OrderSysID);
+                , InstrumentId, OffsetFlag, Direction, Price, Volume, StatusType, OrderRef, OrderSysID);
         }
-
-        public event PropertyChangedEventHandler PropertyChanged = delegate { };
 
         // This method is called by the Set accessor of each property.
         // The CallerMemberName attribute that is applied to the optional propertyName

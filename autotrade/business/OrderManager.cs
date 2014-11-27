@@ -19,6 +19,8 @@ namespace autotrade.business
     {
         public delegate void OrderHandler(object sender, OrderEventArgs e);
 
+        public delegate void StopTradeHandler(object sender, AccountEventArgs e);
+
         private readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private readonly MongoRepository<OrderLog> orderLogRepo = new MongoRepository<OrderLog>();
         private readonly BindingList<OrderRecord> orderRecords = new BindingList<OrderRecord>();
@@ -51,6 +53,8 @@ namespace autotrade.business
 
         public bool HasMoney { get; set; }
         public event OrderHandler OnRspQryOrder;
+
+        public event StopTradeHandler OnStopTrade;
 
         private void traderApi_OnRspOrderAction(object sender, OnRspOrderActionArgs e)
         {
@@ -228,9 +232,11 @@ namespace autotrade.business
             order.Id = null;
             orders.Add(order);
 
+            var o = OrderRepository.Add(order);
+ 
             sw.ExitWriteLock();
 
-            return OrderRepository.Add(order);
+            return o;
         }
 
         private void InsertToCTP(Order order)
@@ -318,7 +324,7 @@ namespace autotrade.business
                     : order.TradePrice - marketData.LastPrice;
 
                 order.LastPrice = marketData.LastPrice;
-                order.PositionProfit = profit*order.Unit*order.Volume;
+                order.PositionProfit = profit*order.Unit*order.RemainVolume;
                 order.PositionTimeSpan =
                     DateTime.Now.Subtract(DateTime.ParseExact(order.ActualTradeDate, "yyyyMMdd HH:mm:ss",
                         CultureInfo.InvariantCulture));
@@ -332,6 +338,27 @@ namespace autotrade.business
                 orders.Where(o => o.StatusType == EnumOrderStatus.开仓中).Sum(o => o.UseMargin);
 
             sw.ExitReadLock();
+
+            CheckStopLoss();
+        }
+
+        private void CheckStopLoss()
+        {
+            var account = AccountManager.Accounts[0];
+
+            if (account.UseStopLoss && account.CloseProfit < account.StopLoss * -1)
+            {
+                OnStopTrade(this, new AccountEventArgs(account));
+                account.UseStopLoss = false;
+                return;
+            }
+
+            if (account.UseStopPercent && account.CloseProfit < 0 && Math.Abs(account.CloseProfit / account.Available) > account.StopPercent / 100d)
+            {
+                OnStopTrade(this, new AccountEventArgs(account));
+                account.UseStopPercent = false;
+                return;
+            }
         }
 
         public BindingList<Order> getOrders()
@@ -536,9 +563,11 @@ namespace autotrade.business
                         ? closeorder.TradePrice - o.TradePrice
                         : o.TradePrice - closeorder.TradePrice;
 
-                    o.CloseProfit += profit * o.Volume * o.Unit;
-                    
-                    o.PositionProfit -= o.CloseProfit;
+                    closeorder.CloseProfit = profit * closeorder.Volume * o.Unit;
+
+                    o.CloseProfit += closeorder.CloseProfit;
+
+                    //o.PositionProfit -= closeorder.CloseProfit;
 
                     
 

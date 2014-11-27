@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using QuantBox.CSharp2CTP;
 using QuantBox.CSharp2CTP.Event;
+using MongoRepository;
 
 namespace autotrade.business
 {
@@ -19,6 +20,8 @@ namespace autotrade.business
 
         public BindingList<Account> Accounts = new BindingList<Account>();
 
+        private MongoRepository<Account> accountRepo = new MongoRepository<Account>();
+
         public delegate void AccountNotifyHandler( object sender, AccountEventArgs e );
     
         public event AccountNotifyHandler OnQryTradingAccount;
@@ -26,14 +29,42 @@ namespace autotrade.business
 
 
         public AccountManager()
+        {            
+        }
+
+        void Accounts_ListChanged(object sender, ListChangedEventArgs e)
         {
-            Accounts.Add(new Account());
+            switch (e.ListChangedType)
+            {
+                case ListChangedType.ItemAdded:
+                    accountRepo.Add(Accounts[e.NewIndex]);
+                    break;
+                case ListChangedType.ItemChanged:
+                    var account = Accounts[e.NewIndex];
+                    accountRepo.Update(account);
+
+                    break;
+                case ListChangedType.ItemDeleted:
+                    accountRepo.Delete(Accounts[e.NewIndex]);
+                    break;
+            }
         }
 
 
         public void QryTradingAccount()
         {
             tradeApi.ReqQryTradingAccount();
+        }
+
+        public void Init(CThostFtdcTradingAccountField pTradingAccount)
+        {
+            var account = accountRepo.FirstOrDefault(o => o.AccountID == pTradingAccount.AccountID) ?? new Account();
+
+            ObjectUtils.CopyStruct(pTradingAccount, account);
+
+            Accounts.Add(account);
+
+            Accounts.ListChanged += Accounts_ListChanged;
         }
     }
 

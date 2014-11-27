@@ -162,6 +162,11 @@ namespace autotrade.business
             isStart = true;
         }
 
+        public void Stop()
+        {
+            isStart = false;
+        }
+
         public InstrumentStrategy GetInstrumentStrategy(string instrumentId)
         {
             return dictStrategies.ContainsKey(instrumentId) ? dictStrategies[instrumentId] : null;
