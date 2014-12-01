@@ -45,13 +45,13 @@ namespace autotrade.Stop.Profit
 
                 if (order.RemainVolume == order.Volume/4) break;
 
-                if (order.StatusType == EnumOrderStatus.已开仓 && order.PositionProfit/(InstrumentStrategy.VolumeMultiple*order.Volume) >= tmpPrice)
+                if (order.StatusType == EnumOrderStatus.已开仓 && order.PositionProfit/(InstrumentStrategy.VolumeMultiple*order.RemainVolume) >= tmpPrice)
                 {
                     var neworder = new Order();
                     neworder.OffsetFlag = TThostFtdcOffsetFlagType.CloseToday;
                     neworder.Direction = order.Direction == TThostFtdcDirectionType.Buy ? TThostFtdcDirectionType.Sell : TThostFtdcDirectionType.Buy;
                     neworder.InstrumentId = marketData.InstrumentId;
-                    neworder.Price = GetAnyPrice(marketData, neworder.Direction);
+                    neworder.Price = marketData.LastPrice;
                     neworder.Volume = order.Volume / 4;
                     neworder.StrategyType = GetType().ToString();
 
