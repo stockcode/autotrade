@@ -29,23 +29,25 @@ namespace autotrade.business
 
 
         public AccountManager()
-        {            
+        {
+            Accounts.ListChanged += Accounts_ListChanged;
         }
 
         void Accounts_ListChanged(object sender, ListChangedEventArgs e)
         {
+            var account = Accounts[e.NewIndex];
             switch (e.ListChangedType)
             {
                 case ListChangedType.ItemAdded:
-                    accountRepo.Add(Accounts[e.NewIndex]);
+                    account.Id = null;
+                    accountRepo.Add(account);
                     break;
                 case ListChangedType.ItemChanged:
-                    var account = Accounts[e.NewIndex];
                     accountRepo.Update(account);
 
                     break;
                 case ListChangedType.ItemDeleted:
-                    accountRepo.Delete(Accounts[e.NewIndex]);
+                    accountRepo.Delete(account);
                     break;
             }
         }
@@ -57,14 +59,16 @@ namespace autotrade.business
         }
 
         public void Init(CThostFtdcTradingAccountField pTradingAccount)
-        {
+        {            
             var account = accountRepo.FirstOrDefault(o => o.AccountID == pTradingAccount.AccountID) ?? new Account();
 
             ObjectUtils.CopyStruct(pTradingAccount, account);
 
+            Accounts.RaiseListChangedEvents = false;
+
             Accounts.Add(account);
 
-            Accounts.ListChanged += Accounts_ListChanged;
+            Accounts.RaiseListChangedEvents = true;
         }
     }
 

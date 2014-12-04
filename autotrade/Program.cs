@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
 using Autofac;
+using autotrade.util;
 using CrashReporterDotNET;
 using QuantBox.CSharp2CTP.Event;
 
@@ -16,43 +18,53 @@ namespace autotrade
         [STAThread]
         private static void Main()
         {
-            Application.ThreadException += ApplicationThreadException;
+            Process instance = InstanceManager.RunningInstance();
+            if (instance == null)
+            {
+                Application.ThreadException += ApplicationThreadException;
 
-            AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
+                AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
 
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
 
-            var builder = new ContainerBuilder();
+                var builder = new ContainerBuilder();
 
-            var assembly = Assembly.GetExecutingAssembly();
+                var assembly = Assembly.GetExecutingAssembly();
 
-            builder.RegisterType(typeof (TraderApiWrapper)).SingleInstance();
-            builder.RegisterType(typeof(MdApiWrapper)).SingleInstance();
-            builder.RegisterType(typeof (ReaderWriterLockSlim)).SingleInstance();
+                builder.RegisterType(typeof (TraderApiWrapper)).SingleInstance();
+                builder.RegisterType(typeof (MdApiWrapper)).SingleInstance();
+                builder.RegisterType(typeof (ReaderWriterLockSlim)).SingleInstance();
 
-            builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly())
-                .Where(t => t.Name.EndsWith("Manager") || t.Name.EndsWith("Repository") ).PropertiesAutowired().SingleInstance();
+                builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly())
+                    .Where(t => t.Name.EndsWith("Manager") || t.Name.EndsWith("Repository"))
+                    .PropertiesAutowired()
+                    .SingleInstance();
 
 
-            builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly())
-                .Where(t => t.Name.EndsWith("Strategy")).PropertiesAutowired();
+                builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly())
+                    .Where(t => t.Name.EndsWith("Strategy")).PropertiesAutowired();
 
-            builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly())
-                .Where(t => t.Name.EndsWith("StopLoss")).PropertiesAutowired();
+                builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly())
+                    .Where(t => t.Name.EndsWith("StopLoss")).PropertiesAutowired();
 
-            builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly())
-                .Where(t => t.Name.EndsWith("StopProfit")).PropertiesAutowired();
+                builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly())
+                    .Where(t => t.Name.EndsWith("StopProfit")).PropertiesAutowired();
 
-            builder.RegisterAssemblyTypes(assembly).AssignableTo<Form>().PropertiesAutowired();
-            
-            IContainer container = builder.Build();
+                builder.RegisterAssemblyTypes(assembly).AssignableTo<Form>().PropertiesAutowired();
 
-            MainForm mainForm = (MainForm) container.Resolve(typeof(MainForm));
+                IContainer container = builder.Build();
 
-            mainForm.Container = container;
+                MainForm mainForm = (MainForm) container.Resolve(typeof (MainForm));
 
-            Application.Run(mainForm);
+                mainForm.Container = container;
+
+                Application.Run(mainForm);
+            }
+            else
+            {
+                InstanceManager.HandleRunningProcess(instance);
+            } 
         }
 
         private static void CurrentDomainOnUnhandledException(object sender, UnhandledExceptionEventArgs unhandledExceptionEventArgs)

@@ -222,6 +222,7 @@
     </Compile>
     <Compile Include="util\BlockingQueue.cs" />
     <Compile Include="util\Enumerations.cs" />
+    <Compile Include="util\InstanceManager.cs" />
     <Compile Include="util\ObjectUtils.cs" />
     <Compile Include="util\ParseHelpers.cs" />
     <Compile Include="util\SettingUtils.cs" />
